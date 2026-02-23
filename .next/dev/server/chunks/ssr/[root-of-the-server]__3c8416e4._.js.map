@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 40, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/user/apex-sports/frontend/pages/_document.js"],"sourcesContent":["import { Html, Head, Main, NextScript } from \"next/document\";\r\n\r\nexport default function Document() {\r\n  return (\r\n    <Html>\r\n      <Head>\r\n        <script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js\"></script>\r\n      </Head>\r\n      <body>\r\n        <Main />\r\n        <NextScript />\r\n      </body>\r\n    </Html>\r\n  );\r\n}\r\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,qKAAC,iIAAI;;0BACH,qKAAC,iIAAI;0BACH,cAAA,qKAAC;oBAAO,KAAK;oBAAC,KAAI;;;;;;;;;;;0BAEpB,qKAAC;;kCACC,qKAAC,iIAAI;;;;;kCACL,qKAAC,uIAAU;;;;;;;;;;;;;;;;;AAInB"}}]
+}

@@ -1,26 +1,269 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #0b0f19;
+  --card: #11162a;
+  --accent: #22c55e;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: linear-gradient(180deg, #0b0f19, #05070d);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  margin: 0 0 12px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: var(--card);
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.badge-live {
+  color: #fff;
+  background: #dc2626;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  margin-left: 8px;
+}
+
+
+.hero {
+  background-image: url('/og-image.png');
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+  color: white;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+}
+
+
+
+
+/* ===== Apex Sports Mobile Responsiveness ===== */
+
+.table-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scoreboard-table {
+  width: 100%;
+  min-width: 700px; /* prevents column collapse */
+  border-collapse: collapse;
+}
+
+.scoreboard-table th,
+.scoreboard-table td {
+  padding: 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.team-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.team-cell img,
+.league-cell img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.status-badge {
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* ===== Mobile Tweaks ===== */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  .scoreboard-table {
+    font-size: 14px;
+  }
+
+  .status-badge {
+    font-size: 12px;
+  }
+}
+
+.skeleton {
+  height: 14px;
+  border-radius: 4px;
+  background: linear-gradient(
+    90deg,
+    #1e293b 25%,
+    #334155 37%,
+    #1e293b 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+
+/* ===== TV SCOREBOARD ===== */
+
+.scoreboard {
+  max-width: 900px;
+  margin: 2rem auto;
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 10px;
+  overflow: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.scoreboard-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 0.75rem 1rem;
+  background: #020617;
+  color: #94a3b8;
+  font-size: 13px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #1e293b;
+}
+
+.scoreboard-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 1rem;
+  text-decoration: none;
+  color: white;
+  background: #020617;
+  border-bottom: 1px solid #1e293b;
+  transition: background 0.2s ease;
+}
+
+.scoreboard-row:hover {
+  background: #020617;
+}
+
+.teams {
+  font-weight: 600;
+}
+
+.score {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.status {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 12px;
+  width: fit-content;
+  margin: auto;
+}
+
+/* STATUS COLORS */
+.status.LIVE {
+  background: #dc2626;
+  color: white;
+}
+
+.status.FT {
+  background: #334155;
+  color: #e5e7eb;
+}
+
+.status.NS {
+  background: #1e293b;
+  color: #94a3b8;
+}
+
+.league-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.league-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.match-grid {
+  display: grid;
+  gap: 15px;
+}
+
+.match-card {
+  background: #111;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.match-card:hover {
+  background: #1a1a1a;
+}
+
+.teams {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+}
+
+.score {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.status {
+  font-size: 12px;
+  opacity: 0.7;
+  margin-top: 6px;
 }
