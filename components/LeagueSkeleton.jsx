@@ -1,8 +1,14 @@
-"use client";
-
 export default function LeagueSkeleton() {
   return (
     <div style={{ maxWidth: 900, margin: "2rem auto" }}>
+      <style>{`
+        @keyframes pulse {
+          0% { opacity: 0.6; }
+          50% { opacity: 1; }
+          100% { opacity: 0.6; }
+        }
+      `}</style>
+
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
@@ -16,14 +22,6 @@ export default function LeagueSkeleton() {
           }}
         />
       ))}
-
-      <style jsx>{`
-        @keyframes pulse {
-          0% { opacity: 0.6; }
-          50% { opacity: 1; }
-          100% { opacity: 0.6; }
-        }
-      `}</style>
     </div>
   );
 }
