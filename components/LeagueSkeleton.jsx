@@ -1,3 +1,5 @@
+"use client";
+
 export default function LeagueSkeleton() {
   return (
     <div style={{ maxWidth: 900, margin: "2rem auto" }}>

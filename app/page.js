@@ -1,3 +1,5 @@
+"use client";
+
 import TestAPI from "../components/TestAPI";
 
 export const metadata = {
