@@ -1,7 +1,7 @@
 export default function MatchSkeleton() {
   const line = {
     height: 18,
-    background: "#1e293b",
+    background: "#7290c0",
     borderRadius: 6,
     marginBottom: 12,
   };

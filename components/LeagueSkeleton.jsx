@@ -1,14 +1,6 @@
 export default function LeagueSkeleton() {
   return (
     <div style={{ maxWidth: 900, margin: "2rem auto" }}>
-      <style>{`
-        @keyframes pulse {
-          0% { opacity: 0.6; }
-          50% { opacity: 1; }
-          100% { opacity: 0.6; }
-        }
-      `}</style>
-
       {[...Array(6)].map((_, i) => (
         <div
           key={i}
@@ -18,7 +10,7 @@ export default function LeagueSkeleton() {
             borderRadius: 8,
             height: 64,
             marginBottom: 12,
-            animation: "pulse 1.5s infinite",
+            opacity: 0.7
           }}
         />
       ))}
