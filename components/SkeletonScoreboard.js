@@ -1,3 +1,5 @@
+
+
 export default function SkeletonScoreboard() {
   return (
     <div style={{ padding: "1rem" }}>

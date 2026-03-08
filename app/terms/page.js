@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function Terms() {
   return (
     <main style={{ padding: "2rem", maxWidth: 800, margin: "auto" }}>
@@ -15,6 +16,7 @@ export default function Terms() {
       <p>
         Apex Sports reserves the right to modify or discontinue services at any time.
       </p>
+      <Link href="/">← Back to live scores</Link>
     </main>
   );
 }

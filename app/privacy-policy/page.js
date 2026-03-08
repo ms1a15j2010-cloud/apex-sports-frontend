@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function PrivacyPolicy() {
   return (
     <main style={{ padding: "2rem", maxWidth: 800, margin: "auto" }}>
@@ -19,6 +20,7 @@ export default function PrivacyPolicy() {
       </p>
 
       <p>Contact: admin@apexsports.com</p>
+      <Link href="/">← Back to live scores</Link>
     </main>
   );
 }
