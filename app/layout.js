@@ -2,13 +2,12 @@ import "./globals.css";
 import Script from "next/script";
 
 export const metadata = {
-  title: "Apex Sports – Live Football Scores",
-  description: "Live football scores, fixtures and results",
+  title: "Live Football Scores Today | Apex Sports",
+  description: "Watch live football scores with real-time updates.",
   verification: {
     google: "eMzm74d1mP9oknPY4pOLjBVGTiPhSvC3zomVjAL7J1k",
   },
 };
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
