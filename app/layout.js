@@ -4,6 +4,9 @@ import Script from "next/script";
 export const metadata = {
   title: "Apex Sports – Live Football Scores",
   description: "Live football scores, fixtures and results",
+  verification: {
+    google: "790e3c62d225aa5d",
+  },
 };
 
 export default function RootLayout({ children }) {
