@@ -5,8 +5,14 @@ import Sidebar from "@/components/Sidebar";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { LiveProvider } from "@/context/LiveContext";
 
+/* =====================================================
+   GLOBAL SEO METADATA
+===================================================== */
+
 export const metadata = {
-  metadataBase: new URL("https://apex-sports-frontend.vercel.app"),
+  metadataBase: new URL(
+    "https://apex-sports-frontend.vercel.app"
+  ),
 
   title: {
     default: "Apex Sports | Live Football Scores",
@@ -14,19 +20,49 @@ export const metadata = {
   },
 
   description:
-    "Watch live football scores, fixtures, match details, and real-time updates from leagues around the world.",
+    "Apex Sports provides live football scores, fixtures, results, standings, match statistics, player ratings, team information, and real-time football updates.",
 
   keywords: [
+    "Apex Sports",
     "football",
+    "football scores",
+    "live football scores",
     "live scores",
-    "soccer",
+    "soccer scores",
+    "football fixtures",
+    "football results",
+    "football standings",
+    "match statistics",
+    "football teams",
+    "football players",
     "Premier League",
     "Champions League",
-    "Apex Sports",
   ],
 
+  authors: [
+    {
+      name: "Apex Sports",
+    },
+  ],
+
+  creator: "Apex Sports",
+  publisher: "Apex Sports",
+
+  applicationName: "Apex Sports",
+
+  category: "sports",
+
+  referrer: "origin-when-cross-origin",
+
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+
   verification: {
-    google: "eMzm74d1mP9oknPY4pOLjBVGTiPhSvC3zomVjAL7J1k",
+    google:
+      "eMzm74d1mP9oknPY4pOLjBVGTiPhSvC3zomVjAL7J1k",
   },
 
   alternates: {
@@ -34,21 +70,43 @@ export const metadata = {
   },
 
   openGraph: {
-    title: "Apex Sports",
-    description: "Live Football Scores & Match Updates",
-    url: "https://apex-sports-frontend.vercel.app",
+    title: "Apex Sports | Live Football Scores",
+    description:
+      "Live football scores, fixtures, results, standings, match statistics, and real-time football updates.",
+    url: "https://apex-sports-frontend.vercel.app/",
     siteName: "Apex Sports",
     locale: "en_US",
     type: "website",
   },
 
+  twitter: {
+    card: "summary_large_image",
+    title: "Apex Sports | Live Football Scores",
+    description:
+      "Live football scores, fixtures, results, standings, and real-time match updates.",
+  },
+
   robots: {
     index: true,
     follow: true,
+
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 
-export default function RootLayout({ children }) {
+/* =====================================================
+   ROOT LAYOUT
+===================================================== */
+
+export default function RootLayout({
+  children,
+}) {
   return (
     <html lang="en">
       <body
@@ -71,6 +129,7 @@ export default function RootLayout({ children }) {
           {/* =====================================================
               APP SHELL
           ====================================================== */}
+
           <div
             style={{
               display: "flex",
@@ -82,11 +141,13 @@ export default function RootLayout({ children }) {
             {/* =================================================
                 SIDEBAR
             ================================================== */}
+
             <Sidebar />
 
             {/* =================================================
                 RIGHT SIDE APPLICATION
             ================================================== */}
+
             <div
               style={{
                 flex: 1,
@@ -111,6 +172,7 @@ export default function RootLayout({ children }) {
               {/* ===============================================
                   HEADER
               ================================================ */}
+
               <div
                 style={{
                   flexShrink: 0,
@@ -122,14 +184,13 @@ export default function RootLayout({ children }) {
               {/* ===============================================
                   MAIN SCROLLING AREA
               ================================================ */}
+
               <main
                 style={{
                   flex: 1,
 
                   /*
                     VERY IMPORTANT for flex scrolling.
-                    Without this, the content can force
-                    the parent to grow instead of scrolling.
                   */
                   minHeight: 0,
                   minWidth: 0,
@@ -148,9 +209,6 @@ export default function RootLayout({ children }) {
 
                   background: "#020617",
 
-                  /*
-                    Make sizing predictable.
-                  */
                   boxSizing: "border-box",
                 }}
               >
@@ -162,6 +220,7 @@ export default function RootLayout({ children }) {
               {/* ===============================================
                   FOOTER
               ================================================ */}
+
               <footer
                 style={{
                   flexShrink: 0,
@@ -172,7 +231,8 @@ export default function RootLayout({ children }) {
 
                   fontSize: "14px",
 
-                  borderTop: "1px solid #1e293b",
+                  borderTop:
+                    "1px solid #1e293b",
 
                   background: "#020617",
 

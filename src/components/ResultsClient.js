@@ -349,8 +349,8 @@ function ResultCard({
               match.homeLogo
             }
             name={
-              match.homeName
-            />
+  match.homeName
+} />
 
           <span
             style={{

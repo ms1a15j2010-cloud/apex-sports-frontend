@@ -1,9 +1,19 @@
+/* =====================================================
+   APEX SPORTS - ROBOTS
+===================================================== */
+
 export default function robots() {
+  const baseUrl =
+    "https://apex-sports-frontend.vercel.app";
+
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-    },
-    sitemap: "https://apex-sports-frontend.vercel.app/sitemap.xml",
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+      },
+    ],
+
+    sitemap: `${baseUrl}/sitemap.xml`,
   };
 }
