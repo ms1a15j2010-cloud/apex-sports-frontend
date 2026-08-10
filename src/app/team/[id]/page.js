@@ -14,7 +14,7 @@ import TeamSquad from "@/components/TeamSquad";
 import TeamAchievements from "@/components/TeamAchievements";
 import TeamHistory from "@/components/TeamHistory";
 import TeamSocial from "@/components/TeamSocial";
-import TeamExtra from "@/components/TeamExtra";
+import TeamExtras from "@/components/TeamExtra";
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -233,7 +233,7 @@ export default async function TeamPage({
           players={players}
         />
 
-        <TeamExtra team={team} />
+        <TeamExtras team={team} />
       </div>
     </main>
   );

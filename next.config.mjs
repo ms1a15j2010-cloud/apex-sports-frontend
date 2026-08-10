@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Fix the multiple lockfiles warning - using import.meta.dirname instead
+  outputFileTracingRoot: import.meta.dirname,
+  
   images: {
     unoptimized: true,
 

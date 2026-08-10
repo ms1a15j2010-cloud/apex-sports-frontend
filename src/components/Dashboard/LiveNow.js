@@ -19,10 +19,6 @@ export default function LiveNow() {
 const [loading, setLoading] =
   useState(true);
 
-const {
-  registerMatches,
-} = useLive();
-
   useEffect(() => {
   async function load() {
     const data =

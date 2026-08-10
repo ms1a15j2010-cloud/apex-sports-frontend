@@ -204,14 +204,13 @@ export default function LeagueTopScorersMini({
       </div>
 
       {/* Scorers Table */}
-
       <div
         style={{
           display: "grid",
           gap: 14,
         }}
-      ></div>
-              {players.slice(0, 10).map((item, index) => {
+      >
+        {players.slice(0, 10).map((item, index) => {
           const stat =
             item.statistics?.[0] || {};
 
@@ -425,7 +424,7 @@ export default function LeagueTopScorersMini({
           );
         })}
       </div>
-          </section>
+    </section>
   );
 }
 
