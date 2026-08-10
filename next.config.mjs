@@ -1,20 +1,24 @@
+/** @type {import('next').NextConfig} */
 const nextConfig = {
-  async headers() {
-    return [
+  images: {
+    unoptimized: true,
+
+    remotePatterns: [
       {
-        source: "/api/data",
-        headers: [
-          {
-            key: "Vary",
-            value: "X-Vercel-IP-Country",
-          },
-          {
-            key: "Cache-Control",
-            value: "s-maxage=3600",
-          },
-        ],
+        protocol: "https",
+        hostname: "media.api-sports.io",
       },
-    ];
+
+      {
+        protocol: "https",
+        hostname: "media-4.api-sports.io",
+      },
+
+      {
+        protocol: "https",
+        hostname: "media-3.api-sports.io",
+      },
+    ],
   },
 };
 
