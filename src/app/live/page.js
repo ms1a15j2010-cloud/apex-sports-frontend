@@ -22,6 +22,11 @@ async function getLiveMatches() {
     );
 
     if (!res.ok) {
+      console.error(
+        "LivePage: API request failed",
+        res.status
+      );
+
       return [];
     }
 
@@ -29,20 +34,18 @@ async function getLiveMatches() {
       await res.json();
 
     return Array.isArray(
-      data.matches
+      data?.matches
     )
       ? data.matches
       : [];
 
   } catch (err) {
-
     console.error(
       "LivePage:",
       err
     );
 
     return [];
-
   }
 }
 
@@ -63,16 +66,12 @@ export const metadata = {
 ===================================================== */
 
 export default async function LivePage() {
-
   const matches =
     await getLiveMatches();
 
   return (
     <LiveClient
-      initialMatches={
-        matches
-      }
+      initialMatches={matches}
     />
   );
-
 }
