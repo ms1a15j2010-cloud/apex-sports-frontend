@@ -1,314 +1,194 @@
-'use client';
+// src/app/results/[league]/page.js
 
-import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import ResultsClient from "@/components/ResultsClient";
 
-const API = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:5000';
+/* =====================================================
+   API
+===================================================== */
 
-/* ============================================
-   FETCH WITH TIMEOUT
-============================================ */
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000";
 
-async function fetchWithTimeout(url, options = {}, timeout = 30000) {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), timeout);
-  
+/* =====================================================
+   LEAGUE NAME
+===================================================== */
+
+function formatLeagueName(slug) {
+  if (!slug) {
+    return "League Results";
+  }
+
+  return slug
+    .replace(/-/g, " ")
+    .replace(/\b\w/g, (char) =>
+      char.toUpperCase()
+    );
+}
+
+/* =====================================================
+   LOAD RESULTS
+===================================================== */
+
+async function getLeagueResults(league) {
+  if (!league) {
+    console.error(
+      "Results page: league parameter is missing."
+    );
+
+    return [];
+  }
+
   try {
-    const response = await fetch(url, {
-      ...options,
-      signal: controller.signal,
-    });
-    clearTimeout(timeoutId);
-    return response;
+    const response = await fetch(
+      `${API}/api/league/${encodeURIComponent(
+        league
+      )}/results`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      console.error(
+        `Results API error: ${response.status}`
+      );
+
+      return [];
+    }
+
+    const data = await response.json();
+
+    if (Array.isArray(data?.results)) {
+      return data.results;
+    }
+
+    if (Array.isArray(data?.matches)) {
+      return data.matches;
+    }
+
+    return [];
   } catch (error) {
-    clearTimeout(timeoutId);
-    throw error;
+    console.error(
+      "Failed to load league results:",
+      error
+    );
+
+    return [];
   }
 }
 
-/* ============================================
-   PAGE COMPONENT
-============================================ */
+/* =====================================================
+   METADATA
+===================================================== */
 
-export default function ResultsPage() {
-  const [matches, setMatches] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [hoveredMatch, setHoveredMatch] = useState(null);
+export async function generateMetadata({
+  params,
+}) {
+  const { league } = await params;
 
-  useEffect(() => {
-    async function getResults() {
-      try {
-        console.log('🔍 Fetching results from:', `${API}/api/results`);
-        
-        const res = await fetchWithTimeout(
-          `${API}/api/results`,
-          {
-            cache: "no-store",
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-          30000
-        );
+  const leagueName =
+    formatLeagueName(league);
 
-        if (!res.ok) {
-          throw new Error(`Backend unavailable: ${res.status}`);
-        }
+  return {
+    title:
+      `${leagueName} Results | Apex Sports`,
 
-        const data = await res.json();
-        console.log('✅ Results received:', data.matches?.length || 0, 'matches');
-        setMatches(data.matches || []);
-      } catch (err) {
-        console.error('🔥 Error fetching results:', err.message);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+    description:
+      `Latest football results, scores and completed matches from ${leagueName}.`,
+  };
+}
 
-    getResults();
-  }, []);
+/* =====================================================
+   PAGE
+===================================================== */
 
-  if (loading) {
-    return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: 20,
-          color: "white",
-          textAlign: "center",
-        }}
-      >
-        <h2>Loading results...</h2>
-      </main>
-    );
-  }
+export default async function ResultsLeaguePage({
+  params,
+}) {
+  const { league } = await params;
 
-  if (error) {
-    return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: 20,
-          color: "white",
-          textAlign: "center",
-        }}
-      >
-        <h2>Error loading results</h2>
-        <p style={{ color: "#ef4444" }}>{error}</p>
-        <Link
-          href="/"
-          style={{
-            display: "inline-block",
-            marginTop: 20,
-            color: "#22c55e",
-            textDecoration: "none",
-            background: "#1e293b",
-            padding: "10px 20px",
-            borderRadius: 8,
-          }}
-        >
-          ← Back to Home
-        </Link>
-      </main>
-    );
-  }
+  const matches =
+    await getLeagueResults(league);
+
+  const leagueName =
+    formatLeagueName(league);
 
   return (
     <main
       style={{
-        maxWidth: 1200,
-        margin: "40px auto",
-        padding: 20,
-        color: "white",
+        minHeight: "100vh",
+        background: "#030712",
+        color: "#fff",
+        padding: "30px 20px 60px",
       }}
     >
-      <h1
+      <div
         style={{
-          fontSize: 40,
-          marginBottom: 30,
+          width: "100%",
+          maxWidth: "1200px",
+          margin: "0 auto",
         }}
       >
-        🏁 Latest Results
-        <span
-          style={{
-            fontSize: 16,
-            color: "#94a3b8",
-            marginLeft: 15,
-          }}
-        >
-          {matches.length} matches
-        </span>
-      </h1>
+        {/* =================================================
+            PAGE HEADER
+        ================================================== */}
 
-      {matches.length === 0 ? (
-        <div
+        <header
           style={{
-            background: "#111827",
-            borderRadius: 18,
-            padding: 50,
-            textAlign: "center",
+            marginBottom: "30px",
           }}
         >
-          <h2>No Results Available</h2>
-          <p style={{ color: "#94a3b8", marginTop: 10 }}>
-            Check back later for match results.
+          <div
+            style={{
+              color: "#ef4444",
+              fontSize: "12px",
+              fontWeight: 800,
+              letterSpacing: "1.2px",
+              textTransform: "uppercase",
+              marginBottom: "8px",
+            }}
+          >
+            ⚽ Apex Sports
+          </div>
+
+          <h1
+            style={{
+              margin: 0,
+              color: "#fff",
+              fontSize:
+                "clamp(28px, 5vw, 44px)",
+              fontWeight: 800,
+              lineHeight: 1.15,
+            }}
+          >
+            {leagueName} Results
+          </h1>
+
+          <p
+            style={{
+              margin: "10px 0 0",
+              color: "#9ca3af",
+              fontSize: "15px",
+              lineHeight: 1.6,
+            }}
+          >
+            Latest completed matches,
+            scores and results from{" "}
+            {leagueName}.
           </p>
-        </div>
-      ) : (
-        <div
-          style={{
-            display: "grid",
-            gap: 20,
-          }}
-        >
-          {matches.map((match) => (
-            <Link
-              key={match.id}
-              href={`/match/${match.id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <div
-                style={{
-                  background: hoveredMatch === match.id ? "#1e293b" : "#111827",
-                  borderRadius: 18,
-                  padding: 22,
-                  border: hoveredMatch === match.id ? "1px solid #22c55e" : "1px solid #1e293b",
-                  transition: "all 0.2s ease",
-                  transform: hoveredMatch === match.id ? "scale(1.01)" : "scale(1)",
-                }}
-                onMouseEnter={() => setHoveredMatch(match.id)}
-                onMouseLeave={() => setHoveredMatch(null)}
-              >
-                {/* League */}
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 12,
-                    marginBottom: 20,
-                  }}
-                >
-                  {match.league?.logo && (
-                    <Image
-                      src={match.league.logo}
-                      alt={match.league.name || 'League'}
-                      width={30}
-                      height={30}
-                      unoptimized
-                    />
-                  )}
-                  <strong>{match.league?.name || 'Unknown League'}</strong>
-                  <span
-                    style={{
-                      marginLeft: "auto",
-                      color: match.status?.short === 'FT' ? "#22c55e" : "#f59e0b",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {match.status?.short || '?'}
-                  </span>
-                </div>
+        </header>
 
-                {/* Teams */}
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr auto 1fr",
-                    alignItems: "center",
-                    gap: 20,
-                  }}
-                >
-                  {/* Home */}
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    {match.teams?.home?.logo && (
-                      <Image
-                        src={match.teams.home.logo}
-                        alt={match.teams.home.name || 'Home'}
-                        width={55}
-                        height={55}
-                        unoptimized
-                      />
-                    )}
-                    <strong>{match.teams?.home?.name || 'Home'}</strong>
-                  </div>
+        {/* =================================================
+            RESULTS CLIENT
+        ================================================== */}
 
-                  {/* Score */}
-                  <div
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    <h2
-                      style={{
-                        fontSize: 40,
-                        margin: 0,
-                        color: "#22c55e",
-                      }}
-                    >
-                      {match.goals?.home ?? '-'} - {match.goals?.away ?? '-'}
-                    </h2>
-                    <div
-                      style={{
-                        color: "#94a3b8",
-                        marginTop: 10,
-                      }}
-                    >
-                      {match.status?.long || 'Scheduled'}
-                    </div>
-                  </div>
-
-                  {/* Away */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <strong>{match.teams?.away?.name || 'Away'}</strong>
-                    {match.teams?.away?.logo && (
-                      <Image
-                        src={match.teams.away.logo}
-                        alt={match.teams.away.name || 'Away'}
-                        width={55}
-                        height={55}
-                        unoptimized
-                      />
-                    )}
-                  </div>
-                </div>
-
-                {/* Date */}
-                <div
-                  style={{
-                    marginTop: 20,
-                    textAlign: "center",
-                    color: "#94a3b8",
-                    fontSize: 14,
-                  }}
-                >
-                  {match.date ? new Date(match.date).toLocaleString() : 'TBD'}
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      )}
+        <ResultsClient
+          initialMatches={matches}
+          league={league}
+          leagueName={leagueName}
+        />
+      </div>
     </main>
   );
 }

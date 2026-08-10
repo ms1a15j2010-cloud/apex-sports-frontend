@@ -1,8 +1,16 @@
+// src/app/live/page.js
+
 import LiveClient from "./LiveClient";
 
 /* =====================================================
+   FORCE DYNAMIC RENDERING
+   ===================================================== */
+
+export const dynamic = "force-dynamic";
+
+/* =====================================================
    API
-===================================================== */
+   ===================================================== */
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
@@ -10,16 +18,13 @@ const API =
 
 /* =====================================================
    LOAD LIVE MATCHES
-===================================================== */
+   ===================================================== */
 
 async function getLiveMatches() {
   try {
-    const res = await fetch(
-      `${API}/api/live`,
-      {
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${API}/api/live`, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
       console.error(
@@ -30,20 +35,13 @@ async function getLiveMatches() {
       return [];
     }
 
-    const data =
-      await res.json();
+    const data = await res.json();
 
-    return Array.isArray(
-      data?.matches
-    )
+    return Array.isArray(data?.matches)
       ? data.matches
       : [];
-
   } catch (err) {
-    console.error(
-      "LivePage:",
-      err
-    );
+    console.error("LivePage:", err);
 
     return [];
   }
@@ -51,23 +49,43 @@ async function getLiveMatches() {
 
 /* =====================================================
    METADATA
-===================================================== */
+   ===================================================== */
 
 export const metadata = {
-  title:
-    "Live Football | Apex Sports",
+  title: "Live Football | Apex Sports",
 
   description:
-    "Live football scores and real-time match updates.",
+    "Live football scores and real-time match updates from leagues around the world.",
+
+  alternates: {
+    canonical: "/live",
+  },
+
+  openGraph: {
+    title: "Live Football | Apex Sports",
+
+    description:
+      "Live football scores and real-time match updates from leagues around the world.",
+
+    url: "/live",
+
+    siteName: "Apex Sports",
+
+    type: "website",
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 /* =====================================================
    PAGE
-===================================================== */
+   ===================================================== */
 
 export default async function LivePage() {
-  const matches =
-    await getLiveMatches();
+  const matches = await getLiveMatches();
 
   return (
     <LiveClient
