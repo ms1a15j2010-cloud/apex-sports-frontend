@@ -1,334 +1,570 @@
 "use client";
 
-import Image from "next/image";
-
-export default function TeamExtras({ team }) {
+export default function TeamExtras({
+  team,
+}) {
   if (!team) return null;
+
+  const transfers = Array.isArray(
+    team.transfers
+  )
+    ? team.transfers
+    : [];
+
+  const injuries = Array.isArray(
+    team.injuries
+  )
+    ? team.injuries
+    : [];
+
+  const trophies = Array.isArray(
+    team.trophies
+  )
+    ? team.trophies
+    : [];
+
+  const transfersAvailable =
+    team.transfersAvailable === true ||
+    team.transferDataAvailable === true;
+
+  const injuriesAvailable =
+    team.injuriesAvailable === true ||
+    team.injuryDataAvailable === true;
+
+  const trophiesAvailable =
+    team.trophiesAvailable === true ||
+    team.trophyDataAvailable === true;
 
   return (
     <section
+      id="team-extra"
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
-        ⭐ Team Information
-      </h2>
-
-      {/* ================================
-          Coach
-      ================================= */}
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
       <div
         style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
           marginBottom: 30,
         }}
       >
-        <h3
+        <div
           style={{
-            marginBottom: 20,
-            color: "#fff",
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "1.2px",
+            textTransform:
+              "uppercase",
+            marginBottom: 8,
           }}
         >
-          👔 Head Coach
-        </h3>
+          ⚽ Apex Sports
+        </div>
 
-        {team.coach ? (
-          <div
-            style={{
-              display: "flex",
-              gap: 25,
-              alignItems: "center",
-              flexWrap: "wrap",
-            }}
-          >
-            <Image
-              src={
-                team.coach.photo ||
-                "/coach.png"
-              }
-              alt={team.coach.name}
-              width={110}
-              height={110}
-              style={{
-                borderRadius: "50%",
-              }}
-            />
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 28,
+          }}
+        >
+          ⭐ Team Information
+        </h2>
 
-            <div>
-              <h2>{team.coach.name}</h2>
-
-              <p>
-                Nationality:
-                {" "}
-                {team.coach.nationality || "-"}
-              </p>
-
-              <p>
-                Age:
-                {" "}
-                {team.coach.age || "-"}
-              </p>
-
-              <p>
-                Birth:
-                {" "}
-                {team.coach.birth?.date || "-"}
-              </p>
-            </div>
-          </div>
-        ) : (
-          <p>No coach information available.</p>
-        )}
+        <p
+          style={{
+            color: "#94a3b8",
+            margin:
+              "8px 0 0",
+            fontSize: 14,
+            lineHeight: 1.6,
+          }}
+        >
+          Additional club information and
+          data availability.
+        </p>
       </div>
 
-      {/* ================================
-          Transfers
-      ================================= */}
+      {/* =================================================
+          TRANSFERS
+      ================================================= */}
 
-      <div
+      <section
+        id="transfers"
         style={{
           background: "#1f2937",
           borderRadius: 18,
           padding: 24,
-          marginBottom: 30,
+          marginBottom: 22,
+          border:
+            "1px solid #293548",
         }}
       >
-        <h3
-          style={{
-            marginBottom: 20,
-            color: "#fff",
-          }}
-        >
-          🔄 Latest Transfers
-        </h3>
+        <SectionHeading
+          icon="🔄"
+          title="Latest Transfers"
+        />
 
-        {team.transfers?.length ? (
+        {transfersAvailable &&
+        transfers.length > 0 ? (
           <div
             style={{
               display: "grid",
               gap: 14,
             }}
           >
-            {team.transfers
+            {transfers
               .slice(0, 10)
-              .map((transfer) => (
-                <div
-                  key={
-                    transfer.player?.id
-                  }
-                  style={{
-                    background:
-                      "#111827",
-                    borderRadius: 12,
-                    padding: 16,
-                  }}
-                >
-                  <strong>
-                    {
-                      transfer.player
-                        ?.name
-                    }
-                  </strong>
+              .map(
+                (
+                  transfer,
+                  index
+                ) => {
+                  const player =
+                    transfer?.player ||
+                    {};
 
-                  <div
-                    style={{
-                      marginTop: 6,
-                      color:
-                        "#94a3b8",
-                    }}
-                  >
-                    {transfer.transfers?.[0]
-                      ?.type || "-"}
-                  </div>
+                  const move =
+                    transfer?.transfers?.[0] ||
+                    transfer ||
+                    {};
 
-                  <div
-                    style={{
-                      marginTop: 6,
-                    }}
-                  >
-                    {transfer.transfers?.[0]
-                      ?.teams?.out
-                      ?.name || "-"}
-                    {"  "}
-                    ➜
-                    {"  "}
-                    {transfer.transfers?.[0]
-                      ?.teams?.in
-                      ?.name || "-"}
-                  </div>
-                </div>
-              ))}
+                  const from =
+                    move?.teams?.out
+                      ?.name ||
+                    move?.from?.name ||
+                    "-";
+
+                  const to =
+                    move?.teams?.in
+                      ?.name ||
+                    move?.to?.name ||
+                    "-";
+
+                  const type =
+                    move?.type ||
+                    "-";
+
+                  const date =
+                    move?.date ||
+                    "-";
+
+                  return (
+                    <div
+                      key={
+                        player?.id ??
+                        `${date}-${index}`
+                      }
+                      style={{
+                        background:
+                          "#111827",
+                        borderRadius:
+                          14,
+                        padding: 16,
+                        border:
+                          "1px solid #293548",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#fff",
+                          fontWeight:
+                            800,
+                          fontSize: 15,
+                        }}
+                      >
+                        {player?.name ||
+                          "Unknown Player"}
+                      </div>
+
+                      <div
+                        style={{
+                          color:
+                            "#94a3b8",
+                          fontSize: 13,
+                          marginTop: 8,
+                        }}
+                      >
+                        {from} → {to}
+                      </div>
+
+                      <div
+                        style={{
+                          display:
+                            "flex",
+                          gap: 14,
+                          flexWrap:
+                            "wrap",
+                          marginTop: 8,
+                          color:
+                            "#64748b",
+                          fontSize: 12,
+                        }}
+                      >
+                        <span>
+                          Type: {type}
+                        </span>
+
+                        <span>
+                          Date: {date}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                }
+              )}
           </div>
         ) : (
-          <p>No transfers available.</p>
+          <UnavailableState
+            icon="🔄"
+            title="Transfer History Unavailable"
+            message="The current football-data.org source does not provide team transfer history."
+          />
         )}
-      </div>
+      </section>
 
-      {/* ================================
-          Injuries
-      ================================= */}
+      {/* =================================================
+          INJURIES
+      ================================================= */}
 
-      <div
+      <section
+        id="injuries"
         style={{
           background: "#1f2937",
           borderRadius: 18,
           padding: 24,
-          marginBottom: 30,
+          marginBottom: 22,
+          border:
+            "1px solid #293548",
         }}
       >
-        <h3
-          style={{
-            marginBottom: 20,
-            color: "#fff",
-          }}
-        >
-          🚑 Injuries
-        </h3>
+        <SectionHeading
+          icon="🏥"
+          title="Team Injuries"
+        />
 
-        {team.injuries?.length ? (
+        {injuriesAvailable &&
+        injuries.length > 0 ? (
           <div
             style={{
               display: "grid",
               gap: 12,
             }}
           >
-            {team.injuries.map(
-              (injury) => (
-                <div
-                  key={
-                    injury.player?.id
-                  }
-                  style={{
-                    background:
-                      "#111827",
-                    borderRadius: 12,
-                    padding: 16,
-                  }}
-                >
-                  <strong>
-                    {
-                      injury.player
-                        ?.name
-                    }
-                  </strong>
+            {injuries.map(
+              (
+                injury,
+                index
+              ) => {
+                const player =
+                  injury?.player ||
+                  {};
 
+                const reason =
+                  injury?.player
+                    ?.reason ||
+                  injury?.reason ||
+                  injury?.type ||
+                  "Injury information";
+
+                return (
                   <div
+                    key={
+                      player?.id ??
+                      index
+                    }
                     style={{
-                      marginTop: 8,
+                      background:
+                        "#111827",
+                      borderRadius:
+                        14,
+                      padding: 16,
+                      border:
+                        "1px solid #293548",
                     }}
                   >
-                    {injury.player
-                      ?.reason ||
-                      "Injured"}
+                    <div
+                      style={{
+                        color:
+                          "#fff",
+                        fontWeight:
+                          800,
+                      }}
+                    >
+                      {player?.name ||
+                        "Unknown Player"}
+                    </div>
+
+                    <div
+                      style={{
+                        color:
+                          "#f87171",
+                        marginTop: 6,
+                        fontSize:
+                          13,
+                      }}
+                    >
+                      {reason}
+                    </div>
                   </div>
-                </div>
-              )
+                );
+              }
             )}
           </div>
         ) : (
-          <p>
-            No injuries reported.
-          </p>
+          <UnavailableState
+            icon="🏥"
+            title="Injury Data Unavailable"
+            message="The current football-data.org source does not provide team injury information."
+          />
         )}
-      </div>
+      </section>
 
-      {/* ================================
-          Trophies
-      ================================= */}
+      {/* =================================================
+          TROPHIES
+      ================================================= */}
 
-      <div
+      <section
+        id="trophies"
         style={{
           background: "#1f2937",
           borderRadius: 18,
           padding: 24,
+          border:
+            "1px solid #293548",
         }}
       >
-        <h3
-          style={{
-            marginBottom: 20,
-            color: "#fff",
-          }}
-        >
-          🏆 Trophies
-        </h3>
+        <SectionHeading
+          icon="🏆"
+          title="Team Trophies"
+        />
 
-        {team.trophies?.length ? (
+        {trophiesAvailable &&
+        trophies.length > 0 ? (
           <div
             style={{
               display: "grid",
               gridTemplateColumns:
-                "repeat(auto-fit,minmax(250px,1fr))",
-              gap: 18,
+                "repeat(auto-fit,minmax(240px,1fr))",
+              gap: 16,
             }}
           >
-            {team.trophies.map(
-              (trophy, i) => (
+            {trophies.map(
+              (
+                trophy,
+                index
+              ) => (
                 <div
-                  key={i}
+                  key={
+                    trophy?.id ??
+                    index
+                  }
                   style={{
                     background:
                       "#111827",
-                    borderRadius: 14,
+                    borderRadius:
+                      14,
                     padding: 18,
+                    border:
+                      "1px solid #293548",
                   }}
                 >
                   <div
                     style={{
-                      fontWeight:
-                        "bold",
-                      fontSize: 18,
+                      fontSize: 28,
+                      marginBottom: 10,
                     }}
                   >
-                    {
-                      trophy.league
-                    }
+                    🏆
+                  </div>
+
+                  <div
+                    style={{
+                      color:
+                        "#fff",
+                      fontSize:
+                        17,
+                      fontWeight:
+                        800,
+                    }}
+                  >
+                    {trophy?.league ||
+                      "Competition"}
                   </div>
 
                   <div
                     style={{
                       color:
                         "#22c55e",
-                      marginTop: 8,
+                      marginTop:
+                        7,
+                      fontWeight:
+                        700,
+                      fontSize:
+                        13,
                     }}
                   >
-                    {
-                      trophy.place
-                    }
+                    {trophy?.place ||
+                      "Achievement"}
                   </div>
 
                   <div
                     style={{
                       color:
                         "#94a3b8",
-                      marginTop: 6,
+                      marginTop:
+                        6,
+                      fontSize:
+                        12,
                     }}
                   >
-                    {
-                      trophy.season
-                    }
+                    Season:{" "}
+                    {trophy?.season ||
+                      "-"}
                   </div>
                 </div>
               )
             )}
           </div>
         ) : (
-          <p>
-            No trophies available.
-          </p>
+          <UnavailableState
+            icon="🏆"
+            title="Trophy History Unavailable"
+            message="The current football-data.org source does not provide historical team trophy data."
+          />
         )}
+      </section>
+
+      {/* =================================================
+          SOURCE
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 18,
+          paddingTop: 16,
+          borderTop:
+            "1px solid #293548",
+          color: "#64748b",
+          fontSize: 12,
+        }}
+      >
+        Source: football-data.org
       </div>
     </section>
+  );
+}
+
+/* =====================================================
+SECTION HEADING
+===================================================== */
+
+function SectionHeading({
+  icon,
+  title,
+}) {
+  return (
+    <h3
+      style={{
+        color: "#fff",
+        margin:
+          "0 0 20px",
+        fontSize: 21,
+        display: "flex",
+        alignItems:
+          "center",
+        gap: 10,
+      }}
+    >
+      <span>{icon}</span>
+      <span>{title}</span>
+    </h3>
+  );
+}
+
+/* =====================================================
+UNAVAILABLE STATE
+===================================================== */
+
+function UnavailableState({
+  icon,
+  title,
+  message,
+}) {
+  return (
+    <div
+      style={{
+        background:
+          "#111827",
+        borderRadius: 14,
+        padding: 28,
+        textAlign: "center",
+        border:
+          "1px solid #293548",
+      }}
+    >
+      <div
+        style={{
+          fontSize: 42,
+          marginBottom: 12,
+        }}
+      >
+        {icon}
+      </div>
+
+      <h4
+        style={{
+          color: "#fff",
+          margin:
+            "0 0 8px",
+          fontSize: 17,
+        }}
+      >
+        {title}
+      </h4>
+
+      <p
+        style={{
+          color: "#94a3b8",
+          margin: 0,
+          fontSize: 13,
+          lineHeight: 1.7,
+          maxWidth: 600,
+          marginInline:
+            "auto",
+        }}
+      >
+        {message}
+      </p>
+
+      <div
+        style={{
+          display:
+            "inline-block",
+          marginTop: 14,
+          padding:
+            "6px 12px",
+          borderRadius: 999,
+          background:
+            "#0f172a",
+          color:
+            "#64748b",
+          fontSize: 11,
+          fontWeight: 700,
+        }}
+      >
+        Source limitation
+      </div>
+    </div>
   );
 }

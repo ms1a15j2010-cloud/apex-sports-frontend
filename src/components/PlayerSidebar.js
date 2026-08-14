@@ -38,7 +38,10 @@ export default function PlayerSidebar({
   const clubLogo =
     player.team?.logo ||
     player.club?.logo ||
-    "/team.png";
+    null;
+
+  const playerPhoto =
+    player.photo || null;
 
   return (
     <aside
@@ -51,7 +54,7 @@ export default function PlayerSidebar({
           "0 8px 24px rgba(0,0,0,.35)",
       }}
     >
-      {/* Player */}
+      {/* PLAYER */}
 
       <div
         style={{
@@ -59,25 +62,48 @@ export default function PlayerSidebar({
           marginBottom: 30,
         }}
       >
-        <Image
-          src={
-            player.photo ||
-            "/player.png"
-          }
-          alt={
-            player.name ||
-            "Player"
-          }
-          width={170}
-          height={170}
-          priority
-          style={{
-            borderRadius: "50%",
-            objectFit: "cover",
-            border:
-              "4px solid #22c55e",
-          }}
-        />
+        {playerPhoto ? (
+          <Image
+            src={playerPhoto}
+            alt={
+              player.name ||
+              "Player"
+            }
+            width={170}
+            height={170}
+            priority
+            unoptimized
+            style={{
+              borderRadius: "50%",
+              objectFit: "cover",
+              border:
+                "4px solid #22c55e",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 170,
+              height: 170,
+              margin: "0 auto",
+              borderRadius: "50%",
+              background:
+                "linear-gradient(145deg, #1f2937, #111827)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "#22c55e",
+              border:
+                "4px solid #22c55e",
+              fontSize: 56,
+              fontWeight: 800,
+            }}
+          >
+            {(player.name || "P")
+              .charAt(0)
+              .toUpperCase()}
+          </div>
+        )}
 
         <h2
           style={{
@@ -86,7 +112,8 @@ export default function PlayerSidebar({
             marginBottom: 8,
           }}
         >
-          {player.name}
+          {player.name ||
+            "Unknown Player"}
         </h2>
 
         <div
@@ -98,7 +125,7 @@ export default function PlayerSidebar({
         </div>
       </div>
 
-      {/* Club */}
+      {/* CLUB */}
 
       <div
         style={{
@@ -125,12 +152,36 @@ export default function PlayerSidebar({
             gap: 12,
           }}
         >
-          <Image
-            src={clubLogo}
-            alt={club}
-            width={42}
-            height={42}
-          />
+          {clubLogo ? (
+            <Image
+              src={clubLogo}
+              alt={club}
+              width={42}
+              height={42}
+              unoptimized
+              style={{
+                objectFit: "contain",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                width: 42,
+                height: 42,
+                borderRadius: 10,
+                background:
+                  "#111827",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#22c55e",
+                fontSize: 15,
+                fontWeight: 800,
+              }}
+            >
+              FC
+            </div>
+          )}
 
           <strong
             style={{
@@ -142,7 +193,7 @@ export default function PlayerSidebar({
         </div>
       </div>
 
-      {/* Information */}
+      {/* INFORMATION */}
 
       <div
         style={{
@@ -182,7 +233,7 @@ export default function PlayerSidebar({
         />
       </div>
 
-      {/* Quick Links */}
+      {/* QUICK LINKS */}
 
       <div
         style={{

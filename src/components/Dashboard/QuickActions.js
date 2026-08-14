@@ -22,18 +22,6 @@ const actions = [
     color: "#f59e0b",
   },
   {
-    title: "Teams",
-    href: "/teams",
-    icon: "🛡️",
-    color: "#22c55e",
-  },
-  {
-    title: "Players",
-    href: "/players",
-    icon: "⭐",
-    color: "#8b5cf6",
-  },
-  {
     title: "Search",
     href: "/search",
     icon: "🔍",

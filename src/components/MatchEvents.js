@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-
 export default function MatchEvents({
   events = [],
 }) {
@@ -10,305 +8,326 @@ export default function MatchEvents({
       <section
         style={{
           background: "#111827",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
+          borderRadius: 18,
+          padding: 28,
+          marginBottom: 24,
+          border: "1px solid #1f2937",
         }}
       >
         <h2
           style={{
+            margin: "0 0 20px",
             color: "#fff",
-            marginBottom: 20,
+            fontSize: 22,
+            fontWeight: 800,
           }}
         >
-          📝 Match Events
+          Match Events
         </h2>
 
-        <p
+        <div
           style={{
-            color: "#94a3b8",
+            background: "#0f172a",
+            borderRadius: 14,
+            padding: "28px 20px",
+            textAlign: "center",
+            color: "#64748b",
+            fontSize: 14,
           }}
         >
           No match events available.
-        </p>
+        </div>
       </section>
     );
   }
 
-  const sortedEvents = [...events].sort(
-    (a, b) => {
-      const aTime =
-        (a.time?.elapsed || 0) * 100 +
-        (a.time?.extra || 0);
-
-      const bTime =
-        (b.time?.elapsed || 0) * 100 +
-        (b.time?.extra || 0);
-
-      return aTime - bTime;
-    }
-  );
-
   return (
     <section
-    className="match-events"
       style={{
         background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
+        borderRadius: 18,
+        padding: 28,
+        marginBottom: 24,
+        border: "1px solid #1f2937",
       }}
     >
       <h2
         style={{
+          margin: "0 0 24px",
           color: "#fff",
-          marginBottom: 30,
+          fontSize: 22,
+          fontWeight: 800,
         }}
       >
-        📝 Match Events
+        Match Events
       </h2>
 
       <div
-      className="events-list"
         style={{
           display: "grid",
-          gap: 18,
+          gap: 12,
         }}
       >
-        {sortedEvents.map(
-          (event, index) => (
-            <EventCard
-              key={`${event.time?.elapsed}-${index}`}
-              event={event}
-            />
-          )
+        {events.map(
+          (event, index) => {
+            const minute =
+              event?.time?.elapsed ??
+              event?.minute ??
+              null;
+
+            const extra =
+              event?.time?.extra ??
+              event?.injuryTime ??
+              null;
+
+            const type =
+              String(
+                event?.type ||
+                  event?.detail ||
+                  "Event"
+              );
+
+            const detail =
+              String(
+                event?.detail ||
+                  type
+              );
+
+            const player =
+              event?.player?.name ||
+              event?.scorer?.name ||
+              null;
+
+            const assist =
+              event?.assist?.name ||
+              null;
+
+            const team =
+              event?.team || {};
+
+            const homeScore =
+              event?.score?.home;
+
+            const awayScore =
+              event?.score?.away;
+
+            const upperType =
+              type.toUpperCase();
+
+            let icon = "•";
+
+            if (
+              upperType.includes(
+                "GOAL"
+              )
+            ) {
+              icon = "⚽";
+            } else if (
+              upperType.includes(
+                "CARD"
+              )
+            ) {
+              icon = "🟨";
+            } else if (
+              upperType.includes(
+                "SUB"
+              )
+            ) {
+              icon = "🔄";
+            }
+
+            return (
+              <div
+                key={
+                  event?.id ||
+                  `${index}-${type}`
+                }
+                style={{
+                  background:
+                    "#0f172a",
+                  borderRadius:
+                    14,
+                  padding:
+                    16,
+                  border:
+                    "1px solid #1e293b",
+                }}
+              >
+                <div
+                  style={{
+                    display:
+                      "flex",
+                    alignItems:
+                      "center",
+                    justifyContent:
+                      "space-between",
+                    gap: 15,
+                    flexWrap:
+                      "wrap",
+                  }}
+                >
+                  {/* LEFT */}
+
+                  <div
+                    style={{
+                      display:
+                        "flex",
+                      alignItems:
+                        "center",
+                      gap: 12,
+                      minWidth: 0,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 38,
+                        height: 38,
+                        minWidth: 38,
+                        borderRadius:
+                          "50%",
+                        background:
+                          "#1e293b",
+                        display:
+                          "flex",
+                        alignItems:
+                          "center",
+                        justifyContent:
+                          "center",
+                        fontSize: 17,
+                      }}
+                    >
+                      {icon}
+                    </div>
+
+                    <div
+                      style={{
+                        minWidth:
+                          0,
+                      }}
+                    >
+                      <div
+                        style={{
+                          color:
+                            "#fff",
+                          fontWeight:
+                            800,
+                          fontSize:
+                            14,
+                        }}
+                      >
+                        {detail}
+                      </div>
+
+                      {player && (
+                        <div
+                          style={{
+                            marginTop:
+                              4,
+                            color:
+                              "#cbd5e1",
+                            fontSize:
+                              13,
+                          }}
+                        >
+                          {player}
+                        </div>
+                      )}
+
+                      {assist && (
+                        <div
+                          style={{
+                            marginTop:
+                              3,
+                            color:
+                              "#64748b",
+                            fontSize:
+                              11,
+                          }}
+                        >
+                          Assist:{" "}
+                          {assist}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* RIGHT */}
+
+                  <div
+                    style={{
+                      textAlign:
+                        "right",
+                    }}
+                  >
+                    <div
+                      style={{
+                        color:
+                          "#22c55e",
+                        fontSize:
+                          14,
+                        fontWeight:
+                          800,
+                      }}
+                    >
+                      {minute !==
+                      null
+                        ? `${minute}'${
+                            extra
+                              ? `+${extra}`
+                              : ""
+                          }`
+                        : "—"}
+                    </div>
+
+                    {(
+                      homeScore !==
+                        undefined ||
+                      awayScore !==
+                        undefined
+                    ) && (
+                      <div
+                        style={{
+                          marginTop:
+                            4,
+                          color:
+                            "#64748b",
+                          fontSize:
+                            11,
+                        }}
+                      >
+                        {homeScore ??
+                          "—"}{" "}
+                        -{" "}
+                        {awayScore ??
+                          "—"}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {team?.name && (
+                  <div
+                    style={{
+                      marginTop:
+                        12,
+                      paddingTop:
+                        10,
+                      borderTop:
+                        "1px solid #1e293b",
+                      color:
+                        "#64748b",
+                      fontSize:
+                        11,
+                    }}
+                  >
+                    {team.name}
+                  </div>
+                )}
+              </div>
+            );
+          }
         )}
       </div>
     </section>
   );
-}
-
-function EventCard({
-  event,
-}) {
-  const minute =
-    event.time?.elapsed || 0;
-
-  const extra =
-    event.time?.extra;
-
-  const team =
-    event.team || {};
-
-  const player =
-    event.player || {};
-
-  const assist =
-    event.assist || {};
-
-  const type =
-    event.type || "";
-
-  const detail =
-    event.detail || "";
-
-  const comments =
-    event.comments || "";
-
-  const icon =
-    getEventIcon(
-      type,
-      detail
-    );
-
-  return (
-    <div
-     className="event-card"
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 20,
-      }}
-    >
-      {/* Top */}
-
-      <div
-       className="event-header"
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems: "center",
-          marginBottom: 18,
-          flexWrap: "wrap",
-          gap: 12,
-        }}
-      >
-        <div
-         className="event-team"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
-          <Image
-            src={
-              team.logo ||
-              "/team.png"
-            }
-            alt={
-              team.name ||
-              "Team"
-            }
-            width={34}
-            height={34}
-          />
-
-          <strong
-            style={{
-              color: "#fff",
-            }}
-          >
-            {team.name}
-          </strong>
-        </div>
-
-        <div
-         className="event-minute"
-          style={{
-            background:
-              "#22c55e",
-            color: "#fff",
-            padding:
-              "6px 14px",
-            borderRadius: 40,
-            fontWeight: "bold",
-          }}
-        >
-          {minute}'
-          {extra
-            ? `+${extra}`
-            : ""}
-        </div>
-      </div>
-
-      {/* Body */}
-
-      <div
-       className="event-body"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "60px 1fr",
-          gap: 20,
-          alignItems: "start",
-        }}
-      >
-        <div
-         className="event-icon"
-          style={{
-            fontSize: 32,
-            textAlign: "center",
-          }}
-        >
-          {icon}
-        </div>
-
-        <div>
-          <div
-          className="event-details"
-            style={{
-              color: "#fff",
-              fontWeight: "bold",
-              fontSize: 18,
-              marginBottom: 8,
-            }}
-          >
-            {type}
-          </div>
-
-          <div
-           className="event-player"
-            style={{
-              color: "#cbd5e1",
-              marginBottom: 8,
-            }}
-          >
-            <strong>
-              Player:
-            </strong>{" "}
-            {player.name ||
-              "-"}
-          </div>
-
-          {assist.name && (
-            <div
-             className="event-assist"
-              style={{
-                color: "#60a5fa",
-                marginBottom: 8,
-              }}
-            >
-              <strong>
-                Assist:
-              </strong>{" "}
-              {assist.name}
-            </div>
-          )}
-
-          {detail && (
-            <div
-             className="event-detail"
-              style={{
-                color: "#fbbf24",
-                marginBottom: 8,
-              }}
-            >
-              <strong>
-                Detail:
-              </strong>{" "}
-              {detail}
-            </div>
-          )}
-
-          {comments ? (
-            <div
-              className="event-comments"
-              style={{
-                color: "#94a3b8",
-              }}
-            >
-              {comments}
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function getEventIcon(type, detail) {
-  switch (type) {
-    case "Goal":
-      if (detail === "Own Goal") return "🥅";
-      if (detail === "Penalty") return "🎯";
-      return "⚽";
-
-    case "Card":
-      if (detail === "Yellow Card") return "🟨";
-      if (detail === "Second Yellow card") return "🟨🟥";
-      if (detail === "Red Card") return "🟥";
-      return "🟨";
-
-    case "Substitution":
-      return "🔄";
-
-    case "Var":
-      return "📺";
-
-    default:
-      if (detail === "Missed Penalty") return "❌";
-      return "📍";
-  }
 }

@@ -19,6 +19,8 @@ function getTeamName(team) {
   return (
     team.name ||
     team.team?.name ||
+    team.shortName ||
+    team.tla ||
     "Unknown"
   );
 }
@@ -29,7 +31,9 @@ function getTeamLogo(team) {
   }
 
   return (
+    team.crest ||
     team.logo ||
+    team.team?.crest ||
     team.team?.logo ||
     null
   );
@@ -49,83 +53,92 @@ function getScore(value) {
 
 function getMatchId(match) {
   return (
+    match?.id ||
     match?.fixture?.id ||
     match?.fixtureId ||
-    match?.id ||
+    match?.matchId ||
+    match?.match?.id ||
     null
   );
 }
 
 function getMatchDate(match) {
   return (
+    match?.utcDate ||
     match?.fixture?.date ||
     match?.date ||
+    match?.match?.utcDate ||
+    match?.match?.date ||
     null
   );
 }
 
 function formatDate(date) {
-  if (!date) return "Date unavailable";
-
-  const parsed =
-    new Date(date);
-
-  if (
-    Number.isNaN(
-      parsed.getTime()
-    )
-  ) {
+  if (!date) {
     return "Date unavailable";
   }
 
-  return parsed.toLocaleDateString(
-    "en-US",
-    {
-      weekday: "short",
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }
-  );
+  const parsed = new Date(date);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return "Date unavailable";
+  }
+
+  return parsed.toLocaleDateString("en-US", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function formatTime(date) {
-  if (!date) return "";
-
-  const parsed =
-    new Date(date);
-
-  if (
-    Number.isNaN(
-      parsed.getTime()
-    )
-  ) {
+  if (!date) {
     return "";
   }
 
-  return parsed.toLocaleTimeString(
-    "en-US",
-    {
-      hour: "numeric",
-      minute: "2-digit",
-    }
-  );
+  const parsed = new Date(date);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return "";
+  }
+
+  return parsed.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 function getStatus(match) {
+  if (match?.status === "FINISHED") {
+    return "FT";
+  }
+
+  if (
+    match?.status &&
+    typeof match.status === "object"
+  ) {
+    return (
+      match.status.short ||
+      match.status.long ||
+      "FT"
+    );
+  }
+
   return (
     match?.status?.short ||
     match?.fixture?.status?.short ||
+    match?.match?.status?.short ||
     "FT"
   );
 }
 
 function getStatusLabel(match) {
-  const status =
-    getStatus(match);
+  const status = getStatus(match);
 
   switch (status) {
     case "FT":
+    case "FINISHED":
       return "Full Time";
 
     case "AET":
@@ -140,6 +153,9 @@ function getStatusLabel(match) {
     case "ABD":
       return "Abandoned";
 
+    case "POSTPONED":
+      return "Postponed";
+
     default:
       return status;
   }
@@ -147,64 +163,173 @@ function getStatusLabel(match) {
 
 /* =====================================================
    NORMALIZE MATCH
+
+   Supports:
+
+   1. football-data.org
+      {
+        id,
+        utcDate,
+        status,
+        homeTeam,
+        awayTeam,
+        score: {
+          fullTime: {
+            home,
+            away
+          }
+        }
+      }
+
+   2. API-Football style
+      {
+        fixture,
+        teams,
+        goals
+      }
+
+   3. Older Apex Sports response shapes
 ===================================================== */
 
 function normalizeMatch(match) {
+  if (!match) {
+    return {
+      id: null,
+      date: null,
+      homeName: "Unknown",
+      homeLogo: null,
+      awayName: "Unknown",
+      awayLogo: null,
+      homeScore: "-",
+      awayScore: "-",
+      status: "FT",
+      statusLabel: "Full Time",
+      venue: null,
+    };
+  }
+
+  /*
+    Some APIs may wrap the actual match inside
+    a "match" property.
+  */
+  const source =
+    match?.match &&
+    typeof match.match === "object"
+      ? {
+          ...match.match,
+          ...match,
+        }
+      : match;
+
+  /* ===================================================
+     TEAMS
+  =================================================== */
+
   const home =
-    match?.home ||
-    match?.teams?.home ||
+    source?.homeTeam ||
+    source?.home ||
+    source?.teams?.home ||
+    source?.match?.homeTeam ||
     {};
 
   const away =
-    match?.away ||
-    match?.teams?.away ||
+    source?.awayTeam ||
+    source?.away ||
+    source?.teams?.away ||
+    source?.match?.awayTeam ||
+    {};
+
+  /* ===================================================
+     SCORE
+  =================================================== */
+
+  const fullTime =
+    source?.score?.fullTime ||
+    source?.score?.fulltime ||
+    source?.fullTime ||
+    source?.match?.score?.fullTime ||
     {};
 
   const goals =
-    match?.goals || {};
+    source?.goals ||
+    source?.match?.goals ||
+    {};
+
+  const homeScore =
+    fullTime?.home ??
+    goals?.home ??
+    source?.homeScore ??
+    home?.goals ??
+    null;
+
+  const awayScore =
+    fullTime?.away ??
+    goals?.away ??
+    source?.awayScore ??
+    away?.goals ??
+    null;
+
+  /* ===================================================
+     DATE
+  =================================================== */
+
+  const date =
+    source?.utcDate ||
+    source?.fixture?.date ||
+    source?.date ||
+    source?.match?.utcDate ||
+    source?.match?.date ||
+    null;
+
+  /* ===================================================
+     STATUS
+  =================================================== */
+
+  const status =
+    source?.status === "FINISHED"
+      ? "FT"
+      : getStatus(source);
+
+  /* ===================================================
+     VENUE
+  =================================================== */
+
+  const venue =
+    source?.fixture?.venue?.name ||
+    source?.venue?.name ||
+    source?.venue ||
+    source?.match?.venue?.name ||
+    null;
+
+  /* ===================================================
+     RETURN NORMALIZED MATCH
+  =================================================== */
 
   return {
-    id: getMatchId(match),
+    id: getMatchId(source),
 
-    date:
-      getMatchDate(match),
+    date,
 
-    homeName:
-      getTeamName(home),
+    homeName: getTeamName(home),
 
-    homeLogo:
-      getTeamLogo(home),
+    homeLogo: getTeamLogo(home),
 
-    awayName:
-      getTeamName(away),
+    awayName: getTeamName(away),
 
-    awayLogo:
-      getTeamLogo(away),
+    awayLogo: getTeamLogo(away),
 
-    homeScore:
-      getScore(
-        goals?.home ??
-          match?.homeScore ??
-          home?.goals
-      ),
+    homeScore: getScore(homeScore),
 
-    awayScore:
-      getScore(
-        goals?.away ??
-          match?.awayScore ??
-          away?.goals
-      ),
+    awayScore: getScore(awayScore),
 
-    status:
-      getStatus(match),
+    status,
 
     statusLabel:
-      getStatusLabel(match),
+      source?.status === "FINISHED"
+        ? "Full Time"
+        : getStatusLabel(source),
 
-    venue:
-      match?.fixture?.venue?.name ||
-      match?.venue?.name ||
-      null,
+    venue,
   };
 }
 
@@ -212,10 +337,7 @@ function normalizeMatch(match) {
    TEAM LOGO
 ===================================================== */
 
-function TeamLogo({
-  src,
-  name,
-}) {
+function TeamLogo({ src, name }) {
   if (!src) {
     return (
       <div
@@ -223,22 +345,17 @@ function TeamLogo({
           width: 42,
           height: 42,
           borderRadius: 10,
-          background:
-            "#1f2937",
+          background: "#1f2937",
           display: "flex",
-          alignItems:
-            "center",
-          justifyContent:
-            "center",
+          alignItems: "center",
+          justifyContent: "center",
           color: "#9ca3af",
           fontSize: 18,
           fontWeight: 700,
           flexShrink: 0,
         }}
       >
-        {name
-          ?.charAt(0)
-          ?.toUpperCase() || "?"}
+        {name?.charAt(0)?.toUpperCase() || "?"}
       </div>
     );
   }
@@ -264,19 +381,15 @@ function TeamLogo({
    MATCH CARD
 ===================================================== */
 
-function ResultCard({
-  match,
-}) {
-  const matchId =
-    match.id;
+function ResultCard({ match }) {
+  const matchId = match.id;
 
   const content = (
     <article
       style={{
         background:
           "linear-gradient(145deg, #111827, #0b1220)",
-        border:
-          "1px solid #1f2937",
+        border: "1px solid #1f2937",
         borderRadius: 18,
         padding: 20,
         transition:
@@ -288,10 +401,8 @@ function ResultCard({
       <div
         style={{
           display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems:
-            "center",
+          justifyContent: "space-between",
+          alignItems: "center",
           gap: 12,
           marginBottom: 18,
           flexWrap: "wrap",
@@ -304,9 +415,7 @@ function ResultCard({
             fontWeight: 600,
           }}
         >
-          {formatDate(
-            match.date
-          )}
+          {formatDate(match.date)}
         </div>
 
         <div
@@ -315,9 +424,7 @@ function ResultCard({
             fontSize: 12,
           }}
         >
-          {formatTime(
-            match.date
-          )}
+          {formatTime(match.date)}
         </div>
       </div>
 
@@ -326,10 +433,8 @@ function ResultCard({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns:
-            "1fr auto 1fr",
-          alignItems:
-            "center",
+          gridTemplateColumns: "1fr auto 1fr",
+          alignItems: "center",
           gap: 16,
         }}
       >
@@ -338,19 +443,15 @@ function ResultCard({
         <div
           style={{
             display: "flex",
-            alignItems:
-              "center",
+            alignItems: "center",
             gap: 12,
             minWidth: 0,
           }}
         >
           <TeamLogo
-            src={
-              match.homeLogo
-            }
-            name={
-  match.homeName
-} />
+            src={match.homeLogo}
+            name={match.homeName}
+          />
 
           <span
             style={{
@@ -358,8 +459,7 @@ function ResultCard({
               fontSize: 15,
               fontWeight: 700,
               lineHeight: 1.3,
-              overflowWrap:
-                "anywhere",
+              overflowWrap: "anywhere",
             }}
           >
             {match.homeName}
@@ -370,9 +470,8 @@ function ResultCard({
 
         <div
           style={{
-            textAlign:
-              "center",
-            minWidth: 70,
+            textAlign: "center",
+            minWidth: 80,
           }}
         >
           <div
@@ -381,20 +480,20 @@ function ResultCard({
               fontSize: 25,
               fontWeight: 800,
               letterSpacing: 1,
-              whiteSpace:
-                "nowrap",
+              whiteSpace: "nowrap",
             }}
           >
             {match.homeScore}
+
             <span
               style={{
                 color: "#6b7280",
-                margin:
-                  "0 7px",
+                margin: "0 7px",
               }}
             >
               -
             </span>
+
             {match.awayScore}
           </div>
 
@@ -404,10 +503,8 @@ function ResultCard({
               color: "#22c55e",
               fontSize: 11,
               fontWeight: 700,
-              textTransform:
-                "uppercase",
-              letterSpacing:
-                ".5px",
+              textTransform: "uppercase",
+              letterSpacing: ".5px",
             }}
           >
             {match.statusLabel}
@@ -419,10 +516,8 @@ function ResultCard({
         <div
           style={{
             display: "flex",
-            alignItems:
-              "center",
-            justifyContent:
-              "flex-end",
+            alignItems: "center",
+            justifyContent: "flex-end",
             gap: 12,
             minWidth: 0,
           }}
@@ -433,22 +528,16 @@ function ResultCard({
               fontSize: 15,
               fontWeight: 700,
               lineHeight: 1.3,
-              textAlign:
-                "right",
-              overflowWrap:
-                "anywhere",
+              textAlign: "right",
+              overflowWrap: "anywhere",
             }}
           >
             {match.awayName}
           </span>
 
           <TeamLogo
-            src={
-              match.awayLogo
-            }
-            name={
-              match.awayName
-            }
+            src={match.awayLogo}
+            name={match.awayName}
           />
         </div>
       </div>
@@ -460,8 +549,7 @@ function ResultCard({
           style={{
             marginTop: 18,
             paddingTop: 14,
-            borderTop:
-              "1px solid #1f2937",
+            borderTop: "1px solid #1f2937",
             color: "#6b7280",
             fontSize: 12,
           }}
@@ -482,8 +570,7 @@ function ResultCard({
       style={{
         display: "block",
         color: "inherit",
-        textDecoration:
-          "none",
+        textDecoration: "none",
       }}
     >
       {content}
@@ -500,131 +587,109 @@ export default function ResultsClient({
   league = "",
   leagueName = "League Results",
 }) {
-  const [
-    search,
-    setSearch,
-  ] = useState("");
+  const [search, setSearch] = useState("");
 
-  const [
-    selectedDate,
-    setSelectedDate,
-  ] = useState("all");
+  const [selectedDate, setSelectedDate] =
+    useState("all");
 
-  const normalizedMatches =
-    useMemo(() => {
-      if (
-        !Array.isArray(
-          initialMatches
-        )
-      ) {
-        return [];
+  /* ===================================================
+     NORMALIZE MATCHES
+  =================================================== */
+
+  const normalizedMatches = useMemo(() => {
+    if (!Array.isArray(initialMatches)) {
+      return [];
+    }
+
+    return initialMatches
+      .map(normalizeMatch)
+      .sort((a, b) => {
+        const dateA = new Date(
+          a.date || 0
+        ).getTime();
+
+        const dateB = new Date(
+          b.date || 0
+        ).getTime();
+
+        return dateB - dateA;
+      });
+  }, [initialMatches]);
+
+  /* ===================================================
+     FILTER MATCHES
+  =================================================== */
+
+  const filteredMatches = useMemo(() => {
+    const query = search
+      .trim()
+      .toLowerCase();
+
+    return normalizedMatches.filter((match) => {
+      const homeName =
+        match.homeName?.toLowerCase() || "";
+
+      const awayName =
+        match.awayName?.toLowerCase() || "";
+
+      const matchesSearch =
+        !query ||
+        homeName.includes(query) ||
+        awayName.includes(query);
+
+      if (!matchesSearch) {
+        return false;
       }
 
-      return initialMatches
-        .map(normalizeMatch)
-        .sort((a, b) => {
-          const dateA =
-            new Date(
-              a.date || 0
-            ).getTime();
+      if (selectedDate === "all") {
+        return true;
+      }
 
-          const dateB =
-            new Date(
-              b.date || 0
-            ).getTime();
+      if (!match.date) {
+        return false;
+      }
 
-          return dateB - dateA;
-        });
-    }, [initialMatches]);
+      const date = new Date(match.date);
 
-  const filteredMatches =
-    useMemo(() => {
-      const query =
-        search
-          .trim()
-          .toLowerCase();
+      if (Number.isNaN(date.getTime())) {
+        return false;
+      }
 
-      return normalizedMatches.filter(
-        (match) => {
-          const matchesSearch =
-            !query ||
-            match.homeName
-              .toLowerCase()
-              .includes(query) ||
-            match.awayName
-              .toLowerCase()
-              .includes(query);
+      const today = new Date();
 
-          if (!matchesSearch) {
-            return false;
-          }
+      if (selectedDate === "today") {
+        return (
+          date.toDateString() ===
+          today.toDateString()
+        );
+      }
 
-          if (
-            selectedDate ===
-            "all"
-          ) {
-            return true;
-          }
+      if (selectedDate === "yesterday") {
+        const yesterday = new Date(today);
 
-          if (!match.date) {
-            return false;
-          }
+        yesterday.setDate(
+          yesterday.getDate() - 1
+        );
 
-          const date =
-            new Date(
-              match.date
-            );
+        return (
+          date.toDateString() ===
+          yesterday.toDateString()
+        );
+      }
 
-          const today =
-            new Date();
+      return true;
+    });
+  }, [
+    normalizedMatches,
+    search,
+    selectedDate,
+  ]);
 
-          if (
-            selectedDate ===
-            "today"
-          ) {
-            return (
-              date.toDateString() ===
-              today.toDateString()
-            );
-          }
-
-          if (
-            selectedDate ===
-            "yesterday"
-          ) {
-            const yesterday =
-              new Date(
-                today
-              );
-
-            yesterday.setDate(
-              yesterday.getDate() -
-                1
-            );
-
-            return (
-              date.toDateString() ===
-              yesterday.toDateString()
-            );
-          }
-
-          return true;
-        }
-      );
-    }, [
-      normalizedMatches,
-      search,
-      selectedDate,
-    ]);
-
-  /* =====================================================
+  /* ===================================================
      EMPTY STATE
-  ===================================================== */
+  =================================================== */
 
-  if (
-    normalizedMatches.length ===
-    0
-  ) {
+  if (normalizedMatches.length === 0) {
     return (
       <section>
         <header
@@ -637,10 +702,8 @@ export default function ResultsClient({
               color: "#ef4444",
               fontSize: 12,
               fontWeight: 800,
-              textTransform:
-                "uppercase",
-              letterSpacing:
-                "1.2px",
+              textTransform: "uppercase",
+              letterSpacing: "1.2px",
               marginBottom: 8,
             }}
           >
@@ -661,8 +724,7 @@ export default function ResultsClient({
 
           <p
             style={{
-              margin:
-                "10px 0 0",
+              margin: "10px 0 0",
               color: "#9ca3af",
               fontSize: 15,
             }}
@@ -675,15 +737,11 @@ export default function ResultsClient({
 
         <div
           style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
+            background: "#111827",
+            border: "1px solid #1f2937",
             borderRadius: 20,
-            padding:
-              "55px 25px",
-            textAlign:
-              "center",
+            padding: "55px 25px",
+            textAlign: "center",
           }}
         >
           <div
@@ -697,8 +755,7 @@ export default function ResultsClient({
 
           <h2
             style={{
-              margin:
-                "0 0 8px",
+              margin: "0 0 8px",
               color: "#fff",
               fontSize: 22,
             }}
@@ -714,7 +771,7 @@ export default function ResultsClient({
             }}
           >
             There are currently no
-            results available for
+            results available for{" "}
             {leagueName}.
           </p>
         </div>
@@ -722,9 +779,9 @@ export default function ResultsClient({
     );
   }
 
-  /* =====================================================
+  /* ===================================================
      PAGE
-  ===================================================== */
+  =================================================== */
 
   return (
     <section>
@@ -740,10 +797,8 @@ export default function ResultsClient({
             color: "#ef4444",
             fontSize: 12,
             fontWeight: 800,
-            textTransform:
-              "uppercase",
-            letterSpacing:
-              "1.2px",
+            textTransform: "uppercase",
+            letterSpacing: "1.2px",
             marginBottom: 8,
           }}
         >
@@ -764,8 +819,7 @@ export default function ResultsClient({
 
         <p
           style={{
-            margin:
-              "8px 0 0",
+            margin: "8px 0 0",
             color: "#9ca3af",
             fontSize: 15,
           }}
@@ -789,23 +843,18 @@ export default function ResultsClient({
           type="search"
           value={search}
           onChange={(event) =>
-            setSearch(
-              event.target.value
-            )
+            setSearch(event.target.value)
           }
           placeholder="Search team..."
           aria-label="Search team"
           style={{
             flex: "1 1 240px",
             minWidth: 0,
-            background:
-              "#111827",
+            background: "#111827",
             color: "#fff",
-            border:
-              "1px solid #1f2937",
+            border: "1px solid #1f2937",
             borderRadius: 12,
-            padding:
-              "12px 15px",
+            padding: "12px 15px",
             outline: "none",
             fontSize: 14,
           }}
@@ -820,16 +869,12 @@ export default function ResultsClient({
           }
           aria-label="Filter results by date"
           style={{
-            flex:
-              "0 1 180px",
-            background:
-              "#111827",
+            flex: "0 1 180px",
+            background: "#111827",
             color: "#fff",
-            border:
-              "1px solid #1f2937",
+            border: "1px solid #1f2937",
             borderRadius: 12,
-            padding:
-              "12px 15px",
+            padding: "12px 15px",
             outline: "none",
             fontSize: 14,
           }}
@@ -867,8 +912,7 @@ export default function ResultsClient({
 
       {/* RESULTS */}
 
-      {filteredMatches.length >
-      0 ? (
+      {filteredMatches.length > 0 ? (
         <div
           style={{
             display: "grid",
@@ -892,14 +936,11 @@ export default function ResultsClient({
       ) : (
         <div
           style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
+            background: "#111827",
+            border: "1px solid #1f2937",
             borderRadius: 18,
             padding: 40,
-            textAlign:
-              "center",
+            textAlign: "center",
           }}
         >
           <div

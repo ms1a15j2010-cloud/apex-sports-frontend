@@ -5,85 +5,183 @@ export default function TeamComparison({
 }) {
   if (!statistics) return null;
 
-  const {
-    played = 0,
-    wins = 0,
-    draws = 0,
-    losses = 0,
-    goalsFor = 0,
-    goalsAgainst = 0,
-    cleanSheets = 0,
-    failedToScore = 0,
-    points = 0,
-  } = statistics;
+  const played =
+    Number(statistics.played) || 0;
+
+  const wins =
+    Number(statistics.wins) || 0;
+
+  const draws =
+    Number(statistics.draws) || 0;
+
+  const losses =
+    Number(statistics.losses) || 0;
+
+  const goalsFor =
+    Number(statistics.goalsFor) || 0;
+
+  const goalsAgainst =
+    Number(statistics.goalsAgainst) || 0;
+
+  const cleanSheets =
+    Number(statistics.cleanSheets) || 0;
+
+  const failedToScore =
+    Number(statistics.failedToScore) || 0;
+
+  const points =
+    Number(statistics.points) || 0;
 
   const winRate =
     played > 0
-      ? Math.round((wins / played) * 100)
+      ? Math.round(
+          (wins / played) * 100
+        )
       : 0;
 
   const drawRate =
     played > 0
-      ? Math.round((draws / played) * 100)
+      ? Math.round(
+          (draws / played) * 100
+        )
       : 0;
 
   const lossRate =
     played > 0
-      ? Math.round((losses / played) * 100)
+      ? Math.round(
+          (losses / played) * 100
+        )
       : 0;
-
-  const goalsPerMatch =
-    played > 0
-      ? (goalsFor / played).toFixed(2)
-      : "0.00";
-
-  const concededPerMatch =
-    played > 0
-      ? (goalsAgainst / played).toFixed(2)
-      : "0.00";
 
   const cleanSheetRate =
     played > 0
-      ? Math.round((cleanSheets / played) * 100)
+      ? Math.round(
+          (cleanSheets / played) * 100
+        )
       : 0;
 
   const failedScoreRate =
     played > 0
-      ? Math.round((failedToScore / played) * 100)
+      ? Math.round(
+          (failedToScore / played) * 100
+        )
       : 0;
+
+  const goalsPerMatch =
+    played > 0
+      ? (
+          goalsFor / played
+        ).toFixed(2)
+      : "0.00";
+
+  const concededPerMatch =
+    played > 0
+      ? (
+          goalsAgainst / played
+        ).toFixed(2)
+      : "0.00";
 
   const pointsPerGame =
     played > 0
-      ? (points / played).toFixed(2)
+      ? (
+          points / played
+        ).toFixed(2)
       : "0.00";
+
+  const goalDifference =
+    goalsFor - goalsAgainst;
 
   return (
     <section
+      id="comparison"
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
-      <h2
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
+      <div
         style={{
-          color: "#fff",
           marginBottom: 30,
         }}
       >
-        📊 Performance Comparison
-      </h2>
+        <div
+          style={{
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "1.2px",
+            textTransform:
+              "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          ⚽ Apex Sports
+        </div>
+
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 28,
+          }}
+        >
+          📊 Performance Comparison
+        </h2>
+
+        <p
+          style={{
+            color: "#94a3b8",
+            margin: "8px 0 0",
+            fontSize: 14,
+            lineHeight: 1.6,
+          }}
+        >
+          A normalized comparison of the
+          team's current-season performance.
+        </p>
+      </div>
+
+      {/* =================================================
+          RATE COMPARISON
+      ================================================= */}
 
       <div
         style={{
           display: "grid",
           gridTemplateColumns:
-            "repeat(auto-fit,minmax(320px,1fr))",
+            "repeat(auto-fit,minmax(280px,1fr))",
           gap: 30,
         }}
       >
-        <div>
+        <div
+          style={{
+            background: "#1f2937",
+            borderRadius: 18,
+            padding: 24,
+            border:
+              "1px solid #293548",
+          }}
+        >
+          <h3
+            style={{
+              color: "#fff",
+              margin:
+                "0 0 25px",
+              fontSize: 20,
+            }}
+          >
+            📈 Result Rates
+          </h3>
+
           <ProgressBar
             title="Win Rate"
             value={winRate}
@@ -115,20 +213,28 @@ export default function TeamComparison({
           />
         </div>
 
+        {/* =================================================
+            EFFICIENCY
+        ================================================= */}
+
         <div
           style={{
             background: "#1f2937",
             borderRadius: 18,
             padding: 24,
+            border:
+              "1px solid #293548",
           }}
         >
           <h3
             style={{
               color: "#fff",
-              marginBottom: 25,
+              margin:
+                "0 0 25px",
+              fontSize: 20,
             }}
           >
-            📈 Team Efficiency
+            ⚡ Team Efficiency
           </h3>
 
           <InfoRow
@@ -157,34 +263,85 @@ export default function TeamComparison({
           />
 
           <InfoRow
-            label="Wins"
-            value={wins}
-          />
-
-          <InfoRow
-            label="Draws"
-            value={draws}
-          />
-
-          <InfoRow
-            label="Losses"
-            value={losses}
+            label="Goal Difference"
+            value={
+              goalDifference > 0
+                ? `+${goalDifference}`
+                : goalDifference
+            }
           />
         </div>
       </div>
 
+      {/* =================================================
+          RECORD SUMMARY
+      ================================================= */}
+
       <div
         style={{
-          marginTop: 35,
+          marginTop: 25,
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(160px,1fr))",
+          gap: 15,
+        }}
+      >
+        <MetricCard
+          label="Wins"
+          value={wins}
+          color="#22c55e"
+        />
+
+        <MetricCard
+          label="Draws"
+          value={draws}
+          color="#facc15"
+        />
+
+        <MetricCard
+          label="Losses"
+          value={losses}
+          color="#ef4444"
+        />
+
+        <MetricCard
+          label="Goals For"
+          value={goalsFor}
+          color="#3b82f6"
+        />
+
+        <MetricCard
+          label="Goals Against"
+          value={goalsAgainst}
+          color="#f97316"
+        />
+
+        <MetricCard
+          label="Clean Sheets"
+          value={cleanSheets}
+          color="#8b5cf6"
+        />
+      </div>
+
+      {/* =================================================
+          ANALYSIS
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 30,
           background: "#1f2937",
           borderRadius: 18,
           padding: 24,
+          border:
+            "1px solid #293548",
         }}
       >
         <h3
           style={{
             color: "#fff",
-            marginBottom: 15,
+            margin:
+              "0 0 15px",
           }}
         >
           📌 Analysis
@@ -193,72 +350,132 @@ export default function TeamComparison({
         <p
           style={{
             color: "#cbd5e1",
-            lineHeight: 1.8,
+            lineHeight: 1.85,
             margin: 0,
           }}
         >
-          This comparison summarizes the team's overall
-          performance during the current season. A higher
-          win rate, more clean sheets, and stronger points
-          per game generally indicate a better-performing
-          team. Goals scored and conceded per match provide
-          an overall view of attacking and defensive
-          efficiency.
+          The team has played{" "}
+          <strong>{played}</strong>{" "}
+          matches, winning{" "}
+          <strong>{wins}</strong>,
+          drawing{" "}
+          <strong>{draws}</strong> and
+          losing{" "}
+          <strong>{losses}</strong>.
+          The team has scored{" "}
+          <strong>{goalsFor}</strong>{" "}
+          goals and conceded{" "}
+          <strong>{goalsAgainst}</strong>,
+          giving a goal difference of{" "}
+          <strong>
+            {goalDifference > 0
+              ? `+${goalDifference}`
+              : goalDifference}
+          </strong>
+          .
+          {" "}
+          The current points total is{" "}
+          <strong>{points}</strong>{" "}
+          with an average of{" "}
+          <strong>
+            {pointsPerGame}
+          </strong>{" "}
+          points per match.
         </p>
+      </div>
+
+      {/* =================================================
+          SOURCE
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 18,
+          paddingTop: 16,
+          borderTop:
+            "1px solid #293548",
+          color: "#64748b",
+          fontSize: 12,
+        }}
+      >
+        Source: football-data.org
+        {statistics.season
+          ? ` • Season ${statistics.season}`
+          : ""}
       </div>
     </section>
   );
 }
+
+/* =====================================================
+PROGRESS BAR
+===================================================== */
 
 function ProgressBar({
   title,
   value,
   color,
 }) {
+  const safeValue =
+    Math.max(
+      0,
+      Math.min(
+        Number(value) || 0,
+        100
+      )
+    );
+
   return (
     <div
       style={{
-        marginBottom: 24,
+        marginBottom: 22,
       }}
     >
       <div
         style={{
           display: "flex",
-          justifyContent: "space-between",
+          justifyContent:
+            "space-between",
           marginBottom: 8,
           color: "#fff",
           fontWeight: 600,
+          fontSize: 13,
         }}
       >
         <span>{title}</span>
 
-        <span>{value}%</span>
+        <span>
+          {safeValue}%
+        </span>
       </div>
 
       <div
         style={{
           background: "#374151",
-          height: 14,
+          height: 12,
           borderRadius: 30,
           overflow: "hidden",
         }}
       >
         <div
           style={{
-            width: `${Math.max(
-              0,
-              Math.min(value, 100)
-            )}%`,
+            width:
+              `${safeValue}%`,
             background: color,
             height: "100%",
             borderRadius: 30,
-            transition: "width .8s ease",
+            transition:
+              "width .8s ease",
           }}
         />
       </div>
     </div>
   );
 }
+
+/* =====================================================
+INFO ROW
+===================================================== */
 
 function InfoRow({
   label,
@@ -268,8 +485,11 @@ function InfoRow({
     <div
       style={{
         display: "flex",
-        justifyContent: "space-between",
-        padding: "10px 0",
+        justifyContent:
+          "space-between",
+        gap: 15,
+        padding:
+          "11px 0",
         borderBottom:
           "1px solid rgba(255,255,255,.08)",
       }}
@@ -277,6 +497,7 @@ function InfoRow({
       <span
         style={{
           color: "#94a3b8",
+          fontSize: 13,
         }}
       >
         {label}
@@ -285,10 +506,54 @@ function InfoRow({
       <strong
         style={{
           color: "#fff",
+          fontSize: 14,
+        }}
+      >
+        {value ?? "-"}
+      </strong>
+    </div>
+  );
+}
+
+/* =====================================================
+METRIC CARD
+===================================================== */
+
+function MetricCard({
+  label,
+  value,
+  color,
+}) {
+  return (
+    <div
+      style={{
+        background: "#1f2937",
+        borderRadius: 14,
+        padding: 18,
+        textAlign: "center",
+        border:
+          `1px solid ${color}40`,
+      }}
+    >
+      <div
+        style={{
+          color: "#94a3b8",
+          fontSize: 12,
+          marginBottom: 8,
+        }}
+      >
+        {label}
+      </div>
+
+      <div
+        style={{
+          color,
+          fontSize: 24,
+          fontWeight: 900,
         }}
       >
         {value}
-      </strong>
+      </div>
     </div>
   );
 }

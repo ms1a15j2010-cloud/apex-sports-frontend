@@ -6,70 +6,70 @@ import api from "./api";
 ===================================================== */
 
 export const getMatch = (matchId) =>
-  api.get(`/api/match/${matchId}`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}`);
 
 /* =====================================================
    MATCH TIMELINE
 ===================================================== */
 
 export const getTimeline = (matchId) =>
-  api.get(`/api/match/${matchId}/timeline`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/timeline`);
 
 /* =====================================================
    MATCH EVENTS
 ===================================================== */
 
 export const getEvents = (matchId) =>
-  api.get(`/api/match/${matchId}/events`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/events`);
 
 /* =====================================================
    MATCH STATISTICS
 ===================================================== */
 
 export const getStatistics = (matchId) =>
-  api.get(`/api/match/${matchId}/statistics`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/statistics`);
 
 /* =====================================================
    MATCH LINEUPS
 ===================================================== */
 
 export const getLineups = (matchId) =>
-  api.get(`/api/match/${matchId}/lineups`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/lineups`);
 
 /* =====================================================
    PLAYER RATINGS
 ===================================================== */
 
 export const getPlayerRatings = (matchId) =>
-  api.get(`/api/match/${matchId}/players`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/players`);
 
 /* =====================================================
    MATCH FACTS
 ===================================================== */
 
 export const getFacts = (matchId) =>
-  api.get(`/api/match/${matchId}/facts`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/facts`);
 
 /* =====================================================
    HEAD TO HEAD
 ===================================================== */
 
 export const getHeadToHead = (matchId) =>
-  api.get(`/api/match/${matchId}/headtohead`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/headtohead`);
 
 /* =====================================================
    STANDINGS
 ===================================================== */
 
 export const getStandings = (matchId) =>
-  api.get(`/api/match/${matchId}/standings`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/standings`);
 
 /* =====================================================
    PREDICTION
 ===================================================== */
 
 export const getPrediction = (matchId) =>
-  api.get(`/api/match/${matchId}/prediction`);
+  api.request(`/api/match/${encodeURIComponent(matchId)}/prediction`);
 
 /* =====================================================
    COMPLETE MATCH

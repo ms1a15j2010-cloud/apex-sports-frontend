@@ -10,10 +10,17 @@ import PlayerFixtures from "@/components/PlayerFixtures";
 import PlayerTransfers from "@/components/PlayerTransfers";
 import PlayerTrophies from "@/components/PlayerTrophies";
 import PlayerHistory from "@/components/PlayerHistory";
+import PlayerRatings from "@/components/PlayerRatings";
+
+/* =====================================================
+   API
+===================================================== */
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  "http://127.0.0.1:5000";
+
+const SEASON = 2026;
 
 /* =====================================================
    PLAYER PROFILE
@@ -21,24 +28,56 @@ const API =
 
 async function getPlayer(id) {
   try {
-    const res = await fetch(
-      `${API}/api/player/${id}`,
+    const url =
+      `${API}/api/player/${encodeURIComponent(
+        id
+      )}?season=${SEASON}`;
+
+    console.log(
+      "🌐 Player API request:",
+      url
+    );
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    console.log(
+      "⚽ Player response:",
       {
-        cache: "no-store",
+        status: res.status,
+        success: data?.success,
+        player:
+          data?.player?.name ||
+          null,
       }
     );
 
     if (!res.ok) {
-      throw new Error("Player not found");
+      return {
+        success: false,
+        player: null,
+        message:
+          data?.message ||
+          `Backend error: ${res.status}`,
+      };
     }
 
-    return await res.json();
-  } catch (err) {
-    console.error("Player:", err);
+    return data;
+  } catch (error) {
+    console.error(
+      "❌ Player fetch failed:",
+      error
+    );
 
     return {
       success: false,
       player: null,
+      message:
+        error?.message ||
+        "Unable to load player",
     };
   }
 }
@@ -49,62 +88,154 @@ async function getPlayer(id) {
 
 async function getStatistics(id) {
   try {
-    const res = await fetch(
-      `${API}/api/player/${id}/statistics`,
+    const url =
+      `${API}/api/player/${encodeURIComponent(
+        id
+      )}/statistics?season=${SEASON}`;
+
+    console.log(
+      "🌐 Statistics API request:",
+      url
+    );
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    console.log(
+      "📊 Statistics response:",
       {
-        cache: "no-store",
+        status: res.status,
+        success: data?.success,
+        count: Array.isArray(
+          data?.statistics
+        )
+          ? data.statistics.length
+          : 0,
       }
     );
 
     if (!res.ok) {
-      throw new Error(
-        "Statistics not found"
-      );
+      return {
+        success: false,
+        statistics: [],
+      };
     }
 
-    return await res.json();
-  } catch (err) {
+    return data;
+  } catch (error) {
     console.error(
-      "Statistics:",
-      err
+      "❌ Statistics fetch failed:",
+      error
     );
 
     return {
       success: false,
-      statistics: null,
+      statistics: [],
     };
   }
 }
 
 /* =====================================================
-   PLAYER TRANSFERS
+   PLAYER FIXTURES
 ===================================================== */
 
-async function getTransfers(id) {
+async function getFixtures(id) {
   try {
-    const res = await fetch(
-      `${API}/api/player/${id}/transfers`,
+    const url =
+      `${API}/api/player/${encodeURIComponent(
+        id
+      )}/fixtures?season=${SEASON}`;
+
+    console.log(
+      "🌐 Fixtures API request:",
+      url
+    );
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        success: false,
+        fixtures: [],
+      };
+    }
+
+    console.log(
+      "📅 Fixtures response:",
       {
-        cache: "no-store",
+        success: data?.success,
+        count: data?.count ?? 0,
       }
     );
 
-    if (!res.ok) {
-      throw new Error(
-        "Transfers not found"
-      );
-    }
-
-    return await res.json();
-  } catch (err) {
+    return data;
+  } catch (error) {
     console.error(
-      "Transfers:",
-      err
+      "❌ Fixtures fetch failed:",
+      error
     );
 
     return {
       success: false,
-      transfers: [],
+      fixtures: [],
+    };
+  }
+}
+
+/* =====================================================
+   PLAYER HISTORY
+===================================================== */
+
+async function getHistory(id) {
+  try {
+    const url =
+      `${API}/api/player/${encodeURIComponent(
+        id
+      )}/history?season=${SEASON}`;
+
+    console.log(
+      "🌐 History API request:",
+      url
+    );
+
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return {
+        success: false,
+        history: [],
+      };
+    }
+
+    console.log(
+      "📖 History response:",
+      {
+        success: data?.success,
+        count: data?.count ?? 0,
+      }
+    );
+
+    return data;
+  } catch (error) {
+    console.error(
+      "❌ History fetch failed:",
+      error
+    );
+
+    return {
+      success: false,
+      history: [],
     };
   }
 }
@@ -118,40 +249,50 @@ export async function generateMetadata({
 }) {
   const { id } = await params;
 
-  const data = await getPlayer(id);
+  const data =
+    await getPlayer(id);
 
   return {
-    title: data.success
-      ? `${data.player.name} | Apex Sports`
-      : "Player | Apex Sports",
+    title:
+      data?.success &&
+      data?.player?.name
+        ? `${data.player.name} | Apex Sports`
+        : "Player | Apex Sports",
 
     description:
-      "Professional football player profile, statistics, career, trophies and transfer history.",
+      "Professional football player profile, statistics, career, performance and match information.",
   };
 }
+
+/* =====================================================
+   PAGE
+===================================================== */
 
 export default async function PlayerPage({
   params,
 }) {
   const { id } = await params;
 
-  const [
-    playerData,
-    statData,
-    transferData,
-  ] = await Promise.all([
-    getPlayer(id),
-    getStatistics(id),
-    getTransfers(id),
-  ]);
+  /* =================================================
+     LOAD CRITICAL DATA
 
-  /* ============================================
+     We intentionally do NOT make eight simultaneous
+     requests anymore.
+
+     Profile + Statistics + Fixtures + History
+     are sufficient for this Player page.
+  ================================================= */
+
+  const playerData =
+    await getPlayer(id);
+
+  /* =================================================
      PLAYER NOT FOUND
-  ============================================ */
+  ================================================= */
 
   if (
-    !playerData.success ||
-    !playerData.player
+    !playerData?.success ||
+    !playerData?.player
   ) {
     return (
       <main
@@ -176,14 +317,16 @@ export default async function PlayerPage({
             marginBottom: 30,
           }}
         >
-          We couldn't find this player.
+          {playerData?.message ||
+            "We couldn't find this player."}
         </p>
 
         <Link
           href="/search"
           style={{
             color: "#22c55e",
-            textDecoration: "none",
+            textDecoration:
+              "none",
             fontWeight: "bold",
           }}
         >
@@ -196,23 +339,123 @@ export default async function PlayerPage({
   const player =
     playerData.player;
 
-  const statistics =
-    statData.success
-      ? statData.statistics
-      : player.statistics ||
-        {};
+  /* =================================================
+     STATISTICS
 
-  const transfers =
-    transferData.success
-      ? transferData.transfers
-      : player.transfers ||
-        [];
+     Fetch once.
+
+  ================================================= */
+
+  const statData =
+    await getStatistics(id);
+
+  const statistics =
+    statData?.success &&
+    Array.isArray(
+      statData.statistics
+    )
+      ? statData.statistics
+      : Array.isArray(
+          player.statistics
+        )
+      ? player.statistics
+      : [];
+
+  /* =================================================
+     FIXTURES + HISTORY
+
+     Only two remaining API requests.
+  ================================================= */
+
+  const [
+    fixturesData,
+    historyData,
+  ] = await Promise.all([
+    getFixtures(id),
+    getHistory(id),
+  ]);
 
   const fixtures =
-    player.fixtures || [];
+    fixturesData?.success &&
+    Array.isArray(
+      fixturesData.fixtures
+    )
+      ? fixturesData.fixtures
+      : Array.isArray(
+          player.fixtures
+        )
+      ? player.fixtures
+      : [];
+
+  const history =
+    historyData?.success &&
+    Array.isArray(
+      historyData.history
+    )
+      ? historyData.history
+      : Array.isArray(
+          player.history
+        )
+      ? player.history
+      : [];
+
+  /* =================================================
+     CAREER
+
+     Career is already represented by the same
+     football-data.org statistics block.
+  ================================================= */
+
+  const career =
+    statistics;
+
+  /* =================================================
+     PERFORMANCE
+
+     Performance uses the same current-season
+     statistics block.
+  ================================================= */
+
+  const performance =
+    statistics;
+
+  /* =================================================
+     TRANSFERS
+
+     football-data.org does not provide an
+     equivalent transfer-history endpoint.
+  ================================================= */
+
+  const transfers =
+    Array.isArray(
+      player.transfers
+    )
+      ? player.transfers
+      : [];
+
+  const transfersAvailable =
+    false;
+
+  /* =================================================
+     TROPHIES
+
+     football-data.org does not provide an
+     equivalent trophy-history endpoint.
+  ================================================= */
 
   const trophies =
-    player.trophies || [];
+    Array.isArray(
+      player.trophies
+    )
+      ? player.trophies
+      : [];
+
+  const trophiesAvailable =
+    false;
+
+  /* =================================================
+     RENDER
+  ================================================= */
 
   return (
     <main
@@ -221,15 +464,19 @@ export default async function PlayerPage({
         margin: "40px auto",
         padding: 20,
         color: "#fff",
+
         display: "grid",
+
         gridTemplateColumns:
           "320px 1fr",
+
         gap: 25,
+
         alignItems: "start",
       }}
     >
       {/* ============================================
-         LEFT SIDEBAR
+          LEFT SIDEBAR
       ============================================ */}
 
       <div>
@@ -239,7 +486,7 @@ export default async function PlayerPage({
       </div>
 
       {/* ============================================
-         MAIN CONTENT
+          MAIN CONTENT
       ============================================ */}
 
       <div
@@ -250,78 +497,74 @@ export default async function PlayerPage({
           gap: 30,
         }}
       >
-        {/* ============================================
-            PLAYER HEADER
-        ============================================ */}
+        {/* PLAYER HEADER */}
 
         <PlayerHeader
           player={player}
         />
 
-        {/* ============================================
-            PLAYER OVERVIEW
-        ============================================ */}
+        {/* PLAYER OVERVIEW */}
 
         <PlayerOverview
           player={player}
         />
 
-        {/* ============================================
-            PLAYER STATISTICS
-        ============================================ */}
+        {/* PLAYER STATISTICS */}
 
         <PlayerStatistics
           statistics={statistics}
           player={player}
         />
 
-        {/* ============================================
-            PLAYER PERFORMANCE
-        ============================================ */}
+        {/* PLAYER PERFORMANCE */}
 
         <PlayerPerformance
-          statistics={statistics}
+          statistics={performance}
         />
 
-        {/* ============================================
-            PLAYER CAREER
-        ============================================ */}
+        {/* PLAYER RATINGS */}
 
-        <PlayerCareer
+        <PlayerRatings
           player={player}
           statistics={statistics}
         />
 
-        {/* ============================================
-            PLAYER FIXTURES
-        ============================================ */}
+        {/* PLAYER CAREER */}
+
+        <PlayerCareer
+          player={player}
+          statistics={career}
+        />
+
+        {/* PLAYER FIXTURES */}
 
         <PlayerFixtures
           fixtures={fixtures}
         />
 
-        {/* ============================================
-            PLAYER TRANSFERS
-        ============================================ */}
+        {/* PLAYER TRANSFERS */}
 
         <PlayerTransfers
           transfers={transfers}
+          available={
+            transfersAvailable
+          }
         />
 
-        {/* ============================================
-            PLAYER TROPHIES
-        ============================================ */}
+        {/* PLAYER TROPHIES */}
 
         <PlayerTrophies
           trophies={trophies}
+          available={
+            trophiesAvailable
+          }
         />
 
-        {/* ============================================
-            PLAYER HISTORY
-        ============================================ */}
+        {/* PLAYER HISTORY */}
 
         <PlayerHistory
           player={player}
+          history={history}
         />
       </div>
     </main>

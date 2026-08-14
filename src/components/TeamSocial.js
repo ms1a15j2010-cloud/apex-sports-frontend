@@ -2,91 +2,204 @@
 
 import Image from "next/image";
 
-export default function TeamSocial({ team }) {
+export default function TeamSocial({
+  team,
+}) {
   if (!team) return null;
 
+  const area =
+    team.area || {};
+
+  const venue =
+    team.venue || {};
+
   const website =
-    team.website ||
-    team.venue?.website ||
+    team.website || null;
+
+  const teamLogo =
+    team.logo ||
+    team.crest ||
     null;
+
+  const country =
+    area.name ||
+    team.country ||
+    "-";
+
+  const code =
+    team.tla ||
+    team.shortName ||
+    "-";
 
   return (
     <section
+      id="social"
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
-      <h2
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
+      <div
         style={{
-          color: "#fff",
           marginBottom: 30,
         }}
       >
-        🌐 Club Social & Contact
-      </h2>
+        <div
+          style={{
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "1.2px",
+            textTransform:
+              "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          ⚽ Apex Sports
+        </div>
 
-      {/* Club Identity */}
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 28,
+          }}
+        >
+          🌐 Club Social & Contact
+        </h2>
+
+        <p
+          style={{
+            color: "#94a3b8",
+            margin:
+              "8px 0 0",
+            fontSize: 14,
+            lineHeight: 1.6,
+          }}
+        >
+          Official club information and
+          available contact links.
+        </p>
+      </div>
+
+      {/* =================================================
+          CLUB IDENTITY
+      ================================================= */}
 
       <div
         style={{
           display: "grid",
           gridTemplateColumns:
-            "320px 1fr",
-          gap: 30,
+            "minmax(260px,320px) 1fr",
+          gap: 25,
           marginBottom: 30,
         }}
       >
+        {/* LOGO */}
+
         <div
           style={{
             background: "#1f2937",
             borderRadius: 18,
             padding: 25,
             textAlign: "center",
+            border:
+              "1px solid #293548",
           }}
         >
-          <Image
-            src={team.logo || "/team.png"}
-            alt={team.name}
-            width={140}
-            height={140}
+          <div
             style={{
-              objectFit: "contain",
+              width: 150,
+              height: 150,
+              margin: "0 auto",
+              borderRadius: "50%",
+              background:
+                "#111827",
+              display: "flex",
+              alignItems:
+                "center",
+              justifyContent:
+                "center",
             }}
-          />
+          >
+            {teamLogo ? (
+              <Image
+                src={teamLogo}
+                alt={
+                  team.name ||
+                  "Team"
+                }
+                width={120}
+                height={120}
+                unoptimized
+                style={{
+                  objectFit:
+                    "contain",
+                }}
+              />
+            ) : (
+              <span
+                style={{
+                  color:
+                    "#22c55e",
+                  fontSize: 30,
+                  fontWeight: 900,
+                }}
+              >
+                {team.tla ||
+                  "FC"}
+              </span>
+            )}
+          </div>
 
           <h2
             style={{
               color: "#fff",
-              marginTop: 20,
+              margin:
+                "18px 0 6px",
+              fontSize: 23,
             }}
           >
-            {team.name}
+            {team.name ||
+              "Unknown Team"}
           </h2>
 
           <p
             style={{
               color: "#94a3b8",
-              marginTop: 10,
+              margin: 0,
+              fontSize: 14,
             }}
           >
-            {team.country || "-"}
+            {country}
           </p>
         </div>
+
+        {/* INFORMATION */}
 
         <div
           style={{
             background: "#1f2937",
             borderRadius: 18,
             padding: 25,
+            border:
+              "1px solid #293548",
           }}
         >
           <h3
             style={{
               color: "#fff",
-              marginBottom: 20,
+              margin:
+                "0 0 20px",
             }}
           >
             Club Information
@@ -94,41 +207,59 @@ export default function TeamSocial({ team }) {
 
           <InfoRow
             title="Country"
-            value={team.country || "-"}
+            value={country}
           />
 
           <InfoRow
             title="Founded"
-            value={team.founded || "-"}
+            value={
+              team.founded ||
+              "-"
+            }
           />
 
           <InfoRow
-            title="Code"
-            value={team.code || "-"}
+            title="Team Code"
+            value={code}
           />
 
           <InfoRow
             title="Stadium"
-            value={team.venue?.name || "-"}
+            value={
+              venue.name ||
+              "-"
+            }
           />
 
           <InfoRow
             title="City"
-            value={team.venue?.city || "-"}
+            value={
+              venue.city ||
+              "-"
+            }
           />
 
           <InfoRow
-            title="Capacity"
+            title="Address"
             value={
-              team.venue?.capacity
-                ? team.venue.capacity.toLocaleString()
-                : "-"
+              venue.address ||
+              "-"
+            }
+          />
+
+          <InfoRow
+            title="Club Colors"
+            value={
+              team.clubColors ||
+              "-"
             }
           />
         </div>
       </div>
 
-      {/* Social Buttons */}
+      {/* =================================================
+          OFFICIAL LINKS
+      ================================================= */}
 
       <div
         style={{
@@ -136,12 +267,15 @@ export default function TeamSocial({ team }) {
           borderRadius: 18,
           padding: 25,
           marginBottom: 30,
+          border:
+            "1px solid #293548",
         }}
       >
         <h3
           style={{
             color: "#fff",
-            marginBottom: 22,
+            margin:
+              "0 0 20px",
           }}
         >
           Official Links
@@ -151,55 +285,139 @@ export default function TeamSocial({ team }) {
           style={{
             display: "flex",
             flexWrap: "wrap",
-            gap: 18,
+            gap: 14,
           }}
         >
           <SocialButton
             icon="🌍"
-            title="Website"
+            title="Official Website"
             url={website}
             color="#2563eb"
+            available={Boolean(
+              website
+            )}
           />
 
-          <SocialButton
+          <UnavailableButton
             icon="📘"
             title="Facebook"
-            color="#1877F2"
           />
 
-          <SocialButton
+          <UnavailableButton
             icon="📷"
             title="Instagram"
-            color="#E1306C"
           />
 
-          <SocialButton
-            icon="🐦"
+          <UnavailableButton
+            icon="𝕏"
             title="Twitter / X"
-            color="#0f172a"
           />
 
-          <SocialButton
+          <UnavailableButton
             icon="▶️"
             title="YouTube"
-            color="#dc2626"
           />
         </div>
+
+        {!website && (
+          <p
+            style={{
+              color: "#64748b",
+              margin:
+                "18px 0 0",
+              fontSize: 12,
+              lineHeight: 1.6,
+            }}
+          >
+            The current football-data.org
+            team resource does not provide
+            the club's social-media URLs or
+            official website for this team.
+          </p>
+        )}
       </div>
 
-      {/* About */}
+      {/* =================================================
+          CONTACT
+      ================================================= */}
 
       <div
         style={{
           background: "#1f2937",
           borderRadius: 18,
           padding: 25,
+          marginBottom: 30,
+          border:
+            "1px solid #293548",
         }}
       >
         <h3
           style={{
             color: "#fff",
-            marginBottom: 18,
+            margin:
+              "0 0 18px",
+          }}
+        >
+          📍 Club Contact
+        </h3>
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fit,minmax(240px,1fr))",
+            gap: 16,
+          }}
+        >
+          <ContactCard
+            title="Country"
+            value={country}
+          />
+
+          <ContactCard
+            title="City"
+            value={
+              venue.city ||
+              "-"
+            }
+          />
+
+          <ContactCard
+            title="Address"
+            value={
+              venue.address ||
+              "-"
+            }
+          />
+
+          <ContactCard
+            title="Website"
+            value={
+              website ||
+              "Not available"
+            }
+          />
+        </div>
+      </div>
+
+      {/* =================================================
+          ABOUT
+      ================================================= */}
+
+      <div
+        style={{
+          background: "#1f2937",
+          borderRadius: 18,
+          padding: 25,
+          border:
+            "1px solid #293548",
+        }}
+      >
+        <h3
+          style={{
+            color: "#fff",
+            margin:
+              "0 0 18px",
           }}
         >
           About This Club
@@ -212,20 +430,48 @@ export default function TeamSocial({ team }) {
             margin: 0,
           }}
         >
-          <strong>{team.name}</strong> is a professional football
-          club representing{" "}
-          <strong>{team.country || "-"}</strong>.
-          The club plays its home matches at{" "}
-          <strong>{team.venue?.name || "-"}</strong>.
-          Club profile, stadium details, squad information,
-          fixtures, transfers, coach, trophies and statistics
-          are automatically synchronized from the football data
-          provider whenever new information becomes available.
+          <strong>
+            {team.name ||
+              "This club"}
+          </strong>{" "}
+          is a professional football club
+          representing{" "}
+          <strong>{country}</strong>.
+          {team.founded
+            ? ` The club was founded in ${team.founded}.`
+            : ""}
+          {venue.name
+            ? ` Its home venue is ${venue.name}.`
+            : ""}
+          {venue.city
+            ? ` The stadium is located in ${venue.city}.`
+            : ""}
         </p>
+      </div>
+
+      {/* =================================================
+          SOURCE
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 18,
+          paddingTop: 16,
+          borderTop:
+            "1px solid #293548",
+          color: "#64748b",
+          fontSize: 12,
+        }}
+      >
+        Source: football-data.org
       </div>
     </section>
   );
 }
+
+/* =====================================================
+INFO ROW
+===================================================== */
 
 function InfoRow({
   title,
@@ -235,15 +481,23 @@ function InfoRow({
     <div
       style={{
         display: "flex",
-        justifyContent: "space-between",
-        padding: "12px 0",
+        justifyContent:
+          "space-between",
+        alignItems:
+          "flex-start",
+        gap: 20,
+        padding:
+          "12px 0",
         borderBottom:
           "1px solid rgba(255,255,255,.08)",
       }}
     >
       <span
         style={{
-          color: "#94a3b8",
+          color:
+            "#94a3b8",
+          fontSize: 13,
+          flexShrink: 0,
         }}
       >
         {title}
@@ -252,41 +506,62 @@ function InfoRow({
       <strong
         style={{
           color: "#fff",
+          fontSize: 14,
+          textAlign: "right",
+          overflowWrap:
+            "anywhere",
         }}
       >
-        {value}
+        {value || "-"}
       </strong>
     </div>
   );
 }
+
+/* =====================================================
+WEBSITE BUTTON
+===================================================== */
 
 function SocialButton({
   icon,
   title,
   url,
   color,
+  available,
 }) {
+  if (!available || !url) {
+    return (
+      <UnavailableButton
+        icon={icon}
+        title={title}
+      />
+    );
+  }
+
   return (
     <a
-      href={url || "#"}
+      href={url}
       target="_blank"
       rel="noopener noreferrer"
       style={{
-        textDecoration: "none",
+        textDecoration:
+          "none",
         color: "#fff",
         background: color,
-        padding: "14px 22px",
+        padding:
+          "13px 18px",
         borderRadius: 14,
         display: "flex",
-        alignItems: "center",
+        alignItems:
+          "center",
         gap: 10,
         fontWeight: 700,
-        transition: ".25s",
+        fontSize: 14,
       }}
     >
       <span
         style={{
-          fontSize: 22,
+          fontSize: 20,
         }}
       >
         {icon}
@@ -294,5 +569,93 @@ function SocialButton({
 
       {title}
     </a>
+  );
+}
+
+/* =====================================================
+UNAVAILABLE BUTTON
+===================================================== */
+
+function UnavailableButton({
+  icon,
+  title,
+}) {
+  return (
+    <div
+      title={`${title} link is not available from the current data source`}
+      style={{
+        color: "#64748b",
+        background:
+          "#111827",
+        border:
+          "1px solid #293548",
+        padding:
+          "13px 18px",
+        borderRadius: 14,
+        display: "flex",
+        alignItems:
+          "center",
+        gap: 10,
+        fontWeight: 700,
+        fontSize: 14,
+        opacity: 0.75,
+        cursor: "default",
+      }}
+    >
+      <span
+        style={{
+          fontSize: 20,
+        }}
+      >
+        {icon}
+      </span>
+
+      {title}
+    </div>
+  );
+}
+
+/* =====================================================
+CONTACT CARD
+===================================================== */
+
+function ContactCard({
+  title,
+  value,
+}) {
+  return (
+    <div
+      style={{
+        background:
+          "#111827",
+        borderRadius: 14,
+        padding: 18,
+        border:
+          "1px solid #293548",
+      }}
+    >
+      <div
+        style={{
+          color:
+            "#94a3b8",
+          fontSize: 12,
+          marginBottom: 7,
+        }}
+      >
+        {title}
+      </div>
+
+      <div
+        style={{
+          color: "#fff",
+          fontSize: 14,
+          fontWeight: 700,
+          overflowWrap:
+            "anywhere",
+        }}
+      >
+        {value || "-"}
+      </div>
+    </div>
   );
 }

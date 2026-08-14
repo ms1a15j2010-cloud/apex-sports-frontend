@@ -1,506 +1,852 @@
 "use client";
 
-import Image from "next/image";
-
 export default function PlayerRatings({
-  players = [],
+  player = null,
+  statistics = [],
 }) {
-  if (!players || players.length === 0) {
-    return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            marginBottom: 20,
-          }}
-        >
-          ⭐ Player Ratings
-        </h2>
-
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
-          Player ratings are not available.
-        </p>
-      </section>
-    );
+  if (!player) {
+    return null;
   }
 
-  const home =
-    players[0] || {};
+  const stat =
+    Array.isArray(statistics) &&
+    statistics.length > 0
+      ? statistics[0]
+      : player.statistics?.[0] || {};
 
-  const away =
-    players[1] || {};
+  const games =
+    stat.games || {};
 
-  const homePlayers =
-    [...(home.players || [])].sort(
-      (a, b) =>
-        (b.statistics?.[0]?.games
-          ?.rating || 0) -
-        (a.statistics?.[0]?.games
-          ?.rating || 0)
+  const goals =
+    stat.goals || {};
+
+  const shots =
+    stat.shots || {};
+
+  const passes =
+    stat.passes || {};
+
+  const tackles =
+    stat.tackles || {};
+
+  const duels =
+    stat.duels || {};
+
+  const dribbles =
+    stat.dribbles || {};
+
+  const fouls =
+    stat.fouls || {};
+
+  const cards =
+    stat.cards || {};
+
+  const penalty =
+    stat.penalty || {};
+
+  const rating =
+    Number(games.rating || 0);
+
+  const appearances =
+    Number(
+      games.appearances ??
+        games.appearences ??
+        0
     );
 
-  const awayPlayers =
-    [...(away.players || [])].sort(
-      (a, b) =>
-        (b.statistics?.[0]?.games
-          ?.rating || 0) -
-        (a.statistics?.[0]?.games
-          ?.rating || 0)
+  const minutes =
+    Number(
+      games.minutes || 0
     );
+
+  const goalsScored =
+    Number(
+      goals.total || 0
+    );
+
+  const assists =
+    Number(
+      goals.assists || 0
+    );
+
+  const shotsTotal =
+    Number(
+      shots.total || 0
+    );
+
+  const shotsOnTarget =
+    Number(
+      shots.on || 0
+    );
+
+  const passesTotal =
+    Number(
+      passes.total || 0
+    );
+
+  const keyPasses =
+    Number(
+      passes.key || 0
+    );
+
+  const tacklesTotal =
+    Number(
+      tackles.total || 0
+    );
+
+  const duelsTotal =
+    Number(
+      duels.total || 0
+    );
+
+  const duelsWon =
+    Number(
+      duels.won || 0
+    );
+
+  const dribbleAttempts =
+    Number(
+      dribbles.attempts || 0
+    );
+
+  const dribbleSuccess =
+    Number(
+      dribbles.success || 0
+    );
+
+  const yellowCards =
+    Number(
+      cards.yellow || 0
+    );
+
+  const redCards =
+    Number(
+      cards.red || 0
+    );
+
+  const foulsCommitted =
+    Number(
+      fouls.committed || 0
+    );
+
+  const foulsDrawn =
+    Number(
+      fouls.drawn || 0
+    );
+
+  const ratingProgress =
+    Math.min(
+      Math.max(
+        (rating / 10) * 100,
+        0
+      ),
+      100
+    );
+
+  const shotAccuracy =
+    shotsTotal > 0
+      ? Math.round(
+          (shotsOnTarget /
+            shotsTotal) *
+            100
+        )
+      : 0;
+
+  const duelWinRate =
+    duelsTotal > 0
+      ? Math.round(
+          (duelsWon /
+            duelsTotal) *
+            100
+        )
+      : 0;
+
+  const dribbleRate =
+    dribbleAttempts > 0
+      ? Math.round(
+          (dribbleSuccess /
+            dribbleAttempts) *
+            100
+        )
+      : 0;
 
   return (
     <section
       style={{
         background:
-          "linear-gradient(180deg,#111827,#0f172a)",
-        borderRadius: 22,
+          "linear-gradient(145deg,#111827,#0f172a)",
+        borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
       <div
         style={{
           display: "flex",
           justifyContent:
             "space-between",
           alignItems: "center",
-          marginBottom: 28,
+          gap: 20,
           flexWrap: "wrap",
-          gap: 15,
+          marginBottom: 30,
         }}
       >
         <div>
           <div
             style={{
-              color: "#22c55e",
-              fontSize: 13,
-              fontWeight: 700,
-              letterSpacing: 2,
+              color: "#ef4444",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing: "1.2px",
               textTransform:
                 "uppercase",
-              marginBottom: 6,
+              marginBottom: 8,
             }}
           >
-            Apex Sports
+            ⚽ Apex Sports
           </div>
 
           <h2
             style={{
               color: "#fff",
               margin: 0,
-              fontSize: 30,
+              fontSize: 28,
               fontWeight: 800,
             }}
           >
             ⭐ Player Ratings
           </h2>
+
+          <p
+            style={{
+              color: "#94a3b8",
+              margin:
+                "8px 0 0",
+              fontSize: 14,
+            }}
+          >
+            Current performance rating
+            and player efficiency.
+          </p>
         </div>
 
         <div
           style={{
             padding:
-              "8px 16px",
+              "10px 16px",
             borderRadius: 999,
             background:
               "rgba(34,197,94,.12)",
             color: "#22c55e",
             fontWeight: 700,
+            fontSize: 13,
           }}
         >
-          Match Performance
+          {stat.league?.name ||
+            "Premier League"}
         </div>
       </div>
 
-      <div
-       className="ratings-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr 1fr",
-          gap: 25,
-        }}
-      >
-        <TeamRatings
-          title={
-            home.team?.name ||
-            "Home"
-          }
-          logo={
-            home.team?.logo
-          }
-          players={
-            homePlayers
-          }
-        />
+      {/* =================================================
+          PLAYER SUMMARY
+      ================================================= */}
 
-        <TeamRatings
-          title={
-            away.team?.name ||
-            "Away"
-          }
-          logo={
-            away.team?.logo
-          }
-          players={
-            awayPlayers
-          }
-        />
-      </div>
-    </section>
-  );
-}
-
-function TeamRatings({
-  title,
-  logo,
-  players,
-}) {
-  return (
-    <div
-     className="ratings-team"
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 22,
-      }}
-    >
       <div
         style={{
+          background: "#1f2937",
+          borderRadius: 18,
+          padding: 22,
+          marginBottom: 25,
           display: "flex",
           alignItems: "center",
-          gap: 12,
-          marginBottom: 22,
+          justifyContent:
+            "space-between",
+          gap: 25,
+          flexWrap: "wrap",
         }}
       >
-        <Image
-          src={
-            logo ||
-            "/team.png"
-          }
-          alt={title}
-          width={40}
-          height={40}
-          unoptimized
-        />
-
-        <h3
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 22,
-          }}
-        >
-          {title}
-        </h3>
-      </div>
-
-      <div
-        style={{
-          display: "grid",
-          gap: 16,
-        }}
-      >
-        {players.map(
-          (player, index) => (
-            <PlayerCard
-              key={
-                player.player
-                  ?.id ||
-                index
-              }
-              player={
-                player
-              }
-            />
-          )
-        )}
-      </div>
-    </div>
-  );
-}
-
-function PlayerCard({
-  player,
-}) {
-  const info =
-    player.player || {};
-
-  const stats =
-    player.statistics?.[0] ||
-    {};
-
-  const rating =
-    parseFloat(
-      stats.games?.rating || 0
-    );
-
-  const goals =
-    stats.goals?.total || 0;
-
-  const assists =
-    stats.goals?.assists || 0;
-
-  const yellow =
-    stats.cards?.yellow || 0;
-
-  const red =
-    stats.cards?.red || 0;
-
-  const captain =
-    stats.games?.captain;
-
-  const substitute =
-    stats.games?.substitute;
-
-  const minutes =
-    stats.games?.minutes || 0;
-
-  const number =
-    stats.games?.number || "-";
-
-  const position =
-    stats.games?.position || "-";
-
-  const progress =
-    Math.min(
-      (rating / 10) * 100,
-      100
-    );
-
-  return (
-    <div
-    className="rating-player-card"
-      style={{
-        background: "#111827",
-        borderRadius: 16,
-        padding: 18,
-        display: "flex",
-        alignItems: "center",
-        gap: 16,
-        transition:
-          ".25s ease",
-      }}
-    >
-      {/* Player Image */}
-
-      <Image
-        src={
-          info.photo ||
-          "/player.png"
-        }
-        alt={
-          info.name ||
-          "Player"
-        }
-        width={70}
-        height={70}
-        unoptimized
-        style={{
-          borderRadius: "50%",
-          objectFit:
-            "cover",
-        }}
-      />
-
-      <div
-       className="rating-player-info"
-        style={{
-          flex: 1,
-        }}
-      >
-        {/* Name */}
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            flexWrap: "wrap",
-            marginBottom: 6,
-          }}
-        >
-          <strong
+        <div>
+          <div
             style={{
-              color: "#fff",
-              fontSize: 17,
+              color: "#94a3b8",
+              fontSize: 13,
+              marginBottom: 6,
             }}
           >
-            {info.name}
-          </strong>
+            Player
+          </div>
 
-          {captain && (
-            <span
-              style={{
-                background:
-                  "#f59e0b",
-                color: "#fff",
-                padding:
-                  "2px 7px",
-                borderRadius: 20,
-                fontSize: 11,
-                fontWeight:
-                  "bold",
-              }}
-            >
-              C
-            </span>
-          )}
+          <h3
+            style={{
+              color: "#fff",
+              margin: 0,
+              fontSize: 22,
+            }}
+          >
+            {player.name ||
+              "Unknown Player"}
+          </h3>
 
-          {substitute && (
-            <span
-              style={{
-                background:
-                  "#3b82f6",
-                color: "#fff",
-                padding:
-                  "2px 7px",
-                borderRadius: 20,
-                fontSize: 11,
-                fontWeight:
-                  "bold",
-              }}
-            >
-              SUB
-            </span>
-          )}
+          <div
+            style={{
+              color: "#64748b",
+              marginTop: 6,
+              fontSize: 13,
+            }}
+          >
+            {player.team?.name ||
+              stat.team?.name ||
+              "Unknown Team"}
+          </div>
         </div>
-
-        {/* Position */}
 
         <div
           style={{
-            color: "#94a3b8",
-            fontSize: 13,
-            marginBottom: 10,
-          }}
-        >
-          #{number} • {position} •{" "}
-          {minutes} min
-        </div>
-
-        {/* Rating Bar */}
-
-        <div
-          style={{
-            height: 8,
-            background:
-              "#374151",
-            borderRadius: 999,
-            overflow:
-              "hidden",
-            marginBottom: 12,
+            textAlign: "center",
+            minWidth: 120,
           }}
         >
           <div
             style={{
-              width: `${progress}%`,
+              color:
+                getRatingColor(
+                  rating
+                ),
+              fontSize: 34,
+              lineHeight: 1,
+              fontWeight: 900,
+            }}
+          >
+            {rating
+              ? rating.toFixed(1)
+              : "-"}
+          </div>
+
+          <div
+            style={{
+              color: "#facc15",
+              fontSize: 18,
+              marginTop: 7,
+              letterSpacing: 2,
+            }}
+          >
+            {getStars(rating)}
+          </div>
+
+          <div
+            style={{
+              color: "#94a3b8",
+              fontSize: 12,
+              marginTop: 5,
+            }}
+          >
+            Rating
+          </div>
+        </div>
+      </div>
+
+      {/* =================================================
+          RATING BAR
+      ================================================= */}
+
+      <div
+        style={{
+          marginBottom: 30,
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent:
+              "space-between",
+            marginBottom: 8,
+            color: "#cbd5e1",
+            fontSize: 13,
+            fontWeight: 700,
+          }}
+        >
+          <span>
+            Overall Rating
+          </span>
+
+          <span>
+            {rating
+              ? `${rating.toFixed(1)}/10`
+              : "Not available"}
+          </span>
+        </div>
+
+        <div
+          style={{
+            width: "100%",
+            height: 12,
+            background: "#374151",
+            borderRadius: 999,
+            overflow:
+              "hidden",
+          }}
+        >
+          <div
+            style={{
+              width:
+                `${ratingProgress}%`,
               height: "100%",
               background:
                 getRatingColor(
                   rating
                 ),
+              borderRadius: 999,
+              transition:
+                "width .8s ease",
             }}
           />
         </div>
-
-        {/* Match Stats */}
-
-        <div
-          style={{
-            display: "flex",
-            gap: 14,
-            flexWrap: "wrap",
-            color: "#cbd5e1",
-            fontSize: 13,
-          }}
-        >
-          <span>
-            ⚽ {goals}
-          </span>
-
-          <span>
-            🎯 {assists}
-          </span>
-
-          <span>
-            🟨 {yellow}
-          </span>
-
-          <span>
-            🟥 {red}
-          </span>
-        </div>
       </div>
 
-      {/* Rating Badge */}
+      {/* =================================================
+          CORE RATINGS
+      ================================================= */}
 
       <div
-  style={{
-    textAlign: "center",
-    minWidth: 80,
-  }}
->
-  <div
-    style={{
-      color: getRatingColor(rating),
-      fontSize: 26,
-      lineHeight: 1,
-      marginBottom: 6,
-    }}
-  >
-    {getStars(rating)}
-  </div>
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(180px,1fr))",
+          gap: 15,
+          marginBottom: 25,
+        }}
+      >
+        <RatingCard
+          title="Appearances"
+          value={appearances}
+          color="#3b82f6"
+        />
 
-  <div
-    style={{
-      color: "#fff",
-      fontWeight: "bold",
-      fontSize: 18,
-    }}
-  >
-    {rating ? rating.toFixed(1) : "-"}
-  </div>
-</div>
+        <RatingCard
+          title="Minutes"
+          value={minutes}
+          color="#8b5cf6"
+        />
+
+        <RatingCard
+          title="Goals"
+          value={goalsScored}
+          color="#22c55e"
+        />
+
+        <RatingCard
+          title="Assists"
+          value={assists}
+          color="#f59e0b"
+        />
+      </div>
+
+      {/* =================================================
+          ATTACKING
+      ================================================= */}
+
+      <SectionTitle title="Attacking" />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(170px,1fr))",
+          gap: 14,
+          marginBottom: 28,
+        }}
+      >
+        <StatCard
+          title="Goals"
+          value={goalsScored}
+        />
+
+        <StatCard
+          title="Assists"
+          value={assists}
+        />
+
+        <StatCard
+          title="Shots"
+          value={shotsTotal}
+        />
+
+        <StatCard
+          title="Shots On Target"
+          value={shotsOnTarget}
+        />
+
+        <StatCard
+          title="Shot Accuracy"
+          value={
+            shotsTotal > 0
+              ? `${shotAccuracy}%`
+              : "-"
+          }
+        />
+
+        <StatCard
+          title="Dribble Attempts"
+          value={dribbleAttempts}
+        />
+
+        <StatCard
+          title="Dribbles Won"
+          value={dribbleSuccess}
+        />
+
+        <StatCard
+          title="Dribble Success"
+          value={
+            dribbleAttempts > 0
+              ? `${dribbleRate}%`
+              : "-"
+          }
+        />
+      </div>
+
+      {/* =================================================
+          PASSING
+      ================================================= */}
+
+      <SectionTitle title="Passing" />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(170px,1fr))",
+          gap: 14,
+          marginBottom: 28,
+        }}
+      >
+        <StatCard
+          title="Total Passes"
+          value={passesTotal}
+        />
+
+        <StatCard
+          title="Key Passes"
+          value={keyPasses}
+        />
+
+        <StatCard
+          title="Pass Accuracy"
+          value={
+            passes.accuracy
+              ? `${passes.accuracy}%`
+              : "-"
+          }
+        />
+      </div>
+
+      {/* =================================================
+          DEFENDING
+      ================================================= */}
+
+      <SectionTitle title="Defending" />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(170px,1fr))",
+          gap: 14,
+          marginBottom: 28,
+        }}
+      >
+        <StatCard
+          title="Tackles"
+          value={tacklesTotal}
+        />
+
+        <StatCard
+          title="Duels"
+          value={duelsTotal}
+        />
+
+        <StatCard
+          title="Duels Won"
+          value={duelsWon}
+        />
+
+        <StatCard
+          title="Duel Win Rate"
+          value={
+            duelsTotal > 0
+              ? `${duelWinRate}%`
+              : "-"
+          }
+        />
+
+        <StatCard
+          title="Fouls Drawn"
+          value={foulsDrawn}
+        />
+
+        <StatCard
+          title="Fouls Committed"
+          value={foulsCommitted}
+        />
+      </div>
+
+      {/* =================================================
+          DISCIPLINE
+      ================================================= */}
+
+      <SectionTitle title="Discipline" />
+
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns:
+            "repeat(auto-fit,minmax(170px,1fr))",
+          gap: 14,
+          marginBottom: 28,
+        }}
+      >
+        <StatCard
+          title="🟨 Yellow Cards"
+          value={yellowCards}
+        />
+
+        <StatCard
+          title="🟥 Red Cards"
+          value={redCards}
+        />
+      </div>
+
+      {/* =================================================
+          SUMMARY
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 10,
+          background: "#1f2937",
+          borderRadius: 18,
+          padding: 24,
+        }}
+      >
+        <h3
+          style={{
+            color: "#fff",
+            marginBottom: 15,
+          }}
+        >
+          Rating Summary
+        </h3>
+
+        <p
+          style={{
+            color: "#cbd5e1",
+            lineHeight: 1.8,
+            margin: 0,
+          }}
+        >
+          {player.name ||
+            "This player"}{" "}
+          has a current rating of{" "}
+          <strong
+            style={{
+              color:
+                getRatingColor(
+                  rating
+                ),
+            }}
+          >
+            {rating
+              ? rating.toFixed(1)
+              : "N/A"}
+          </strong>
+          . During the current season,
+          the player has made{" "}
+          <strong>
+            {appearances}
+          </strong>{" "}
+          appearances, scored{" "}
+          <strong>
+            {goalsScored}
+          </strong>{" "}
+          goals and provided{" "}
+          <strong>
+            {assists}
+          </strong>{" "}
+          assists.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* =====================================================
+SECTION TITLE
+===================================================== */
+
+function SectionTitle({
+  title,
+}) {
+  return (
+    <h3
+      style={{
+        color: "#22c55e",
+        margin:
+          "10px 0 16px",
+        fontSize: 19,
+      }}
+    >
+      {title}
+    </h3>
+  );
+}
+
+/* =====================================================
+RATING CARD
+===================================================== */
+
+function RatingCard({
+  title,
+  value,
+  color,
+}) {
+  return (
+    <div
+      style={{
+        background: "#1f2937",
+        borderRadius: 16,
+        padding: 20,
+        textAlign: "center",
+        border:
+          `1px solid ${color}40`,
+      }}
+    >
+      <div
+        style={{
+          color: "#94a3b8",
+          fontSize: 13,
+          marginBottom: 9,
+        }}
+      >
+        {title}
+      </div>
+
+      <div
+        style={{
+          color,
+          fontSize: 28,
+          fontWeight: 800,
+        }}
+      >
+        {value}
+      </div>
     </div>
   );
 }
 
-function getStars(rating) {
-  if (!rating) return "☆☆☆☆☆";
+/* =====================================================
+STAT CARD
+===================================================== */
 
-  if (rating >= 9.0) return "★★★★★";
-  if (rating >= 8.0) return "★★★★☆";
-  if (rating >= 7.0) return "★★★☆☆";
-  if (rating >= 6.0) return "★★☆☆☆";
+function StatCard({
+  title,
+  value,
+}) {
+  return (
+    <div
+      style={{
+        background: "#0f172a",
+        borderRadius: 12,
+        padding: 16,
+        textAlign: "center",
+        border:
+          "1px solid #1e293b",
+      }}
+    >
+      <div
+        style={{
+          color: "#94a3b8",
+          fontSize: 12,
+          marginBottom: 7,
+        }}
+      >
+        {title}
+      </div>
+
+      <strong
+        style={{
+          color: "#fff",
+          fontSize: 19,
+          fontWeight: 800,
+        }}
+      >
+        {value ?? 0}
+      </strong>
+    </div>
+  );
+}
+
+/* =====================================================
+STARS
+===================================================== */
+
+function getStars(
+  rating
+) {
+  if (!rating) {
+    return "☆☆☆☆☆";
+  }
+
+  if (rating >= 9) {
+    return "★★★★★";
+  }
+
+  if (rating >= 8) {
+    return "★★★★☆";
+  }
+
+  if (rating >= 7) {
+    return "★★★☆☆";
+  }
+
+  if (rating >= 6) {
+    return "★★☆☆☆";
+  }
 
   return "★☆☆☆☆";
 }
 
-function getRatingColor(rating) {
-  if (!rating) return "#64748b";
+/* =====================================================
+RATING COLOR
+===================================================== */
 
-  if (rating >= 8.5)
-    return "#22c55e"; // Excellent
+function getRatingColor(
+  rating
+) {
+  if (!rating) {
+    return "#64748b";
+  }
 
-  if (rating >= 7)
-    return "#84cc16"; // Good
+  if (rating >= 8.5) {
+    return "#22c55e";
+  }
 
-  if (rating >= 6)
-    return "#facc15"; // Average
+  if (rating >= 7) {
+    return "#84cc16";
+  }
 
-  if (rating >= 5)
-    return "#f97316"; // Poor
+  if (rating >= 6) {
+    return "#facc15";
+  }
 
-  return "#ef4444"; // Bad
+  if (rating >= 5) {
+    return "#f97316";
+  }
+
+  return "#ef4444";
 }

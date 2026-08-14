@@ -3,106 +3,222 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TeamSidebar({ team }) {
+export default function TeamSidebar({
+  team,
+}) {
   if (!team) return null;
+
+  const teamLogo =
+    team.logo ||
+    team.crest ||
+    null;
+
+  const area =
+    team.area || {};
+
+  const venue =
+    team.venue || {};
+
+  const coach =
+    team.coach || {};
+
+  const coachName =
+    coach.name ||
+    [
+      coach.firstName,
+      coach.lastName,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
+  const competitions =
+    Array.isArray(
+      team.competitions
+    )
+      ? team.competitions
+      : Array.isArray(
+          team.runningCompetitions
+        )
+      ? team.runningCompetitions
+      : [];
+
+  const primaryCompetition =
+    competitions[0] || null;
 
   return (
     <aside
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 18,
         padding: 24,
         color: "#fff",
         position: "sticky",
         top: 20,
+        border:
+          "1px solid #1e293b",
+        boxShadow:
+          "0 8px 24px rgba(0,0,0,.30)",
       }}
     >
-      {/* Logo */}
+      {/* =================================================
+          TEAM
+      ================================================= */}
 
       <div
         style={{
           textAlign: "center",
-          marginBottom: 20,
+          marginBottom: 28,
         }}
       >
-        <Image
-          src={team.logo || "/team.png"}
-          alt={team.name || "Team"}
-          width={120}
-          height={120}
-        />
+        <div
+          style={{
+            width: 130,
+            height: 130,
+            margin: "0 auto",
+            borderRadius: "50%",
+            background: "#1f2937",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border:
+              "1px solid #293548",
+          }}
+        >
+          {teamLogo ? (
+            <Image
+              src={teamLogo}
+              alt={
+                team.name ||
+                "Team"
+              }
+              width={105}
+              height={105}
+              priority
+              unoptimized
+              style={{
+                objectFit:
+                  "contain",
+              }}
+            />
+          ) : (
+            <div
+              style={{
+                color: "#22c55e",
+                fontSize: 28,
+                fontWeight: 900,
+              }}
+            >
+              {team.tla ||
+                team.name
+                  ?.slice(0, 3)
+                  ?.toUpperCase() ||
+                "FC"}
+            </div>
+          )}
+        </div>
 
         <h2
           style={{
-            marginTop: 15,
-            marginBottom: 5,
+            margin:
+              "16px 0 6px",
             fontSize: 24,
           }}
         >
-          {team.name}
+          {team.name ||
+            "Unknown Team"}
         </h2>
 
         <div
           style={{
             color: "#94a3b8",
+            fontSize: 14,
           }}
         >
-          {team.country}
+          {area.name ||
+            team.country ||
+            "England"}
         </div>
       </div>
 
-      {/* Team Information */}
+      {/* =================================================
+          TEAM INFORMATION
+      ================================================= */}
 
       <div
         style={{
           display: "grid",
-          gap: 14,
+          gap: 12,
           marginBottom: 28,
         }}
       >
         <SidebarItem
           title="Founded"
-          value={team.founded || "-"}
+          value={
+            team.founded ||
+            "-"
+          }
         />
 
         <SidebarItem
-          title="Code"
-          value={team.code || "-"}
+          title="Team Code"
+          value={
+            team.tla ||
+            team.shortName ||
+            "-"
+          }
+        />
+
+        <SidebarItem
+          title="Country"
+          value={
+            area.name ||
+            team.country ||
+            "-"
+          }
         />
 
         <SidebarItem
           title="Stadium"
-          value={team.venue?.name || "-"}
+          value={
+            venue.name ||
+            "-"
+          }
         />
 
         <SidebarItem
-          title="Capacity"
+          title="City"
           value={
-            team.venue?.capacity
-              ? team.venue.capacity.toLocaleString()
-              : "-"
+            venue.city ||
+            "-"
           }
         />
 
         <SidebarItem
           title="Coach"
           value={
-            team.coach?.name || "Unknown"
+            coachName ||
+            "Unavailable"
           }
         />
       </div>
 
-      {/* Quick Navigation */}
+      {/* =================================================
+          QUICK NAVIGATION
+      ================================================= */}
 
       <div
         style={{
-          borderTop: "1px solid #1f2937",
+          borderTop:
+            "1px solid #1f2937",
           paddingTop: 20,
         }}
       >
         <h3
           style={{
-            marginBottom: 15,
+            margin:
+              "0 0 15px",
+            fontSize: 18,
           }}
         >
           Quick Navigation
@@ -116,6 +232,11 @@ export default function TeamSidebar({ team }) {
         <SidebarLink
           href="#statistics"
           text="Statistics"
+        />
+
+        <SidebarLink
+          href="#analytics"
+          text="Analytics"
         />
 
         <SidebarLink
@@ -134,6 +255,11 @@ export default function TeamSidebar({ team }) {
         />
 
         <SidebarLink
+          href="#history"
+          text="History"
+        />
+
+        <SidebarLink
           href="#transfers"
           text="Transfers"
         />
@@ -149,56 +275,101 @@ export default function TeamSidebar({ team }) {
         />
       </div>
 
-      {/* League */}
+      {/* =================================================
+          COMPETITION
+      ================================================= */}
 
-      {team.league && (
+      {primaryCompetition && (
         <div
           style={{
             marginTop: 28,
-            borderTop: "1px solid #1f2937",
+            borderTop:
+              "1px solid #1f2937",
             paddingTop: 20,
           }}
         >
           <h3
             style={{
-              marginBottom: 12,
+              margin:
+                "0 0 12px",
             }}
           >
-            League
+            Competition
           </h3>
 
-          <Link
-            href={`/league/${team.league.id}`}
+          <div
             style={{
               display: "flex",
-              alignItems: "center",
+              alignItems:
+                "center",
               gap: 12,
-              textDecoration: "none",
-              color: "#22c55e",
             }}
           >
-            <Image
-              src={
-                team.league.logo ||
-                "/league.png"
-              }
-              alt={team.league.name}
-              width={28}
-              height={28}
-            />
+            {primaryCompetition.emblem ? (
+              <Image
+                src={
+                  primaryCompetition.emblem
+                }
+                alt={
+                  primaryCompetition.name ||
+                  "Competition"
+                }
+                width={30}
+                height={30}
+                unoptimized
+                style={{
+                  objectFit:
+                    "contain",
+                }}
+              />
+            ) : (
+              <div
+                style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: 8,
+                  background:
+                    "#1f2937",
+                  display:
+                    "flex",
+                  alignItems:
+                    "center",
+                  justifyContent:
+                    "center",
+                  color:
+                    "#22c55e",
+                  fontSize: 11,
+                  fontWeight: 800,
+                }}
+              >
+                FC
+              </div>
+            )}
 
-            {team.league.name}
-          </Link>
+            <span
+              style={{
+                color: "#22c55e",
+                fontWeight: 700,
+                fontSize: 14,
+              }}
+            >
+              {primaryCompetition.name ||
+                "Premier League"}
+            </span>
+          </div>
         </div>
       )}
 
-      {/* Website */}
+      {/* =================================================
+          OFFICIAL WEBSITE
+      ================================================= */}
 
       {team.website && (
         <div
           style={{
             marginTop: 25,
-            borderTop: "1px solid #1f2937",
+            borderTop:
+              "1px solid #1f2937",
             paddingTop: 20,
           }}
         >
@@ -207,12 +378,16 @@ export default function TeamSidebar({ team }) {
             target="_blank"
             rel="noreferrer"
             style={{
+              display: "block",
               color: "#3b82f6",
-              textDecoration: "none",
-              wordBreak: "break-word",
+              textDecoration:
+                "none",
+              fontWeight: 700,
+              wordBreak:
+                "break-word",
             }}
           >
-            Official Website
+            🌐 Official Website
           </a>
         </div>
       )}
@@ -220,17 +395,30 @@ export default function TeamSidebar({ team }) {
   );
 }
 
+/* =====================================================
+SIDEBAR ITEM
+===================================================== */
+
 function SidebarItem({
   title,
   value,
 }) {
   return (
-    <div>
+    <div
+      style={{
+        background: "#1f2937",
+        borderRadius: 12,
+        padding:
+          "12px 14px",
+        border:
+          "1px solid #293548",
+      }}
+    >
       <div
         style={{
           color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 4,
+          fontSize: 12,
+          marginBottom: 5,
         }}
       >
         {title}
@@ -238,14 +426,22 @@ function SidebarItem({
 
       <div
         style={{
+          color: "#fff",
           fontWeight: 600,
+          fontSize: 14,
+          overflowWrap:
+            "anywhere",
         }}
       >
-        {value}
+        {value || "-"}
       </div>
     </div>
   );
 }
+
+/* =====================================================
+SIDEBAR LINK
+===================================================== */
 
 function SidebarLink({
   href,
@@ -258,9 +454,13 @@ function SidebarLink({
         display: "block",
         color: "#cbd5e1",
         textDecoration: "none",
-        padding: "8px 0",
+        padding:
+          "9px 4px",
         borderBottom:
           "1px solid #1f2937",
+        fontSize: 14,
+        transition:
+          "color .2s ease",
       }}
     >
       {text}

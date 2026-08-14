@@ -1,178 +1,967 @@
 const API =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000";
 
 /* ===========================================
-   Generic Request Helper
+   GENERIC REQUEST
 =========================================== */
 
-async function request(endpoint, options = {}) {
+async function request(
+  endpoint,
+  options = {}
+) {
+  let timeoutId = null;
+
   try {
-    const controller = new AbortController();
+    const controller =
+      new AbortController();
 
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 30000);
 
-    const response = await fetch(`${API}${endpoint}`, {
-      cache: "no-store",
-      signal: controller.signal,
-      headers: {
-        "Content-Type": "application/json",
-        ...(options.headers || {}),
-      },
-      ...options,
-    });
+    const response = await fetch(
+      `${API}${endpoint}`,
+      {
+        cache: "no-store",
 
-    clearTimeout(timeout);
+        signal:
+          controller.signal,
+
+        ...options,
+
+        headers: {
+          "Content-Type":
+            "application/json",
+
+          ...(options.headers || {}),
+        },
+      }
+    );
+
+    clearTimeout(timeoutId);
+
+    const text =
+      await response.text();
+
+    let data = null;
+
+    if (text) {
+      try {
+        data =
+          JSON.parse(text);
+      } catch {
+        data = null;
+      }
+    }
 
     if (!response.ok) {
       return {
         success: false,
-        status: response.status,
-        message: response.statusText || "Request failed",
+
+        status:
+          response.status,
+
+        message:
+          data?.message ||
+          response.statusText ||
+          `Request failed (${response.status})`,
+
+        data,
       };
     }
-
-    const text = await response.text();
 
     if (!text) {
       return {
-        success: false,
-        message: "Empty response",
+        success: true,
+
+        data: null,
+
+        message:
+          "Empty response",
       };
     }
 
-    try {
-      return JSON.parse(text);
-    } catch {
+    if (!data) {
       return {
         success: false,
-        message: "Invalid JSON received",
+
+        status:
+          response.status,
+
+        message:
+          "Invalid JSON received",
       };
     }
-  } catch (err) {
+
+    return data;
+  } catch (error) {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
+    console.error(
+      `API request failed: ${endpoint}`,
+      error
+    );
+
     return {
       success: false,
+
+      status:
+        error?.name ===
+        "AbortError"
+          ? 408
+          : 0,
+
       message:
-        err.name === "AbortError"
+        error?.name ===
+        "AbortError"
           ? "Request timeout"
-          : err.message,
+          : error?.message ||
+            "Network request failed",
     };
   }
 }
 
 /* ===========================================
-   Dashboard
+   DASHBOARD
 =========================================== */
 
 const dashboard = {
-  getDashboard: () => request("/api/dashboard"),
+  /* -----------------------------------------
+     DASHBOARD HERO
 
-  getFeaturedMatch: () =>
-    request("/api/dashboard/featured"),
+     Current backend:
+     GET /api/dashboard/hero
+  ----------------------------------------- */
 
-  getLiveMatches: () =>
-    request("/api/dashboard/live"),
+  getDashboardHero:
+    () =>
+      request(
+        "/api/dashboard/hero"
+      ),
 
-  getTodayMatches: () =>
-    request("/api/dashboard/today"),
+  /* -----------------------------------------
+     BACKWARD COMPATIBILITY
 
-  getTopLeagues: () =>
-    request("/api/dashboard/leagues"),
+     Existing DashboardHero.js currently calls:
 
-  getTrendingTeams: () =>
-    request("/api/dashboard/teams"),
+     api.getDashboard()
 
-  getLatestResults: () =>
-    request("/api/dashboard/results"),
+     Keep it working.
+  ----------------------------------------- */
 
-  getTopScorersMini: () =>
-    request("/api/dashboard/topscorers"),
+  getDashboard:
+    () =>
+      request(
+        "/api/dashboard/hero"
+      ),
 
-  getStandingsMini: () =>
-    request("/api/dashboard/standings"),
+  /* -----------------------------------------
+     FEATURED
+  ----------------------------------------- */
+
+  getFeaturedMatch:
+    () =>
+      request(
+        "/api/dashboard/featured"
+      ),
+
+  /* -----------------------------------------
+     LIVE
+  ----------------------------------------- */
+
+  getLiveMatches:
+    () =>
+      request(
+        "/api/dashboard/live"
+      ),
+
+  /* -----------------------------------------
+     TODAY
+  ----------------------------------------- */
+
+  getTodayMatches:
+    () =>
+      request(
+        "/api/dashboard/today"
+      ),
+
+  /* -----------------------------------------
+     TOP LEAGUES
+  ----------------------------------------- */
+
+  getTopLeagues:
+    () =>
+      request(
+        "/api/dashboard/leagues"
+      ),
+
+  /* -----------------------------------------
+     TRENDING TEAMS
+  ----------------------------------------- */
+
+  getTrendingTeams:
+    () =>
+      request(
+        "/api/dashboard/teams"
+      ),
+
+  /* -----------------------------------------
+     LATEST RESULTS
+  ----------------------------------------- */
+
+  getLatestResults:
+    () =>
+      request(
+        "/api/dashboard/results"
+      ),
+
+  /* -----------------------------------------
+     TOP SCORERS
+  ----------------------------------------- */
+
+  getTopScorersMini:
+    () =>
+      request(
+        "/api/dashboard/topscorers"
+      ),
+
+  /* -----------------------------------------
+     STANDINGS
+  ----------------------------------------- */
+
+  getStandingsMini:
+    () =>
+      request(
+        "/api/dashboard/standings"
+      ),
 };
 
 /* ===========================================
-   Match
+   MATCH
 =========================================== */
 
 const match = {
-  getMatch: (id) =>
-    request(`/api/match/${id}`),
+  getMatch:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}`
+      ),
 
-  getEvents: (id) =>
-    request(`/api/match/${id}/events`),
+  getEvents:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/events`
+      ),
 
-  getStatistics: (id) =>
-    request(`/api/match/${id}/statistics`),
+  getTimeline:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/timeline`
+      ),
 
-  getLineups: (id) =>
-    request(`/api/match/${id}/lineups`),
+  getStatistics:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/statistics`
+      ),
 
-  getPlayerStatistics: (id) =>
-    request(`/api/match/${id}/players`),
+  getLineups:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/lineups`
+      ),
+
+  getPlayerStatistics:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/players`
+      ),
+
+  getFacts:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/facts`
+      ),
+
+  getHeadToHead:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/headtohead`
+      ),
+
+  getStandings:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/standings`
+      ),
+
+  getPrediction:
+    (id) =>
+      request(
+        `/api/match/${encodeURIComponent(
+          id
+        )}/prediction`
+      ),
 };
 
 /* ===========================================
-   Team
+   FIXTURES
+=========================================== */
+
+const fixtures = {
+  get:
+    (
+      league = "epl",
+      season,
+      page = 1,
+      limit = 10
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/fixtures/${encodeURIComponent(
+          league
+        )}?${params.toString()}`
+      );
+    },
+};
+
+/* ===========================================
+   RESULTS
+=========================================== */
+
+const results = {
+  get:
+    (
+      league = "PL",
+      season,
+      page = 1,
+      limit = 10
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      params.set(
+        "league",
+        league
+      );
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/results?${params.toString()}`
+      );
+    },
+
+  direct:
+    (season) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/results/direct${query}`
+      );
+    },
+};
+
+/* ===========================================
+   LIVE
+=========================================== */
+
+const live = {
+  get:
+    (
+      league,
+      season
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (league) {
+        params.set(
+          "league",
+          league
+        );
+      }
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      const query =
+        params.toString();
+
+      return request(
+        `/api/live${
+          query
+            ? `?${query}`
+            : ""
+        }`
+      );
+    },
+};
+
+/* ===========================================
+   TODAY
+=========================================== */
+
+const today = {
+  get:
+    (
+      date,
+      league = "PL",
+      season
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (date) {
+        params.set(
+          "date",
+          date
+        );
+      }
+
+      if (league) {
+        params.set(
+          "league",
+          league
+        );
+      }
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      const query =
+        params.toString();
+
+      return request(
+        `/api/today${
+          query
+            ? `?${query}`
+            : ""
+        }`
+      );
+    },
+};
+
+/* ===========================================
+   TOP LEAGUES
+=========================================== */
+
+const topLeagues = {
+  get:
+    (season) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/top-leagues${query}`
+      );
+    },
+};
+
+/* ===========================================
+   TRENDING TEAMS
+=========================================== */
+
+const trendingTeams = {
+  get:
+    (season) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/trending-teams${query}`
+      );
+    },
+};
+
+/* ===========================================
+   TOP SCORERS MINI
+=========================================== */
+
+const topScorersMini = {
+  get:
+    (
+      league = "epl",
+      season = 2025
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      params.set(
+        "league",
+        league
+      );
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      return request(
+        `/api/top-scorers-mini?${params.toString()}`
+      );
+    },
+};
+
+/* ===========================================
+   STANDINGS MINI
+=========================================== */
+
+const standingsMini = {
+  get:
+    (
+      league = "epl",
+      season = 2025
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      params.set(
+        "league",
+        league
+      );
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      return request(
+        `/api/standings/${encodeURIComponent(
+          league
+        )}?${params.toString()}`
+      );
+    },
+};
+
+/* ===========================================
+   TEAM
 =========================================== */
 
 const team = {
-  getTeam: (id) =>
-    request(`/api/team/${id}`),
+  getTeam:
+    (id) =>
+      request(
+        `/api/team/${encodeURIComponent(
+          id
+        )}`
+      ),
 
-  getPlayers: (id) =>
-    request(`/api/team/${id}/players`),
+  getPlayers:
+    (id) =>
+      request(
+        `/api/team/${encodeURIComponent(
+          id
+        )}/players`
+      ),
 
-  getStatistics: (id) =>
-    request(`/api/team/${id}/statistics`),
+  getStatistics:
+    (id) =>
+      request(
+        `/api/team/${encodeURIComponent(
+          id
+        )}/statistics`
+      ),
 };
 
 /* ===========================================
-   Player
+   PLAYER
 =========================================== */
 
 const player = {
-  getPlayer: (id) =>
-    request(`/api/player/${id}`),
+  getPlayer:
+    (id) =>
+      request(
+        `/api/player/${encodeURIComponent(
+          id
+        )}`
+      ),
 
-  getTransfers: (id) =>
-    request(`/api/player/${id}/transfers`),
+  getTransfers:
+    (id) =>
+      request(
+        `/api/player/${encodeURIComponent(
+          id
+        )}/transfers`
+      ),
 
-  getTrophies: (id) =>
-    request(`/api/player/${id}/trophies`),
+  getTrophies:
+    (id) =>
+      request(
+        `/api/player/${encodeURIComponent(
+          id
+        )}/trophies`
+      ),
 };
 
 /* ===========================================
-   League
+   LEAGUE
 =========================================== */
 
 const league = {
-  getLeague: (id) =>
-    request(`/api/league/${id}`),
+  getLeague:
+    (
+      id,
+      season
+    ) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
 
-  getFixtures: (id) =>
-    request(`/api/league/${id}/fixtures`),
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}${query}`
+      );
+    },
 
-  getStandings: (id) =>
-    request(`/api/league/${id}/standings`),
+  getFixtures:
+    (
+      id,
+      season,
+      page = 1,
+      limit = 10
+    ) => {
+      const params =
+        new URLSearchParams();
 
-  getTopScorers: (id) =>
-    request(`/api/league/${id}/topscorers`),
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/fixtures?${params.toString()}`
+      );
+    },
+
+  getResults:
+    (
+      id,
+      season,
+      page = 1,
+      limit = 10
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/results?${params.toString()}`
+      );
+    },
+
+  getStandings:
+    (
+      id,
+      season
+    ) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/standings${query}`
+      );
+    },
+
+  getTopScorers:
+    (
+      id,
+      season,
+      page = 1,
+      limit = 20
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/topscorers?${params.toString()}`
+      );
+    },
+
+  getTopAssists:
+    (
+      id,
+      season,
+      page = 1,
+      limit = 20
+    ) => {
+      const params =
+        new URLSearchParams();
+
+      if (
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+      ) {
+        params.set(
+          "season",
+          season
+        );
+      }
+
+      params.set(
+        "page",
+        page
+      );
+
+      params.set(
+        "limit",
+        limit
+      );
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/topassists?${params.toString()}`
+      );
+    },
+
+  getTeams:
+    (
+      id,
+      season
+    ) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/teams${query}`
+      );
+    },
+
+  getStatistics:
+    (
+      id,
+      season
+    ) => {
+      const query =
+        season !== undefined &&
+        season !== null &&
+        season !== ""
+          ? `?season=${encodeURIComponent(
+              season
+            )}`
+          : "";
+
+      return request(
+        `/api/league/${encodeURIComponent(
+          id
+        )}/statistics${query}`
+      );
+    },
 };
 
 /* ===========================================
-   Search
+   SEARCH
 =========================================== */
 
 const search = {
-  query: (text) =>
-    request(
-      `/api/search?q=${encodeURIComponent(text)}`
-    ),
+  query:
+    (text) =>
+      request(
+        `/api/search?q=${encodeURIComponent(
+          text
+        )}`
+      ),
 };
 
 /* ===========================================
-   Export
+   EXPORT
 =========================================== */
 
 export const api = {
@@ -180,45 +969,176 @@ export const api = {
 
   dashboard,
   match,
+  fixtures,
+  results,
+  live,
+  today,
+  topLeagues,
+  trendingTeams,
+  topScorersMini,
+  standingsMini,
   team,
   player,
   league,
   search,
 
-  // Dashboard
-  getDashboard: dashboard.getDashboard,
-  getFeaturedMatch: dashboard.getFeaturedMatch,
-  getLiveMatches: dashboard.getLiveMatches,
-  getTodayMatches: dashboard.getTodayMatches,
-  getTopLeagues: dashboard.getTopLeagues,
-  getTrendingTeams: dashboard.getTrendingTeams,
-  getLatestResults: dashboard.getLatestResults,
-  getTopScorersMini: dashboard.getTopScorersMini,
-  getStandingsMini: dashboard.getStandingsMini,
+  /* Dashboard compatibility */
 
-  // Match
-  getMatch: match.getMatch,
-  getMatchEvents: match.getEvents,
-  getMatchStatistics: match.getStatistics,
-  getMatchLineups: match.getLineups,
-  getPlayerStatistics: match.getPlayerStatistics,
+  getDashboard:
+    dashboard.getDashboard,
 
-  // Team
-  getTeam: team.getTeam,
-  getTeamPlayers: team.getPlayers,
-  getTeamStatistics: team.getStatistics,
+  getDashboardHero:
+    dashboard.getDashboardHero,
 
-  // Player
-  getPlayer: player.getPlayer,
-  getPlayerTransfers: player.getTransfers,
-  getPlayerTrophies: player.getTrophies,
+  getFeaturedMatch:
+    dashboard.getFeaturedMatch,
 
-  // League
-  getLeague: league.getLeague,
-  getLeagueFixtures: league.getFixtures,
-  getLeagueStandings: league.getStandings,
-  getLeagueTopScorers: league.getTopScorers,
+  getLiveMatches:
+    dashboard.getLiveMatches,
 
-  // Search
-  search: search.query,
+  getTodayMatches:
+    dashboard.getTodayMatches,
+
+  getTopLeagues:
+    dashboard.getTopLeagues,
+
+  getTrendingTeams:
+    dashboard.getTrendingTeams,
+
+  getLatestResults:
+    dashboard.getLatestResults,
+
+  getTopScorersMini:
+    dashboard.getTopScorersMini,
+
+  getStandingsMini:
+    dashboard.getStandingsMini,
+
+  /* Match */
+
+  getMatch:
+    match.getMatch,
+
+  getMatchEvents:
+    match.getEvents,
+
+  getMatchTimeline:
+    match.getTimeline,
+
+  getMatchStatistics:
+    match.getStatistics,
+
+  getMatchLineups:
+    match.getLineups,
+
+  getPlayerStatistics:
+    match.getPlayerStatistics,
+
+  getMatchFacts:
+    match.getFacts,
+
+  getMatchHeadToHead:
+    match.getHeadToHead,
+
+  getMatchStandings:
+    match.getStandings,
+
+  getMatchPrediction:
+    match.getPrediction,
+
+  /* Fixtures */
+
+  getFixtures:
+    fixtures.get,
+
+  /* Results */
+
+  getResults:
+    results.get,
+
+  getDirectResults:
+    results.direct,
+
+  /* Live */
+
+  getLive:
+    live.get,
+
+  /* Today */
+
+  getToday:
+    today.get,
+
+  /* Top leagues */
+
+  getTopLeaguesList:
+    topLeagues.get,
+
+  /* Trending teams */
+
+  getTrendingTeamsList:
+    trendingTeams.get,
+
+  /* Top scorers */
+
+  getTopScorers:
+    topScorersMini.get,
+
+  /* Standings */
+
+  getStandings:
+    standingsMini.get,
+
+  /* Team */
+
+  getTeam:
+    team.getTeam,
+
+  getTeamPlayers:
+    team.getPlayers,
+
+  getTeamStatistics:
+    team.getStatistics,
+
+  /* Player */
+
+  getPlayer:
+    player.getPlayer,
+
+  getPlayerTransfers:
+    player.getTransfers,
+
+  getPlayerTrophies:
+    player.getTrophies,
+
+  /* League */
+
+  getLeague:
+    league.getLeague,
+
+  getLeagueFixtures:
+    league.getFixtures,
+
+  getLeagueResults:
+    league.getResults,
+
+  getLeagueStandings:
+    league.getStandings,
+
+  getLeagueTopScorers:
+    league.getTopScorers,
+
+  getLeagueTopAssists:
+    league.getTopAssists,
+
+  getLeagueTeams:
+    league.getTeams,
+
+  getLeagueStatistics:
+    league.getStatistics,
+
+  /* Search */
+
+  search:
+    search.query,
 };

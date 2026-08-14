@@ -5,6 +5,8 @@ import Image from "next/image";
 export default function PlayerHeader({ player }) {
   if (!player) return null;
 
+  const playerPhoto = player.photo || null;
+
   return (
     <section
       style={{
@@ -23,7 +25,7 @@ export default function PlayerHeader({ player }) {
           gap: 30,
         }}
       >
-        {/* Player Photo */}
+        {/* PLAYER PHOTO */}
 
         <div
           style={{
@@ -31,18 +33,47 @@ export default function PlayerHeader({ player }) {
             minWidth: 220,
           }}
         >
-          <Image
-            src={player.photo || "/player.png"}
-            alt={player.name}
-            width={180}
-            height={180}
-            priority
-            style={{
-              borderRadius: "50%",
-              objectFit: "cover",
-              border: "4px solid #22c55e",
-            }}
-          />
+          {playerPhoto ? (
+            <Image
+              src={playerPhoto}
+              alt={player.name || "Player"}
+              width={180}
+              height={180}
+              priority
+              unoptimized
+              style={{
+                borderRadius: "50%",
+                objectFit: "cover",
+                border: "4px solid #22c55e",
+              }}
+            />
+          ) : (
+            <div
+              aria-label={
+                player.name || "Player"
+              }
+              style={{
+                width: 180,
+                height: 180,
+                margin: "0 auto",
+                borderRadius: "50%",
+                background:
+                  "linear-gradient(145deg, #1f2937, #111827)",
+                border:
+                  "4px solid #22c55e",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#22c55e",
+                fontSize: 64,
+                fontWeight: 800,
+              }}
+            >
+              {(player.name || "P")
+                .charAt(0)
+                .toUpperCase()}
+            </div>
+          )}
 
           <h2
             style={{
@@ -51,7 +82,7 @@ export default function PlayerHeader({ player }) {
               marginBottom: 5,
             }}
           >
-            {player.name}
+            {player.name || "Unknown Player"}
           </h2>
 
           <div
@@ -59,11 +90,12 @@ export default function PlayerHeader({ player }) {
               color: "#94a3b8",
             }}
           >
-            {player.position || "Football Player"}
+            {player.position ||
+              "Football Player"}
           </div>
         </div>
 
-        {/* Information */}
+        {/* INFORMATION */}
 
         <div
           style={{
@@ -76,52 +108,70 @@ export default function PlayerHeader({ player }) {
         >
           <InfoCard
             title="Nationality"
-            value={player.nationality || "-"}
+            value={
+              player.nationality || "-"
+            }
           />
 
           <InfoCard
             title="Age"
-            value={player.age || "-"}
+            value={
+              player.age || "-"
+            }
           />
 
           <InfoCard
             title="Height"
-            value={player.height || "-"}
+            value={
+              player.height || "-"
+            }
           />
 
           <InfoCard
             title="Weight"
-            value={player.weight || "-"}
+            value={
+              player.weight || "-"
+            }
           />
 
           <InfoCard
             title="Birth Date"
-            value={player.birth?.date || "-"}
+            value={
+              player.birth?.date || "-"
+            }
           />
 
           <InfoCard
             title="Birth Place"
-            value={[
-              player.birth?.place,
-              player.birth?.country,
-            ]
-              .filter(Boolean)
-              .join(", ") || "-"}
+            value={
+              [
+                player.birth?.place,
+                player.birth?.country,
+              ]
+                .filter(Boolean)
+                .join(", ") || "-"
+            }
           />
 
           <InfoCard
             title="Current Club"
-            value={player.team?.name || "-"}
+            value={
+              player.team?.name ||
+              player.club?.name ||
+              "-"
+            }
           />
 
           <InfoCard
             title="Jersey Number"
-            value={player.number || "-"}
+            value={
+              player.number || "-"
+            }
           />
         </div>
       </div>
 
-      {/* Summary */}
+      {/* SUMMARY */}
 
       <div
         style={{
@@ -147,16 +197,32 @@ export default function PlayerHeader({ player }) {
             margin: 0,
           }}
         >
-          <strong>{player.name}</strong> is a professional football
+          <strong>
+            {player.name ||
+              "This player"}
+          </strong>{" "}
+          is a professional football
           player representing{" "}
-          <strong>{player.team?.name || "his club"}</strong>.
-          He plays primarily as{" "}
-          <strong>{player.position || "-"}</strong> and represents{" "}
-          <strong>{player.nationality || "-"}</strong>.
-          Personal information, career statistics, transfers,
-          injuries and performance data are automatically updated
-          from the football data provider whenever new information
-          becomes available.
+          <strong>
+            {player.team?.name ||
+              player.club?.name ||
+              "his club"}
+          </strong>
+          . He plays primarily as{" "}
+          <strong>
+            {player.position || "-"}
+          </strong>{" "}
+          and represents{" "}
+          <strong>
+            {player.nationality || "-"}
+          </strong>
+          . Personal information, career
+          statistics, transfers, injuries
+          and performance data are
+          automatically updated from the
+          football data provider whenever
+          new information becomes
+          available.
         </p>
       </div>
     </section>

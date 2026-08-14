@@ -2,84 +2,158 @@
 
 export default function PlayerTrophies({
   trophies = [],
+  available = false,
 }) {
   return (
     <section
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg, #111827, #0f172a)",
         borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border: "1px solid #1e293b",
       }}
     >
-      <h2
+      <div
         style={{
-          color: "#fff",
-          marginBottom: 28,
+          marginBottom: 25,
         }}
       >
-        🏆 Career Trophies
-      </h2>
+        <div
+          style={{
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "1.2px",
+            textTransform: "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          ⚽ Apex Sports
+        </div>
 
-      {!trophies.length ? (
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 26,
+          }}
+        >
+          🏆 Player Trophies
+        </h2>
+
+        <p
+          style={{
+            color: "#94a3b8",
+            margin: "8px 0 0",
+            fontSize: 14,
+          }}
+        >
+          Major trophies and titles
+          won throughout the player's
+          career.
+        </p>
+      </div>
+
+      {!available ? (
         <div
           style={{
             background: "#1f2937",
-            borderRadius: 18,
+            borderRadius: 16,
             padding: 35,
+            textAlign: "center",
+            border: "1px solid #293548",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 42,
+              marginBottom: 15,
+            }}
+          >
+            🏆
+          </div>
+
+          <h3
+            style={{
+              margin: "0 0 10px",
+              color: "#fff",
+              fontSize: 20,
+            }}
+          >
+            Trophy History Unavailable
+          </h3>
+
+          <p
+            style={{
+              margin: 0,
+              color: "#94a3b8",
+              lineHeight: 1.7,
+              fontSize: 14,
+            }}
+          >
+            Player trophy history is
+            not provided by the current
+            football-data.org data source.
+          </p>
+
+          <div
+            style={{
+              marginTop: 18,
+              display: "inline-block",
+              padding: "8px 14px",
+              borderRadius: 999,
+              background: "#0f172a",
+              color: "#64748b",
+              fontSize: 12,
+              fontWeight: 700,
+            }}
+          >
+            Source: football-data.org
+          </div>
+        </div>
+      ) : !Array.isArray(trophies) ||
+        trophies.length === 0 ? (
+        <div
+          style={{
+            background: "#1f2937",
+            borderRadius: 16,
+            padding: 30,
             textAlign: "center",
             color: "#94a3b8",
           }}
         >
-          No trophies available.
+          No trophy history available.
         </div>
       ) : (
         <div
           style={{
             display: "grid",
             gridTemplateColumns:
-              "repeat(auto-fit,minmax(260px,1fr))",
-            gap: 20,
+              "repeat(auto-fit,minmax(220px,1fr))",
+            gap: 16,
           }}
         >
           {trophies.map(
             (trophy, index) => (
               <div
-                key={index}
+                key={
+                  trophy?.id ||
+                  index
+                }
                 style={{
-                  background:
-                    "#1f2937",
-                  borderRadius: 18,
-                  padding: 22,
+                  background: "#1f2937",
+                  borderRadius: 16,
+                  padding: 20,
                   border:
-                    "1px solid rgba(255,215,0,.25)",
-                  transition:
-                    "all .25s ease",
-                  cursor: "default",
-                }}
-                onMouseEnter={(
-                  e
-                ) => {
-                  e.currentTarget.style.transform =
-                    "translateY(-5px)";
-                  e.currentTarget.style.boxShadow =
-                    "0 14px 28px rgba(0,0,0,.35)";
-                }}
-                onMouseLeave={(
-                  e
-                ) => {
-                  e.currentTarget.style.transform =
-                    "translateY(0)";
-                  e.currentTarget.style.boxShadow =
-                    "none";
+                    "1px solid #293548",
                 }}
               >
-                {/* Trophy */}
-
                 <div
                   style={{
-                    fontSize: 46,
-                    marginBottom: 18,
+                    fontSize: 30,
+                    marginBottom: 12,
                   }}
                 >
                   🏆
@@ -87,96 +161,47 @@ export default function PlayerTrophies({
 
                 <h3
                   style={{
+                    margin: 0,
                     color: "#fff",
-                    marginBottom: 12,
-                    fontSize: 21,
+                    fontSize: 17,
                   }}
                 >
-                  {trophy.league ||
-                    "-"}
+                  {trophy?.name ||
+                    "Trophy"}
                 </h3>
 
-                <div
-                  style={{
-                    color: "#facc15",
-                    fontWeight: 700,
-                    fontSize: 18,
-                    marginBottom: 10,
-                  }}
-                >
-                  {trophy.place ||
-                    "-"}
-                </div>
+                {trophy?.season && (
+                  <div
+                    style={{
+                      marginTop: 8,
+                      color: "#22c55e",
+                      fontSize: 13,
+                      fontWeight: 700,
+                    }}
+                  >
+                    Season{" "}
+                    {trophy.season}
+                  </div>
+                )}
 
-                <div
-                  style={{
-                    color: "#94a3b8",
-                    marginBottom: 8,
-                  }}
-                >
-                  Season
-                </div>
-
-                <div
-                  style={{
-                    color: "#fff",
-                    fontWeight: 600,
-                    fontSize: 18,
-                  }}
-                >
-                  {trophy.season ||
-                    "-"}
-                </div>
+                {trophy?.team && (
+                  <div
+                    style={{
+                      marginTop: 6,
+                      color: "#94a3b8",
+                      fontSize: 13,
+                    }}
+                  >
+                    {typeof trophy.team ===
+                    "string"
+                      ? trophy.team
+                      : trophy.team?.name ||
+                        ""}
+                  </div>
+                )}
               </div>
             )
           )}
-        </div>
-      )}
-
-      {/* Summary */}
-
-      {trophies.length > 0 && (
-        <div
-          style={{
-            marginTop: 35,
-            background:
-              "#1f2937",
-            borderRadius: 18,
-            padding: 24,
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-              marginBottom: 15,
-            }}
-          >
-            Career Summary
-          </h3>
-
-          <p
-            style={{
-              color: "#cbd5e1",
-              lineHeight: 1.8,
-              margin: 0,
-            }}
-          >
-            This player has won{" "}
-            <strong>
-              {trophies.length}
-            </strong>{" "}
-            official career
-            trophy
-            {trophies.length >
-            1
-              ? "ies"
-              : ""}{" "}
-            across domestic
-            leagues,
-            international
-            competitions and
-            cup tournaments.
-          </p>
         </div>
       )}
     </section>

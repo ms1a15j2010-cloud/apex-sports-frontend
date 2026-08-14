@@ -4,91 +4,242 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TeamSquad({ players = [] }) {
+export default function TeamSquad({
+  players = [],
+}) {
   const [search, setSearch] = useState("");
   const [position, setPosition] = useState("All");
 
-  const formattedPlayers = useMemo(() => {
-    return players.map((p) => {
-      if (p.player) {
-        return {
-          id: p.player.id,
-          name: p.player.name,
-          photo: p.player.photo,
-          age: p.player.age,
-          nationality: p.player.nationality,
-          height: p.player.height,
-          weight: p.player.weight,
-          position:
-            p.statistics?.[0]?.games?.position ||
-            "Unknown",
-          number:
-            p.statistics?.[0]?.games?.number || "-",
-          appearances:
-            p.statistics?.[0]?.games?.appearences ||
-            0,
-          rating:
-            p.statistics?.[0]?.games?.rating ||
-            "-",
-        };
-      }
+  /* =====================================================
+     NORMALIZE SQUAD
+  ===================================================== */
 
-      return {
-        id: p.id,
-        name: p.name,
-        photo: p.photo,
-        age: p.age,
-        nationality: p.nationality,
-        height: p.height,
-        weight: p.weight,
-        position: p.position || "Unknown",
-        number: p.number || "-",
-        appearances: p.appearances || 0,
-        rating: p.rating || "-",
-      };
-    });
+  const formattedPlayers = useMemo(() => {
+    if (!Array.isArray(players)) {
+      return [];
+    }
+
+    return players
+      .map((item) => {
+        const player =
+          item?.player || item || {};
+
+        const statistics =
+          Array.isArray(
+            item?.statistics
+          )
+            ? item.statistics[0] || {}
+            : {};
+
+        const games =
+          statistics.games || {};
+
+        const birthDate =
+          player.dateOfBirth ||
+          player.birth?.date ||
+          null;
+
+        return {
+          id:
+            player.id ??
+            null,
+
+          name:
+            player.name ||
+            "Unknown Player",
+
+          firstName:
+            player.firstName ||
+            player.firstname ||
+            null,
+
+          lastName:
+            player.lastName ||
+            player.lastname ||
+            null,
+
+          photo:
+            player.photo ||
+            null,
+
+          nationality:
+            player.nationality ||
+            "-",
+
+          birthDate,
+
+          age:
+            player.age ??
+            calculateAge(
+              birthDate
+            ),
+
+          height:
+            player.height ||
+            null,
+
+          weight:
+            player.weight ||
+            null,
+
+          position:
+            player.position ||
+            games.position ||
+            "Unknown",
+
+          number:
+            player.shirtNumber ??
+            player.number ??
+            games.number ??
+            "-",
+
+          appearances:
+            games.appearances ??
+            games.appearences ??
+            0,
+
+          rating:
+            games.rating ||
+            "-",
+
+          goals:
+            statistics.goals?.total ??
+            0,
+
+          assists:
+            statistics.goals?.assists ??
+            0,
+        };
+      })
+      .filter(
+        (player) =>
+          player.id !== null
+      );
   }, [players]);
 
-  const positions = [
-    "All",
-    ...new Set(
-      formattedPlayers.map((p) => p.position)
-    ),
-  ];
+  /* =====================================================
+     POSITIONS
+  ===================================================== */
 
-  const filtered = formattedPlayers.filter(
-    (player) => {
-      const matchSearch =
-        player.name
-          .toLowerCase()
-          .includes(search.toLowerCase());
+  const positions = useMemo(() => {
+    const uniquePositions =
+      [
+        ...new Set(
+          formattedPlayers
+            .map(
+              (player) =>
+                player.position
+            )
+            .filter(Boolean)
+        ),
+      ].sort();
 
-      const matchPosition =
-        position === "All" ||
-        player.position === position;
+    return [
+      "All",
+      ...uniquePositions,
+    ];
+  }, [formattedPlayers]);
 
-      return matchSearch && matchPosition;
-    }
+  /* =====================================================
+     FILTER
+  ===================================================== */
+
+  const filteredPlayers =
+    useMemo(() => {
+      const query =
+        search
+          .trim()
+          .toLowerCase();
+
+      return formattedPlayers.filter(
+        (player) => {
+          const matchesSearch =
+            !query ||
+            player.name
+              .toLowerCase()
+              .includes(query);
+
+          const matchesPosition =
+            position === "All" ||
+            player.position ===
+              position;
+
+          return (
+            matchesSearch &&
+            matchesPosition
+          );
+        }
+      );
+    },
+    [
+      formattedPlayers,
+      search,
+      position,
+    ]
   );
 
   return (
     <section
+      id="squad"
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 20,
         padding: 30,
+        marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
-      <h2
+      {/* =================================================
+          HEADER
+      ================================================= */}
+
+      <div
         style={{
-          color: "#fff",
           marginBottom: 25,
         }}
       >
-        👥 Team Squad
-      </h2>
+        <div
+          style={{
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing: "1.2px",
+            textTransform:
+              "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          ⚽ Apex Sports
+        </div>
 
-      {/* Controls */}
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 28,
+          }}
+        >
+          👥 Team Squad
+        </h2>
+
+        <p
+          style={{
+            color: "#94a3b8",
+            margin:
+              "8px 0 0",
+            fontSize: 14,
+          }}
+        >
+          Current squad provided by
+          football-data.org.
+        </p>
+      </div>
+
+      {/* =================================================
+          CONTROLS
+      ================================================= */}
 
       <div
         style={{
@@ -100,212 +251,413 @@ export default function TeamSquad({ players = [] }) {
       >
         <input
           value={search}
-          onChange={(e) =>
-            setSearch(e.target.value)
+          onChange={(event) =>
+            setSearch(
+              event.target.value
+            )
           }
           placeholder="Search player..."
           style={{
             flex: 1,
             minWidth: 240,
-            background: "#1f2937",
+            background:
+              "#1f2937",
             color: "#fff",
-            border: "none",
-            padding: 12,
+            border:
+              "1px solid #293548",
+            outline: "none",
+            padding:
+              "13px 15px",
             borderRadius: 10,
+            fontSize: 14,
           }}
         />
 
         <select
           value={position}
-          onChange={(e) =>
-            setPosition(e.target.value)
+          onChange={(event) =>
+            setPosition(
+              event.target.value
+            )
           }
           style={{
-            background: "#1f2937",
+            background:
+              "#1f2937",
             color: "#fff",
-            border: "none",
-            padding: 12,
+            border:
+              "1px solid #293548",
+            outline: "none",
+            padding:
+              "13px 15px",
             borderRadius: 10,
+            fontSize: 14,
           }}
         >
-          {positions.map((p) => (
-            <option
-              key={p}
-              value={p}
-            >
-              {p}
-            </option>
-          ))}
+          {positions.map(
+            (item) => (
+              <option
+                key={item}
+                value={item}
+              >
+                {item}
+              </option>
+            )
+          )}
         </select>
       </div>
 
-      {/* Squad */}
+      {/* =================================================
+          RESULT COUNT
+      ================================================= */}
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fill,minmax(260px,1fr))",
-          gap: 22,
+          color: "#64748b",
+          fontSize: 13,
+          marginBottom: 18,
         }}
       >
-        {filtered.map((player) => (
-          <Link
-            key={player.id}
-            href={`/player/${player.id}`}
-            style={{
-              textDecoration: "none",
-              color: "#fff",
-            }}
-          >
-            <div
-              style={{
-                background: "#1f2937",
-                borderRadius: 18,
-                padding: 22,
-                transition: ".25s",
-                height: "100%",
-                border:
-                  "1px solid transparent",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform =
-                  "translateY(-5px)";
-                e.currentTarget.style.border =
-                  "1px solid #22c55e";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform =
-                  "translateY(0)";
-                e.currentTarget.style.border =
-                  "1px solid transparent";
-              }}
-            >
-              <div
+        Showing{" "}
+        <strong
+          style={{
+            color: "#cbd5e1",
+          }}
+        >
+          {filteredPlayers.length}
+        </strong>{" "}
+        of{" "}
+        <strong
+          style={{
+            color: "#cbd5e1",
+          }}
+        >
+          {formattedPlayers.length}
+        </strong>{" "}
+        players
+      </div>
+
+      {/* =================================================
+          EMPTY STATE
+      ================================================= */}
+
+      {formattedPlayers.length ===
+      0 ? (
+        <div
+          style={{
+            background:
+              "#1f2937",
+            borderRadius: 16,
+            padding: 35,
+            textAlign:
+              "center",
+            color:
+              "#94a3b8",
+          }}
+        >
+          No squad players are
+          available.
+        </div>
+      ) : filteredPlayers.length ===
+        0 ? (
+        <div
+          style={{
+            background:
+              "#1f2937",
+            borderRadius: 16,
+            padding: 35,
+            textAlign:
+              "center",
+            color:
+              "#94a3b8",
+          }}
+        >
+          No players match your
+          search/filter.
+        </div>
+      ) : (
+        /* =================================================
+           SQUAD GRID
+        ================================================= */
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns:
+              "repeat(auto-fill,minmax(270px,1fr))",
+            gap: 20,
+          }}
+        >
+          {filteredPlayers.map(
+            (player) => (
+              <Link
+                key={player.id}
+                href={`/player/${player.id}`}
                 style={{
-                  display: "flex",
-                  justifyContent:
-                    "space-between",
-                  alignItems: "center",
-                  marginBottom: 18,
+                  textDecoration:
+                    "none",
+                  color: "#fff",
+                  display:
+                    "block",
                 }}
               >
-                <div
+                <article
                   style={{
-                    fontSize: 26,
-                    fontWeight: "bold",
-                    color: "#22c55e",
-                  }}
-                >
-                  #{player.number}
-                </div>
-
-                <div
-                  style={{
-                    background: "#111827",
-                    borderRadius: 30,
-                    padding:
-                      "6px 12px",
-                    fontSize: 13,
-                  }}
-                >
-                  {player.position}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent:
-                    "center",
-                  marginBottom: 18,
-                }}
-              >
-                <Image
-                  src={
-                    player.photo ||
-                    "/player.png"
-                  }
-                  alt={player.name}
-                  width={100}
-                  height={100}
-                  style={{
+                    background:
+                      "#1f2937",
                     borderRadius:
-                      "50%",
-                    objectFit:
-                      "cover",
+                      18,
+                    padding: 22,
+                    border:
+                      "1px solid #293548",
+                    height:
+                      "100%",
+                    transition:
+                      "transform .25s ease, border-color .25s ease, box-shadow .25s ease",
                   }}
-                />
-              </div>
+                  onMouseEnter={(
+                    event
+                  ) => {
+                    event.currentTarget.style.transform =
+                      "translateY(-5px)";
 
-              <h3
-                style={{
-                  textAlign:
-                    "center",
-                  marginBottom: 15,
-                  fontSize: 20,
-                }}
-              >
-                {player.name}
-              </h3>
+                    event.currentTarget.style.borderColor =
+                      "#22c55e";
 
-              <div
-                style={{
-                  display: "grid",
-                  gap: 8,
-                  color: "#cbd5e1",
-                  fontSize: 14,
-                }}
-              >
-                <Row
-                  label="Age"
-                  value={player.age}
-                />
+                    event.currentTarget.style.boxShadow =
+                      "0 12px 25px rgba(0,0,0,.28)";
+                  }}
+                  onMouseLeave={(
+                    event
+                  ) => {
+                    event.currentTarget.style.transform =
+                      "translateY(0)";
 
-                <Row
-                  label="Nation"
-                  value={
-                    player.nationality
-                  }
-                />
+                    event.currentTarget.style.borderColor =
+                      "#293548";
 
-                <Row
-                  label="Height"
-                  value={
-                    player.height ||
-                    "-"
-                  }
-                />
+                    event.currentTarget.style.boxShadow =
+                      "none";
+                  }}
+                >
+                  {/* TOP ROW */}
 
-                <Row
-                  label="Weight"
-                  value={
-                    player.weight ||
-                    "-"
-                  }
-                />
+                  <div
+                    style={{
+                      display:
+                        "flex",
+                      justifyContent:
+                        "space-between",
+                      alignItems:
+                        "center",
+                      gap: 12,
+                      marginBottom:
+                        18,
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: 24,
+                        fontWeight: 900,
+                        color:
+                          "#22c55e",
+                      }}
+                    >
+                      #
+                      {player.number !==
+                      "-"
+                        ? player.number
+                        : "—"}
+                    </div>
 
-                <Row
-                  label="Apps"
-                  value={
-                    player.appearances
-                  }
-                />
+                    <div
+                      style={{
+                        background:
+                          "#111827",
+                        borderRadius:
+                          30,
+                        padding:
+                          "6px 12px",
+                        fontSize: 12,
+                        color:
+                          "#cbd5e1",
+                        fontWeight:
+                          700,
+                      }}
+                    >
+                      {
+                        player.position
+                      }
+                    </div>
+                  </div>
 
-                <Row
-                  label="Rating"
-                  value={
-                    player.rating
-                  }
-                />
-              </div>
-            </div>
-          </Link>
-        ))}
+                  {/* PLAYER IMAGE */}
+
+                  <div
+                    style={{
+                      display:
+                        "flex",
+                      justifyContent:
+                        "center",
+                      marginBottom:
+                        18,
+                    }}
+                  >
+                    {player.photo ? (
+                      <Image
+                        src={
+                          player.photo
+                        }
+                        alt={
+                          player.name
+                        }
+                        width={100}
+                        height={100}
+                        unoptimized
+                        style={{
+                          borderRadius:
+                            "50%",
+                          objectFit:
+                            "cover",
+                          border:
+                            "3px solid #293548",
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: 100,
+                          height: 100,
+                          borderRadius:
+                            "50%",
+                          background:
+                            "linear-gradient(135deg,#111827,#293548)",
+                          display:
+                            "flex",
+                          alignItems:
+                            "center",
+                          justifyContent:
+                            "center",
+                          color:
+                            "#22c55e",
+                          fontSize: 32,
+                          fontWeight:
+                            900,
+                          border:
+                            "3px solid #293548",
+                        }}
+                      >
+                        {player.name
+                          ?.slice(
+                            0,
+                            1
+                          )
+                          ?.toUpperCase() ||
+                          "P"}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* NAME */}
+
+                  <h3
+                    style={{
+                      textAlign:
+                        "center",
+                      margin:
+                        "0 0 16px",
+                      fontSize: 20,
+                      color:
+                        "#fff",
+                    }}
+                  >
+                    {player.name}
+                  </h3>
+
+                  {/* PLAYER DATA */}
+
+                  <div
+                    style={{
+                      display:
+                        "grid",
+                      gap: 8,
+                      color:
+                        "#cbd5e1",
+                      fontSize: 13,
+                    }}
+                  >
+                    <Row
+                      label="Age"
+                      value={
+                        player.age ??
+                        "-"
+                      }
+                    />
+
+                    <Row
+                      label="Nationality"
+                      value={
+                        player.nationality
+                      }
+                    />
+
+                    <Row
+                      label="Appearances"
+                      value={
+                        player.appearances
+                      }
+                    />
+
+                    <Row
+                      label="Goals"
+                      value={
+                        player.goals
+                      }
+                    />
+
+                    <Row
+                      label="Assists"
+                      value={
+                        player.assists
+                      }
+                    />
+
+                    <Row
+                      label="Rating"
+                      value={
+                        player.rating
+                      }
+                    />
+                  </div>
+                </article>
+              </Link>
+            )
+          )}
+        </div>
+      )}
+
+      {/* =================================================
+          SOURCE
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 18,
+          paddingTop: 16,
+          borderTop:
+            "1px solid #293548",
+          color: "#64748b",
+          fontSize: 12,
+        }}
+      >
+        Source: football-data.org
       </div>
     </section>
   );
 }
+
+/* =====================================================
+ROW
+===================================================== */
 
 function Row({
   label,
@@ -317,10 +669,74 @@ function Row({
         display: "flex",
         justifyContent:
           "space-between",
+        gap: 12,
+        padding:
+          "8px 0",
+        borderBottom:
+          "1px solid #293548",
       }}
     >
-      <span>{label}</span>
-      <strong>{value}</strong>
+      <span>
+        {label}
+      </span>
+
+      <strong
+        style={{
+          color: "#fff",
+          textAlign: "right",
+          overflowWrap:
+            "anywhere",
+        }}
+      >
+        {value ?? "-"}
+      </strong>
     </div>
   );
+}
+
+/* =====================================================
+AGE
+===================================================== */
+
+function calculateAge(
+  birthDate
+) {
+  if (!birthDate) {
+    return null;
+  }
+
+  const birth =
+    new Date(birthDate);
+
+  if (
+    Number.isNaN(
+      birth.getTime()
+    )
+  ) {
+    return null;
+  }
+
+  const today =
+    new Date();
+
+  let age =
+    today.getFullYear() -
+    birth.getFullYear();
+
+  const monthDifference =
+    today.getMonth() -
+    birth.getMonth();
+
+  if (
+    monthDifference < 0 ||
+    (
+      monthDifference === 0 &&
+      today.getDate() <
+        birth.getDate()
+    )
+  ) {
+    age--;
+  }
+
+  return age;
 }

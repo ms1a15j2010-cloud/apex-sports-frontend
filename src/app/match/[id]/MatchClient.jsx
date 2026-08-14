@@ -1,22 +1,12 @@
 "use client";
+
 import "./match.css";
 
-/* =====================================================
-   REACT
-===================================================== */
-
-import { useEffect, useState } from "react";
-
-/* =====================================================
-   LIVE API
-===================================================== */
-
 import {
-  fetchCompleteLiveMatch,
-  getPollingInterval,
-  startPolling,
-  stopPolling,
-} from "@/services/liveApi";
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 /* =====================================================
    COMPONENTS
@@ -36,7 +26,223 @@ import MatchPrediction from "@/components/MatchPrediction";
 import MatchSidebar from "@/components/MatchSidebar";
 
 /* =====================================================
-   COMPONENT
+   API
+===================================================== */
+
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:5000";
+
+/* =====================================================
+   FETCH MATCH
+
+   IMPORTANT:
+
+   The Match Center now uses ONE backend endpoint:
+
+   /api/match/:id
+
+   This is the migrated football-data.org endpoint.
+
+   We do NOT call:
+
+   /events
+   /timeline
+   /statistics
+   /lineups
+   /players
+   /headtohead
+   /standings
+   /prediction
+
+   separately from the frontend.
+
+===================================================== */
+
+async function fetchMatch(
+  matchId
+) {
+  if (!matchId) {
+    throw new Error(
+      "Match ID is missing"
+    );
+  }
+
+  const response =
+    await fetch(
+      `${API}/api/match/${encodeURIComponent(
+        matchId
+      )}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+  if (!response.ok) {
+    throw new Error(
+      `Match API returned ${response.status}`
+    );
+  }
+
+  const data =
+    await response.json();
+
+  if (
+    !data ||
+    data.success !== true ||
+    !data.match
+  ) {
+    throw new Error(
+      data?.message ||
+        "Match data is unavailable"
+    );
+  }
+
+  return data;
+}
+
+/* =====================================================
+GET POLLING INTERVAL
+
+We only poll matches that can actually change.
+
+NS / FT:
+No polling.
+
+LIVE:
+15 seconds.
+
+HT:
+20 seconds.
+
+Unknown active status:
+30 seconds.
+===================================================== */
+
+function getPollingInterval(
+  status
+) {
+  const value =
+    String(
+      status || ""
+    ).toUpperCase();
+
+  if (
+    value === "LIVE" ||
+    value === "IN_PLAY"
+  ) {
+    return 15000;
+  }
+
+  if (
+    value === "HT" ||
+    value === "PAUSED"
+  ) {
+    return 20000;
+  }
+
+  return 0;
+}
+
+/* =====================================================
+NORMALIZE DATA
+
+Keep all match-center data derived from the single
+backend response.
+
+No fake values are generated.
+===================================================== */
+
+function normalizeMatchData(
+  data
+) {
+  const match =
+    data?.match || null;
+
+  if (!match) {
+    return {
+      match: null,
+      timeline: [],
+      events: [],
+      statistics: [],
+      lineups: [],
+      playerRatings: [],
+      facts: {},
+      headToHead: [],
+      standings: [],
+      prediction: null,
+    };
+  }
+
+  const events =
+    Array.isArray(
+      match.events
+    )
+      ? match.events
+      : Array.isArray(
+          match.goals
+        )
+      ? match.goals
+      : [];
+
+  const lineups =
+    Array.isArray(
+      match.lineups
+    )
+      ? match.lineups
+      : [];
+
+  return {
+    match,
+
+    timeline:
+      events,
+
+    events,
+
+    statistics:
+      Array.isArray(
+        match.statistics
+      )
+        ? match.statistics
+        : [],
+
+    lineups,
+
+    playerRatings:
+      Array.isArray(
+        match.players
+      )
+        ? match.players
+        : [],
+
+    facts:
+      match.fixture ||
+      match.raw ||
+      {},
+
+    headToHead:
+      Array.isArray(
+        match.headtohead
+      )
+        ? match.headtohead
+        : [],
+
+    standings:
+      Array.isArray(
+        match.standings
+      )
+        ? match.standings
+        : [],
+
+    prediction:
+      match.prediction ||
+      null,
+  };
+}
+
+/* =====================================================
+COMPONENT
 ===================================================== */
 
 export default function MatchClient({
@@ -49,27 +255,35 @@ export default function MatchClient({
   const [match, setMatch] =
     useState(null);
 
-  const [timeline, setTimeline] =
-    useState([]);
+  const [
+    timeline,
+    setTimeline,
+  ] = useState([]);
 
-  const [events, setEvents] =
-    useState([]);
+  const [
+    events,
+    setEvents,
+  ] = useState([]);
 
   const [
     statistics,
     setStatistics,
   ] = useState([]);
 
-  const [lineups, setLineups] =
-    useState([]);
+  const [
+    lineups,
+    setLineups,
+  ] = useState([]);
 
-  // const [
-  //   playerRatings,
-  //   setPlayerRatings,
-  // ] = useState([]);
+  const [
+    playerRatings,
+    setPlayerRatings,
+  ] = useState([]);
 
-  // const [facts, setFacts] =
-  //   useState({});
+  const [
+    facts,
+    setFacts,
+  ] = useState({});
 
   const [
     headToHead,
@@ -84,123 +298,169 @@ export default function MatchClient({
   const [
     prediction,
     setPrediction,
-  ] = useState({});
+  ] = useState(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
 
-  const [error, setError] =
-    useState(null);
+  const [
+    error,
+    setError,
+  ] = useState(null);
 
   /* ==========================================
      LOAD MATCH
   ========================================== */
 
-  async function loadMatch() {
-    try {
-      const data =
-        await fetchCompleteLiveMatch(
-          matchId
-        );
+  const loadMatch =
+    useCallback(
+      async () => {
+        try {
+          const data =
+            await fetchMatch(
+              matchId
+            );
 
-      setMatch(
-        data.match?.match || null
-      );
+          const normalized =
+            normalizeMatchData(
+              data
+            );
 
-      setTimeline(
-        data.timeline?.timeline ||
-          []
-      );
+          setMatch(
+            normalized.match
+          );
 
-      setEvents(
-        data.events?.events || []
-      );
+          setTimeline(
+            normalized.timeline
+          );
 
-      setStatistics(
-        data.statistics
-          ?.statistics || []
-      );
+          setEvents(
+            normalized.events
+          );
 
-      setLineups(
-        data.lineups?.lineups || []
-      );
+          setStatistics(
+            normalized.statistics
+          );
 
-      // setPlayerRatings(
-      //   data.playerRatings
-      //     ?.players || []
-      // );
+          setLineups(
+            normalized.lineups
+          );
 
-      setFacts(
-        data.facts?.facts || {}
-      );
+          setPlayerRatings(
+            normalized.playerRatings
+          );
 
-      setHeadToHead(
-        data.headToHead?.h2h ||
-          []
-      );
+          setFacts(
+            normalized.facts
+          );
 
-      setStandings(
-        data.standings
-          ?.standings || []
-      );
+          setHeadToHead(
+            normalized.headToHead
+          );
 
-      setPrediction(
-        data.prediction
-          ?.prediction || {}
-      );
+          setStandings(
+            normalized.standings
+          );
 
-      setLoading(false);
+          setPrediction(
+            normalized.prediction
+          );
 
-      setError(null);
-      return data.match?.match || null;
-    } catch (err) {
-      console.error(err);
+          setLoading(false);
 
-      setError(err.message);
+          setError(null);
 
-      setLoading(false);
+          return normalized.match;
+        } catch (err) {
+          console.error(
+            "❌ MatchClient:",
+            err
+          );
 
-      return null;
-    }
-  }
-    /* ==========================================
-     LIVE POLLING
+          setError(
+            err?.message ||
+              "Unable to load match"
+          );
+
+          setLoading(false);
+
+          return null;
+        }
+      },
+      [matchId]
+    );
+
+  /* ==========================================
+     LOAD + LIVE POLLING
   ========================================== */
 
   useEffect(() => {
-    if (!matchId) return;
+    if (!matchId) {
+      setError(
+        "Match ID is missing"
+      );
 
-    let pollingId = null;
+      setLoading(false);
+
+      return;
+    }
+
+    let timer = null;
+
+    let cancelled = false;
 
     async function initialize() {
-      const liveMatch = await loadMatch();
+      const loadedMatch =
+        await loadMatch();
 
-const currentStatus =
-  liveMatch?.fixture?.status?.short ||
-  liveMatch?.status?.short ||
-  "LIVE";
+      if (
+        cancelled ||
+        !loadedMatch
+      ) {
+        return;
+      }
+
+      const currentStatus =
+        loadedMatch
+          ?.status
+          ?.short ||
+        loadedMatch
+          ?.rawStatus ||
+        "NS";
 
       const interval =
-        getPollingInterval(currentStatus);
-
-      if (interval > 0) {
-        pollingId = startPolling(
-          async () => {
-            await loadMatch();
-          },
-          interval
+        getPollingInterval(
+          currentStatus
         );
+
+      if (
+        interval <= 0
+      ) {
+        return;
       }
+
+      timer = setInterval(
+        async () => {
+          if (!cancelled) {
+            await loadMatch();
+          }
+        },
+        interval
+      );
     }
 
     initialize();
 
     return () => {
-      stopPolling(pollingId);
-    };
+      cancelled = true;
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [matchId]);
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [matchId, loadMatch]);
 
   /* ==========================================
      LOADING
@@ -226,8 +486,7 @@ const currentStatus =
             color: "#94a3b8",
           }}
         >
-          Fetching live match
-          information...
+          Fetching match information...
         </p>
       </main>
     );
@@ -237,7 +496,10 @@ const currentStatus =
      ERROR
   ========================================== */
 
-  if (error || !match) {
+  if (
+    error ||
+    !match
+  ) {
     return (
       <main
         style={{
@@ -249,7 +511,7 @@ const currentStatus =
         }}
       >
         <h2>
-          Unable to load match
+          Unable to Load Match
         </h2>
 
         <p
@@ -259,65 +521,19 @@ const currentStatus =
           }}
         >
           {error ||
-            "Unknown error"}
+            "Match data is unavailable."}
         </p>
       </main>
     );
   }
 
   /* ==========================================
-     GENERATED PLAYER RATINGS
-  ========================================== */
-
-  const ratings =
-    lineups.map((team) => ({
-      ...team,
-
-      startXI:
-        team.startXI?.map(
-          (player) => ({
-            ...player,
-
-            player: {
-              ...player.player,
-
-              rating:
-                player.player.rating ||
-                (
-                  Math.random() *
-                    3 +
-                  6
-                ).toFixed(1),
-            },
-          })
-        ) || [],
-
-      substitutes:
-        team.substitutes?.map(
-          (player) => ({
-            ...player,
-
-            player: {
-              ...player.player,
-
-              rating:
-                player.player.rating ||
-                (
-                  Math.random() *
-                    3 +
-                  6
-                ).toFixed(1),
-            },
-          })
-        ) || [],
-    }));
-      /* ==========================================
      PAGE
   ========================================== */
 
   return (
     <main
-    className="match-layout"
+      className="match-layout"
       style={{
         maxWidth: 1500,
         margin: "40px auto",
@@ -339,10 +555,10 @@ const currentStatus =
       ====================================== */}
 
       <div className="match-sidebar">
-  <MatchSidebar
-    match={match}
-  />
-</div>
+        <MatchSidebar
+          match={match}
+        />
+      </div>
 
       {/* ======================================
           MAIN CONTENT
@@ -356,7 +572,7 @@ const currentStatus =
           match={match}
         />
 
-        {/* Live Scoreboard */}
+        {/* Scoreboard */}
 
         <MatchScoreboard
           match={match}
@@ -380,7 +596,7 @@ const currentStatus =
           events={events}
         />
 
-        {/* Starting XI */}
+        {/* Lineups */}
 
         <MatchLineups
           lineups={lineups}
@@ -389,7 +605,8 @@ const currentStatus =
         {/* Player Ratings */}
 
         <MatchPlayerRatings
-          lineups={ratings}
+          lineups={lineups}
+          players={playerRatings}
         />
 
         {/* Match Facts */}
@@ -397,33 +614,28 @@ const currentStatus =
         <MatchFacts
           match={match}
           statistics={statistics}
+          facts={facts}
         />
-                {/* ======================================
-            HEAD TO HEAD
-        ====================================== */}
+
+        {/* Head To Head */}
 
         <MatchHeadToHead
           h2h={headToHead}
         />
 
-        {/* ======================================
-            LEAGUE TABLE
-        ====================================== */}
+        {/* League Standings */}
 
         <MatchStandings
           standings={standings}
         />
 
-        {/* ======================================
-            MATCH PREDICTION
-        ====================================== */}
+        {/* Prediction */}
 
         <MatchPrediction
           prediction={prediction}
         />
 
       </div>
-
     </main>
   );
 }

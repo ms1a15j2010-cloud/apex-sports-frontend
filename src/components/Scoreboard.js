@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 
-export default function Scoreboard({ matches = [] }) {
+export default function Scoreboard({
+  matches = [],
+}) {
   if (!matches.length) {
     return (
       <div
@@ -28,7 +30,7 @@ export default function Scoreboard({ matches = [] }) {
         border: "1px solid #1f2937",
       }}
     >
-      {matches.map((m) => {
+      {matches.map((m, index) => {
         const statusColor =
           m.status === "LIVE"
             ? "#22c55e"
@@ -36,21 +38,42 @@ export default function Scoreboard({ matches = [] }) {
             ? "#ef4444"
             : "#f59e0b";
 
+        const homeScore =
+          m.goalsHome ??
+          null;
+
+        const awayScore =
+          m.goalsAway ??
+          null;
+
+        const matchId =
+          m.id ??
+          `match-${index}`;
+
         return (
           <Link
-            key={m.id}
-            href={`/match/${m.id}`}
+            key={matchId}
+            href={
+              m.id
+                ? `/match/${m.id}`
+                : "#"
+            }
             style={{
               textDecoration: "none",
+              pointerEvents: m.id
+                ? "auto"
+                : "none",
             }}
           >
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr auto auto",
+                gridTemplateColumns:
+                  "1fr auto auto",
                 alignItems: "center",
                 padding: "18px 22px",
-                borderBottom: "1px solid #1f2937",
+                borderBottom:
+                  "1px solid #1f2937",
                 transition: ".25s",
                 color: "#fff",
               }}
@@ -62,7 +85,8 @@ export default function Scoreboard({ matches = [] }) {
                     marginBottom: 6,
                   }}
                 >
-                  {m.home}
+                  {m.home ||
+                    "Home Team"}
                 </div>
 
                 <div
@@ -70,7 +94,8 @@ export default function Scoreboard({ matches = [] }) {
                     color: "#94a3b8",
                   }}
                 >
-                  {m.away}
+                  {m.away ||
+                    "Away Team"}
                 </div>
               </div>
 
@@ -79,24 +104,31 @@ export default function Scoreboard({ matches = [] }) {
                   fontSize: 22,
                   fontWeight: 800,
                   marginRight: 25,
+                  whiteSpace: "nowrap",
                 }}
               >
-                {m.goalsHome} - {m.goalsAway}
+                {homeScore ?? "—"}{" "}
+                -{" "}
+                {awayScore ?? "—"}
               </div>
 
               <span
                 style={{
-                  background: statusColor,
+                  background:
+                    statusColor,
                   color: "#fff",
-                  padding: "6px 14px",
+                  padding:
+                    "6px 14px",
                   borderRadius: 30,
                   fontWeight: 700,
                   fontSize: 13,
                   minWidth: 60,
-                  textAlign: "center",
+                  textAlign:
+                    "center",
                 }}
               >
-                {m.status}
+                {m.status ||
+                  "NS"}
               </span>
             </div>
           </Link>

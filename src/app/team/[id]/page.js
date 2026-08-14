@@ -1,120 +1,198 @@
 import Link from "next/link";
 
+import TeamTabs from "@/components/TeamTabs";
+
 import TeamSidebar from "@/components/TeamSidebar";
 import TeamHeader from "@/components/TeamHeader";
 import TeamOverview from "@/components/TeamOverview";
 import TeamVenue from "@/components/TeamVenue";
 import TeamCoach from "@/components/TeamCoach";
+
 import TeamStats from "@/components/TeamStats";
 import TeamAnalytics from "@/components/TeamAnalytics";
 import TeamComparison from "@/components/TeamComparison";
+
 import TeamForm from "@/components/TeamForm";
 import TeamFixtures from "@/components/TeamFixtures";
+import TeamResults from "@/components/TeamResults";
+
 import TeamSquad from "@/components/TeamSquad";
-import TeamAchievements from "@/components/TeamAchievements";
+
 import TeamHistory from "@/components/TeamHistory";
+import TeamAchievements from "@/components/TeamAchievements";
 import TeamSocial from "@/components/TeamSocial";
-import TeamExtras from "@/components/TeamExtra";
+
+import TeamTransfers from "@/components/TeamTransfers";
+import TeamInjuries from "@/components/TeamInjuries";
+import TeamTrophies from "@/components/TeamTrophies";
+
+/* =====================================================
+CONFIG
+===================================================== */
 
 const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  (
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:5000"
+  ).replace(/\/$/, "");
+
+const SEASON = 2026;
+
+/* =====================================================
+SAFE JSON FETCH
+===================================================== */
+
+async function fetchJSON(
+  url,
+  label
+) {
+  try {
+    const res = await fetch(
+      url,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!res.ok) {
+      throw new Error(
+        `${label}: HTTP ${res.status}`
+      );
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error(
+      `❌ ${label} fetch failed:`,
+      error
+    );
+
+    return null;
+  }
+}
+
+/* =====================================================
+TEAM PROFILE
+
+The migrated backend already supplies:
+
+- team
+- squad / players
+- fixtures
+- coach
+- venue
+===================================================== */
 
 async function getTeam(id) {
-  try {
-    const res = await fetch(
-      `${API}/api/team/${id}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!res.ok) throw new Error("Team not found");
-
-    return await res.json();
-  } catch (err) {
-    console.error(err);
-
-    return {
-      success: false,
-      team: null,
-    };
-  }
+  return await fetchJSON(
+    `${API}/api/team/${id}?season=${SEASON}`,
+    "Team"
+  );
 }
 
-async function getPlayers(id) {
-  try {
-    const res = await fetch(
-      `${API}/api/team/${id}/players`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!res.ok) throw new Error();
-
-    return await res.json();
-  } catch {
-    return {
-      success: false,
-      players: [],
-    };
-  }
-}
+/* =====================================================
+TEAM STATISTICS
+===================================================== */
 
 async function getStatistics(id) {
-  try {
-    const res = await fetch(
-      `${API}/api/team/${id}/statistics`,
-      {
-        cache: "no-store",
-      }
-    );
+  const data = await fetchJSON(
+    `${API}/api/team/${id}/statistics?season=${SEASON}`,
+    "Team Statistics"
+  );
 
-    if (!res.ok) throw new Error();
-
-    return await res.json();
-  } catch {
+  if (
+    !data ||
+    data.success !== true
+  ) {
     return {
       success: false,
       statistics: null,
     };
   }
+
+  return data;
 }
+
+/* =====================================================
+TEAM HISTORY
+===================================================== */
+
+async function getHistory(id) {
+  const data = await fetchJSON(
+    `${API}/api/team/${id}/history?season=${SEASON}`,
+    "Team History"
+  );
+
+  if (
+    !data ||
+    data.success !== true
+  ) {
+    return {
+      success: false,
+      history: [],
+    };
+  }
+
+  return data;
+}
+
+/* =====================================================
+METADATA
+===================================================== */
 
 export async function generateMetadata({
   params,
 }) {
   const { id } = await params;
 
-  const data = await getTeam(id);
+  const data =
+    await getTeam(id);
+
+  const team =
+    data?.team || null;
 
   return {
-    title: data.success
-      ? `${data.team.name} | Apex Sports`
+    title: team?.name
+      ? `${team.name} | Apex Sports`
       : "Team | Apex Sports",
 
-    description:
-      "Professional football team profile",
+    description: team?.name
+      ? `${team.name} football team profile, squad, fixtures, statistics, results and history.`
+      : "Professional football team profile.",
   };
 }
+
+/* =====================================================
+TEAM PAGE
+===================================================== */
 
 export default async function TeamPage({
   params,
 }) {
   const { id } = await params;
 
+  /* =================================================
+     ONLY FETCH DATA WE ACTUALLY NEED
+  ================================================= */
+
   const [
     teamData,
-    playerData,
-    statData,
+    statisticsData,
+    historyData,
   ] = await Promise.all([
     getTeam(id),
-    getPlayers(id),
     getStatistics(id),
+    getHistory(id),
   ]);
 
-  if (!teamData.success || !teamData.team) {
+  /* =================================================
+     TEAM NOT FOUND
+  ================================================= */
+
+  if (
+    !teamData?.success ||
+    !teamData?.team
+  ) {
     return (
       <main
         style={{
@@ -124,116 +202,315 @@ export default async function TeamPage({
           color: "#fff",
         }}
       >
-        <h1>Team Not Found</h1>
-
-        <p
+        <div
           style={{
-            color: "#94a3b8",
-            marginBottom: 30,
+            background: "#111827",
+            borderRadius: 20,
+            padding: 40,
+            border:
+              "1px solid #1e293b",
           }}
         >
-          We couldn't find this team.
-        </p>
+          <h1
+            style={{
+              margin:
+                "0 0 15px",
+            }}
+          >
+            Team Not Found
+          </h1>
 
-        <Link
-          href="/leagues"
-          style={{
-            color: "#22c55e",
-            textDecoration: "none",
-            fontWeight: "bold",
-          }}
-        >
-          ← Back to Leagues
-        </Link>
+          <p
+            style={{
+              color: "#94a3b8",
+              margin:
+                "0 0 30px",
+            }}
+          >
+            We couldn't find this team
+            or the team service is
+            currently unavailable.
+          </p>
+
+          <Link
+            href="/leagues"
+            style={{
+              color: "#22c55e",
+              textDecoration:
+                "none",
+              fontWeight: 800,
+            }}
+          >
+            ← Back to Leagues
+          </Link>
+        </div>
       </main>
     );
   }
 
-  const team = teamData.team;
+  /* =================================================
+     NORMALIZED DATA
+  ================================================= */
 
-  const statistics =
-    statData.success
-      ? statData.statistics
-      : team.statistics;
+  const team =
+    teamData.team;
 
   const players =
-    playerData.success
-      ? playerData.players
-      : team.players;
+    Array.isArray(
+      team.players
+    )
+      ? team.players
+      : Array.isArray(
+          team.squad
+        )
+      ? team.squad
+      : [];
+
+  const fixtures =
+    Array.isArray(
+      team.fixtures
+    )
+      ? team.fixtures
+      : [];
+
+  const statistics =
+    statisticsData?.success &&
+    statisticsData.statistics
+      ? statisticsData.statistics
+      : null;
+
+  const history =
+    historyData?.success &&
+    Array.isArray(
+      historyData.history
+    )
+      ? historyData.history
+      : [];
+
+  /* =================================================
+     DATA AVAILABILITY
+
+     Current football-data.org adapter
+     does not provide these datasets.
+  ================================================= */
+
+  const transfers = [];
+
+  const injuries = [];
+
+  const trophies = [];
+
+  const transfersAvailable =
+    false;
+
+  const injuriesAvailable =
+    false;
+
+  const trophiesAvailable =
+    false;
 
   return (
     <main
       style={{
         maxWidth: 1450,
-        margin: "40px auto",
-        padding: 20,
+        margin:
+          "0 auto",
+        padding:
+          "30px 20px 60px",
         color: "#fff",
-        display: "grid",
-        gridTemplateColumns: "320px 1fr",
-        gap: 25,
-        alignItems: "start",
       }}
     >
-      {/* Sidebar */}
+      {/* =================================================
+          TOP TABS
+      ================================================= */}
 
-      <div>
-        <TeamSidebar team={team} />
-      </div>
+      <TeamTabs />
 
-      {/* Main */}
+      {/* =================================================
+          PAGE LAYOUT
+      ================================================= */}
 
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 30,
+          display: "grid",
+          gridTemplateColumns:
+            "320px minmax(0,1fr)",
+          gap: 25,
+          alignItems:
+            "start",
         }}
       >
-        <TeamHeader team={team} />
+        {/* =================================================
+            SIDEBAR
+        ================================================= */}
 
-        <TeamOverview team={team} />
+        <aside>
+          <TeamSidebar
+            team={team}
+          />
+        </aside>
 
-        <TeamVenue venue={team.venue} />
+        {/* =================================================
+            MAIN CONTENT
+        ================================================= */}
 
-        <TeamCoach coach={team.coach} />
+        <div
+          style={{
+            minWidth: 0,
+            display: "flex",
+            flexDirection:
+              "column",
+            gap: 0,
+          }}
+        >
+          {/* =================================================
+              HEADER
+          ================================================= */}
 
-        <TeamStats
-          team={team}
-          statistics={statistics}
-        />
+          <TeamHeader
+            team={team}
+          />
 
-        <TeamAnalytics
-          statistics={statistics}
-        />
+          {/* =================================================
+              OVERVIEW
+          ================================================= */}
 
-        <TeamComparison
-          statistics={statistics}
-        />
+          <TeamOverview
+            team={team}
+          />
 
-        <TeamAchievements
-  team={team}
-/>
-<TeamHistory
-  team={team}
-/>
+          {/* =================================================
+              VENUE
+          ================================================= */}
 
-<TeamSocial
-  team={team}
-/>
-        <TeamForm
-          fixtures={team.fixtures}
-          teamId={team.id}
-        />
+          <TeamVenue
+            venue={team.venue}
+          />
 
-        <TeamFixtures
-          fixtures={team.fixtures}
-        />
+          {/* =================================================
+              COACH
+          ================================================= */}
 
-        <TeamSquad
-          players={players}
-        />
+          <TeamCoach
+            coach={team.coach}
+          />
 
-        <TeamExtras team={team} />
+          {/* =================================================
+              STATISTICS
+          ================================================= */}
+
+          <TeamStats
+            team={team}
+            statistics={statistics}
+          />
+
+          {/* =================================================
+              ANALYTICS
+          ================================================= */}
+
+          <TeamAnalytics
+            statistics={statistics}
+          />
+
+          {/* =================================================
+              COMPARISON
+          ================================================= */}
+
+          <TeamComparison
+            statistics={statistics}
+          />
+
+          {/* =================================================
+              FORM
+          ================================================= */}
+
+          <TeamForm
+            fixtures={fixtures}
+            teamId={team.id}
+          />
+
+          {/* =================================================
+              FIXTURES
+          ================================================= */}
+
+          <TeamFixtures
+            fixtures={fixtures}
+          />
+
+          {/* =================================================
+              RESULTS
+          ================================================= */}
+
+          <TeamResults
+            results={fixtures}
+          />
+
+          {/* =================================================
+              SQUAD
+          ================================================= */}
+
+          <TeamSquad
+            players={players}
+          />
+
+          {/* =================================================
+              HISTORY
+          ================================================= */}
+
+          <TeamHistory
+            team={team}
+            history={history}
+          />
+
+          {/* =================================================
+              ACHIEVEMENTS
+          ================================================= */}
+
+          <TeamAchievements
+            team={team}
+          />
+
+          {/* =================================================
+              TRANSFERS
+          ================================================= */}
+
+          <TeamTransfers
+            transfers={transfers}
+            available={
+              transfersAvailable
+            }
+          />
+
+          {/* =================================================
+              INJURIES
+          ================================================= */}
+
+          <TeamInjuries
+            injuries={injuries}
+            available={
+              injuriesAvailable
+            }
+          />
+
+          {/* =================================================
+              TROPHIES
+          ================================================= */}
+
+          <TeamTrophies
+            trophies={trophies}
+            available={
+              trophiesAvailable
+            }
+          />
+
+          {/* =================================================
+              SOCIAL
+          ================================================= */}
+
+          <TeamSocial
+            team={team}
+          />
+        </div>
       </div>
     </main>
   );

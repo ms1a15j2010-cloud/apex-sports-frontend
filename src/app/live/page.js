@@ -1,95 +1,37 @@
-// src/app/live/page.js
-
 import LiveClient from "./LiveClient";
 
 /* =====================================================
-   FORCE DYNAMIC RENDERING
-   ===================================================== */
-
-export const dynamic = "force-dynamic";
-
-/* =====================================================
-   API
-   ===================================================== */
-
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
-
-/* =====================================================
-   LOAD LIVE MATCHES
-   ===================================================== */
-
-async function getLiveMatches() {
-  try {
-    const res = await fetch(`${API}/api/live`, {
-      cache: "no-store",
-    });
-
-    if (!res.ok) {
-      console.error(
-        "LivePage: API request failed",
-        res.status
-      );
-
-      return [];
-    }
-
-    const data = await res.json();
-
-    return Array.isArray(data?.matches)
-      ? data.matches
-      : [];
-  } catch (err) {
-    console.error("LivePage:", err);
-
-    return [];
-  }
-}
-
-/* =====================================================
-   METADATA
-   ===================================================== */
+SEO
+===================================================== */
 
 export const metadata = {
   title: "Live Football | Apex Sports",
 
   description:
-    "Live football scores and real-time match updates from leagues around the world.",
-
-  alternates: {
-    canonical: "/live",
-  },
-
-  openGraph: {
-    title: "Live Football | Apex Sports",
-
-    description:
-      "Live football scores and real-time match updates from leagues around the world.",
-
-    url: "/live",
-
-    siteName: "Apex Sports",
-
-    type: "website",
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-  },
+    "Live football matches and scores from Apex Sports.",
 };
 
 /* =====================================================
-   PAGE
-   ===================================================== */
+LIVE PAGE
 
-export default async function LivePage() {
-  const matches = await getLiveMatches();
+IMPORTANT:
 
-  return (
-    <LiveClient
-      initialMatches={matches}
-    />
-  );
+This page intentionally does NOT fetch /api/live.
+
+Live data is loaded client-side by:
+
+LiveClient.jsx
+    ↓
+/api/live
+    ↓
+footballDataApi.js
+    ↓
+football-data.org
+
+This prevents Next.js from trying to execute the
+live API request during production build/prerendering.
+===================================================== */
+
+export default function LivePage() {
+  return <LiveClient initialMatches={[]} />;
 }

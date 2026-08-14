@@ -1,241 +1,382 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import { useLive } from "@/context/LiveContext";
-import Image from "next/image";
 import Link from "next/link";
-
+import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
 export default function TodayMatches() {
-
   const [matches, setMatches] = useState([]);
-
-  const [loading, setLoading] = useState(true);
-
-  const {
-  registerMatches,
-  getMatch,
-} = useLive();
+  const [loading, setLoading] =
+    useState(true);
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
+    let mounted = true;
 
-  async function load() {
+    async function load() {
+      try {
+        setLoading(true);
+        setError("");
 
-    const data =
-      await api.getTodayMatches();
+        const data =
+          await api.getTodayMatches();
 
-    if (data.success) {
+        if (!mounted) {
+          return;
+        }
 
-      setMatches(data.matches);
+        if (
+          data?.success &&
+          Array.isArray(data.matches)
+        ) {
+          setMatches(data.matches);
+        } else {
+          setMatches([]);
+        }
+      } catch (err) {
+        if (!mounted) {
+          return;
+        }
 
-      await registerMatches(
-        data.matches.map(
-          (match) =>
-            match.fixture.id
-        )
-      );
+        console.error(
+          "TodayMatches:",
+          err
+        );
 
+        setError(
+          err?.message ||
+            "Unable to load today's matches"
+        );
+
+        setMatches([]);
+      } finally {
+        if (mounted) {
+          setLoading(false);
+        }
+      }
     }
 
-    setLoading(false);
+    load();
 
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  function getMatchId(match) {
+    return (
+      match?.fixture?.id ??
+      match?.id ??
+      null
+    );
   }
 
-  load();
+  function getHomeName(match) {
+    return (
+      match?.home?.name ||
+      match?.teams?.home?.name ||
+      "Home Team"
+    );
+  }
 
-}, [registerMatches]);
+  function getAwayName(match) {
+    return (
+      match?.away?.name ||
+      match?.teams?.away?.name ||
+      "Away Team"
+    );
+  }
 
-  if (loading)
+  function getHomeLogo(match) {
+    return (
+      match?.home?.logo ||
+      match?.teams?.home?.logo ||
+      ""
+    );
+  }
+
+  function getAwayLogo(match) {
+    return (
+      match?.away?.logo ||
+      match?.teams?.away?.logo ||
+      ""
+    );
+  }
+
+  function getMatchTime(match) {
+    const date =
+      match?.fixture?.date;
+
+    if (!date) {
+      return "Time TBD";
+    }
+
+    return new Date(date).toLocaleTimeString(
+      "en-US",
+      {
+        hour: "numeric",
+        minute: "2-digit",
+      }
+    );
+  }
+
+  if (loading) {
     return (
       <section style={styles.section}>
-        Loading today's matches...
+        <h2 style={styles.title}>
+          Today&apos;s Matches
+        </h2>
+
+        <div style={styles.message}>
+          Loading today&apos;s matches...
+        </div>
       </section>
     );
+  }
+
+  if (error) {
+    return (
+      <section style={styles.section}>
+        <h2 style={styles.title}>
+          Today&apos;s Matches
+        </h2>
+
+        <div style={styles.message}>
+          {error}
+        </div>
+      </section>
+    );
+  }
+
+  if (!matches.length) {
+    return (
+      <section style={styles.section}>
+        <h2 style={styles.title}>
+          Today&apos;s Matches
+        </h2>
+
+        <div style={styles.empty}>
+          No matches scheduled today.
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section style={styles.section}>
+      <div style={styles.header}>
+        <div>
+          <h2 style={styles.title}>
+            Today&apos;s Matches
+          </h2>
 
-      <h2 style={styles.title}>
-        📅 Today's Matches
-      </h2>
-
-      {!matches.length ? (
-
-        <div style={styles.empty}>
-          No matches today.
+          <p style={styles.subtitle}>
+            Matches scheduled for today.
+          </p>
         </div>
 
-      ) : (
+        <span style={styles.count}>
+          {matches.length}{" "}
+          {matches.length === 1
+            ? "match"
+            : "matches"}
+        </span>
+      </div>
 
-        <div style={styles.grid}>
+      <div style={styles.grid}>
+        {matches.map(
+          (match, index) => {
+            const id =
+              getMatchId(match);
 
-         {matches.map((originalMatch) => {
+            const key =
+              id ?? `today-${index}`;
 
-  const live =
-    getMatch(originalMatch.fixture.id);
-
-  const match =
-    live?.match?.match ||
-    originalMatch;
-
-  return (
-
-            <Link
-              key={match.fixture.id}
-              href={`/match/${match.fixture.id}`}
-              style={styles.card}
-            >
-
-              <League league={match.league} />
-
-              <div style={styles.row}>
-
-                <Team team={match.home} />
-
-                <div style={styles.center}>
-
-                  <div style={styles.time}>
-                    {new Date(match.fixture.date).toLocaleTimeString([], {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </div>
-
-                  <div style={styles.status}>
-                    {match.status.short}
-                  </div>
-
+            return (
+              <Link
+                key={key}
+                href={
+                  id
+                    ? `/match/${id}`
+                    : "#"
+                }
+                style={{
+                  ...styles.card,
+                  pointerEvents: id
+                    ? "auto"
+                    : "none",
+                }}
+              >
+                <div style={styles.time}>
+                  {getMatchTime(match)}
                 </div>
 
-                <Team team={match.away} reverse />
+                <div style={styles.teams}>
+                  <div style={styles.team}>
+                    {getHomeLogo(match) ? (
+                      <img
+                        src={getHomeLogo(match)}
+                        alt={getHomeName(match)}
+                        style={styles.logo}
+                      />
+                    ) : (
+                      <div style={styles.placeholder}>
+                        ⚽
+                      </div>
+                    )}
 
-              </div>
+                    <span>
+                      {getHomeName(match)}
+                    </span>
+                  </div>
 
-            </Link>
-  );
-})}
+                  <span style={styles.vs}>
+                    VS
+                  </span>
 
-        </div>
+                  <div style={styles.team}>
+                    {getAwayLogo(match) ? (
+                      <img
+                        src={getAwayLogo(match)}
+                        alt={getAwayName(match)}
+                        style={styles.logo}
+                      />
+                    ) : (
+                      <div style={styles.placeholder}>
+                        ⚽
+                      </div>
+                    )}
 
-      )}
-
+                    <span>
+                      {getAwayName(match)}
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          }
+        )}
+      </div>
     </section>
   );
 }
 
-function League({ league }) {
-
-  return (
-
-    <div style={styles.league}>
-
-      <Image
-        src={league.logo}
-        width={22}
-        height={22}
-        alt={league.name}
-      />
-
-      <span>{league.name}</span>
-
-    </div>
-
-  );
-}
-
-function Team({ team, reverse = false }) {
-
-  return (
-
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        flexDirection: reverse ? "row-reverse" : "row",
-        gap: 10,
-      }}
-    >
-
-      <Image
-        src={team.logo}
-        width={36}
-        height={36}
-        alt={team.name}
-      />
-
-      <span>{team.name}</span>
-
-    </div>
-
-  );
-}
-
 const styles = {
-
   section: {
     background: "#111827",
     borderRadius: 20,
-    padding: 25,
-    color: "#fff",
+    padding: 28,
+    marginBottom: 30,
+    border: "1px solid #1f2937",
+  },
+
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 15,
+    marginBottom: 24,
   },
 
   title: {
-    marginBottom: 20,
-    fontSize: 28,
+    margin: 0,
+    color: "#ffffff",
+    fontSize: 24,
+    fontWeight: 700,
   },
 
-  empty: {
+  subtitle: {
+    margin: "6px 0 0",
     color: "#9ca3af",
-    textAlign: "center",
-    padding: 30,
+    fontSize: 14,
+  },
+
+  count: {
+    color: "#60a5fa",
+    fontSize: 14,
+    fontWeight: 700,
   },
 
   grid: {
     display: "grid",
-    gap: 15,
+    gridTemplateColumns:
+      "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: 18,
   },
 
   card: {
-    background: "#1f2937",
-    borderRadius: 15,
-    padding: 18,
+    display: "block",
     textDecoration: "none",
-    color: "white",
-  },
-
-  league: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    color: "#9ca3af",
-    marginBottom: 15,
-    fontWeight: 600,
-  },
-
-  row: {
-    display: "grid",
-    gridTemplateColumns: "1fr auto 1fr",
-    alignItems: "center",
-  },
-
-  center: {
-    textAlign: "center",
+    background: "#0f172a",
+    border: "1px solid #1e293b",
+    borderRadius: 16,
+    padding: 20,
+    color: "#ffffff",
   },
 
   time: {
+    textAlign: "center",
+    color: "#60a5fa",
+    fontSize: 13,
     fontWeight: 700,
-    fontSize: 20,
-    color: "#22c55e",
+    marginBottom: 20,
   },
 
-  status: {
-    marginTop: 6,
+  teams: {
+    display: "grid",
+    gridTemplateColumns:
+      "1fr auto 1fr",
+    alignItems: "center",
+    gap: 14,
+  },
+
+  team: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+    gap: 9,
+    color: "#e5e7eb",
+    fontSize: 14,
+    fontWeight: 600,
+  },
+
+  logo: {
+    width: 50,
+    height: 50,
+    objectFit: "contain",
+  },
+
+  placeholder: {
+    width: 50,
+    height: 50,
+    borderRadius: 12,
+    background: "#1f2937",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  vs: {
+    color: "#6b7280",
+    fontSize: 12,
+    fontWeight: 800,
+  },
+
+  message: {
+    marginTop: 20,
+    padding: 25,
+    background: "#0f172a",
+    borderRadius: 14,
     color: "#9ca3af",
   },
 
+  empty: {
+    padding: 30,
+    background: "#0f172a",
+    borderRadius: 14,
+    color: "#9ca3af",
+    textAlign: "center",
+  },
 };

@@ -1,135 +1,450 @@
 "use client";
 
 export default function PlayerCareer({
-  statistics = {},
+  statistics = [],
 }) {
-  if (!statistics) return null;
+  if (
+    !Array.isArray(statistics) ||
+    statistics.length === 0
+  ) {
+    return null;
+  }
 
-  const {
-    games = {},
-    goals = {},
-    passes = {},
-    shots = {},
-    tackles = {},
-    duels = {},
-    dribbles = {},
-    fouls = {},
-    cards = {},
-    penalty = {},
-  } = statistics;
+  /*
+    The backend now returns:
+
+    statistics = [
+      {
+        league,
+        team,
+        games,
+        goals,
+        passes,
+        shots,
+        tackles,
+        duels,
+        dribbles,
+        fouls,
+        cards,
+        penalty
+      }
+    ]
+  */
+
+  const stat =
+    statistics[0] || {};
+
+  const league =
+    stat.league || {};
+
+  const team =
+    stat.team || {};
+
+  const games =
+    stat.games || {};
+
+  const goals =
+    stat.goals || {};
+
+  const passes =
+    stat.passes || {};
+
+  const shots =
+    stat.shots || {};
+
+  const tackles =
+    stat.tackles || {};
+
+  const duels =
+    stat.duels || {};
+
+  const dribbles =
+    stat.dribbles || {};
+
+  const fouls =
+    stat.fouls || {};
+
+  const cards =
+    stat.cards || {};
+
+  const penalty =
+    stat.penalty || {};
+
+  /* =================================================
+     SAFE VALUES
+  ================================================= */
+
+  const appearances =
+    Number(
+      games.appearances ??
+        games.appearences ??
+        0
+    );
+
+  const starts =
+    Number(
+      games.lineups ?? 0
+    );
+
+  const minutes =
+    Number(
+      games.minutes ?? 0
+    );
+
+  const goalsScored =
+    Number(
+      goals.total ?? 0
+    );
+
+  const assists =
+    Number(
+      goals.assists ?? 0
+    );
+
+  const conceded =
+    Number(
+      goals.conceded ?? 0
+    );
+
+  const saves =
+    Number(
+      goals.saves ?? 0
+    );
+
+  const totalPasses =
+    Number(
+      passes.total ?? 0
+    );
+
+  const keyPasses =
+    Number(
+      passes.key ?? 0
+    );
+
+  const totalShots =
+    Number(
+      shots.total ?? 0
+    );
+
+  const shotsOnTarget =
+    Number(
+      shots.on ?? 0
+    );
+
+  const totalTackles =
+    Number(
+      tackles.total ?? 0
+    );
+
+  const blocks =
+    Number(
+      tackles.blocks ?? 0
+    );
+
+  const interceptions =
+    Number(
+      tackles.interceptions ?? 0
+    );
+
+  const totalDuels =
+    Number(
+      duels.total ?? 0
+    );
+
+  const duelsWon =
+    Number(
+      duels.won ?? 0
+    );
+
+  const dribbleAttempts =
+    Number(
+      dribbles.attempts ?? 0
+    );
+
+  const dribbleSuccess =
+    Number(
+      dribbles.success ?? 0
+    );
+
+  const dribblesPast =
+    Number(
+      dribbles.past ?? 0
+    );
+
+  const foulsDrawn =
+    Number(
+      fouls.drawn ?? 0
+    );
+
+  const foulsCommitted =
+    Number(
+      fouls.committed ?? 0
+    );
+
+  const yellowCards =
+    Number(
+      cards.yellow ?? 0
+    );
+
+  const yellowRedCards =
+    Number(
+      cards.yellowred ?? 0
+    );
+
+  const redCards =
+    Number(
+      cards.red ?? 0
+    );
+
+  const penaltyScored =
+    Number(
+      penalty.scored ?? 0
+    );
+
+  const penaltyMissed =
+    Number(
+      penalty.missed ?? 0
+    );
+
+  const penaltyWon =
+    Number(
+      penalty.won ?? 0
+    );
+
+  const penaltyCommitted =
+    Number(
+      penalty.committed ??
+        penalty.commited ??
+        0
+    );
 
   return (
     <section
       style={{
-        background: "#111827",
+        background:
+          "linear-gradient(145deg,#111827,#0f172a)",
         borderRadius: 20,
         padding: 30,
         marginBottom: 30,
+        border:
+          "1px solid #1e293b",
       }}
     >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 28,
-        }}
-      >
-        📈 Career Statistics
-      </h2>
-
-      {/* Match Statistics */}
-
-      <SectionTitle title="Match Statistics" />
+      {/* =================================================
+          HEADER
+      ================================================= */}
 
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
+          marginBottom: 30,
         }}
       >
+        <div
+          style={{
+            color: "#ef4444",
+            fontSize: 12,
+            fontWeight: 800,
+            letterSpacing:
+              "1.2px",
+            textTransform:
+              "uppercase",
+            marginBottom: 8,
+          }}
+        >
+          ⚽ Apex Sports
+        </div>
+
+        <h2
+          style={{
+            color: "#fff",
+            margin: 0,
+            fontSize: 26,
+          }}
+        >
+          📈 Career Statistics
+        </h2>
+
+        <p
+          style={{
+            margin:
+              "8px 0 0",
+            color: "#94a3b8",
+            fontSize: 14,
+          }}
+        >
+          {league.name ||
+            "Premier League"}
+          {" • "}
+          Season{" "}
+          {league.season || ""}
+        </p>
+      </div>
+
+      {/* =================================================
+          TEAM / LEAGUE
+      ================================================= */}
+
+      <div
+        style={{
+          background: "#1f2937",
+          borderRadius: 16,
+          padding: 18,
+          marginBottom: 35,
+          display: "flex",
+          alignItems: "center",
+          justifyContent:
+            "space-between",
+          gap: 20,
+          flexWrap: "wrap",
+        }}
+      >
+        <div>
+          <div
+            style={{
+              color: "#94a3b8",
+              fontSize: 13,
+              marginBottom: 6,
+            }}
+          >
+            Competition
+          </div>
+
+          <strong
+            style={{
+              color: "#fff",
+              fontSize: 18,
+            }}
+          >
+            {league.name ||
+              "Premier League"}
+          </strong>
+        </div>
+
+        <div>
+          <div
+            style={{
+              color: "#94a3b8",
+              fontSize: 13,
+              marginBottom: 6,
+            }}
+          >
+            Club
+          </div>
+
+          <strong
+            style={{
+              color: "#fff",
+              fontSize: 18,
+            }}
+          >
+            {team.name ||
+              "Unknown Team"}
+          </strong>
+        </div>
+
+        <div>
+          <div
+            style={{
+              color: "#94a3b8",
+              fontSize: 13,
+              marginBottom: 6,
+            }}
+          >
+            Position
+          </div>
+
+          <strong
+            style={{
+              color: "#22c55e",
+              fontSize: 18,
+            }}
+          >
+            {games.position ||
+              "Football Player"}
+          </strong>
+        </div>
+      </div>
+
+      {/* =================================================
+          MATCH STATISTICS
+      ================================================= */}
+
+      <SectionTitle
+        title="Match Statistics"
+      />
+
+      <StatGrid>
         <Card
           title="Appearances"
-          value={games.appearences || 0}
+          value={appearances}
         />
 
         <Card
           title="Starts"
-          value={games.lineups || 0}
+          value={starts}
         />
 
         <Card
           title="Minutes"
-          value={games.minutes || 0}
+          value={minutes}
         />
 
         <Card
           title="Rating"
-          value={games.rating || "-"}
+          value={
+            games.rating || "-"
+          }
         />
+      </StatGrid>
 
-        <Card
-          title="Captain"
-          value={games.captain ? "Yes" : "No"}
-        />
-      </div>
+      {/* =================================================
+          GOAL CONTRIBUTION
+      ================================================= */}
 
-      {/* Goals */}
+      <SectionTitle
+        title="Goal Contribution"
+      />
 
-      <SectionTitle title="Goal Contribution" />
-
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <StatGrid>
         <Card
           title="Goals"
-          value={goals.total || 0}
+          value={goalsScored}
+          highlight
         />
 
         <Card
           title="Assists"
-          value={goals.assists || 0}
+          value={assists}
         />
 
         <Card
           title="Conceded"
-          value={goals.conceded || 0}
+          value={conceded}
         />
 
         <Card
           title="Saves"
-          value={goals.saves || 0}
+          value={saves}
         />
-      </div>
+      </StatGrid>
 
-      {/* Passing */}
+      {/* =================================================
+          PASSING
+      ================================================= */}
 
-      <SectionTitle title="Passing" />
+      <SectionTitle
+        title="Passing"
+      />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <StatGrid>
         <Card
           title="Total Passes"
-          value={passes.total || 0}
+          value={totalPasses}
         />
 
         <Card
           title="Key Passes"
-          value={passes.key || 0}
+          value={keyPasses}
         />
 
         <Card
@@ -140,191 +455,292 @@ export default function PlayerCareer({
               : "-"
           }
         />
-      </div>
+      </StatGrid>
 
-      {/* Shooting */}
+      {/* =================================================
+          SHOOTING
+      ================================================= */}
 
-      <SectionTitle title="Shooting" />
+      <SectionTitle
+        title="Shooting"
+      />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <StatGrid>
         <Card
           title="Total Shots"
-          value={shots.total || 0}
+          value={totalShots}
         />
 
         <Card
           title="On Target"
-          value={shots.on || 0}
+          value={shotsOnTarget}
         />
-      </div>
 
-      {/* Defensive */}
+        <Card
+          title="Target Accuracy"
+          value={
+            totalShots > 0
+              ? `${Math.round(
+                  (
+                    shotsOnTarget /
+                    totalShots
+                  ) *
+                    100
+                )}%`
+              : "-"
+          }
+        />
+      </StatGrid>
 
-      <SectionTitle title="Defensive Actions" />
+      {/* =================================================
+          DEFENSIVE ACTIONS
+      ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <SectionTitle
+        title="Defensive Actions"
+      />
+
+      <StatGrid>
         <Card
           title="Tackles"
-          value={tackles.total || 0}
+          value={totalTackles}
         />
 
         <Card
           title="Blocks"
-          value={tackles.blocks || 0}
+          value={blocks}
         />
 
         <Card
           title="Interceptions"
-          value={tackles.interceptions || 0}
+          value={interceptions}
         />
-      </div>
+      </StatGrid>
 
-      {/* Duels */}
+      {/* =================================================
+          DUELS
+      ================================================= */}
 
-      <SectionTitle title="Duels" />
+      <SectionTitle
+        title="Duels"
+      />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <StatGrid>
         <Card
           title="Total"
-          value={duels.total || 0}
+          value={totalDuels}
         />
 
         <Card
           title="Won"
-          value={duels.won || 0}
+          value={duelsWon}
         />
-      </div>
 
-      {/* Dribbles */}
+        <Card
+          title="Win Rate"
+          value={
+            totalDuels > 0
+              ? `${Math.round(
+                  (
+                    duelsWon /
+                    totalDuels
+                  ) *
+                    100
+                )}%`
+              : "-"
+          }
+        />
+      </StatGrid>
 
-      <SectionTitle title="Dribbles" />
+      {/* =================================================
+          DRIBBLES
+      ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <SectionTitle
+        title="Dribbles"
+      />
+
+      <StatGrid>
         <Card
           title="Attempts"
-          value={dribbles.attempts || 0}
+          value={
+            dribbleAttempts
+          }
         />
 
         <Card
           title="Success"
-          value={dribbles.success || 0}
+          value={
+            dribbleSuccess
+          }
         />
 
         <Card
           title="Past"
-          value={dribbles.past || 0}
+          value={
+            dribblesPast
+          }
         />
-      </div>
+      </StatGrid>
 
-      {/* Discipline */}
+      {/* =================================================
+          DISCIPLINE
+      ================================================= */}
 
-      <SectionTitle title="Discipline" />
+      <SectionTitle
+        title="Discipline"
+      />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-          marginBottom: 35,
-        }}
-      >
+      <StatGrid>
         <Card
           title="Fouls Drawn"
-          value={fouls.drawn || 0}
+          value={
+            foulsDrawn
+          }
         />
 
         <Card
           title="Fouls Committed"
-          value={fouls.committed || 0}
+          value={
+            foulsCommitted
+          }
         />
 
         <Card
-          title="Yellow Cards"
-          value={cards.yellow || 0}
+          title="🟨 Yellow Cards"
+          value={
+            yellowCards
+          }
         />
 
         <Card
-          title="Red Cards"
-          value={cards.red || 0}
+          title="🟨🟥 Yellow-Red"
+          value={
+            yellowRedCards
+          }
         />
-      </div>
 
-      {/* Penalties */}
+        <Card
+          title="🟥 Red Cards"
+          value={
+            redCards
+          }
+        />
+      </StatGrid>
 
-      <SectionTitle title="Penalty Statistics" />
+      {/* =================================================
+          PENALTIES
+      ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 18,
-        }}
-      >
+      <SectionTitle
+        title="Penalty Statistics"
+      />
+
+      <StatGrid>
         <Card
           title="Scored"
-          value={penalty.scored || 0}
+          value={
+            penaltyScored
+          }
         />
 
         <Card
           title="Missed"
-          value={penalty.missed || 0}
+          value={
+            penaltyMissed
+          }
         />
 
         <Card
           title="Won"
-          value={penalty.won || 0}
+          value={
+            penaltyWon
+          }
         />
 
         <Card
           title="Committed"
-          value={penalty.commited || 0}
+          value={
+            penaltyCommitted
+          }
         />
+      </StatGrid>
+
+      {/* =================================================
+          CAREER SUMMARY
+      ================================================= */}
+
+      <div
+        style={{
+          marginTop: 35,
+          background: "#1f2937",
+          borderRadius: 18,
+          padding: 24,
+        }}
+      >
+        <h3
+          style={{
+            color: "#fff",
+            marginBottom: 15,
+          }}
+        >
+          Career Summary
+        </h3>
+
+        <p
+          style={{
+            color: "#cbd5e1",
+            lineHeight: 1.8,
+            margin: 0,
+          }}
+        >
+          This player has made{" "}
+          <strong>
+            {appearances}
+          </strong>{" "}
+          appearances and{" "}
+          <strong>
+            {starts}
+          </strong>{" "}
+          starts, playing{" "}
+          <strong>
+            {minutes}
+          </strong>{" "}
+          minutes. They have scored{" "}
+          <strong>
+            {goalsScored}
+          </strong>{" "}
+          goals and provided{" "}
+          <strong>
+            {assists}
+          </strong>{" "}
+          assists.
+          {totalShots > 0
+            ? ` They have recorded ${totalShots} shots, with ${shotsOnTarget} on target.`
+            : ""}
+          {totalTackles > 0
+            ? ` Defensively, they have made ${totalTackles} tackles and ${interceptions} interceptions.`
+            : ""}
+        </p>
       </div>
     </section>
   );
 }
 
-function SectionTitle({ title }) {
+/* =====================================================
+SECTION TITLE
+===================================================== */
+
+function SectionTitle({
+  title,
+}) {
   return (
     <h3
       style={{
         color: "#22c55e",
         marginBottom: 18,
         marginTop: 10,
+        fontSize: 19,
       }}
     >
       {title}
@@ -332,9 +748,36 @@ function SectionTitle({ title }) {
   );
 }
 
+/* =====================================================
+STAT GRID
+===================================================== */
+
+function StatGrid({
+  children,
+}) {
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns:
+          "repeat(auto-fit,minmax(180px,1fr))",
+        gap: 15,
+        marginBottom: 35,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* =====================================================
+CARD
+===================================================== */
+
 function Card({
   title,
   value,
+  highlight = false,
 }) {
   return (
     <div
@@ -342,12 +785,14 @@ function Card({
         background: "#1f2937",
         borderRadius: 16,
         padding: 20,
+        border:
+          "1px solid #293548",
       }}
     >
       <div
         style={{
           color: "#94a3b8",
-          fontSize: 14,
+          fontSize: 13,
           marginBottom: 8,
         }}
       >
@@ -356,12 +801,14 @@ function Card({
 
       <div
         style={{
-          color: "#fff",
+          color: highlight
+            ? "#22c55e"
+            : "#fff",
           fontSize: 26,
-          fontWeight: 700,
+          fontWeight: 800,
         }}
       >
-        {value}
+        {value ?? 0}
       </div>
     </div>
   );

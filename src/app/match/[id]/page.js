@@ -1,128 +1,44 @@
 import MatchClient from "./MatchClient";
 
+/* =====================================================
+   MATCH PAGE
+===================================================== */
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+/*
+  The actual match data is loaded by MatchClient.
 
-/* ============================================================
-   API HELPERS
-============================================================ */
+  We intentionally keep metadata static here instead of
+  making another server-side API request during
+  generateMetadata().
 
-async function fetchData(url) {
-  try {
-    const res = await fetch(url, {
-      cache: "no-store",
-    });
+  This avoids:
+  - HeadersTimeoutError
+  - duplicate match API requests
+  - unnecessary backend/provider load
+*/
 
-    if (!res.ok) {
-      throw new Error(
-        `Failed: ${url}`
-      );
-    }
+export const metadata = {
+  title:
+    "Match Center | Apex Sports",
 
-    return await res.json();
-  } catch (err) {
-    console.error(err);
+  description:
+    "Football match center with score, timeline, statistics, lineups and team information.",
+};
 
-    return {
-      success: false,
-    };
-  }
-}
 
-async function getMatch(id) {
-  return fetchData(
-    `${API}/api/match/${id}`
-  );
-}
+/* =====================================================
+   MATCH PAGE
+===================================================== */
 
-async function getTimeline(id) {
-  return fetchData(
-    `${API}/api/match/${id}/timeline`
-  );
-}
-
-async function getStatistics(id) {
-  return fetchData(
-    `${API}/api/match/${id}/statistics`
-  );
-}
-
-async function getEvents(id) {
-  return fetchData(
-    `${API}/api/match/${id}/events`
-  );
-}
-
-async function getLineups(id) {
-  return fetchData(
-    `${API}/api/match/${id}/lineups`
-  );
-}
-
-async function getPrediction(id) {
-  return fetchData(
-    `${API}/api/match/${id}/prediction`
-  );
-}
-
-async function getStandings(id) {
-  return fetchData(
-    `${API}/api/match/${id}/standings`
-  );
-}
-
-async function getHeadToHead(id) {
-  return fetchData(
-    `${API}/api/match/${id}/headtohead`
-  );
-}
-
-/* ============================================================
-   PAGE METADATA
-============================================================ */
-
-export async function generateMetadata({
-  params,
-}) {
-  const { id } =
-    await params;
-
-  const data =
-    await getMatch(id);
-
-  if (
-    !data.success ||
-    !data.match
-  ) {
-    return {
-    title: "Match | Apex Sports",
-    description:
-      "Live football match center",
-  };
-}
-
-  const match =
-    data.match;
-
-  return {
-    title: `${match.teams.home.name} vs ${match.teams.away.name} | Apex Sports`,
-    description:
-      "Live football match details, statistics, lineups, timeline and predictions.",
-  };
-}
 export default async function MatchPage({
   params,
 }) {
   const { id } =
     await params;
 
-   return (
+  return (
     <MatchClient
       matchId={id}
     />
   );
 }
-
-  

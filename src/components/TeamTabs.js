@@ -1,36 +1,116 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 const tabs = [
-  { id: "overview", label: "Overview", icon: "🏠" },
-  { id: "venue", label: "Venue", icon: "🏟️" },
-  { id: "statistics", label: "Statistics", icon: "📊" },
-  { id: "analytics", label: "Analytics", icon: "📈" },
-  { id: "form", label: "Form", icon: "🔥" },
-  { id: "fixtures", label: "Fixtures", icon: "📅" },
-  { id: "results", label: "Results", icon: "🏁" },
-  { id: "squad", label: "Squad", icon: "👥" },
-  { id: "transfers", label: "Transfers", icon: "🔄" },
-  { id: "injuries", label: "Injuries", icon: "🏥" },
-  { id: "trophies", label: "Trophies", icon: "🏆" },
+  {
+    id: "overview",
+    label: "Overview",
+    icon: "🏠",
+  },
+  {
+    id: "venue",
+    label: "Venue",
+    icon: "🏟️",
+  },
+  {
+    id: "coach",
+    label: "Coach",
+    icon: "👔",
+  },
+  {
+    id: "statistics",
+    label: "Statistics",
+    icon: "📊",
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    icon: "📈",
+  },
+  {
+    id: "comparison",
+    label: "Comparison",
+    icon: "⚖️",
+  },
+  {
+    id: "form",
+    label: "Form",
+    icon: "🔥",
+  },
+  {
+    id: "fixtures",
+    label: "Fixtures",
+    icon: "📅",
+  },
+  {
+    id: "results",
+    label: "Results",
+    icon: "🏁",
+  },
+  {
+    id: "squad",
+    label: "Squad",
+    icon: "👥",
+  },
+  {
+    id: "history",
+    label: "History",
+    icon: "📖",
+  },
+  {
+    id: "achievements",
+    label: "Achievements",
+    icon: "🏆",
+  },
+  {
+    id: "transfers",
+    label: "Transfers",
+    icon: "🔄",
+  },
+  {
+    id: "injuries",
+    label: "Injuries",
+    icon: "🏥",
+  },
+  {
+    id: "trophies",
+    label: "Trophies",
+    icon: "🏆",
+  },
+  {
+    id: "social",
+    label: "Social",
+    icon: "🌐",
+  },
 ];
 
 export default function TeamTabs() {
-  const [active, setActive] = useState("overview");
+  const [active, setActive] =
+    useState("overview");
 
   useEffect(() => {
-    const onScroll = () => {
+    const updateActiveTab = () => {
       let current = "overview";
 
+      const offset = 180;
+
       for (const tab of tabs) {
-        const section = document.getElementById(tab.id);
+        const section =
+          document.getElementById(
+            tab.id
+          );
 
-        if (!section) continue;
+        if (!section) {
+          continue;
+        }
 
-        const top = section.getBoundingClientRect().top;
+        const rect =
+          section.getBoundingClientRect();
 
-        if (top <= 150) {
+        if (
+          rect.top <= offset
+        ) {
           current = tab.id;
         }
       }
@@ -38,25 +118,52 @@ export default function TeamTabs() {
       setActive(current);
     };
 
-    window.addEventListener("scroll", onScroll);
+    updateActiveTab();
 
-    return () =>
+    window.addEventListener(
+      "scroll",
+      updateActiveTab,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      updateActiveTab
+    );
+
+    return () => {
       window.removeEventListener(
         "scroll",
-        onScroll
+        updateActiveTab
       );
+
+      window.removeEventListener(
+        "resize",
+        updateActiveTab
+      );
+    };
   }, []);
 
   function goTo(id) {
     const section =
       document.getElementById(id);
 
-    if (!section) return;
+    if (!section) {
+      return;
+    }
 
-    section.scrollIntoView({
+    const y =
+      section.getBoundingClientRect()
+        .top +
+      window.scrollY -
+      135;
+
+    window.scrollTo({
+      top: y,
       behavior: "smooth",
-      block: "start",
     });
+
+    setActive(id);
   }
 
   return (
@@ -65,54 +172,78 @@ export default function TeamTabs() {
         position: "sticky",
         top: 10,
         zIndex: 50,
-        background: "#111827",
+        background:
+          "rgba(17,24,39,.96)",
+        backdropFilter:
+          "blur(12px)",
+        WebkitBackdropFilter:
+          "blur(12px)",
         borderRadius: 16,
-        padding: 14,
+        padding: 12,
         marginBottom: 30,
-        border: "1px solid #1f2937",
+        border:
+          "1px solid #293548",
+        boxShadow:
+          "0 8px 25px rgba(0,0,0,.25)",
       }}
     >
       <div
         style={{
           display: "flex",
-          gap: 12,
+          gap: 10,
           overflowX: "auto",
           scrollbarWidth: "none",
+          WebkitOverflowScrolling:
+            "touch",
         }}
       >
-        {tabs.map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() =>
-              goTo(tab.id)
-            }
-            style={{
-              flexShrink: 0,
-              border: "none",
-              cursor: "pointer",
-              padding:
-                "10px 18px",
-              borderRadius: 10,
-              background:
-                active === tab.id
-                  ? "#22c55e"
-                  : "#1f2937",
-              color: "#fff",
-              fontWeight: 600,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              transition:
-                ".25s",
-            }}
-          >
-            <span>
-              {tab.icon}
-            </span>
+        {tabs.map((tab) => {
+          const isActive =
+            active === tab.id;
 
-            {tab.label}
-          </button>
-        ))}
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() =>
+                goTo(tab.id)
+              }
+              aria-current={
+                isActive
+                  ? "page"
+                  : undefined
+              }
+              style={{
+                flexShrink: 0,
+                border: "none",
+                cursor: "pointer",
+                padding:
+                  "10px 15px",
+                borderRadius: 10,
+                background:
+                  isActive
+                    ? "#22c55e"
+                    : "#1f2937",
+                color: "#fff",
+                fontWeight: 700,
+                display: "flex",
+                alignItems:
+                  "center",
+                gap: 7,
+                transition:
+                  "all .2s ease",
+                whiteSpace:
+                  "nowrap",
+              }}
+            >
+              <span>
+                {tab.icon}
+              </span>
+
+              {tab.label}
+            </button>
+          );
+        })}
       </div>
     </section>
   );

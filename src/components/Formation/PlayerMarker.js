@@ -22,6 +22,29 @@ export default function PlayerMarker({
       ? "#22c55e"
       : "#ef4444";
 
+  const playerName =
+    player?.name ||
+    "Player";
+
+  const initials =
+    playerName
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(
+        (part) =>
+          part
+            .charAt(0)
+            .toUpperCase()
+      )
+      .join("") || "P";
+
+  const playerPhoto =
+    typeof player?.photo === "string" &&
+    player.photo.trim()
+      ? player.photo
+      : null;
+
   return (
     <div
       onClick={() =>
@@ -31,12 +54,14 @@ export default function PlayerMarker({
         position: "absolute",
         left: `${player.gridX}%`,
         top: `${player.gridY}%`,
-        transform: "translate(-50%,-50%)",
+        transform:
+          "translate(-50%,-50%)",
         width: 92,
         textAlign: "center",
         zIndex: 20,
         cursor: "pointer",
-        transition: "all .25s ease",
+        transition:
+          "all .25s ease",
       }}
     >
       {/* Rating */}
@@ -47,14 +72,18 @@ export default function PlayerMarker({
             position: "absolute",
             top: -12,
             left: "50%",
-            transform: "translateX(-50%)",
-            background: ratingColor,
+            transform:
+              "translateX(-50%)",
+            background:
+              ratingColor,
             color: "#fff",
-            padding: "3px 8px",
+            padding:
+              "3px 8px",
             borderRadius: 20,
             fontSize: 11,
             fontWeight: 700,
-            border: "2px solid #111827",
+            border:
+              "2px solid #111827",
             minWidth: 34,
           }}
         >
@@ -68,25 +97,59 @@ export default function PlayerMarker({
         style={{
           width: 58,
           height: 58,
-          margin: "0 auto",
-          borderRadius: "50%",
-          overflow: "hidden",
-          border: `3px solid ${borderColor}`,
-          background: "#0f172a",
+          margin:
+            "0 auto",
+          borderRadius:
+            "50%",
+          overflow:
+            "hidden",
+          border:
+            `3px solid ${borderColor}`,
+          background:
+            "#0f172a",
           boxShadow:
             "0 6px 15px rgba(0,0,0,.4)",
-          position: "relative",
+          position:
+            "relative",
+          display:
+            "flex",
+          alignItems:
+            "center",
+          justifyContent:
+            "center",
         }}
       >
-        <Image
-          src={
-            player.photo ||
-            "https://media.api-sports.io/football/players/1.png"
-          }
-          alt={player.name}
-          width={58}
-          height={58}
-        />
+        {playerPhoto ? (
+          <Image
+            src={playerPhoto}
+            alt={playerName}
+            width={58}
+            height={58}
+            unoptimized
+            style={{
+              width:
+                "100%",
+              height:
+                "100%",
+              objectFit:
+                "cover",
+            }}
+          />
+        ) : (
+          <span
+            style={{
+              color:
+                "#22c55e",
+              fontSize:
+                18,
+              fontWeight:
+                800,
+              lineHeight: 1,
+            }}
+          >
+            {initials}
+          </span>
+        )}
 
         {/* Captain */}
 
@@ -98,15 +161,21 @@ export default function PlayerMarker({
               right: -2,
               width: 20,
               height: 20,
-              borderRadius: "50%",
-              background: "#2563eb",
+              borderRadius:
+                "50%",
+              background:
+                "#2563eb",
               color: "#fff",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              display:
+                "flex",
+              justifyContent:
+                "center",
+              alignItems:
+                "center",
               fontSize: 10,
               fontWeight: 700,
-              border: "2px solid white",
+              border:
+                "2px solid white",
             }}
           >
             C
@@ -119,7 +188,8 @@ export default function PlayerMarker({
           player.position === "GK") && (
           <div
             style={{
-              position: "absolute",
+              position:
+                "absolute",
               left: -4,
               top: -4,
               fontSize: 15,
@@ -138,19 +208,23 @@ export default function PlayerMarker({
           fontWeight: 700,
           fontSize: 11,
           marginTop: 6,
-          whiteSpace: "nowrap",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
+          whiteSpace:
+            "nowrap",
+          overflow:
+            "hidden",
+          textOverflow:
+            "ellipsis",
         }}
       >
-        {player.name}
+        {playerName}
       </div>
 
       {/* Number */}
 
       <div
         style={{
-          color: "#cbd5e1",
+          color:
+            "#cbd5e1",
           fontSize: 11,
         }}
       >
@@ -161,12 +235,15 @@ export default function PlayerMarker({
 
       <div
         style={{
-          display: "flex",
-          justifyContent: "center",
+          display:
+            "flex",
+          justifyContent:
+            "center",
           gap: 3,
           marginTop: 4,
           minHeight: 18,
-          flexWrap: "wrap",
+          flexWrap:
+            "wrap",
         }}
       >
         {player.goals > 0 && (

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Bell, Menu } from "lucide-react";
+import { Search, Menu } from "lucide-react";
 
 export default function Header({ onMenu }) {
   return (
@@ -58,12 +58,11 @@ export default function Header({ onMenu }) {
           gap: 20,
         }}
       >
-        <Link href="/search">
+        <Link
+          href="/search"
+          aria-label="Search"
+        >
           <Search color="white" />
-        </Link>
-
-        <Link href="/notifications">
-          <Bell color="white" />
         </Link>
       </div>
     </header>

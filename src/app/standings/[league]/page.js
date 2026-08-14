@@ -1,20 +1,186 @@
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { getLeagueId } from "../../../utils/leagueMap";
+import Link from "next/link";
 
-/* ============================================
-   API
-============================================ */
+/* =====================================================
+LEAGUE CONFIG
+===================================================== */
 
-async function getStandings(league) {
+const LEAGUE_CONFIG = {
+  epl: {
+    name: "Premier League",
+    country: "England",
+    competition: "PL",
+    season: 2026,
+  },
+
+  premierleague: {
+    name: "Premier League",
+    country: "England",
+    competition: "PL",
+    season: 2026,
+  },
+
+  "premier-league": {
+    name: "Premier League",
+    country: "England",
+    competition: "PL",
+    season: 2026,
+  },
+
+  laliga: {
+    name: "La Liga",
+    country: "Spain",
+    competition: "PD",
+    season: 2025,
+  },
+
+  "la-liga": {
+    name: "La Liga",
+    country: "Spain",
+    competition: "PD",
+    season: 2025,
+  },
+
+  bundesliga: {
+    name: "Bundesliga",
+    country: "Germany",
+    competition: "BL1",
+    season: 2025,
+  },
+
+  seriea: {
+    name: "Serie A",
+    country: "Italy",
+    competition: "SA",
+    season: 2025,
+  },
+
+  "serie-a": {
+    name: "Serie A",
+    country: "Italy",
+    competition: "SA",
+    season: 2025,
+  },
+
+  ligue1: {
+    name: "Ligue 1",
+    country: "France",
+    competition: "FL1",
+    season: 2025,
+  },
+
+  "ligue-1": {
+    name: "Ligue 1",
+    country: "France",
+    competition: "FL1",
+    season: 2025,
+  },
+
+  primeiraliga: {
+    name: "Primeira Liga",
+    country: "Portugal",
+    competition: "PPL",
+    season: 2025,
+  },
+
+  "primeira-liga": {
+    name: "Primeira Liga",
+    country: "Portugal",
+    competition: "PPL",
+    season: 2025,
+  },
+};
+
+
+/* =====================================================
+NORMALIZE LEAGUE
+===================================================== */
+
+function normalizeLeague(value) {
+  const slug =
+    String(value || "")
+      .trim()
+      .toLowerCase();
+
+  if (slug === "epl") {
+    return {
+      slug: "epl",
+
+      config: {
+        name: "Premier League",
+        country: "England",
+        competition: "PL",
+        season: 2026,
+      },
+    };
+  }
+
+  if (slug === "premierleague") {
+    return {
+      slug: "premierleague",
+
+      config: LEAGUE_CONFIG.premierleague,
+    };
+  }
+
+  if (slug === "premier-league") {
+    return {
+      slug: "premier-league",
+
+      config:
+        LEAGUE_CONFIG[
+          "premier-league"
+        ],
+    };
+  }
+
+  if (LEAGUE_CONFIG[slug]) {
+    return {
+      slug,
+
+      config:
+        LEAGUE_CONFIG[slug],
+    };
+  }
+
+  return {
+    slug,
+
+    config: null,
+  };
+}
+
+
+/* =====================================================
+GET STANDINGS
+===================================================== */
+
+async function getStandings(
+  league
+) {
   try {
-    const leagueId = getLeagueId(league);
+    const {
+      slug,
+      config,
+    } =
+      normalizeLeague(
+        league
+      );
 
-    if (!leagueId) {
+    if (!config) {
       return {
         success: false,
+
         league: null,
+
+        season: null,
+
+        count: 0,
+
         standings: [],
+
+        message:
+          "Unsupported league",
       };
     }
 
@@ -22,403 +188,1053 @@ async function getStandings(league) {
       process.env.NEXT_PUBLIC_API_URL ||
       "http://127.0.0.1:5000";
 
-    const res = await fetch(
-      `${API}/api/league/${leagueId}/standings?season=2024`,
+    const url =
+      `${API}/api/standings/${slug}` +
+      `?season=${config.season}`;
+
+    console.log(
+      "🌐 Frontend standings request:",
+      url
+    );
+
+    const response =
+      await fetch(
+        url,
+        {
+          cache:
+            "no-store",
+        }
+      );
+
+    if (!response.ok) {
+      console.error(
+        "❌ Backend standings error:",
+        response.status
+      );
+
+      return {
+        success: false,
+
+        league: null,
+
+        season:
+          config.season,
+
+        count: 0,
+
+        standings: [],
+
+        message:
+          `Backend returned ${response.status}`,
+      };
+    }
+
+    const data =
+      await response.json();
+
+    console.log(
+      "📊 Frontend standings response:",
       {
-        cache: "no-store",
+        success:
+          data?.success,
+
+        season:
+          data?.season,
+
+        league:
+          data?.league?.code ||
+          data?.league?.id,
+
+        count:
+          data?.count,
       }
     );
 
-    if (!res.ok) {
-      throw new Error(`Backend error: ${res.status}`);
+    if (
+      !data ||
+      data.success !==
+        true ||
+      !Array.isArray(
+        data.standings
+      )
+    ) {
+      console.error(
+        "❌ Invalid standings response:",
+        data
+      );
+
+      return {
+        success: false,
+
+        league: null,
+
+        season:
+          data?.season ||
+          config.season,
+
+        count: 0,
+
+        standings: [],
+
+        message:
+          data?.message ||
+          "Invalid standings response",
+      };
     }
 
-    return await res.json();
-  } catch (err) {
-    console.error("Error fetching standings:", err);
+    return data;
+  } catch (error) {
+    console.error(
+      "❌ Error fetching standings:",
+      error
+    );
 
     return {
       success: false,
+
       league: null,
+
+      season: null,
+
+      count: 0,
+
       standings: [],
-      error: err.message,
+
+      message:
+        error?.message ||
+        "Unable to load standings",
     };
   }
 }
 
-/* ============================================
-   SEO
-============================================ */
 
-export async function generateMetadata({ params }) {
-  const { league } = await params;
+/* =====================================================
+SEO
+===================================================== */
+
+export async function generateMetadata({
+  params,
+}) {
+  const {
+    league,
+  } =
+    await params;
+
+  const {
+    config,
+  } =
+    normalizeLeague(
+      league
+    );
+
+  if (!config) {
+    return {
+      title:
+        "Standings | Apex Sports",
+
+      description:
+        "Football league standings",
+    };
+  }
 
   return {
-    title: `${league.toUpperCase()} Standings | Apex Sports`,
-    description: `${league} football standings`,
+    title:
+      `${config.name} Standings | Apex Sports`,
+
+    description:
+      `${config.name} football standings`,
   };
 }
 
-/* ============================================
-   PAGE
-============================================ */
 
-export default async function StandingsPage({ params }) {
-  const { league } = await params;
+/* =====================================================
+PAGE
+===================================================== */
 
-  const data = await getStandings(league);
+export default async function StandingsPage({
+  params,
+}) {
+  const {
+    league,
+  } =
+    await params;
 
-  if (!data.success || !data.standings?.length) {
-    notFound();
+  const {
+    slug,
+    config,
+  } =
+    normalizeLeague(
+      league
+    );
+
+  console.log(
+    "🔎 Standings route:",
+    {
+      league,
+
+      slug,
+
+      configExists:
+        Boolean(config),
+    }
+  );
+
+  /* =================================================
+     UNSUPPORTED LEAGUE
+  ================================================= */
+
+  if (!config) {
+    return (
+      <main
+        style={{
+          maxWidth: 1200,
+          margin:
+            "40px auto",
+          padding: 20,
+          color: "#fff",
+        }}
+      >
+        <section
+          style={{
+            background:
+              "#111827",
+            border:
+              "1px solid #1f2937",
+            borderRadius: 20,
+            padding: 40,
+            textAlign:
+              "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 48,
+              marginBottom: 15,
+            }}
+          >
+            📊
+          </div>
+
+          <h1
+            style={{
+              margin:
+                "0 0 10px",
+            }}
+          >
+            League Not Found
+          </h1>
+
+          <p
+            style={{
+              color:
+                "#94a3b8",
+              margin: 0,
+            }}
+          >
+            The requested league
+            is not supported.
+          </p>
+
+          <Link
+            href="/leagues"
+            style={{
+              display:
+                "inline-block",
+              marginTop: 24,
+              color:
+                "#22c55e",
+              textDecoration:
+                "none",
+              fontWeight: 700,
+            }}
+          >
+            ← Back to Leagues
+          </Link>
+        </section>
+      </main>
+    );
   }
 
-  const table = data.standings;
 
-  /* ==========================================
-     LEAGUE INFORMATION
-  ========================================== */
+  /* =================================================
+     LOAD DATA
+  ================================================= */
 
-  const leagueData = {
-    name: "Premier League",
-    country: "England",
-    season: data.season || 2024,
-    logo:
-      "https://media.api-sports.io/football/leagues/39.png",
-  };
+  const data =
+    await getStandings(
+      slug
+    );
+
+
+  /* =================================================
+     API FAILURE
+  ================================================= */
+
+  if (
+    !data?.success ||
+    !Array.isArray(
+      data?.standings
+    ) ||
+    data.standings.length === 0
+  ) {
+    console.error(
+      "❌ No standings available:",
+      data
+    );
+
+    return (
+      <main
+        style={{
+          maxWidth: 1200,
+          margin:
+            "40px auto",
+          padding: 20,
+          color: "#fff",
+        }}
+      >
+        <section
+          style={{
+            background:
+              "#111827",
+            border:
+              "1px solid #1f2937",
+            borderRadius: 20,
+            padding: 40,
+            textAlign:
+              "center",
+          }}
+        >
+          <div
+            style={{
+              fontSize: 42,
+              marginBottom: 15,
+            }}
+          >
+            📊
+          </div>
+
+          <h1
+            style={{
+              margin:
+                "0 0 10px",
+            }}
+          >
+            {config.name} Standings
+          </h1>
+
+          <p
+            style={{
+              color:
+                "#94a3b8",
+              margin: 0,
+            }}
+          >
+            Standings are temporarily
+            unavailable.
+          </p>
+
+          <p
+            style={{
+              color:
+                "#ef4444",
+              margin:
+                "15px 0 0",
+              fontSize: 14,
+            }}
+          >
+            {data?.message ||
+              "Unable to load standings"}
+          </p>
+        </section>
+      </main>
+    );
+  }
+
+
+  /* =================================================
+     DATA
+  ================================================= */
+
+  const table =
+    data.standings;
+
+  const leagueData =
+    data.league || {};
+
+  const season =
+    data.season ||
+    leagueData.season ||
+    config.season;
+
+
+  /* =================================================
+     PAGE
+  ================================================= */
 
   return (
     <main
       style={{
         maxWidth: 1200,
-        margin: "40px auto",
-        padding: "20px",
-        color: "white",
+        margin:
+          "40px auto",
+        padding: 20,
+        color: "#fff",
       }}
     >
-      {/* ========================================
-          LEAGUE HEADER
-      ======================================== */}
 
-      <div
+      {/* =============================================
+          HEADER
+      ============================================= */}
+
+      <section
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 20,
-          background: "#111827",
-          borderRadius: 18,
+          background:
+            "linear-gradient(145deg,#111827,#0b1220)",
+          border:
+            "1px solid #1f2937",
+          borderRadius: 20,
           padding: 25,
-          marginBottom: 30,
+          marginBottom: 25,
+          display:
+            "flex",
+          alignItems:
+            "center",
+          gap: 20,
+          flexWrap:
+            "wrap",
         }}
       >
-        <Image
-          src={leagueData.logo}
-          alt={leagueData.name}
-          width={70}
-          height={70}
-          unoptimized
-        />
 
-        <div>
+        {leagueData.logo ? (
+          <Image
+            src={
+              leagueData.logo
+            }
+            alt={
+              leagueData.name ||
+              config.name
+            }
+            width={76}
+            height={76}
+            unoptimized
+            style={{
+              objectFit:
+                "contain",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: 76,
+              height: 76,
+              borderRadius: 16,
+              background:
+                "#1e293b",
+              display:
+                "flex",
+              alignItems:
+                "center",
+              justifyContent:
+                "center",
+              color:
+                "#22c55e",
+              fontWeight: 800,
+              fontSize: 22,
+            }}
+          >
+            {leagueData.code ||
+              config.competition}
+          </div>
+        )}
+
+        <div
+          style={{
+            flex: 1,
+            minWidth: 240,
+          }}
+        >
+          <div
+            style={{
+              color:
+                "#22c55e",
+              fontSize: 12,
+              fontWeight: 800,
+              letterSpacing:
+                "1.2px",
+              textTransform:
+                "uppercase",
+              marginBottom: 8,
+            }}
+          >
+            ⚡ Apex Sports
+          </div>
+
           <h1
             style={{
               margin: 0,
-              fontSize: 34,
-              fontWeight: 700,
+              fontSize:
+                "clamp(28px,5vw,40px)",
+              fontWeight: 800,
             }}
           >
-            {leagueData.name}
+            {leagueData.name ||
+              config.name}
           </h1>
 
           <p
             style={{
-              color: "#94a3b8",
-              margin: "6px 0",
+              color:
+                "#94a3b8",
+              margin:
+                "7px 0 0",
             }}
           >
-            {leagueData.country}
+            {leagueData.country ||
+              config.country}
           </p>
+
+          <div
+            style={{
+              display:
+                "flex",
+              gap: 10,
+              flexWrap:
+                "wrap",
+              marginTop: 12,
+            }}
+          >
+            <Badge
+              label={
+                `Season ${season}`
+              }
+              positive
+            />
+
+            <Badge
+              label={
+                `${table.length} Teams`
+              }
+            />
+
+            <Badge
+              label={
+                "Football-data.org"
+              }
+            />
+          </div>
+        </div>
+      </section>
+
+
+      {/* =============================================
+          STANDINGS TABLE
+      ============================================= */}
+
+      <section
+        style={{
+          background:
+            "#111827",
+          border:
+            "1px solid #1f2937",
+          borderRadius: 20,
+          overflow:
+            "hidden",
+        }}
+      >
+        <div
+          style={{
+            padding:
+              "20px 22px",
+            borderBottom:
+              "1px solid #1f2937",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: 22,
+            }}
+          >
+            League Table
+          </h2>
 
           <p
             style={{
-              color: "#22c55e",
-              margin: 0,
-              fontWeight: 600,
+              margin:
+                "6px 0 0",
+              color:
+                "#64748b",
+              fontSize: 13,
             }}
           >
-            Season {leagueData.season}
+            Current{" "}
+            {config.name}{" "}
+            standings
+            for the{" "}
+            {season}{" "}
+            season.
           </p>
         </div>
-      </div>
 
-      {/* ========================================
-          STANDINGS TABLE
-      ======================================== */}
+        <div
+          style={{
+            overflowX:
+              "auto",
+          }}
+        >
+          <table
+            style={{
+              width: "100%",
+              minWidth: 780,
+              borderCollapse:
+                "collapse",
+            }}
+          >
+            <thead>
+              <tr
+                style={{
+                  background:
+                    "#1e293b",
+                }}
+              >
+                {[
+                  "#",
+                  "Club",
+                  "P",
+                  "W",
+                  "D",
+                  "L",
+                  "GF",
+                  "GA",
+                  "GD",
+                  "Pts",
+                ].map(
+                  (heading) => (
+                    <th
+                      key={
+                        heading
+                      }
+                      style={{
+                        padding:
+                          "14px 12px",
+                        textAlign:
+                          heading ===
+                          "Club"
+                            ? "left"
+                            : "center",
+                        color:
+                          "#cbd5e1",
+                        fontSize: 12,
+                        fontWeight:
+                          800,
+                        whiteSpace:
+                          "nowrap",
+                      }}
+                    >
+                      {heading}
+                    </th>
+                  )
+                )}
+              </tr>
+            </thead>
+
+            <tbody>
+              {table.map(
+                (
+                  row,
+                  index
+                ) => {
+                  const rank =
+                    row?.rank ??
+                    index + 1;
+
+                  const team =
+                    row?.team ||
+                    {};
+
+                  const teamName =
+                    row?.name ||
+                    team?.name ||
+                    "Unknown Team";
+
+                  const teamLogo =
+                    row?.crest ||
+                    team?.crest ||
+                    null;
+
+                  const played =
+                    row?.played ??
+                    row?.playedGames ??
+                    0;
+
+                  const wins =
+                    row?.win ??
+                    row?.won ??
+                    0;
+
+                  const draws =
+                    row?.draw ??
+                    0;
+
+                  const losses =
+                    row?.lose ??
+                    row?.lost ??
+                    0;
+
+                  const goalsFor =
+                    row?.goalsFor ??
+                    0;
+
+                  const goalsAgainst =
+                    row?.goalsAgainst ??
+                    0;
+
+                  const goalDifference =
+                    row?.goalDifference ??
+                    (
+                      goalsFor -
+                      goalsAgainst
+                    );
+
+                  const points =
+                    row?.points ??
+                    0;
+
+                  return (
+                    <tr
+                      key={`${row?.id || team?.id || "team"}-${rank}`}
+                      style={{
+                        borderBottom:
+                          "1px solid #1e293b",
+                      }}
+                    >
+                      <td
+                        style={{
+                          padding:
+                            "14px 12px",
+                          textAlign:
+                            "center",
+                          fontWeight:
+                            800,
+                          color:
+                            getRankColor(
+                              rank
+                            ),
+                        }}
+                      >
+                        {rank}
+                      </td>
+
+                      <td
+                        style={{
+                          padding:
+                            "14px 12px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display:
+                              "flex",
+                            alignItems:
+                              "center",
+                            gap: 12,
+                            minWidth:
+                              220,
+                          }}
+                        >
+                          {teamLogo ? (
+                            <Image
+                              src={
+                                teamLogo
+                              }
+                              alt={
+                                teamName
+                              }
+                              width={
+                                34
+                              }
+                              height={
+                                34
+                              }
+                              unoptimized
+                              style={{
+                                objectFit:
+                                  "contain",
+                              }}
+                            />
+                          ) : (
+                            <div
+                              style={{
+                                width: 34,
+                                height: 34,
+                                minWidth: 34,
+                                borderRadius: 9,
+                                background:
+                                  "#1e293b",
+                                display:
+                                  "flex",
+                                alignItems:
+                                  "center",
+                                justifyContent:
+                                  "center",
+                                color:
+                                  "#64748b",
+                                fontSize: 10,
+                                fontWeight:
+                                  800,
+                              }}
+                            >
+                              FC
+                            </div>
+                          )}
+
+                          <div>
+                            <strong
+                              style={{
+                                color:
+                                  "#fff",
+                                fontSize:
+                                  14,
+                              }}
+                            >
+                              {teamName}
+                            </strong>
+
+                            {row?.tla && (
+                              <div
+                                style={{
+                                  color:
+                                    "#64748b",
+                                  fontSize:
+                                    11,
+                                }}
+                              >
+                                {row.tla}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </td>
+
+                      <TableNumber
+                        value={
+                          played
+                        }
+                      />
+
+                      <TableNumber
+                        value={
+                          wins
+                        }
+                        color="#22c55e"
+                      />
+
+                      <TableNumber
+                        value={
+                          draws
+                        }
+                        color="#facc15"
+                      />
+
+                      <TableNumber
+                        value={
+                          losses
+                        }
+                        color="#ef4444"
+                      />
+
+                      <TableNumber
+                        value={
+                          goalsFor
+                        }
+                      />
+
+                      <TableNumber
+                        value={
+                          goalsAgainst
+                        }
+                      />
+
+                      <td
+                        style={{
+                          padding:
+                            "14px 12px",
+                          textAlign:
+                            "center",
+                          fontWeight:
+                            700,
+                          color:
+                            goalDifference >
+                            0
+                              ? "#22c55e"
+                              : goalDifference <
+                                0
+                              ? "#ef4444"
+                              : "#94a3b8",
+                        }}
+                      >
+                        {goalDifference >
+                        0
+                          ? `+${goalDifference}`
+                          : goalDifference}
+                      </td>
+
+                      <td
+                        style={{
+                          padding:
+                            "14px 12px",
+                          textAlign:
+                            "center",
+                          fontWeight:
+                            900,
+                          color:
+                            "#fff",
+                          fontSize:
+                            16,
+                        }}
+                      >
+                        {points}
+                      </td>
+                    </tr>
+                  );
+                }
+              )}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      {/* =============================================
+          FOOTER
+      ============================================= */}
 
       <div
         style={{
-          background: "#111827",
-          borderRadius: 18,
-          overflowX: "auto",
-          overflowY: "hidden",
-          width: "100%",
+          display:
+            "flex",
+          justifyContent:
+            "space-between",
+          flexWrap:
+            "wrap",
+          gap: 10,
+          marginTop: 14,
+          color:
+            "#64748b",
+          fontSize: 12,
         }}
       >
-        <table
-          style={{
-            width: "100%",
-            minWidth: 700,
-            borderCollapse: "collapse",
-          }}
-        >
-          {/* ====================================
-              TABLE HEADER
-          ==================================== */}
+        <span>
+          Showing{" "}
+          {table.length}{" "}
+          teams
+        </span>
 
-          <thead
-            style={{
-              background: "#1e293b",
-            }}
-          >
-            <tr>
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                #
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "left",
-                }}
-              >
-                Club
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                P
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                W
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                D
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                L
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                GF
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                GA
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                GD
-              </th>
-
-              <th
-                style={{
-                  padding: "15px 12px",
-                  textAlign: "center",
-                }}
-              >
-                Pts
-              </th>
-            </tr>
-          </thead>
-
-          {/* ====================================
-              TABLE BODY
-          ==================================== */}
-
-          <tbody>
-            {table.map((team) => (
-              <tr
-                key={`${team.team?.id}-${team.rank}`}
-                style={{
-                  borderBottom:
-                    "1px solid #1e293b",
-                }}
-              >
-                {/* POSITION */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                    fontWeight: 600,
-                  }}
-                >
-                  {team.rank}
-                </td>
-
-                {/* CLUB */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <Image
-                      src={team.team?.logo}
-                      alt={team.team?.name || "Team"}
-                      width={32}
-                      height={32}
-                      unoptimized
-                    />
-
-                    <strong>
-                      {team.team?.name || "Unknown Team"}
-                    </strong>
-                  </div>
-                </td>
-
-                {/* PLAYED */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.played ?? 0}
-                </td>
-
-                {/* WINS */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.win ?? 0}
-                </td>
-
-                {/* DRAWS */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.draw ?? 0}
-                </td>
-
-                {/* LOSSES */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.lose ?? 0}
-                </td>
-
-                {/* GOALS FOR */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.goals?.for ?? 0}
-                </td>
-
-                {/* GOALS AGAINST */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.all?.goals?.against ?? 0}
-                </td>
-
-                {/* GOAL DIFFERENCE */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                  }}
-                >
-                  {team.goalsDiff ?? 0}
-                </td>
-
-                {/* POINTS */}
-
-                <td
-                  style={{
-                    padding: "14px 12px",
-                    textAlign: "center",
-                    color: "#22c55e",
-                    fontWeight: 700,
-                  }}
-                >
-                  {team.points ?? 0}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <span>
+          Source:
+          football-data.org
+        </span>
       </div>
     </main>
   );
+}
+
+
+/* =====================================================
+TABLE NUMBER
+===================================================== */
+
+function TableNumber({
+  value,
+  color,
+}) {
+  return (
+    <td
+      style={{
+        padding:
+          "14px 12px",
+        textAlign:
+          "center",
+        fontWeight: 600,
+        color:
+          color ||
+          "#e2e8f0",
+      }}
+    >
+      {value}
+    </td>
+  );
+}
+
+
+/* =====================================================
+BADGE
+===================================================== */
+
+function Badge({
+  label,
+  positive = false,
+}) {
+  return (
+    <span
+      style={{
+        display:
+          "inline-flex",
+        alignItems:
+          "center",
+        padding:
+          "6px 10px",
+        borderRadius:
+          999,
+        background:
+          positive
+            ? "rgba(34,197,94,.12)"
+            : "#1e293b",
+        border:
+          positive
+            ? "1px solid rgba(34,197,94,.25)"
+            : "1px solid #334155",
+        color:
+          positive
+            ? "#22c55e"
+            : "#94a3b8",
+        fontSize: 11,
+        fontWeight: 700,
+      }}
+    >
+      {label}
+    </span>
+  );
+}
+
+
+/* =====================================================
+RANK COLOR
+===================================================== */
+
+function getRankColor(rank) {
+  if (rank === 1) {
+    return "#facc15";
+  }
+
+  if (rank === 2) {
+    return "#cbd5e1";
+  }
+
+  if (rank === 3) {
+    return "#fb923c";
+  }
+
+  if (
+    rank >= 4 &&
+    rank <= 6
+  ) {
+    return "#22c55e";
+  }
+
+  if (rank >= 18) {
+    return "#ef4444";
+  }
+
+  return "#94a3b8";
 }

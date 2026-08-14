@@ -1,193 +1,600 @@
-// src/app/results/[league]/page.js
-
 import ResultsClient from "@/components/ResultsClient";
 
 /* =====================================================
-   API
+API
 ===================================================== */
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  "http://127.0.0.1:5000";
+
 
 /* =====================================================
-   LEAGUE NAME
+LEAGUE CONFIG
 ===================================================== */
 
-function formatLeagueName(slug) {
-  if (!slug) {
-    return "League Results";
-  }
+const LEAGUE_CONFIG = {
+  epl: {
+    name: "Premier League",
+    country: "England",
+    code: "PL",
+    season: 2026,
+  },
 
-  return slug
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (char) =>
-      char.toUpperCase()
-    );
-}
+  pl: {
+    name: "Premier League",
+    country: "England",
+    code: "PL",
+    season: 2026,
+  },
+
+  premierleague: {
+    name: "Premier League",
+    country: "England",
+    code: "PL",
+    season: 2026,
+  },
+
+  "premier-league": {
+    name: "Premier League",
+    country: "England",
+    code: "PL",
+    season: 2026,
+  },
+};
+
 
 /* =====================================================
-   LOAD RESULTS
+LOAD RESULTS
 ===================================================== */
 
-async function getLeagueResults(league) {
-  if (!league) {
-    console.error(
-      "Results page: league parameter is missing."
-    );
+async function getLeagueResults(
+  league
+) {
+  const slug =
+    String(league || "")
+      .trim()
+      .toLowerCase();
 
-    return [];
+  const config =
+    LEAGUE_CONFIG[slug];
+
+  if (!config) {
+    return {
+      success: false,
+
+      league: null,
+
+      season: null,
+
+      matches: [],
+
+      count: 0,
+
+      total: 0,
+
+      message:
+        "Unsupported league",
+    };
   }
+
+  /*
+   * Migrated backend endpoint:
+   *
+   * /api/league/epl/results
+   *
+   * football-data.org
+   */
+
+  const url =
+    `${API}/api/league/${slug}/results` +
+    `?season=${config.season}` +
+    `&page=1` +
+    `&limit=10`;
+
+  console.log(
+    "🌐 Results page API request:",
+    url
+  );
+
+  const controller =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => {
+        controller.abort();
+      },
+      15000
+    );
 
   try {
-    const response = await fetch(
-      `${API}/api/league/${encodeURIComponent(
-        league
-      )}/results`,
-      {
-        cache: "no-store",
-      }
+    const response =
+      await fetch(
+        url,
+        {
+          cache:
+            "no-store",
+
+          signal:
+            controller.signal,
+        }
+      );
+
+    console.log(
+      "📡 Results API status:",
+      response.status
     );
 
     if (!response.ok) {
+      throw new Error(
+        `Results API returned ${response.status}`
+      );
+    }
+
+    const data =
+      await response.json();
+
+    console.log(
+      "📊 Results API response:",
+      {
+        success:
+          data?.success,
+
+        season:
+          data?.season,
+
+        total:
+          data?.total,
+
+        count:
+          data?.count,
+      }
+    );
+
+    /*
+     * Backend returns:
+     *
+     * results: [...]
+     *
+     * ResultsClient expects:
+     *
+     * initialMatches: [...]
+     */
+
+    const results =
+      Array.isArray(
+        data?.results
+      )
+        ? data.results
+        : [];
+
+    if (
+      !data ||
+      data.success !== true ||
+      !Array.isArray(
+        data.results
+      )
+    ) {
       console.error(
-        `Results API error: ${response.status}`
+        "❌ Invalid results response:",
+        data
       );
 
-      return [];
+      return {
+        success: false,
+
+        league:
+          slug,
+
+        season:
+          data?.season ||
+          config.season,
+
+        matches: [],
+
+        count: 0,
+
+        total: 0,
+
+        message:
+          data?.message ||
+          "Invalid results response",
+      };
     }
 
-    const data = await response.json();
+    return {
+      ...data,
 
-    if (Array.isArray(data?.results)) {
-      return data.results;
-    }
-
-    if (Array.isArray(data?.matches)) {
-      return data.matches;
-    }
-
-    return [];
+      matches:
+        results,
+    };
   } catch (error) {
     console.error(
-      "Failed to load league results:",
+      "❌ Failed to load league results:",
       error
     );
 
-    return [];
+    return {
+      success: false,
+
+      league:
+        slug,
+
+      season:
+        config.season,
+
+      matches: [],
+
+      count: 0,
+
+      total: 0,
+
+      message:
+        error?.name ===
+        "AbortError"
+          ? "Results request timed out"
+          : error?.message ||
+            "Unable to load results",
+    };
+  } finally {
+    clearTimeout(
+      timeout
+    );
   }
 }
 
+
 /* =====================================================
-   METADATA
+METADATA
 ===================================================== */
 
 export async function generateMetadata({
   params,
 }) {
-  const { league } = await params;
+  const { league } =
+    await params;
 
-  const leagueName =
-    formatLeagueName(league);
+  const slug =
+    String(league || "")
+      .trim()
+      .toLowerCase();
+
+  const config =
+    LEAGUE_CONFIG[slug];
+
+  if (!config) {
+    return {
+      title:
+        "Results | Apex Sports",
+
+      description:
+        "Latest football results",
+    };
+  }
 
   return {
     title:
-      `${leagueName} Results | Apex Sports`,
+      `${config.name} Results | Apex Sports`,
 
     description:
-      `Latest football results, scores and completed matches from ${leagueName}.`,
+      `Latest football results, scores and completed matches from ${config.name}.`,
   };
 }
 
+
 /* =====================================================
-   PAGE
+PAGE
 ===================================================== */
 
 export default async function ResultsLeaguePage({
   params,
 }) {
-  const { league } = await params;
+  const { league } =
+    await params;
 
-  const matches =
-    await getLeagueResults(league);
+  const slug =
+    String(league || "")
+      .trim()
+      .toLowerCase();
 
-  const leagueName =
-    formatLeagueName(league);
+  const config =
+    LEAGUE_CONFIG[slug];
 
-  return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#030712",
-        color: "#fff",
-        padding: "30px 20px 60px",
-      }}
-    >
-      <div
+  if (!config) {
+    return (
+      <main
         style={{
-          width: "100%",
-          maxWidth: "1200px",
-          margin: "0 auto",
+          minHeight:
+            "100vh",
+
+          background:
+            "#030712",
+
+          color:
+            "#fff",
+
+          padding:
+            "40px 20px",
         }}
       >
-        {/* =================================================
-            PAGE HEADER
-        ================================================== */}
-
-        <header
+        <div
           style={{
-            marginBottom: "30px",
+            maxWidth:
+              1200,
+
+            margin:
+              "0 auto",
+
+            background:
+              "#111827",
+
+            border:
+              "1px solid #1f2937",
+
+            borderRadius:
+              20,
+
+            padding:
+              45,
+
+            textAlign:
+              "center",
           }}
         >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: "12px",
-              fontWeight: 800,
-              letterSpacing: "1.2px",
-              textTransform: "uppercase",
-              marginBottom: "8px",
-            }}
-          >
-            ⚽ Apex Sports
-          </div>
-
-          <h1
-            style={{
-              margin: 0,
-              color: "#fff",
-              fontSize:
-                "clamp(28px, 5vw, 44px)",
-              fontWeight: 800,
-              lineHeight: 1.15,
-            }}
-          >
-            {leagueName} Results
+          <h1>
+            League Not Found
           </h1>
 
           <p
             style={{
-              margin: "10px 0 0",
-              color: "#9ca3af",
-              fontSize: "15px",
-              lineHeight: 1.6,
+              color:
+                "#94a3b8",
             }}
           >
-            Latest completed matches,
-            scores and results from{" "}
-            {leagueName}.
+            The requested league
+            is not supported.
           </p>
-        </header>
+        </div>
+      </main>
+    );
+  }
+
+  const data =
+    await getLeagueResults(
+      slug
+    );
+
+  const matches =
+    Array.isArray(
+      data?.matches
+    )
+      ? data.matches
+      : [];
+
+  return (
+    <main
+      style={{
+        minHeight:
+          "100vh",
+
+        background:
+          "#030712",
+
+        color:
+          "#fff",
+
+        padding:
+          "30px 20px 60px",
+      }}
+    >
+      <div
+        style={{
+          width:
+            "100%",
+
+          maxWidth:
+            "1200px",
+
+          margin:
+            "0 auto",
+        }}
+      >
 
         {/* =================================================
-            RESULTS CLIENT
-        ================================================== */}
+            PAGE HEADER
+        ================================================= */}
 
-        <ResultsClient
-          initialMatches={matches}
-          league={league}
-          leagueName={leagueName}
-        />
+        <header
+          style={{
+            marginBottom:
+              "30px",
+          }}
+        >
+          <div
+            style={{
+              color:
+                "#22c55e",
+
+              fontSize:
+                "12px",
+
+              fontWeight:
+                800,
+
+              letterSpacing:
+                "1.2px",
+
+              textTransform:
+                "uppercase",
+
+              marginBottom:
+                "8px",
+            }}
+          >
+            ⚡ Apex Sports
+          </div>
+
+          <h1
+            style={{
+              margin:
+                0,
+
+              color:
+                "#fff",
+
+              fontSize:
+                "clamp(28px, 5vw, 44px)",
+
+              fontWeight:
+                800,
+
+              lineHeight:
+                1.15,
+            }}
+          >
+            {config.name} Results
+          </h1>
+
+          <p
+            style={{
+              margin:
+                "10px 0 0",
+
+              color:
+                "#9ca3af",
+
+              fontSize:
+                "15px",
+
+              lineHeight:
+                1.6,
+            }}
+          >
+            Latest completed
+            matches, scores and
+            results from{" "}
+            {config.name}.
+          </p>
+
+          <div
+            style={{
+              marginTop:
+                "12px",
+
+              display:
+                "inline-flex",
+
+              alignItems:
+                "center",
+
+              gap:
+                8,
+
+              padding:
+                "7px 12px",
+
+              borderRadius:
+                "8px",
+
+              background:
+                "#111827",
+
+              border:
+                "1px solid #1f2937",
+
+              color:
+                "#d1d5db",
+
+              fontSize:
+                "13px",
+
+              fontWeight:
+                700,
+            }}
+          >
+            Season{" "}
+            {config.season}/
+            {String(
+              config.season + 1
+            ).slice(-2)}
+          </div>
+        </header>
+
+
+        {/* =================================================
+            EMPTY / ERROR STATE
+        ================================================= */}
+
+        {!data?.success &&
+        matches.length === 0 ? (
+          <section
+            style={{
+              background:
+                "#111827",
+
+              border:
+                "1px solid #1f2937",
+
+              borderRadius:
+                20,
+
+              padding:
+                "50px 25px",
+
+              textAlign:
+                "center",
+            }}
+          >
+            <div
+              style={{
+                fontSize:
+                  48,
+
+                marginBottom:
+                  15,
+              }}
+            >
+              🏁
+            </div>
+
+            <h2
+              style={{
+                margin:
+                  "0 0 10px",
+              }}
+            >
+              Results Not Available
+            </h2>
+
+            <p
+              style={{
+                color:
+                  "#94a3b8",
+
+                margin:
+                  0,
+              }}
+            >
+              {data?.message ||
+                "Unable to load results."}
+            </p>
+          </section>
+        ) : (
+          <ResultsClient
+            initialMatches={
+              matches
+            }
+
+            league={
+              slug
+            }
+
+            leagueName={
+              config.name
+            }
+          />
+        )}
       </div>
     </main>
   );
