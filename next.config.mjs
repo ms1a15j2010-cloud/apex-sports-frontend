@@ -7,7 +7,7 @@ const nextConfig = {
       {
         source: "/api/:path*",
         destination:
-          "https://apexsportsbackendapi-hzvhkkxz.b4a.run/api/:path*",
+          "https://apexsportsbackendapi-7ohbu81n.b4a.run/api/:path*",
       },
     ];
   },
