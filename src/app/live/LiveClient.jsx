@@ -27,9 +27,7 @@ import { useLive } from "@/context/LiveContext";
    API
 ===================================================== */
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+const API = "";
 
 /* =====================================================
    REFRESH INTERVAL
@@ -129,7 +127,15 @@ export default function LiveClient({
         setRefreshError("");
 
         /*
-          Make sure API URL is valid.
+          API is intentionally same-origin.
+
+          Browser:
+          /api/live
+
+          Next.js rewrite:
+          /api/live
+              ↓
+          Back4App backend
         */
 
         const baseUrl =
@@ -137,12 +143,6 @@ export default function LiveClient({
             /\/$/,
             ""
           );
-
-        if (!baseUrl) {
-          throw new Error(
-            "NEXT_PUBLIC_API_URL is not configured."
-          );
-        }
 
         const url =
           `${baseUrl}/api/live`;

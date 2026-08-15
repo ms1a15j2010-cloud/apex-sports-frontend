@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Fix the multiple lockfiles warning - using import.meta.dirname instead
   outputFileTracingRoot: import.meta.dirname,
-  
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination:
+          "https://apexsportsbackendapi-mdfvpc2w.b4a.run/api/:path*",
+      },
+    ];
+  },
+
   images: {
     unoptimized: true,
 
