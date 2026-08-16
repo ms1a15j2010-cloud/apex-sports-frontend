@@ -15,54 +15,22 @@ export default function Header() {
   ];
 
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 1000,
-        background: "#020617",
-        borderBottom: "1px solid #1e293b",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: "1400px",
-          margin: "0 auto",
-          height: "70px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          padding: "0 20px",
-        }}
-      >
+    <header className="sticky top-0 z-[1000] bg-[#020617] border-b border-[#1e293b]">
+      <div className="max-w-[1400px] mx-auto h-[70px] flex items-center justify-end px-[20px]">
+        {/* Commented brand logo preserved */}
         {/* <Link
           href="/"
-          style={{
-            color: "#fff",
-            textDecoration: "none",
-            fontSize: 28,
-            fontWeight: "bold",
-          }}
+          className="text-white text-[28px] font-bold no-underline"
         >
           ▲ Apex Sports
         </Link> */}
 
-        <nav
-          style={{
-            display: "flex",
-            gap: 25,
-          }}
-          className="desktop-nav"
-        >
+        <nav className="hidden md:flex gap-[25px]">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              style={{
-                color: "#cbd5e1",
-                textDecoration: "none",
-                fontWeight: 500,
-              }}
+              className="text-[#cbd5e1] hover:text-white font-medium no-underline transition-colors"
             >
               {item.name}
             </Link>
@@ -71,37 +39,20 @@ export default function Header() {
 
         <button
           onClick={() => setOpen(!open)}
-          style={{
-            background: "transparent",
-            color: "white",
-            border: "none",
-            fontSize: 26,
-            cursor: "pointer",
-          }}
-          className="mobile-menu"
+          className="block md:hidden bg-transparent text-white border-none text-[26px] cursor-pointer"
+          aria-label="Toggle Navigation Menu"
         >
           ☰
         </button>
       </div>
 
       {open && (
-        <div
-          style={{
-            background: "#111827",
-            padding: 20,
-            display: "flex",
-            flexDirection: "column",
-            gap: 15,
-          }}
-        >
+        <div className="md:hidden bg-[#111827] p-[20px] flex flex-col gap-[15px]">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              style={{
-                color: "white",
-                textDecoration: "none",
-              }}
+              className="text-white no-underline hover:text-[#cbd5e1] transition-colors"
               onClick={() => setOpen(false)}
             >
               {item.name}
