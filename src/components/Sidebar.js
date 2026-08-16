@@ -15,73 +15,14 @@ const sections = [
       { name: "Top Scorers", href: "/top-scorers/epl", icon: "⚽" },
     ],
   },
-
   {
     title: "ENGLAND",
     items: [
-      { name: "Premier League", href: "/league/epl", icon: "🏆" },
-      { name: "Championship", href: "/league/championship", icon: "🥈" },
-      { name: "FA Cup", href: "/league/fa-cup", icon: "🏅" },
-      { name: "League Cup", href: "/league/league-cup", icon: "🥇" },
-    ],
-  },
-
-  {
-    title: "SPAIN",
-    items: [
-      { name: "La Liga", href: "/league/la-liga", icon: "🇪🇸" },
-      { name: "Copa del Rey", href: "/league/copa-del-rey", icon: "🏆" },
-    ],
-  },
-
-  {
-    title: "GERMANY",
-    items: [
-      { name: "Bundesliga", href: "/league/bundesliga", icon: "🇩🇪" },
-    ],
-  },
-
-  {
-    title: "ITALY",
-    items: [
-      { name: "Serie A", href: "/league/serie-a", icon: "🇮🇹" },
-    ],
-  },
-
-  {
-    title: "FRANCE",
-    items: [
-      { name: "Ligue 1", href: "/league/ligue-1", icon: "🇫🇷" },
-    ],
-  },
-
-  {
-    title: "EUROPE",
-    items: [
       {
-        name: "Champions League",
-        href: "/league/champions-league",
-        icon: "⭐",
-      },
-      {
-        name: "Europa League",
-        href: "/league/europa-league",
-        icon: "✨",
-      },
-      {
-        name: "Conference League",
-        href: "/league/conference-league",
+        name: "Premier League",
+        href: "/league/epl",
         icon: "🏆",
       },
-    ],
-  },
-
-  {
-    title: "INTERNATIONAL",
-    items: [
-      { name: "World Cup", href: "/league/world-cup", icon: "🌍" },
-      { name: "Euro Cup", href: "/league/euro", icon: "🇪🇺" },
-      { name: "Copa America", href: "/league/copa-america", icon: "🏆" },
     ],
   },
 ];
