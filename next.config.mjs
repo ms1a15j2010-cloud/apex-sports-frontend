@@ -1,16 +1,6 @@
-/** @type {import('next').NextConfig} */
+ /** @type {import('next').NextConfig} */
 const nextConfig = {
   outputFileTracingRoot: import.meta.dirname,
-
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination:
-          "https://apexsportsbackendapi-7ohbu81n.b4a.run/api/:path*",
-      },
-    ];
-  },
 
   images: {
     unoptimized: true,
