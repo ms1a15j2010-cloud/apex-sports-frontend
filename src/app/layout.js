@@ -2,6 +2,7 @@ import "./globals.css";
 import Link from "next/link";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
+import Footer from "@/components/Footer";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { LiveProvider } from "@/context/LiveContext";
 
@@ -215,76 +216,12 @@ export default function RootLayout({
                 <Breadcrumbs />
 
                 {children}
+
+                {/* ===============================================
+                    FOOTER (Inside main scroll container)
+                ================================================ */}
+                <Footer />
               </main>
-
-              {/* ===============================================
-                  FOOTER
-              ================================================ */}
-
-              <footer
-                style={{
-                  flexShrink: 0,
-
-                  padding: "20px",
-
-                  textAlign: "center",
-
-                  fontSize: "14px",
-
-                  borderTop:
-                    "1px solid #1e293b",
-
-                  background: "#020617",
-
-                  color: "#94a3b8",
-                }}
-              >
-                <Link
-                  href="/about"
-                  style={{
-                    color: "#94a3b8",
-                    textDecoration: "none",
-                  }}
-                >
-                  About
-                </Link>
-
-                {" · "}
-
-                <Link
-                  href="/privacy-policy"
-                  style={{
-                    color: "#94a3b8",
-                    textDecoration: "none",
-                  }}
-                >
-                  Privacy
-                </Link>
-
-                {" · "}
-
-                <Link
-                  href="/terms"
-                  style={{
-                    color: "#94a3b8",
-                    textDecoration: "none",
-                  }}
-                >
-                  Terms
-                </Link>
-
-                {" · "}
-
-                <Link
-                  href="/contact"
-                  style={{
-                    color: "#94a3b8",
-                    textDecoration: "none",
-                  }}
-                >
-                  Contact
-                </Link>
-              </footer>
             </div>
           </div>
         </LiveProvider>
