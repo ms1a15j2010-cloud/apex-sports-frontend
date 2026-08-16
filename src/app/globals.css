@@ -1899,6 +1899,6 @@ font-weight:bold;
 
 @media (max-width: 900px) {
   .apex-sidebar {
-    width: 220px !important;
+    display: none !important;
   }
 }
