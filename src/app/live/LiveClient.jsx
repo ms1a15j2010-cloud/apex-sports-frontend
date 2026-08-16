@@ -27,7 +27,8 @@ import { useLive } from "@/context/LiveContext";
    API
 ===================================================== */
 
-const API = "";
+const API =
+  process.env.NEXT_PUBLIC_API_URL || "";
 
 /* =====================================================
    REFRESH INTERVAL
