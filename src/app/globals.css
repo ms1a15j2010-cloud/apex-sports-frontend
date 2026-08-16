@@ -1893,4 +1893,12 @@ font-weight:bold;
   }
 }
 
+/* ==========================================
+   APEX SPORTS SIDEBAR RESPONSIVENESS
+========================================== */
 
+@media (max-width: 900px) {
+  .apex-sidebar {
+    width: 220px !important;
+  }
+}

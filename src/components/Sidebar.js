@@ -31,7 +31,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside
+    <aside className="apex-sidebar"
       style={{
         width: 280,
         boxSizing: "border-box",
