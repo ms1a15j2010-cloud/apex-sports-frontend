@@ -1901,4 +1901,8 @@ font-weight:bold;
   .apex-sidebar {
     display: none !important;
   }
+
+  .apex-main-shell {
+    margin-left: 0 !important;
+  }
 }

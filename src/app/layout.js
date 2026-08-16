@@ -148,7 +148,7 @@ export default function RootLayout({
                 RIGHT SIDE APPLICATION
             ================================================== */}
 
-            <div
+            <div className="apex-main-shell"
               style={{
                 flex: 1,
 
