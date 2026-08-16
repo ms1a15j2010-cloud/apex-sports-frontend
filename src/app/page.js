@@ -3,11 +3,9 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import HomeHero from "@/components/HomeHero";
-// Remove: import SearchBar from "@/components/SearchBar";
 import HomeTabs from "@/components/HomeTabs";
 import SectionHeader from "@/components/SectionHeader";
 import MatchList from "@/components/MatchList";
-import Footer from "@/components/Footer";
 
 export default function HomePage() {
   const [matches, setMatches] = useState([]);
@@ -31,9 +29,7 @@ export default function HomePage() {
           return;
         }
 
-        const list = Array.isArray(data.matches)
-          ? data.matches
-          : [];
+        const list = Array.isArray(data.matches) ? data.matches : [];
 
         setMatches(list);
         setFiltered(list);
@@ -88,65 +84,37 @@ export default function HomePage() {
   }, [tab, matches]);
 
   return (
-    <>
-      <main className="home-page">
-        {/* Pass handleSearch to HomeHero */}
-        <HomeHero onSearch={handleSearch} />
+    <main className="w-full">
+      <HomeHero onSearch={handleSearch} />
 
-        {/* Remove SearchBar from here */}
-        {/* <SearchBar onSearch={handleSearch} /> */}
+      <HomeTabs activeTab={tab} setActiveTab={setTab} />
 
-        <HomeTabs activeTab={tab} setActiveTab={setTab} />
+      <SectionHeader
+        title="Today's Matches"
+        subtitle={`${filtered.length} matches`}
+      />
 
-        <SectionHeader
-          title="Today's Matches"
-          subtitle={`${filtered.length} matches`}
-        />
+      {loading && (
+        <div className="text-center py-[60px] text-[20px] text-slate-300">
+          Loading today's matches...
+        </div>
+      )}
 
-        {loading && (
-          <div
-            style={{
-              textAlign: "center",
-              padding: 60,
-              fontSize: 20,
-            }}
-          >
-            Loading today's matches...
-          </div>
-        )}
+      {!loading && error && (
+        <div className="text-center text-red-500 py-[40px] text-[18px]">
+          {error}
+        </div>
+      )}
 
-        {!loading && error && (
-          <div
-            style={{
-              textAlign: "center",
-              color: "#ef4444",
-              padding: 40,
-              fontSize: 18,
-            }}
-          >
-            {error}
-          </div>
-        )}
+      {!loading && !error && filtered.length === 0 && (
+        <div className="text-center py-[60px] text-slate-400 text-[18px]">
+          No matches found.
+        </div>
+      )}
 
-        {!loading && !error && filtered.length === 0 && (
-          <div
-            style={{
-              textAlign: "center",
-              padding: 60,
-              color: "#94a3b8",
-              fontSize: 18,
-            }}
-          >
-            No matches found.
-          </div>
-        )}
-
-        {!loading && !error && filtered.length > 0 && (
-          <MatchList matches={filtered} />
-        )}
-      </main>
-
-      <Footer />
-    </>
+      {!loading && !error && filtered.length > 0 && (
+        <MatchList matches={filtered} />
+      )}
+    </main>
   );
 }
