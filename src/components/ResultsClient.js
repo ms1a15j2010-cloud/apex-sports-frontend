@@ -1,4 +1,3 @@
-// src/components/ResultsClient.js
 
 "use client";
 
@@ -340,21 +339,7 @@ function normalizeMatch(match) {
 function TeamLogo({ src, name }) {
   if (!src) {
     return (
-      <div
-        style={{
-          width: 42,
-          height: 42,
-          borderRadius: 10,
-          background: "#1f2937",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: "#9ca3af",
-          fontSize: 18,
-          fontWeight: 700,
-          flexShrink: 0,
-        }}
-      >
+      <div className="flex h-[42px] w-[42px] min-w-[42px] shrink-0 items-center justify-center rounded-[10px] bg-gray-800 text-lg font-bold text-gray-400">
         {name?.charAt(0)?.toUpperCase() || "?"}
       </div>
     );
@@ -367,12 +352,7 @@ function TeamLogo({ src, name }) {
       width={42}
       height={42}
       loading="lazy"
-      style={{
-        width: 42,
-        height: 42,
-        objectFit: "contain",
-        flexShrink: 0,
-      }}
+      className="h-[42px] w-[42px] min-w-[42px] shrink-0 object-contain"
     />
   );
 }
@@ -385,153 +365,57 @@ function ResultCard({ match }) {
   const matchId = match.id;
 
   const content = (
-    <article
-      style={{
-        background:
-          "linear-gradient(145deg, #111827, #0b1220)",
-        border: "1px solid #1f2937",
-        borderRadius: 18,
-        padding: 20,
-        transition:
-          "transform .2s ease, border-color .2s ease",
-      }}
-    >
+    <article className="rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-5 transition duration-200 hover:-translate-y-0.5 hover:border-slate-700">
       {/* DATE */}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          gap: 12,
-          marginBottom: 18,
-          flexWrap: "wrap",
-        }}
-      >
-        <div
-          style={{
-            color: "#9ca3af",
-            fontSize: 13,
-            fontWeight: 600,
-          }}
-        >
+      <div className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
+        <div className="text-[13px] font-semibold text-gray-400">
           {formatDate(match.date)}
         </div>
 
-        <div
-          style={{
-            color: "#6b7280",
-            fontSize: 12,
-          }}
-        >
+        <div className="text-xs text-gray-500">
           {formatTime(match.date)}
         </div>
       </div>
 
       {/* TEAMS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr auto 1fr",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 sm:gap-4">
         {/* HOME */}
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-            minWidth: 0,
-          }}
-        >
+        <div className="flex min-w-0 items-center gap-3">
           <TeamLogo
             src={match.homeLogo}
             name={match.homeName}
           />
 
-          <span
-            style={{
-              color: "#fff",
-              fontSize: 15,
-              fontWeight: 700,
-              lineHeight: 1.3,
-              overflowWrap: "anywhere",
-            }}
-          >
+          <span className="break-words text-[15px] font-bold leading-[1.3] text-white">
             {match.homeName}
           </span>
         </div>
 
         {/* SCORE */}
 
-        <div
-          style={{
-            textAlign: "center",
-            minWidth: 80,
-          }}
-        >
-          <div
-            style={{
-              color: "#fff",
-              fontSize: 25,
-              fontWeight: 800,
-              letterSpacing: 1,
-              whiteSpace: "nowrap",
-            }}
-          >
+        <div className="min-w-[80px] text-center">
+          <div className="whitespace-nowrap text-[25px] font-extrabold tracking-[1px] text-white">
             {match.homeScore}
 
-            <span
-              style={{
-                color: "#6b7280",
-                margin: "0 7px",
-              }}
-            >
+            <span className="mx-[7px] text-gray-500">
               -
             </span>
 
             {match.awayScore}
           </div>
 
-          <div
-            style={{
-              marginTop: 5,
-              color: "#22c55e",
-              fontSize: 11,
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: ".5px",
-            }}
-          >
+          <div className="mt-[5px] text-[11px] font-bold uppercase tracking-[0.5px] text-green-500">
             {match.statusLabel}
           </div>
         </div>
 
         {/* AWAY */}
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            gap: 12,
-            minWidth: 0,
-          }}
-        >
-          <span
-            style={{
-              color: "#fff",
-              fontSize: 15,
-              fontWeight: 700,
-              lineHeight: 1.3,
-              textAlign: "right",
-              overflowWrap: "anywhere",
-            }}
-          >
+        <div className="flex min-w-0 items-center justify-end gap-3">
+          <span className="break-words text-right text-[15px] font-bold leading-[1.3] text-white">
             {match.awayName}
           </span>
 
@@ -545,15 +429,7 @@ function ResultCard({ match }) {
       {/* VENUE */}
 
       {match.venue && (
-        <div
-          style={{
-            marginTop: 18,
-            paddingTop: 14,
-            borderTop: "1px solid #1f2937",
-            color: "#6b7280",
-            fontSize: 12,
-          }}
-        >
+        <div className="mt-[18px] border-t border-gray-800 pt-3.5 text-xs text-gray-500">
           📍 {match.venue}
         </div>
       )}
@@ -567,11 +443,7 @@ function ResultCard({ match }) {
   return (
     <Link
       href={`/match/${matchId}`}
-      style={{
-        display: "block",
-        color: "inherit",
-        textDecoration: "none",
-      }}
+      className="block text-inherit no-underline"
     >
       {content}
     </Link>
@@ -692,84 +564,32 @@ export default function ResultsClient({
   if (normalizedMatches.length === 0) {
     return (
       <section>
-        <header
-          style={{
-            marginBottom: 30,
-          }}
-        >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              textTransform: "uppercase",
-              letterSpacing: "1.2px",
-              marginBottom: 8,
-            }}
-          >
+        <header className="mb-[30px]">
+          <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              color: "#fff",
-              fontSize:
-                "clamp(28px, 5vw, 42px)",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="text-[clamp(28px,5vw,42px)] font-extrabold leading-tight text-white">
             {leagueName}
           </h1>
 
-          <p
-            style={{
-              margin: "10px 0 0",
-              color: "#9ca3af",
-              fontSize: 15,
-            }}
-          >
+          <p className="mt-2.5 text-[15px] text-gray-400">
             No completed matches are
             available for this league
             right now.
           </p>
         </header>
 
-        <div
-          style={{
-            background: "#111827",
-            border: "1px solid #1f2937",
-            borderRadius: 20,
-            padding: "55px 25px",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 42,
-              marginBottom: 15,
-            }}
-          >
+        <div className="rounded-[20px] border border-gray-800 bg-gray-900 px-6 py-[55px] text-center sm:px-[25px]">
+          <div className="mb-[15px] text-[42px]">
             ⚽
           </div>
 
-          <h2
-            style={{
-              margin: "0 0 8px",
-              color: "#fff",
-              fontSize: 22,
-            }}
-          >
+          <h2 className="mb-2 text-[22px] font-bold text-white">
             No results found
           </h2>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#9ca3af",
-              fontSize: 14,
-            }}
-          >
+          <p className="m-0 text-sm text-gray-400">
             There are currently no
             results available for{" "}
             {leagueName}.
@@ -787,43 +607,16 @@ export default function ResultsClient({
     <section>
       {/* HEADER */}
 
-      <header
-        style={{
-          marginBottom: 28,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            textTransform: "uppercase",
-            letterSpacing: "1.2px",
-            marginBottom: 8,
-          }}
-        >
+      <header className="mb-7">
+        <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h1
-          style={{
-            margin: 0,
-            color: "#fff",
-            fontSize:
-              "clamp(28px, 5vw, 42px)",
-            fontWeight: 800,
-          }}
-        >
+        <h1 className="text-[clamp(28px,5vw,42px)] font-extrabold leading-tight text-white">
           {leagueName}
         </h1>
 
-        <p
-          style={{
-            margin: "8px 0 0",
-            color: "#9ca3af",
-            fontSize: 15,
-          }}
-        >
+        <p className="mt-2 text-[15px] text-gray-400">
           Latest completed matches,
           scores and results.
         </p>
@@ -831,14 +624,7 @@ export default function ResultsClient({
 
       {/* FILTERS */}
 
-      <div
-        style={{
-          display: "flex",
-          gap: 12,
-          marginBottom: 24,
-          flexWrap: "wrap",
-        }}
-      >
+      <div className="mb-6 flex flex-wrap gap-3">
         <input
           type="search"
           value={search}
@@ -847,17 +633,7 @@ export default function ResultsClient({
           }
           placeholder="Search team..."
           aria-label="Search team"
-          style={{
-            flex: "1 1 240px",
-            minWidth: 0,
-            background: "#111827",
-            color: "#fff",
-            border: "1px solid #1f2937",
-            borderRadius: 12,
-            padding: "12px 15px",
-            outline: "none",
-            fontSize: 14,
-          }}
+          className="min-w-0 flex-[1_1_240px] rounded-xl border border-gray-800 bg-gray-900 px-[15px] py-3 text-sm text-white outline-none placeholder:text-gray-500 focus:border-slate-600 focus:ring-1 focus:ring-slate-600"
         />
 
         <select
@@ -868,16 +644,7 @@ export default function ResultsClient({
             )
           }
           aria-label="Filter results by date"
-          style={{
-            flex: "0 1 180px",
-            background: "#111827",
-            color: "#fff",
-            border: "1px solid #1f2937",
-            borderRadius: 12,
-            padding: "12px 15px",
-            outline: "none",
-            fontSize: 14,
-          }}
+          className="w-full flex-[0_1_180px] rounded-xl border border-gray-800 bg-gray-900 px-[15px] py-3 text-sm text-white outline-none focus:border-slate-600 focus:ring-1 focus:ring-slate-600 sm:w-auto"
         >
           <option value="all">
             All Results
@@ -895,14 +662,7 @@ export default function ResultsClient({
 
       {/* RESULT COUNT */}
 
-      <div
-        style={{
-          marginBottom: 16,
-          color: "#6b7280",
-          fontSize: 13,
-          fontWeight: 600,
-        }}
-      >
+      <div className="mb-4 text-[13px] font-semibold text-gray-500">
         Showing{" "}
         {filteredMatches.length}{" "}
         of{" "}
@@ -913,14 +673,7 @@ export default function ResultsClient({
       {/* RESULTS */}
 
       {filteredMatches.length > 0 ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {filteredMatches.map(
             (match, index) => (
               <ResultCard
@@ -934,33 +687,12 @@ export default function ResultsClient({
           )}
         </div>
       ) : (
-        <div
-          style={{
-            background: "#111827",
-            border: "1px solid #1f2937",
-            borderRadius: 18,
-            padding: 40,
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "#fff",
-              fontSize: 20,
-              fontWeight: 700,
-              marginBottom: 8,
-            }}
-          >
+        <div className="rounded-[18px] border border-gray-800 bg-gray-900 p-10 text-center">
+          <div className="mb-2 text-xl font-bold text-white">
             No matching results
           </div>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#9ca3af",
-              fontSize: 14,
-            }}
-          >
+          <p className="m-0 text-sm text-gray-400">
             Try another team name or
             change the date filter.
           </p>
