@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -154,29 +155,12 @@ export default async function LeaguePage({
     2024;
 
   return (
-    <main
-      style={{
-        maxWidth: 1200,
-        margin: "40px auto",
-        padding: 20,
-        color: "white",
-      }}
-    >
+    <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
       {/* ============================================
           LEAGUE HEADER
       ============================================ */}
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 20,
-          background: "#111827",
-          borderRadius: 18,
-          padding: 25,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] flex flex-wrap items-center gap-5 rounded-[18px] bg-gray-900 p-5 sm:p-[25px]">
         {/* League Logo */}
 
         {leagueLogo && (
@@ -186,37 +170,22 @@ export default async function LeaguePage({
             width={70}
             height={70}
             unoptimized
+            className="h-[70px] w-[70px] shrink-0 object-contain"
           />
         )}
 
         {/* League Information */}
 
         <div>
-          <h1
-            style={{
-              margin: 0,
-              fontSize: 34,
-            }}
-          >
+          <h1 className="m-0 text-[clamp(28px,5vw,34px)] font-extrabold text-white">
             {leagueName}
           </h1>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: "8px 0",
-            }}
-          >
+          <p className="m-0 mt-2 text-sm text-slate-400">
             {country}
           </p>
 
-          <p
-            style={{
-              color: "#22c55e",
-              margin: 0,
-              fontWeight: "bold",
-            }}
-          >
+          <p className="m-0 mt-1 font-bold text-green-500">
             Season {season}
           </p>
         </div>
@@ -226,35 +195,18 @@ export default async function LeaguePage({
           NAVIGATION
       ============================================ */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: 20,
-        }}
-      >
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {/* STANDINGS */}
 
         <Link
           href={`/standings/${id}`}
-          style={{
-            background: "#111827",
-            padding: 30,
-            borderRadius: 12,
-            textAlign: "center",
-            color: "white",
-            textDecoration: "none",
-            border: "1px solid #1e293b",
-          }}
+          className="rounded-xl border border-slate-800 bg-gray-900 p-[30px] text-center text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
         >
-          <h2>📊 Standings</h2>
+          <h2 className="m-0 text-xl font-bold">
+            📊 Standings
+          </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+          <p className="m-0 mt-2 text-sm text-slate-400">
             View league table
           </p>
         </Link>
@@ -263,23 +215,13 @@ export default async function LeaguePage({
 
         <Link
           href={`/results/${id}`}
-          style={{
-            background: "#111827",
-            padding: 30,
-            borderRadius: 12,
-            textAlign: "center",
-            color: "white",
-            textDecoration: "none",
-            border: "1px solid #1e293b",
-          }}
+          className="rounded-xl border border-slate-800 bg-gray-900 p-[30px] text-center text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
         >
-          <h2>📋 Results</h2>
+          <h2 className="m-0 text-xl font-bold">
+            📋 Results
+          </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+          <p className="m-0 mt-2 text-sm text-slate-400">
             Latest match results
           </p>
         </Link>
@@ -288,23 +230,13 @@ export default async function LeaguePage({
 
         <Link
           href={`/fixtures/${id}`}
-          style={{
-            background: "#111827",
-            padding: 30,
-            borderRadius: 12,
-            textAlign: "center",
-            color: "white",
-            textDecoration: "none",
-            border: "1px solid #1e293b",
-          }}
+          className="rounded-xl border border-slate-800 bg-gray-900 p-[30px] text-center text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
         >
-          <h2>📅 Fixtures</h2>
+          <h2 className="m-0 text-xl font-bold">
+            📅 Fixtures
+          </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+          <p className="m-0 mt-2 text-sm text-slate-400">
             Upcoming matches
           </p>
         </Link>
@@ -313,23 +245,13 @@ export default async function LeaguePage({
 
         <Link
           href={`/topscorers/${id}`}
-          style={{
-            background: "#111827",
-            padding: 30,
-            borderRadius: 12,
-            textAlign: "center",
-            color: "white",
-            textDecoration: "none",
-            border: "1px solid #1e293b",
-          }}
+          className="rounded-xl border border-slate-800 bg-gray-900 p-[30px] text-center text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
         >
-          <h2>⚽ Top Scorers</h2>
+          <h2 className="m-0 text-xl font-bold">
+            ⚽ Top Scorers
+          </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+          <p className="m-0 mt-2 text-sm text-slate-400">
             Goal leaders
           </p>
         </Link>
@@ -337,3 +259,4 @@ export default async function LeaguePage({
     </main>
   );
 }
+
