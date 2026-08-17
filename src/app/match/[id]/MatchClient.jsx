@@ -1,7 +1,5 @@
 "use client";
 
-import "./match.css";
-
 import {
   useCallback,
   useEffect,
@@ -59,24 +57,17 @@ const API =
 
 ===================================================== */
 
-async function fetchMatch(
-  matchId
-) {
+async function fetchMatch(matchId) {
   if (!matchId) {
-    throw new Error(
-      "Match ID is missing"
-    );
+    throw new Error("Match ID is missing");
   }
 
-  const response =
-    await fetch(
-      `${API}/api/match/${encodeURIComponent(
-        matchId
-      )}`,
-      {
-        cache: "no-store",
-      }
-    );
+  const response = await fetch(
+    `${API}/api/match/${encodeURIComponent(matchId)}`,
+    {
+      cache: "no-store",
+    }
+  );
 
   if (!response.ok) {
     throw new Error(
@@ -84,8 +75,7 @@ async function fetchMatch(
     );
   }
 
-  const data =
-    await response.json();
+  const data = await response.json();
 
   if (
     !data ||
@@ -102,30 +92,27 @@ async function fetchMatch(
 }
 
 /* =====================================================
-GET POLLING INTERVAL
+   GET POLLING INTERVAL
 
-We only poll matches that can actually change.
+   We only poll matches that can actually change.
 
-NS / FT:
-No polling.
+   NS / FT:
+   No polling.
 
-LIVE:
-15 seconds.
+   LIVE:
+   15 seconds.
 
-HT:
-20 seconds.
+   HT:
+   20 seconds.
 
-Unknown active status:
-30 seconds.
+   Unknown active status:
+   30 seconds.
 ===================================================== */
 
-function getPollingInterval(
-  status
-) {
-  const value =
-    String(
-      status || ""
-    ).toUpperCase();
+function getPollingInterval(status) {
+  const value = String(
+    status || ""
+  ).toUpperCase();
 
   if (
     value === "LIVE" ||
@@ -145,19 +132,16 @@ function getPollingInterval(
 }
 
 /* =====================================================
-NORMALIZE DATA
+   NORMALIZE DATA
 
-Keep all match-center data derived from the single
-backend response.
+   Keep all match-center data derived from the single
+   backend response.
 
-No fake values are generated.
+   No fake values are generated.
 ===================================================== */
 
-function normalizeMatchData(
-  data
-) {
-  const match =
-    data?.match || null;
+function normalizeMatchData(data) {
+  const match = data?.match || null;
 
   if (!match) {
     return {
@@ -175,44 +159,33 @@ function normalizeMatchData(
   }
 
   const events =
-    Array.isArray(
-      match.events
-    )
+    Array.isArray(match.events)
       ? match.events
-      : Array.isArray(
-          match.goals
-        )
+      : Array.isArray(match.goals)
       ? match.goals
       : [];
 
   const lineups =
-    Array.isArray(
-      match.lineups
-    )
+    Array.isArray(match.lineups)
       ? match.lineups
       : [];
 
   return {
     match,
 
-    timeline:
-      events,
+    timeline: events,
 
     events,
 
     statistics:
-      Array.isArray(
-        match.statistics
-      )
+      Array.isArray(match.statistics)
         ? match.statistics
         : [],
 
     lineups,
 
     playerRatings:
-      Array.isArray(
-        match.players
-      )
+      Array.isArray(match.players)
         ? match.players
         : [],
 
@@ -222,27 +195,22 @@ function normalizeMatchData(
       {},
 
     headToHead:
-      Array.isArray(
-        match.headtohead
-      )
+      Array.isArray(match.headtohead)
         ? match.headtohead
         : [],
 
     standings:
-      Array.isArray(
-        match.standings
-      )
+      Array.isArray(match.standings)
         ? match.standings
         : [],
 
     prediction:
-      match.prediction ||
-      null,
+      match.prediction || null,
   };
 }
 
 /* =====================================================
-COMPONENT
+   COMPONENT
 ===================================================== */
 
 export default function MatchClient({
@@ -252,8 +220,7 @@ export default function MatchClient({
      STATE
   ========================================== */
 
-  const [match, setMatch] =
-    useState(null);
+  const [match, setMatch] = useState(null);
 
   const [
     timeline,
@@ -314,83 +281,77 @@ export default function MatchClient({
      LOAD MATCH
   ========================================== */
 
-  const loadMatch =
-    useCallback(
-      async () => {
-        try {
-          const data =
-            await fetchMatch(
-              matchId
-            );
+  const loadMatch = useCallback(
+    async () => {
+      try {
+        const data =
+          await fetchMatch(matchId);
 
-          const normalized =
-            normalizeMatchData(
-              data
-            );
+        const normalized =
+          normalizeMatchData(data);
 
-          setMatch(
-            normalized.match
-          );
+        setMatch(
+          normalized.match
+        );
 
-          setTimeline(
-            normalized.timeline
-          );
+        setTimeline(
+          normalized.timeline
+        );
 
-          setEvents(
-            normalized.events
-          );
+        setEvents(
+          normalized.events
+        );
 
-          setStatistics(
-            normalized.statistics
-          );
+        setStatistics(
+          normalized.statistics
+        );
 
-          setLineups(
-            normalized.lineups
-          );
+        setLineups(
+          normalized.lineups
+        );
 
-          setPlayerRatings(
-            normalized.playerRatings
-          );
+        setPlayerRatings(
+          normalized.playerRatings
+        );
 
-          setFacts(
-            normalized.facts
-          );
+        setFacts(
+          normalized.facts
+        );
 
-          setHeadToHead(
-            normalized.headToHead
-          );
+        setHeadToHead(
+          normalized.headToHead
+        );
 
-          setStandings(
-            normalized.standings
-          );
+        setStandings(
+          normalized.standings
+        );
 
-          setPrediction(
-            normalized.prediction
-          );
+        setPrediction(
+          normalized.prediction
+        );
 
-          setLoading(false);
+        setLoading(false);
+        setError(null);
 
-          setError(null);
+        return normalized.match;
+      } catch (err) {
+        console.error(
+          "❌ MatchClient:",
+          err
+        );
 
-          return normalized.match;
-        } catch (err) {
-          console.error(
-            "❌ MatchClient:",
-            err
-          );
+        setError(
+          err?.message ||
+            "Unable to load match"
+        );
 
-          setError(
-            err?.message ||
-              "Unable to load match"
-          );
+        setLoading(false);
 
-          setLoading(false);
-
-          return null;
-        }
-      },
-      [matchId]
-    );
+        return null;
+      }
+    },
+    [matchId]
+  );
 
   /* ==========================================
      LOAD + LIVE POLLING
@@ -408,7 +369,6 @@ export default function MatchClient({
     }
 
     let timer = null;
-
     let cancelled = false;
 
     async function initialize() {
@@ -423,11 +383,8 @@ export default function MatchClient({
       }
 
       const currentStatus =
-        loadedMatch
-          ?.status
-          ?.short ||
-        loadedMatch
-          ?.rawStatus ||
+        loadedMatch?.status?.short ||
+        loadedMatch?.rawStatus ||
         "NS";
 
       const interval =
@@ -435,9 +392,7 @@ export default function MatchClient({
           currentStatus
         );
 
-      if (
-        interval <= 0
-      ) {
+      if (interval <= 0) {
         return;
       }
 
@@ -468,24 +423,12 @@ export default function MatchClient({
 
   if (loading) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "60px auto",
-          padding: 20,
-          color: "#fff",
-          textAlign: "center",
-        }}
-      >
-        <h2>
+      <main className="mx-auto my-[60px] w-full max-w-[1200px] px-5 text-center text-white">
+        <h2 className="m-0 text-2xl font-bold">
           Loading Match...
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <p className="mt-3 text-slate-400">
           Fetching match information...
         </p>
       </main>
@@ -496,30 +439,14 @@ export default function MatchClient({
      ERROR
   ========================================== */
 
-  if (
-    error ||
-    !match
-  ) {
+  if (error || !match) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "60px auto",
-          padding: 20,
-          color: "#fff",
-          textAlign: "center",
-        }}
-      >
-        <h2>
+      <main className="mx-auto my-[60px] w-full max-w-[1200px] px-5 text-center text-white">
+        <h2 className="m-0 text-2xl font-bold">
           Unable to Load Match
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            marginTop: 15,
-          }}
-        >
+        <p className="mt-[15px] text-slate-400">
           {error ||
             "Match data is unavailable."}
         </p>
@@ -532,29 +459,12 @@ export default function MatchClient({
   ========================================== */
 
   return (
-    <main
-      className="match-layout"
-      style={{
-        maxWidth: 1500,
-        margin: "40px auto",
-        padding: 20,
-        color: "#fff",
-
-        display: "grid",
-
-        gridTemplateColumns:
-          "minmax(260px, 320px) minmax(0, 1fr)",
-
-        gap: 30,
-
-        alignItems: "start",
-      }}
-    >
+    <main className="mx-auto my-10 grid w-full max-w-[1500px] grid-cols-1 items-start gap-5 px-5 text-white lg:grid-cols-[minmax(260px,320px)_minmax(0,1fr)] lg:gap-[30px]">
       {/* ======================================
           LEFT SIDEBAR
       ====================================== */}
 
-      <div className="match-sidebar">
+      <div className="match-sidebar min-w-0">
         <MatchSidebar
           match={match}
         />
@@ -564,8 +474,7 @@ export default function MatchClient({
           MAIN CONTENT
       ====================================== */}
 
-      <div className="match-content">
-
+      <div className="match-content min-w-0">
         {/* Match Header */}
 
         <MatchHeader
@@ -634,8 +543,8 @@ export default function MatchClient({
         <MatchPrediction
           prediction={prediction}
         />
-
       </div>
     </main>
   );
 }
+

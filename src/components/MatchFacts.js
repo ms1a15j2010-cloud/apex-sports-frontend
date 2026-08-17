@@ -1,5 +1,45 @@
 "use client";
+
 import Image from "next/image";
+
+/* =====================================================
+SAFE DISPLAY VALUE
+
+Prevents React from trying to render API objects
+directly as children.
+===================================================== */
+
+function getDisplayValue(
+  value,
+  fallback = "-"
+) {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ""
+  ) {
+    return fallback;
+  }
+
+  if (
+    typeof value === "string" ||
+    typeof value === "number"
+  ) {
+    return value;
+  }
+
+  if (typeof value === "object") {
+    return (
+      value.name ||
+      value.shortName ||
+      value.code ||
+      value.tla ||
+      fallback
+    );
+  }
+
+  return fallback;
+}
 
 export default function MatchFacts({
   match,
@@ -7,273 +47,233 @@ export default function MatchFacts({
 }) {
   if (!match) return null;
 
-  const fixture = match.fixture || {};
-  const league = match.league || {};
-  const home = match.teams?.home || {};
-  const away = match.teams?.away || {};
+  const fixture =
+    match.fixture || {};
 
-  const homeStats = statistics[0] || {};
-  const awayStats = statistics[1] || {};
+  const league =
+    match.league || {};
+
+  const home =
+    match.teams?.home || {};
+
+  const away =
+    match.teams?.away || {};
+
+  const homeStats =
+    statistics[0] || {};
+
+  const awayStats =
+    statistics[1] || {};
 
   function getStat(team, type) {
     const stat =
       team.statistics?.find(
-        (s) => s.type === type
+        (item) =>
+          item?.type === type
       );
 
-    return stat?.value ?? "-";
+    return getDisplayValue(
+      stat?.value
+    );
   }
 
   const facts = [
     {
       title: "Referee",
-      value:
-        fixture.referee ||
-        "-",
+      value: getDisplayValue(
+        fixture.referee
+      ),
     },
+
     {
       title: "Stadium",
-      value:
-        fixture.venue?.name ||
-        "-",
+      value: getDisplayValue(
+        fixture.venue?.name
+      ),
     },
+
     {
       title: "City",
-      value:
-        fixture.venue?.city ||
-        "-",
+      value: getDisplayValue(
+        fixture.venue?.city
+      ),
     },
+
     {
       title: "League",
-      value:
-        league.name ||
-        "-",
+      value: getDisplayValue(
+        league.name
+      ),
     },
+
     {
       title: "Country",
-      value:
-        league.country ||
-        "-",
+      value: getDisplayValue(
+        league.country
+      ),
     },
+
     {
       title: "Season",
-      value:
-        league.season ||
-        "-",
+      value: getDisplayValue(
+        league.season
+      ),
     },
+
     {
       title: "Round",
-      value:
-        league.round ||
-        "-",
+      value: getDisplayValue(
+        league.round
+      ),
     },
+
     {
       title: "Status",
-      value:
-        fixture.status?.long ||
-        "-",
+      value: getDisplayValue(
+        fixture.status?.long
+      ),
     },
-    // ============================
-// Attendance comes from fixture
-// NOT from team statistics
-// ============================
 
-{
-  title: "Attendance",
-  value: fixture.attendance || "-",
-},
     {
-  title: "Home Possession",
-  value: getStat(homeStats, "Ball Possession"),
-},
-{
-  title: "Away Possession",
-  value: getStat(awayStats, "Ball Possession"),
-},
-{
-  title: "Home Pass Accuracy",
-  value: getStat(homeStats, "Passes accurate"),
-},
-{
-  title: "Away Pass Accuracy",
-  value: getStat(awayStats, "Passes accurate"),
-},
+      title: "Attendance",
+      value: getDisplayValue(
+        fixture.attendance
+      ),
+    },
+
+    {
+      title: "Home Possession",
+      value: getStat(
+        homeStats,
+        "Ball Possession"
+      ),
+    },
+
+    {
+      title: "Away Possession",
+      value: getStat(
+        awayStats,
+        "Ball Possession"
+      ),
+    },
+
+    {
+      title: "Home Pass Accuracy",
+      value: getStat(
+        homeStats,
+        "Passes accurate"
+      ),
+    },
+
+    {
+      title: "Away Pass Accuracy",
+      value: getStat(
+        awayStats,
+        "Passes accurate"
+      ),
+    },
+
     {
       title: "Home Fouls",
-      value:
-        getStat(
-          homeStats,
-          "Fouls"
-        ),
+      value: getStat(
+        homeStats,
+        "Fouls"
+      ),
     },
+
     {
       title: "Away Fouls",
-      value:
-        getStat(
-          awayStats,
-          "Fouls"
-        ),
+      value: getStat(
+        awayStats,
+        "Fouls"
+      ),
     },
   ];
 
   return (
-    <section
-     className="match-facts"
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-5 sm:p-[30px]">
+      <h2 className="mb-[30px] text-2xl font-bold text-white">
         📖 Match Facts
       </h2>
 
       {/* Teams */}
 
-      <div
-      className="match-facts-teams"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr auto 1fr",
-          alignItems: "center",
-          gap: 20,
-          marginBottom: 35,
-        }}
-      >
-        <TeamCard
-          team={home}
-        />
+      <div className="mb-[35px] grid grid-cols-1 items-center gap-5 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+        <TeamCard team={home} />
 
-        <div
-         className="facts-vs"
-
-          style={{
-            color: "#64748b",
-            fontSize: 28,
-            fontWeight: "bold",
-          }}
-        >
+        <div className="text-center text-[28px] font-bold text-slate-500">
           VS
         </div>
 
-        <TeamCard
-          team={away}
-        />
+        <TeamCard team={away} />
       </div>
 
       {/* Facts */}
 
-      <div
-      className="facts-grid"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(260px,1fr))",
-          gap: 18,
-        }}
-      >
-        {facts.map(
-          (fact) => (
-            <FactCard
-              key={
-                fact.title
-              }
-              title={
-                fact.title
-              }
-              value={
-                fact.value
-              }
-            />
-          )
-        )}
+      <div className="grid grid-cols-1 gap-[18px] sm:grid-cols-2 xl:grid-cols-3">
+        {facts.map((fact) => (
+          <FactCard
+            key={fact.title}
+            title={fact.title}
+            value={fact.value}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
-/* ====================================== */
+/* ======================================
+TEAM CARD
+====================================== */
 
 function TeamCard({ team }) {
-  return (
-    <div
-     className="facts-team-card"
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 20,
-        textAlign: "center",
-      }}
-    >
-      <Image
- className="facts-team-logo"
- src={team.logo || "/team.png"}
- alt={team.name || "Team"}
- width={70}
- height={70}
- unoptimized
- style={{
-   objectFit:"contain",
- }}
-/>
+  const teamName =
+    getDisplayValue(
+      team?.name,
+      "Unknown Team"
+    );
 
-      <h3
-        style={{
-          color: "#fff",
-          marginTop: 15,
-          marginBottom: 0,
-        }}
-      >
-        {team.name || "Unknown Team"}
+  const teamLogo =
+    typeof team?.logo === "string" &&
+    team.logo.startsWith("http")
+      ? team.logo
+      : "/team.png";
+
+  return (
+    <div className="rounded-[18px] bg-gray-800 p-5 text-center">
+      <Image
+        src={teamLogo}
+        alt={teamName}
+        width={70}
+        height={70}
+        unoptimized
+        className="mx-auto h-[70px] w-[70px] object-contain"
+      />
+
+      <h3 className="mt-[15px] mb-0 break-words text-lg font-bold text-white">
+        {teamName}
       </h3>
     </div>
   );
 }
 
-/* ====================================== */
+/* ======================================
+FACT CARD
+====================================== */
 
 function FactCard({
   title,
   value,
 }) {
   return (
-    <div
-    className="fact-card"
-
-      style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 20,
-      }}
-    >
-      <div
-       className="fact-title"
-        style={{
-          color: "#94a3b8",
-          marginBottom: 10,
-          fontSize: 14,
-        }}
-      >
+    <div className="rounded-2xl bg-gray-800 p-5">
+      <div className="mb-2.5 text-sm text-slate-400">
         {title}
       </div>
 
-      <div
-      className="fact-value"
-        style={{
-          color: "#fff",
-          fontWeight: "bold",
-          fontSize: 19,
-        }}
-      >
-        {value}
+      <div className="break-words text-[19px] font-bold text-white">
+        {getDisplayValue(value)}
       </div>
     </div>
   );

@@ -7,48 +7,30 @@ export default function Scoreboard({
 }) {
   if (!matches.length) {
     return (
-      <div
-        style={{
-          background: "#111827",
-          color: "#fff",
-          padding: 30,
-          borderRadius: 18,
-          textAlign: "center",
-        }}
-      >
+      <div className="rounded-[18px] bg-gray-900 p-[30px] text-center text-white">
         No matches available.
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        background: "#111827",
-        borderRadius: 18,
-        overflow: "hidden",
-        border: "1px solid #1f2937",
-      }}
-    >
+    <div className="overflow-hidden rounded-[18px] border border-gray-800 bg-gray-900">
       {matches.map((m, index) => {
         const statusColor =
           m.status === "LIVE"
-            ? "#22c55e"
+            ? "bg-green-500"
             : m.status === "FT"
-            ? "#ef4444"
-            : "#f59e0b";
+            ? "bg-red-500"
+            : "bg-amber-500";
 
         const homeScore =
-          m.goalsHome ??
-          null;
+          m.goalsHome ?? null;
 
         const awayScore =
-          m.goalsAway ??
-          null;
+          m.goalsAway ?? null;
 
         const matchId =
-          m.id ??
-          `match-${index}`;
+          m.id ?? `match-${index}`;
 
         return (
           <Link
@@ -58,77 +40,34 @@ export default function Scoreboard({
                 ? `/match/${m.id}`
                 : "#"
             }
-            style={{
-              textDecoration: "none",
-              pointerEvents: m.id
-                ? "auto"
-                : "none",
-            }}
+            className={`block no-underline ${
+              m.id
+                ? "pointer-events-auto"
+                : "pointer-events-none"
+            }`}
           >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns:
-                  "1fr auto auto",
-                alignItems: "center",
-                padding: "18px 22px",
-                borderBottom:
-                  "1px solid #1f2937",
-                transition: ".25s",
-                color: "#fff",
-              }}
-            >
+            <div className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center border-b border-gray-800 px-[22px] py-[18px] text-white transition hover:bg-slate-800/50">
               <div>
-                <div
-                  style={{
-                    fontWeight: 700,
-                    marginBottom: 6,
-                  }}
-                >
+                <div className="mb-1.5 font-bold">
                   {m.home ||
                     "Home Team"}
                 </div>
 
-                <div
-                  style={{
-                    color: "#94a3b8",
-                  }}
-                >
+                <div className="text-slate-400">
                   {m.away ||
                     "Away Team"}
                 </div>
               </div>
 
-              <div
-                style={{
-                  fontSize: 22,
-                  fontWeight: 800,
-                  marginRight: 25,
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {homeScore ?? "—"}{" "}
-                -{" "}
+              <div className="mr-[25px] whitespace-nowrap text-[22px] font-extrabold">
+                {homeScore ?? "—"} -{" "}
                 {awayScore ?? "—"}
               </div>
 
               <span
-                style={{
-                  background:
-                    statusColor,
-                  color: "#fff",
-                  padding:
-                    "6px 14px",
-                  borderRadius: 30,
-                  fontWeight: 700,
-                  fontSize: 13,
-                  minWidth: 60,
-                  textAlign:
-                    "center",
-                }}
+                className={`min-w-[60px] rounded-[30px] px-3.5 py-1.5 text-center text-[13px] font-bold text-white ${statusColor}`}
               >
-                {m.status ||
-                  "NS"}
+                {m.status || "NS"}
               </span>
             </div>
           </Link>
@@ -137,3 +76,4 @@ export default function Scoreboard({
     </div>
   );
 }
+
