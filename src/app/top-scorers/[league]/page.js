@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -77,7 +78,6 @@ const LEAGUE_CONFIG = {
   },
 };
 
-
 /* =====================================================
 API
 ===================================================== */
@@ -85,7 +85,6 @@ API
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "http://127.0.0.1:5000";
-
 
 /* =====================================================
 GET TOP SCORERS
@@ -96,28 +95,20 @@ Migrated backend endpoint:
 ===================================================== */
 
 async function getTopScorers(league) {
-  const slug =
-    String(league || "")
-      .trim()
-      .toLowerCase();
+  const slug = String(league || "")
+    .trim()
+    .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return {
       success: false,
-
       season: null,
-
       league: null,
-
       count: 0,
-
       players: [],
-
-      message:
-        "Unsupported league",
+      message: "Unsupported league",
     };
   }
 
@@ -132,29 +123,17 @@ async function getTopScorers(league) {
     url
   );
 
-  const controller =
-    new AbortController();
+  const controller = new AbortController();
 
-  const timeout =
-    setTimeout(
-      () => {
-        controller.abort();
-      },
-      15000
-    );
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 15000);
 
   try {
-    const response =
-      await fetch(
-        url,
-        {
-          cache:
-            "no-store",
-
-          signal:
-            controller.signal,
-        }
-      );
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
 
     console.log(
       "📡 Top scorers API status:",
@@ -167,51 +146,34 @@ async function getTopScorers(league) {
       );
     }
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
     console.log(
       "📊 Top scorers response:",
       {
-        success:
-          data?.success,
-
-        season:
-          data?.season,
-
-        total:
-          data?.total,
-
-        count:
-          data?.count,
-
-        source:
-          data?.source,
+        success: data?.success,
+        season: data?.season,
+        total: data?.total,
+        count: data?.count,
+        source: data?.source,
       }
     );
 
     if (
       !data ||
       data.success !== true ||
-      !Array.isArray(
-        data.players
-      )
+      !Array.isArray(data.players)
     ) {
       return {
         success: false,
-
         season:
           data?.season ||
           config.season,
-
         league:
           data?.league ||
           config.code,
-
         count: 0,
-
         players: [],
-
         message:
           data?.message ||
           "No top scorers available",
@@ -220,17 +182,13 @@ async function getTopScorers(league) {
 
     return {
       ...data,
-
       season:
         data.season ||
         config.season,
-
       league:
         data.league ||
         config.code,
-
-      players:
-        data.players,
+      players: data.players,
     };
   } catch (error) {
     console.error(
@@ -240,31 +198,20 @@ async function getTopScorers(league) {
 
     return {
       success: false,
-
-      season:
-        config.season,
-
-      league:
-        config.code,
-
+      season: config.season,
+      league: config.code,
       count: 0,
-
       players: [],
-
       message:
-        error?.name ===
-        "AbortError"
+        error?.name === "AbortError"
           ? "Top scorers request timed out"
           : error?.message ||
             "Unable to connect to backend",
     };
   } finally {
-    clearTimeout(
-      timeout
-    );
+    clearTimeout(timeout);
   }
 }
-
 
 /* =====================================================
 SAFE NUMBER
@@ -279,16 +226,12 @@ function safeNumber(value) {
     return 0;
   }
 
-  const number =
-    Number(value);
+  const number = Number(value);
 
-  return Number.isFinite(
-    number
-  )
+  return Number.isFinite(number)
     ? number
     : 0;
 }
-
 
 /* =====================================================
 PLAYER AVATAR
@@ -298,94 +241,36 @@ function PlayerAvatar({
   src,
   name,
 }) {
-  const initials =
-    String(
-      name || "P"
+  const initials = String(
+    name || "P"
+  )
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) =>
+      part.charAt(0).toUpperCase()
     )
-      .trim()
-      .split(/\s+/)
-      .slice(0, 2)
-      .map(
-        (part) =>
-          part
-            .charAt(0)
-            .toUpperCase()
-      )
-      .join("");
+    .join("");
 
   return (
-    <div
-      style={{
-        width: 64,
-
-        height: 64,
-
-        minWidth: 64,
-
-        borderRadius:
-          "50%",
-
-        overflow:
-          "hidden",
-
-        background:
-          "linear-gradient(145deg,#1e293b,#334155)",
-
-        border:
-          "1px solid #475569",
-
-        display:
-          "flex",
-
-        alignItems:
-          "center",
-
-        justifyContent:
-          "center",
-      }}
-    >
+    <div className="flex h-16 w-16 min-w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-600 bg-[linear-gradient(145deg,#1e293b,#334155)]">
       {src ? (
         <Image
           src={src}
-          alt={
-            name ||
-            "Player"
-          }
+          alt={name || "Player"}
           width={64}
           height={64}
           unoptimized
-          style={{
-            width:
-              "100%",
-
-            height:
-              "100%",
-
-            objectFit:
-              "cover",
-          }}
+          className="h-full w-full object-cover"
         />
       ) : (
-        <span
-          style={{
-            color:
-              "#22c55e",
-
-            fontSize:
-              20,
-
-            fontWeight:
-              800,
-          }}
-        >
-          {initials ||
-            "P"}
+        <span className="text-xl font-extrabold text-green-500">
+          {initials || "P"}
         </span>
       )}
     </div>
   );
 }
-
 
 /* =====================================================
 TEAM AVATAR
@@ -396,65 +281,24 @@ function TeamAvatar({
   name,
 }) {
   return (
-    <div
-      style={{
-        width: 44,
-
-        height: 44,
-
-        minWidth: 44,
-
-        borderRadius:
-          10,
-
-        background:
-          "#111827",
-
-        display:
-          "flex",
-
-        alignItems:
-          "center",
-
-        justifyContent:
-          "center",
-      }}
-    >
+    <div className="flex h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-[10px] bg-gray-900">
       {src ? (
         <Image
           src={src}
-          alt={
-            name ||
-            "Team"
-          }
+          alt={name || "Team"}
           width={36}
           height={36}
           unoptimized
-          style={{
-            objectFit:
-              "contain",
-          }}
+          className="object-contain"
         />
       ) : (
-        <span
-          style={{
-            color:
-              "#64748b",
-
-            fontSize:
-              11,
-
-            fontWeight:
-              800,
-          }}
-        >
+        <span className="text-[11px] font-extrabold text-slate-500">
           FC
         </span>
       )}
     </div>
   );
 }
-
 
 /* =====================================================
 SEO
@@ -463,40 +307,28 @@ SEO
 export async function generateMetadata({
   params,
 }) {
-  const {
-    league,
-  } =
-    await params;
+  const { league } = await params;
 
-  const slug =
-    String(
-      league || ""
-    )
-      .trim()
-      .toLowerCase();
+  const slug = String(league || "")
+    .trim()
+    .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return {
-      title:
-        "Top Scorers | Apex Sports",
-
-      description:
-        "Football top scorers",
+      title: "Top Scorers | Apex Sports",
+      description: "Football top scorers",
     };
   }
 
   return {
     title:
       `${config.name} Top Scorers | Apex Sports`,
-
     description:
       `Top scorers for ${config.name} in the ${config.season} season.`,
   };
 }
-
 
 /* =====================================================
 PAGE
@@ -505,20 +337,13 @@ PAGE
 export default async function TopScorersPage({
   params,
 }) {
-  const {
-    league,
-  } =
-    await params;
+  const { league } = await params;
 
-  const slug =
-    String(
-      league || ""
-    )
-      .trim()
-      .toLowerCase();
+  const slug = String(league || "")
+    .trim()
+    .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
+  const config = LEAGUE_CONFIG[slug];
 
   /* =================================================
      UNSUPPORTED LEAGUE
@@ -526,83 +351,23 @@ export default async function TopScorersPage({
 
   if (!config) {
     return (
-      <main
-        style={{
-          maxWidth:
-            1200,
-
-          margin:
-            "40px auto",
-
-          padding:
-            20,
-
-          color:
-            "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-
-            border:
-              "1px solid #1e293b",
-
-            borderRadius:
-              18,
-
-            padding:
-              40,
-
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize:
-                46,
-
-              marginBottom:
-                15,
-            }}
-          >
+      <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+        <section className="rounded-[18px] border border-slate-800 bg-gray-900 p-8 text-center sm:p-10">
+          <div className="mb-[15px] text-[46px]">
             ⚽
           </div>
 
-          <h1>
+          <h1 className="text-2xl font-extrabold text-white sm:text-3xl">
             League Not Found
           </h1>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-            }}
-          >
-            The requested league
-            is not supported.
+          <p className="mt-3 text-sm text-slate-400 sm:text-base">
+            The requested league is not supported.
           </p>
 
           <Link
             href="/leagues"
-            style={{
-              display:
-                "inline-block",
-
-              marginTop:
-                20,
-
-              color:
-                "#22c55e",
-
-              textDecoration:
-                "none",
-
-              fontWeight:
-                700,
-            }}
+            className="mt-5 inline-block font-bold text-green-500 no-underline transition hover:text-green-400"
           >
             ← Back to Leagues
           </Link>
@@ -611,23 +376,15 @@ export default async function TopScorersPage({
     );
   }
 
-
   /* =================================================
      LOAD DATA
   ================================================= */
 
-  const data =
-    await getTopScorers(
-      slug
-    );
+  const data = await getTopScorers(slug);
 
-  const players =
-    Array.isArray(
-      data?.players
-    )
-      ? data.players
-      : [];
-
+  const players = Array.isArray(data?.players)
+    ? data.players
+    : [];
 
   /* =================================================
      EMPTY STATE
@@ -638,131 +395,33 @@ export default async function TopScorersPage({
     players.length === 0
   ) {
     return (
-      <main
-        style={{
-          maxWidth:
-            1200,
-
-          margin:
-            "40px auto",
-
-          padding:
-            20,
-
-          color:
-            "#fff",
-        }}
-      >
-        <header
-          style={{
-            marginBottom:
-              30,
-          }}
-        >
-          <div
-            style={{
-              color:
-                "#22c55e",
-
-              fontSize:
-                12,
-
-              fontWeight:
-                800,
-
-              letterSpacing:
-                "1.2px",
-
-              textTransform:
-                "uppercase",
-
-              marginBottom:
-                8,
-            }}
-          >
+      <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+        <header className="mb-[30px]">
+          <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-green-500">
             ⚡ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin:
-                0,
-
-              fontSize:
-                "clamp(28px, 5vw, 44px)",
-
-              fontWeight:
-                800,
-            }}
-          >
-            {config.name} Top
-            Scorers
+          <h1 className="text-[clamp(28px,5vw,44px)] font-extrabold leading-tight">
+            {config.name} Top Scorers
           </h1>
 
-          <p
-            style={{
-              color:
-                "#9ca3af",
-
-              margin:
-                "10px 0 0",
-            }}
-          >
+          <p className="mt-2.5 text-[15px] text-gray-400">
             Season{" "}
             {data?.season ||
               config.season}
           </p>
         </header>
 
-        <section
-          style={{
-            background:
-              "linear-gradient(145deg,#111827,#0b1220)",
-
-            border:
-              "1px solid #1f2937",
-
-            borderRadius:
-              20,
-
-            padding:
-              "55px 25px",
-
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize:
-                48,
-
-              marginBottom:
-                15,
-            }}
-          >
+        <section className="rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] px-6 py-[55px] text-center sm:px-8">
+          <div className="mb-[15px] text-5xl">
             ⚽
           </div>
 
-          <h2
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
-            No top scorers
-            available
+          <h2 className="mb-2.5 text-2xl font-bold text-white">
+            No top scorers available
           </h2>
 
-          <p
-            style={{
-              margin:
-                0,
-
-              color:
-                "#94a3b8",
-            }}
-          >
+          <p className="m-0 text-sm text-slate-400 sm:text-base">
             {data?.message ||
               "No top scorer data is currently available."}
           </p>
@@ -771,135 +430,42 @@ export default async function TopScorersPage({
     );
   }
 
-
   /* =================================================
      PAGE
   ================================================= */
 
   return (
-    <main
-      style={{
-        maxWidth:
-          1200,
-
-        margin:
-          "40px auto",
-
-        padding:
-          20,
-
-        color:
-          "#fff",
-      }}
-    >
-
+    <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
       {/* =================================================
           HEADER
       ================================================= */}
 
-      <header
-        style={{
-          marginBottom:
-            30,
-        }}
-      >
-        <div
-          style={{
-            color:
-              "#22c55e",
-
-            fontSize:
-              12,
-
-            fontWeight:
-              800,
-
-            letterSpacing:
-              "1.2px",
-
-            textTransform:
-              "uppercase",
-
-            marginBottom:
-              8,
-          }}
-        >
+      <header className="mb-[30px]">
+        <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-green-500">
           ⚡ Apex Sports
         </div>
 
-        <h1
-          style={{
-            margin:
-              0,
-
-            fontSize:
-              "clamp(28px, 5vw, 44px)",
-
-            fontWeight:
-              800,
-          }}
-        >
-          {config.name} Top
-          Scorers
+        <h1 className="text-[clamp(28px,5vw,44px)] font-extrabold leading-tight">
+          {config.name} Top Scorers
         </h1>
 
-        <p
-          style={{
-            margin:
-              "10px 0 0",
-
-            color:
-              "#9ca3af",
-
-            fontSize:
-              15,
-          }}
-        >
-          Leading goalscorers
-          for {config.name}{" "}
+        <p className="mt-2.5 text-[15px] text-gray-400">
+          Leading goalscorers for{" "}
+          {config.name}{" "}
           {data?.season ||
             config.season}{" "}
           season.
         </p>
       </header>
 
-
       {/* =================================================
           SUMMARY
       ================================================= */}
 
-      <section
-        style={{
-          background:
-            "linear-gradient(145deg,#111827,#0b1220)",
-
-          border:
-            "1px solid #1f2937",
-
-          borderRadius:
-            20,
-
-          padding:
-            22,
-
-          marginBottom:
-            24,
-
-          display:
-            "grid",
-
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(180px,1fr))",
-
-          gap:
-            16,
-        }}
-      >
+      <section className="mb-6 grid grid-cols-1 gap-4 rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-[22px] sm:grid-cols-2 lg:grid-cols-4">
         <SummaryCard
           label="Competition"
-          value={
-            config.name
-          }
+          value={config.name}
         />
 
         <SummaryCard
@@ -921,26 +487,15 @@ export default async function TopScorersPage({
 
         <SummaryCard
           label="Data Source"
-          value={
-            "Football-data.org"
-          }
+          value="Football-data.org"
         />
       </section>
-
 
       {/* =================================================
           PLAYER LIST
       ================================================= */}
 
-      <div
-        style={{
-          display:
-            "grid",
-
-          gap:
-            16,
-        }}
-      >
+      <div className="grid gap-4">
         {players.map(
           (
             scorer,
@@ -950,14 +505,13 @@ export default async function TopScorersPage({
               Array.isArray(
                 scorer?.statistics
               ) &&
-              scorer.statistics
-                .length > 0
+              scorer.statistics.length >
+                0
                 ? scorer.statistics[0]
                 : {};
 
             const playerData =
-              scorer?.player ||
-              {};
+              scorer?.player || {};
 
             const playerId =
               playerData?.id ??
@@ -986,288 +540,105 @@ export default async function TopScorersPage({
               team?.crest ||
               null;
 
-            const goals =
-              safeNumber(
-                statistics
-                  ?.goals
-                  ?.total ??
+            const goals = safeNumber(
+              statistics?.goals
+                ?.total ??
                 scorer?.goals
-              );
+            );
 
-            const assists =
-              safeNumber(
-                statistics
-                  ?.goals
-                  ?.assists ??
+            const assists = safeNumber(
+              statistics?.goals
+                ?.assists ??
                 scorer?.assists
-              );
+            );
 
             const appearances =
               safeNumber(
-                statistics
-                  ?.games
+                statistics?.games
                   ?.appearences ??
-                statistics
-                  ?.games
-                  ?.appearances ??
-                scorer?.appearances
+                  statistics?.games
+                    ?.appearances ??
+                  scorer?.appearances
               );
+
+            const rankStyles =
+              index === 0
+                ? "bg-yellow-400/15 text-yellow-400"
+                : index === 1
+                ? "bg-slate-400/15 text-slate-300"
+                : index === 2
+                ? "bg-orange-500/15 text-orange-400"
+                : "bg-slate-800 text-green-500";
 
             return (
               <Link
                 key={`${playerId}-${index}`}
                 href={`/player/${playerId}`}
-                style={{
-                  textDecoration:
-                    "none",
-
-                  color:
-                    "inherit",
-                }}
+                className="block text-inherit no-underline"
               >
-                <article
-                  style={{
-                    background:
-                      "linear-gradient(145deg,#111827,#0b1220)",
-
-                    border:
-                      "1px solid #1f2937",
-
-                    borderRadius:
-                      18,
-
-                    padding:
-                      20,
-
-                    display:
-                      "grid",
-
-                    gridTemplateColumns:
-                      "55px minmax(240px,1.5fr) minmax(180px,1fr) repeat(3,80px)",
-
-                    gap:
-                      18,
-
-                    alignItems:
-                      "center",
-                  }}
-                >
-
+                <article className="grid items-center gap-4 rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-4 transition hover:border-slate-700 hover:bg-slate-900 sm:p-5 md:grid-cols-[55px_minmax(240px,1.5fr)_minmax(180px,1fr)_repeat(3,80px)] md:gap-[18px]">
                   {/* RANK */}
 
                   <div
-                    style={{
-                      width:
-                        48,
-
-                      height:
-                        48,
-
-                      borderRadius:
-                        14,
-
-                      background:
-                        index === 0
-                          ? "rgba(250,204,21,.15)"
-                          : index === 1
-                          ? "rgba(148,163,184,.15)"
-                          : index === 2
-                          ? "rgba(249,115,22,.15)"
-                          : "#1e293b",
-
-                      display:
-                        "flex",
-
-                      alignItems:
-                        "center",
-
-                      justifyContent:
-                        "center",
-
-                      color:
-                        index === 0
-                          ? "#facc15"
-                          : index === 1
-                          ? "#cbd5e1"
-                          : index === 2
-                          ? "#fb923c"
-                          : "#22c55e",
-
-                      fontWeight:
-                        800,
-
-                      fontSize:
-                        16,
-                    }}
+                    className={`flex h-12 w-12 items-center justify-center rounded-[14px] text-base font-extrabold ${rankStyles}`}
                   >
                     {index + 1}
                   </div>
 
-
                   {/* PLAYER */}
 
-                  <div
-                    style={{
-                      display:
-                        "flex",
-
-                      alignItems:
-                        "center",
-
-                      gap:
-                        14,
-
-                      minWidth:
-                        0,
-                    }}
-                  >
+                  <div className="flex min-w-0 items-center gap-3.5">
                     <PlayerAvatar
-                      src={
-                        playerPhoto
-                      }
-
-                      name={
-                        playerName
-                      }
+                      src={playerPhoto}
+                      name={playerName}
                     />
 
-                    <div
-                      style={{
-                        minWidth:
-                          0,
-                      }}
-                    >
-                      <h2
-                        style={{
-                          margin:
-                            0,
-
-                          color:
-                            "#fff",
-
-                          fontSize:
-                            18,
-
-                          fontWeight:
-                            700,
-
-                          overflow:
-                            "hidden",
-
-                          textOverflow:
-                            "ellipsis",
-
-                          whiteSpace:
-                            "nowrap",
-                        }}
-                      >
+                    <div className="min-w-0">
+                      <h2 className="overflow-hidden text-ellipsis whitespace-nowrap text-[18px] font-bold text-white">
                         {playerName}
                       </h2>
 
-                      <p
-                        style={{
-                          margin:
-                            "5px 0 0",
-
-                          color:
-                            "#94a3b8",
-
-                          fontSize:
-                            12,
-                        }}
-                      >
+                      <p className="mt-1.5 text-xs text-slate-400">
                         {playerData?.nationality ||
                           "Football Player"}
                       </p>
                     </div>
                   </div>
 
-
                   {/* TEAM */}
 
-                  <div
-                    style={{
-                      display:
-                        "flex",
-
-                      alignItems:
-                        "center",
-
-                      justifyContent:
-                        "center",
-
-                      gap:
-                        10,
-
-                      minWidth:
-                        0,
-                    }}
-                  >
+                  <div className="flex min-w-0 items-center justify-center gap-2.5">
                     <TeamAvatar
-                      src={
-                        teamLogo
-                      }
-
-                      name={
-                        teamName
-                      }
+                      src={teamLogo}
+                      name={teamName}
                     />
 
-                    <strong
-                      style={{
-                        color:
-                          "#e2e8f0",
-
-                        fontSize:
-                          14,
-
-                        overflow:
-                          "hidden",
-
-                        textOverflow:
-                          "ellipsis",
-
-                        whiteSpace:
-                          "nowrap",
-                      }}
-                    >
+                    <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-200">
                       {teamName}
                     </strong>
                   </div>
 
-
                   {/* GOALS */}
 
                   <StatBox
-                    value={
-                      goals
-                    }
-
+                    value={goals}
                     label="Goals"
-
                     primary
                   />
-
 
                   {/* ASSISTS */}
 
                   <StatBox
-                    value={
-                      assists
-                    }
-
+                    value={assists}
                     label="Assists"
                   />
-
 
                   {/* APPEARANCES */}
 
                   <StatBox
                     value={
-                      appearances ||
-                      "-"
+                      appearances || "-"
                     }
-
                     label="Apps"
                   />
                 </article>
@@ -1280,7 +651,6 @@ export default async function TopScorersPage({
   );
 }
 
-
 /* =====================================================
 SUMMARY CARD
 ===================================================== */
@@ -1290,57 +660,17 @@ function SummaryCard({
   value,
 }) {
   return (
-    <div
-      style={{
-        background:
-          "#1f2937",
-
-        borderRadius:
-          14,
-
-        padding:
-          18,
-      }}
-    >
-      <div
-        style={{
-          color:
-            "#94a3b8",
-
-          fontSize:
-            12,
-
-          marginBottom:
-            6,
-
-          textTransform:
-            "uppercase",
-
-          letterSpacing:
-            ".08em",
-        }}
-      >
+    <div className="rounded-[14px] bg-gray-800 p-[18px]">
+      <div className="mb-1.5 text-xs uppercase tracking-[0.08em] text-slate-400">
         {label}
       </div>
 
-      <div
-        style={{
-          color:
-            "#fff",
-
-          fontWeight:
-            800,
-
-          fontSize:
-            20,
-        }}
-      >
+      <div className="text-xl font-extrabold text-white">
         {value}
       </div>
     </div>
   );
 }
-
 
 /* =====================================================
 STAT BOX
@@ -1352,48 +682,21 @@ function StatBox({
   primary = false,
 }) {
   return (
-    <div
-      style={{
-        textAlign:
-          "center",
-      }}
-    >
+    <div className="text-center">
       <div
-        style={{
-          color:
-            primary
-              ? "#22c55e"
-              : "#fff",
-
-          fontSize:
-            primary
-              ? 27
-              : 21,
-
-          fontWeight:
-            800,
-
-          lineHeight:
-            1,
-
-          marginBottom:
-            6,
-        }}
+        className={`mb-1.5 font-extrabold leading-none ${
+          primary
+            ? "text-[27px] text-green-500"
+            : "text-[21px] text-white"
+        }`}
       >
         {value}
       </div>
 
-      <small
-        style={{
-          color:
-            "#94a3b8",
-
-          fontSize:
-            11,
-        }}
-      >
+      <small className="text-[11px] text-slate-400">
         {label}
       </small>
     </div>
   );
+
 }
