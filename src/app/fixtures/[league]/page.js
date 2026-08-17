@@ -12,21 +12,18 @@ const LEAGUE_CONFIG = {
     code: "PL",
     season: 2026,
   },
-
   premierleague: {
     name: "Premier League",
     country: "England",
     code: "PL",
     season: 2026,
   },
-
   "premier-league": {
     name: "Premier League",
     country: "England",
     code: "PL",
     season: 2026,
   },
-
   pl: {
     name: "Premier League",
     country: "England",
@@ -39,97 +36,44 @@ const LEAGUE_CONFIG = {
 API
 ===================================================== */
 
-const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://127.0.0.1:5000";
+const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:5000";
 
 /* =====================================================
 GET FIXTURES
-
-Uses the migrated backend:
-
-/api/fixtures/:league
-
-Backend pagination:
-page
-limit
-
-Next.js caches the response for 2 minutes.
 ===================================================== */
 
-async function getFixtures(
-  league,
-  season,
-  page = 1,
-  limit = 20
-) {
+async function getFixtures(league, season, page = 1, limit = 20) {
   try {
-    const url =
-      `${API}/api/fixtures/${league}` +
-      `?season=${season}` +
-      `&page=${page}` +
-      `&limit=${limit}`;
+    const url = `${API}/api/fixtures/${league}?season=${season}&page=${page}&limit=${limit}`;
 
-    console.log(
-      "🌐 Frontend fixtures request:",
-      url
-    );
+    console.log("🌐 Frontend fixtures request:", url);
 
-    const controller =
-      new AbortController();
-
-    const timeout =
-      setTimeout(() => {
-        controller.abort();
-      }, 15000);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => {
+      controller.abort();
+    }, 15000);
 
     try {
-      const response =
-        await fetch(url, {
-          next: {
-            revalidate: 120,
-          },
-
-          signal:
-            controller.signal,
-        });
+      const response = await fetch(url, {
+        next: { revalidate: 120 },
+        signal: controller.signal,
+      });
 
       if (!response.ok) {
-        throw new Error(
-          `Backend returned ${response.status}`
-        );
+        throw new Error(`Backend returned ${response.status}`);
       }
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
-      console.log(
-        "📅 Frontend fixtures response:",
-        {
-          success:
-            data?.success,
+      console.log("📅 Frontend fixtures response:", {
+        success: data?.success,
+        season: data?.season,
+        count: data?.count,
+        total: data?.total,
+        page: data?.page,
+      });
 
-          season:
-            data?.season,
-
-          count:
-            data?.count,
-
-          total:
-            data?.total,
-
-          page:
-            data?.page,
-        }
-      );
-
-      if (
-        !data ||
-        data.success !== true ||
-        !Array.isArray(
-          data.fixtures
-        )
-      ) {
+      if (!data || data.success !== true || !Array.isArray(data.fixtures)) {
         return {
           success: false,
           league: null,
@@ -140,9 +84,7 @@ async function getFixtures(
           totalPages: 0,
           count: 0,
           fixtures: [],
-          message:
-            data?.message ||
-            "Invalid fixtures response",
+          message: data?.message || "Invalid fixtures response",
         };
       }
 
@@ -151,36 +93,22 @@ async function getFixtures(
       clearTimeout(timeout);
     }
   } catch (error) {
-    console.error(
-      "❌ Error fetching fixtures:",
-      error
-    );
+    console.error("❌ Error fetching fixtures:", error);
 
     return {
       success: false,
-
       league: null,
-
       season,
-
       page,
-
       limit,
-
       total: 0,
-
       totalPages: 0,
-
       count: 0,
-
       fixtures: [],
-
       message:
-        error?.name ===
-        "AbortError"
+        error?.name === "AbortError"
           ? "Fixtures request timed out"
-          : error?.message ||
-            "Unable to load fixtures",
+          : error?.message || "Unable to load fixtures",
     };
   }
 }
@@ -189,49 +117,28 @@ async function getFixtures(
 FORMAT DATE
 ===================================================== */
 
-function formatMatchDate(
-  date
-) {
+function formatMatchDate(date) {
   if (!date) {
-    return {
-      date: "-",
-      time: "-",
-    };
+    return { date: "-", time: "-" };
   }
 
-  const parsed =
-    new Date(date);
+  const parsed = new Date(date);
 
-  if (
-    Number.isNaN(
-      parsed.getTime()
-    )
-  ) {
-    return {
-      date: "-",
-      time: "-",
-    };
+  if (Number.isNaN(parsed.getTime())) {
+    return { date: "-", time: "-" };
   }
 
   return {
-    date:
-      new Intl.DateTimeFormat(
-        "en-GB",
-        {
-          day: "2-digit",
-          month: "short",
-          year: "numeric",
-        }
-      ).format(parsed),
+    date: new Intl.DateTimeFormat("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }).format(parsed),
 
-    time:
-      new Intl.DateTimeFormat(
-        "en-GB",
-        {
-          hour: "2-digit",
-          minute: "2-digit",
-        }
-      ).format(parsed),
+    time: new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(parsed),
   };
 }
 
@@ -239,132 +146,71 @@ function formatMatchDate(
 STATUS LABEL
 ===================================================== */
 
-function getStatusLabel(
-  status
-) {
-  const value =
-    status?.short ||
-    "TBD";
+function getStatusLabel(status) {
+  const value = status?.short || "TBD";
 
   switch (value) {
     case "NS":
       return "Scheduled";
-
     case "LIVE":
       return "Live";
-
     case "HT":
       return "Half Time";
-
     case "FT":
       return "Finished";
-
     case "PST":
       return "Postponed";
-
     case "SUS":
       return "Suspended";
-
     case "CANC":
       return "Cancelled";
-
     default:
-      return (
-        status?.long ||
-        value
-      );
+      return status?.long || value;
   }
 }
 
 /* =====================================================
-STATUS COLOR
+STATUS COLOR / BADGE CLASSES
 ===================================================== */
 
-function getStatusColor(
-  status
-) {
-  switch (
-    status?.short
-  ) {
+function getStatusBadgeClasses(status) {
+  switch (status?.short) {
     case "LIVE":
-      return "#ef4444";
-
-    case "HT":
-      return "#f59e0b";
-
-    case "FT":
-      return "#64748b";
-
     case "PST":
     case "SUS":
     case "CANC":
-      return "#ef4444";
-
+      return "bg-red-500/10 border-red-500/30 text-red-500";
+    case "HT":
+      return "bg-amber-500/10 border-amber-500/30 text-amber-500";
+    case "FT":
+      return "bg-slate-500/10 border-slate-500/30 text-slate-400";
     default:
-      return "#22c55e";
+      return "bg-emerald-500/10 border-emerald-500/30 text-emerald-500";
   }
 }
 
 /* =====================================================
 SAFE IMAGE
-
-Prevents broken image URLs from causing problems.
 ===================================================== */
 
-function TeamLogo({
-  src,
-  name,
-}) {
+function TeamLogo({ src, name }) {
   if (!src) {
     return (
-      <div
-        style={{
-          width: 52,
-          height: 52,
-          minWidth: 52,
-          borderRadius: 12,
-          background: "#1e293b",
-          display: "flex",
-          alignItems: "center",
-          justifyContent:
-            "center",
-          color: "#64748b",
-          fontSize: 11,
-          fontWeight: 800,
-        }}
-      >
+      <div className="w-[52px] h-[52px] min-w-[52px] rounded-xl bg-slate-800 flex items-center justify-center text-slate-500 text-[11px] font-extrabold">
         FC
       </div>
     );
   }
 
   return (
-    <div
-      style={{
-        width: 52,
-        height: 52,
-        minWidth: 52,
-        borderRadius: 12,
-        background: "#0f172a",
-        display: "flex",
-        alignItems: "center",
-        justifyContent:
-          "center",
-      }}
-    >
+    <div className="w-[52px] h-[52px] min-w-[52px] rounded-xl bg-slate-900 flex items-center justify-center">
       <Image
         src={src}
-        alt={
-          name ||
-          "Team"
-        }
+        alt={name || "Team"}
         width={40}
         height={40}
         unoptimized
-        style={{
-          objectFit:
-            "contain",
-        }}
+        className="object-contain"
       />
     </div>
   );
@@ -374,36 +220,21 @@ function TeamLogo({
 SEO
 ===================================================== */
 
-export async function generateMetadata({
-  params,
-}) {
-  const { league } =
-    await params;
-
-  const slug =
-    String(league || "")
-      .trim()
-      .toLowerCase();
-
-  const config =
-    LEAGUE_CONFIG[slug];
+export async function generateMetadata({ params }) {
+  const { league } = await params;
+  const slug = String(league || "").trim().toLowerCase();
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return {
-      title:
-        "Fixtures | Apex Sports",
-
-      description:
-        "Football fixtures",
+      title: "Fixtures | Apex Sports",
+      description: "Football fixtures",
     };
   }
 
   return {
-    title:
-      `${config.name} Fixtures | Apex Sports`,
-
-    description:
-      `Upcoming fixtures for ${config.name} in the ${config.season} season.`,
+    title: `${config.name} Fixtures | Apex Sports`,
+    description: `Upcoming fixtures for ${config.name} in the ${config.season} season.`,
   };
 }
 
@@ -411,19 +242,10 @@ export async function generateMetadata({
 PAGE
 ===================================================== */
 
-export default async function FixturesPage({
-  params,
-}) {
-  const { league } =
-    await params;
-
-  const slug =
-    String(league || "")
-      .trim()
-      .toLowerCase();
-
-  const config =
-    LEAGUE_CONFIG[slug];
+export default async function FixturesPage({ params }) {
+  const { league } = await params;
+  const slug = String(league || "").trim().toLowerCase();
+  const config = LEAGUE_CONFIG[slug];
 
   /* =================================================
      UNSUPPORTED LEAGUE
@@ -431,61 +253,16 @@ export default async function FixturesPage({
 
   if (!config) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 40,
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 48,
-              marginBottom: 15,
-            }}
-          >
-            📅
-          </div>
-
-          <h1>
-            League Not Found
-          </h1>
-
-          <p
-            style={{
-              color:
-                "#94a3b8",
-            }}
-          >
-            The requested league
-            is not supported.
+      <main className="max-w-[1200px] my-[40px] mx-auto p-5 text-white">
+        <section className="bg-slate-900 border border-slate-800 rounded-[20px] p-[40px] text-center">
+          <div className="text-[48px] mb-[15px]">📅</div>
+          <h1 className="text-2xl font-bold">League Not Found</h1>
+          <p className="text-slate-400 mt-2">
+            The requested league is not supported.
           </p>
-
           <Link
             href="/leagues"
-            style={{
-              display:
-                "inline-block",
-              marginTop: 20,
-              color:
-                "#22c55e",
-              fontWeight: 700,
-              textDecoration:
-                "none",
-            }}
+            className="inline-block mt-[20px] text-emerald-500 font-bold no-underline hover:underline"
           >
             ← Back to Leagues
           </Link>
@@ -498,141 +275,41 @@ export default async function FixturesPage({
      LOAD FIRST PAGE
   ================================================= */
 
-  const data =
-    await getFixtures(
-      slug,
-      config.season,
-      1,
-      20
-    );
+  const data = await getFixtures(slug, config.season, 1, 20);
 
   /* =================================================
      FAILURE
   ================================================= */
 
-  if (
-    !data?.success
-  ) {
+  if (!data?.success) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 45,
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 48,
-              marginBottom: 15,
-            }}
-          >
-            📅
-          </div>
-
-          <h1
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
-            Fixtures Not Available
-          </h1>
-
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin: 0,
-            }}
-          >
-            {data?.message ||
-              "Unable to load fixtures."}
+      <main className="max-w-[1200px] my-[40px] mx-auto p-5 text-white">
+        <section className="bg-slate-900 border border-slate-800 rounded-[20px] p-[45px] text-center">
+          <div className="text-[48px] mb-[15px]">📅</div>
+          <h1 className="m-0 text-2xl font-bold">Fixtures Not Available</h1>
+          <p className="text-slate-400 m-0 mt-2">
+            {data?.message || "Unable to load fixtures."}
           </p>
         </section>
       </main>
     );
   }
 
-  const fixtures =
-    Array.isArray(
-      data.fixtures
-    )
-      ? data.fixtures
-      : [];
-
-  const leagueData =
-    data.league || {};
+  const fixtures = Array.isArray(data.fixtures) ? data.fixtures : [];
+  const leagueData = data.league || {};
 
   /* =================================================
      NO FIXTURES
   ================================================= */
 
-  if (
-    fixtures.length === 0
-  ) {
+  if (fixtures.length === 0) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin: "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 45,
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 48,
-              marginBottom: 15,
-            }}
-          >
-            📅
-          </div>
-
-          <h1
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
-            No Fixtures Available
-          </h1>
-
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin: 0,
-            }}
-          >
-            No fixtures are currently
-            available for the{" "}
-            {config.name}{" "}
+      <main className="max-w-[1200px] my-[40px] mx-auto p-5 text-white">
+        <section className="bg-slate-900 border border-slate-800 rounded-[20px] p-[45px] text-center">
+          <div className="text-[48px] mb-[15px]">📅</div>
+          <h1 className="m-0 text-2xl font-bold">No Fixtures Available</h1>
+          <p className="text-slate-400 m-0 mt-2">
+            No fixtures are currently available for the {config.name}{" "}
             {config.season} season.
           </p>
         </section>
@@ -641,153 +318,51 @@ export default async function FixturesPage({
   }
 
   /* =================================================
-     PAGE
+     MAIN CONTENT
   ================================================= */
 
   return (
-    <main
-      style={{
-        maxWidth: 1200,
-        margin:
-          "40px auto",
-        padding: 20,
-        color: "#fff",
-      }}
-    >
+    <main className="max-w-[1200px] my-[40px] mx-auto p-5 text-white">
       {/* =============================================
           LEAGUE HEADER
       ============================================= */}
 
-      <section
-        style={{
-          background:
-            "linear-gradient(145deg,#111827,#0b1220)",
-          border:
-            "1px solid #1f2937",
-          borderRadius: 20,
-          padding: 25,
-          marginBottom: 25,
-          display:
-            "flex",
-          alignItems:
-            "center",
-          gap: 20,
-          flexWrap:
-            "wrap",
-        }}
-      >
+      <section className="bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 rounded-[20px] p-[25px] mb-[25px] flex items-center gap-[20px] flex-wrap">
         {leagueData.logo ? (
           <Image
-            src={
-              leagueData.logo
-            }
-            alt={
-              leagueData.name ||
-              config.name
-            }
+            src={leagueData.logo}
+            alt={leagueData.name || config.name}
             width={76}
             height={76}
             unoptimized
-            style={{
-              objectFit:
-                "contain",
-            }}
+            className="object-contain"
           />
         ) : (
-          <div
-            style={{
-              width: 76,
-              height: 76,
-              borderRadius: 16,
-              background:
-                "#1e293b",
-              display:
-                "flex",
-              alignItems:
-                "center",
-              justifyContent:
-                "center",
-              color:
-                "#22c55e",
-              fontSize: 22,
-              fontWeight: 800,
-            }}
-          >
+          <div className="w-[76px] h-[76px] rounded-[16px] bg-slate-800 flex items-center justify-center text-emerald-500 text-[22px] font-extrabold">
             {config.code}
           </div>
         )}
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: 250,
-          }}
-        >
-          <div
-            style={{
-              color:
-                "#22c55e",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing:
-                "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+        <div className="flex-1 min-w-[250px]">
+          <div className="text-emerald-500 text-[12px] font-extrabold tracking-[1.2px] uppercase mb-[8px]">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize:
-                "clamp(28px,5vw,40px)",
-              fontWeight: 800,
-            }}
-          >
-            {leagueData.name ||
-              config.name}
+          <h1 className="m-0 text-[clamp(28px,5vw,40px)] font-extrabold leading-tight">
+            {leagueData.name || config.name}
           </h1>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin:
-                "7px 0 0",
-            }}
-          >
-            {leagueData.country ||
-              config.country}
+          <p className="text-slate-400 mt-[7px] mb-0">
+            {leagueData.country || config.country}
           </p>
 
-          <div
-            style={{
-              display:
-                "flex",
-              flexWrap:
-                "wrap",
-              gap: 10,
-              marginTop: 12,
-            }}
-          >
+          <div className="flex flex-wrap gap-[10px] mt-[12px]">
             <Badge
-              label={`Season ${
-                data.season ||
-                config.season
-              }`}
+              label={`Season ${data.season || config.season}`}
               green
             />
-
-            <Badge
-              label={`${data.total || 0} Fixtures`}
-            />
-
-            <Badge
-              label="Football-data.org"
-            />
+            <Badge label={`${data.total || 0} Fixtures`} />
+            <Badge label="Football-data.org" />
           </div>
         </div>
       </section>
@@ -796,446 +371,119 @@ export default async function FixturesPage({
           FIXTURE LIST
       ============================================= */}
 
-      <section
-        style={{
-          background:
-            "#111827",
-          border:
-            "1px solid #1f2937",
-          borderRadius: 20,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            padding:
-              "20px 22px",
-            borderBottom:
-              "1px solid #1f2937",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 22,
-            }}
-          >
-            Upcoming Fixtures
-          </h2>
-
-          <p
-            style={{
-              margin:
-                "6px 0 0",
-              color:
-                "#64748b",
-              fontSize: 13,
-            }}
-          >
-            {config.name} fixtures
-            for the{" "}
-            {data.season ||
-              config.season}{" "}
-            season.
+      <section className="bg-slate-900 border border-slate-800 rounded-[20px] overflow-hidden">
+        <div className="px-[22px] py-[20px] border-b border-slate-800">
+          <h2 className="m-0 text-[22px] font-bold">Upcoming Fixtures</h2>
+          <p className="mt-[6px] mb-0 text-slate-500 text-[13px]">
+            {config.name} fixtures for the {data.season || config.season} season.
           </p>
         </div>
 
-        <div
-          style={{
-            display:
-              "grid",
-            gap: 1,
-            background:
-              "#1f2937",
-          }}
-        >
-          {fixtures.map(
-            (
-              match
-            ) => {
-              const fixture =
-                match?.fixture ||
-                {};
+        <div className="grid gap-[1px] bg-slate-800">
+          {fixtures.map((match) => {
+            const fixture = match?.fixture || {};
+            const home = match?.home || {};
+            const away = match?.away || {};
+            const status = match?.status || {};
+            const dateInfo = formatMatchDate(fixture.date);
+            const statusLabel = getStatusLabel(status);
+            const badgeClasses = getStatusBadgeClasses(status);
 
-              const home =
-                match?.home ||
-                {};
-
-              const away =
-                match?.away ||
-                {};
-
-              const status =
-                match?.status ||
-                {};
-
-              const dateInfo =
-                formatMatchDate(
-                  fixture.date
-                );
-
-              const statusLabel =
-                getStatusLabel(
-                  status
-                );
-
-              const statusColor =
-                getStatusColor(
-                  status
-                );
-
-              return (
-                <Link
-                  key={
-                    fixture.id
-                  }
-                  href={`/match/${fixture.id}`}
-                  style={{
-                    textDecoration:
-                      "none",
-                    color:
-                      "inherit",
-                    background:
-                      "#111827",
-                  }}
-                >
-                  <article
-                    style={{
-                      padding:
-                        "22px",
-                    }}
-                  >
-                    {/* Date / Status */}
-
-                    <div
-                      style={{
-                        display:
-                          "flex",
-                        alignItems:
-                          "center",
-                        justifyContent:
-                          "space-between",
-                        gap: 15,
-                        flexWrap:
-                          "wrap",
-                        marginBottom: 18,
-                      }}
-                    >
-                      <div
-                        style={{
-                          color:
-                            "#94a3b8",
-                          fontSize: 13,
-                        }}
-                      >
-                        📅{" "}
-                        {dateInfo.date}
-                        {" • "}
-                        {dateInfo.time}
-                      </div>
-
-                      <span
-                        style={{
-                          display:
-                            "inline-flex",
-                          padding:
-                            "6px 12px",
-                          borderRadius:
-                            999,
-                          background:
-                            `${statusColor}18`,
-                          border:
-                            `1px solid ${statusColor}45`,
-                          color:
-                            statusColor,
-                          fontSize: 11,
-                          fontWeight:
-                            800,
-                        }}
-                      >
-                        {statusLabel}
-                      </span>
+            return (
+              <Link
+                key={fixture.id}
+                href={`/match/${fixture.id}`}
+                className="no-underline text-inherit bg-slate-900 block hover:bg-slate-900/80 transition-colors"
+              >
+                <article className="p-[22px]">
+                  {/* Date / Status */}
+                  <div className="flex items-center justify-between gap-[15px] flex-wrap mb-[18px]">
+                    <div className="text-slate-400 text-[13px]">
+                      📅 {dateInfo.date} • {dateInfo.time}
                     </div>
 
-                    {/* Teams */}
-
-                    <div
-                      style={{
-                        display:
-                          "grid",
-                        gridTemplateColumns:
-                          "minmax(0,1fr) auto minmax(0,1fr)",
-                        alignItems:
-                          "center",
-                        gap: 20,
-                      }}
+                    <span
+                      className={`inline-flex px-[12px] py-[6px] rounded-full border text-[11px] font-extrabold ${badgeClasses}`}
                     >
-                      {/* Home */}
+                      {statusLabel}
+                    </span>
+                  </div>
 
-                      <div
-                        style={{
-                          display:
-                            "flex",
-                          alignItems:
-                            "center",
-                          gap: 14,
-                          minWidth: 0,
-                        }}
-                      >
-                        <TeamLogo
-                          src={
-                            home.logo
-                          }
-                          name={
-                            home.name
-                          }
-                        />
-
+                  {/* Teams */}
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-[20px]">
+                    {/* Home Team */}
+                    <div className="flex items-center gap-[14px] min-w-0">
+                      <TeamLogo src={home.logo} name={home.name} />
+                      <div className="min-w-0">
                         <div
-                          style={{
-                            minWidth:
-                              0,
-                          }}
+                          className={`text-[16px] font-bold truncate ${
+                            home.winner === true ? "text-emerald-500" : "text-white"
+                          }`}
                         >
-                          <div
-                            style={{
-                              color:
-                                home.winner ===
-                                true
-                                  ? "#22c55e"
-                                  : "#fff",
-                              fontSize:
-                                16,
-                              fontWeight:
-                                700,
-                              overflow:
-                                "hidden",
-                              textOverflow:
-                                "ellipsis",
-                              whiteSpace:
-                                "nowrap",
-                            }}
-                          >
-                            {home.name ||
-                              "Home Team"}
-                          </div>
-
-                          {home.tla && (
-                            <div
-                              style={{
-                                color:
-                                  "#64748b",
-                                fontSize:
-                                  11,
-                                marginTop:
-                                  3,
-                              }}
-                            >
-                              {home.tla}
-                            </div>
-                          )}
+                          {home.name || "Home Team"}
                         </div>
-                      </div>
-
-                      {/* Center */}
-
-                      <div
-                        style={{
-                          textAlign:
-                            "center",
-                          minWidth: 70,
-                        }}
-                      >
-                        {status.short ===
-                          "FT" &&
-                        match.score?.home !==
-                          null &&
-                        match.score?.away !==
-                          null ? (
-                          <>
-                            <div
-                              style={{
-                                fontSize:
-                                  24,
-                                fontWeight:
-                                  900,
-                                color:
-                                  "#fff",
-                              }}
-                            >
-                              {
-                                match
-                                  .score
-                                  .home
-                              }{" "}
-                              -{" "}
-                              {
-                                match
-                                  .score
-                                  .away
-                              }
-                            </div>
-
-                            <div
-                              style={{
-                                color:
-                                  "#64748b",
-                                fontSize:
-                                  11,
-                                marginTop:
-                                  4,
-                              }}
-                            >
-                              Final
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <div
-                              style={{
-                                fontSize:
-                                  18,
-                                fontWeight:
-                                  800,
-                                color:
-                                  "#22c55e",
-                              }}
-                            >
-                              VS
-                            </div>
-
-                            <div
-                              style={{
-                                color:
-                                  "#64748b",
-                                fontSize:
-                                  11,
-                                marginTop:
-                                  4,
-                              }}
-                            >
-                              Match
-                            </div>
-                          </>
+                        {home.tla && (
+                          <div className="text-slate-500 text-[11px] mt-[3px]">
+                            {home.tla}
+                          </div>
                         )}
                       </div>
+                    </div>
 
-                      {/* Away */}
-
-                      <div
-                        style={{
-                          display:
-                            "flex",
-                          alignItems:
-                            "center",
-                          justifyContent:
-                            "flex-end",
-                          gap: 14,
-                          minWidth: 0,
-                        }}
-                      >
-                        <div
-                          style={{
-                            minWidth:
-                              0,
-                            textAlign:
-                              "right",
-                          }}
-                        >
-                          <div
-                            style={{
-                              color:
-                                away.winner ===
-                                true
-                                  ? "#22c55e"
-                                  : "#fff",
-                              fontSize:
-                                16,
-                              fontWeight:
-                                700,
-                              overflow:
-                                "hidden",
-                              textOverflow:
-                                "ellipsis",
-                              whiteSpace:
-                                "nowrap",
-                            }}
-                          >
-                            {away.name ||
-                              "Away Team"}
+                    {/* Center Score / VS */}
+                    <div className="text-center min-w-[70px]">
+                      {status.short === "FT" &&
+                      match.score?.home !== null &&
+                      match.score?.away !== null ? (
+                        <>
+                          <div className="text-[24px] font-black text-white">
+                            {match.score.home} - {match.score.away}
                           </div>
+                          <div className="text-slate-500 text-[11px] mt-[4px]">
+                            Final
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div className="text-[18px] font-extrabold text-emerald-500">
+                            VS
+                          </div>
+                          <div className="text-slate-500 text-[11px] mt-[4px]">
+                            Match
+                          </div>
+                        </>
+                      )}
+                    </div>
 
-                          {away.tla && (
-                            <div
-                              style={{
-                                color:
-                                  "#64748b",
-                                fontSize:
-                                  11,
-                                marginTop:
-                                  3,
-                              }}
-                            >
-                              {away.tla}
-                            </div>
-                          )}
+                    {/* Away Team */}
+                    <div className="flex items-center justify-end gap-[14px] min-w-0">
+                      <div className="min-w-0 text-right">
+                        <div
+                          className={`text-[16px] font-bold truncate ${
+                            away.winner === true ? "text-emerald-500" : "text-white"
+                          }`}
+                        >
+                          {away.name || "Away Team"}
                         </div>
-
-                        <TeamLogo
-                          src={
-                            away.logo
-                          }
-                          name={
-                            away.name
-                          }
-                        />
+                        {away.tla && (
+                          <div className="text-slate-500 text-[11px] mt-[3px]">
+                            {away.tla}
+                          </div>
+                        )}
                       </div>
+                      <TeamLogo src={away.logo} name={away.name} />
                     </div>
+                  </div>
 
-                    {/* Venue */}
-
-                    <div
-                      style={{
-                        marginTop:
-                          18,
-                        paddingTop:
-                          14,
-                        borderTop:
-                          "1px solid #1f2937",
-                        color:
-                          "#64748b",
-                        fontSize:
-                          12,
-                        display:
-                          "flex",
-                        justifyContent:
-                          "space-between",
-                        gap: 15,
-                        flexWrap:
-                          "wrap",
-                      }}
-                    >
-                      <span>
-                        🏟{" "}
-                        {fixture
-                          .venue
-                          ?.name ||
-                          "Venue TBD"}
-                      </span>
-
-                      <span>
-                        📍{" "}
-                        {fixture
-                          .venue
-                          ?.city ||
-                          config.country}
-                      </span>
-                    </div>
-                  </article>
-                </Link>
-              );
-            }
-          )}
+                  {/* Venue */}
+                  <div className="mt-[18px] pt-[14px] border-t border-slate-800 text-slate-500 text-[12px] flex justify-between gap-[15px] flex-wrap">
+                    <span>🏟 {fixture.venue?.name || "Venue TBD"}</span>
+                    <span>📍 {fixture.venue?.city || config.country}</span>
+                  </div>
+                </article>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
@@ -1243,34 +491,12 @@ export default async function FixturesPage({
           PAGINATION INFO
       ============================================= */}
 
-      <div
-        style={{
-          marginTop:
-            14,
-          display:
-            "flex",
-          justifyContent:
-            "space-between",
-          alignItems:
-            "center",
-          flexWrap:
-            "wrap",
-          gap: 10,
-          color:
-            "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[14px] flex justify-between items-center flex-wrap gap-[10px] text-slate-500 text-[12px]">
         <span>
-          Showing{" "}
-          {data.count || 0} of{" "}
-          {data.total || 0} fixtures
+          Showing {data.count || 0} of {data.total || 0} fixtures
         </span>
-
         <span>
-          Page{" "}
-          {data.page || 1} of{" "}
-          {data.totalPages || 1}
+          Page {data.page || 1} of {data.totalPages || 1}
         </span>
       </div>
     </main>
@@ -1281,36 +507,14 @@ export default async function FixturesPage({
 BADGE
 ===================================================== */
 
-function Badge({
-  label,
-  green = false,
-}) {
+function Badge({ label, green = false }) {
   return (
     <span
-      style={{
-        display:
-          "inline-flex",
-        alignItems:
-          "center",
-        padding:
-          "6px 10px",
-        borderRadius:
-          999,
-        background:
-          green
-            ? "rgba(34,197,94,.12)"
-            : "#1e293b",
-        border:
-          green
-            ? "1px solid rgba(34,197,94,.25)"
-            : "1px solid #334155",
-        color:
-          green
-            ? "#22c55e"
-            : "#94a3b8",
-        fontSize: 11,
-        fontWeight: 700,
-      }}
+      className={`inline-flex items-center px-[10px] py-[6px] rounded-full text-[11px] font-bold border ${
+        green
+          ? "bg-emerald-500/10 border-emerald-500/25 text-emerald-500"
+          : "bg-slate-800 border-slate-700 text-slate-400"
+      }`}
     >
       {label}
     </span>
