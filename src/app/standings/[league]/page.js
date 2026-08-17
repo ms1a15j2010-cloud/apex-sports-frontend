@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 
@@ -91,16 +92,14 @@ const LEAGUE_CONFIG = {
   },
 };
 
-
 /* =====================================================
 NORMALIZE LEAGUE
 ===================================================== */
 
 function normalizeLeague(value) {
-  const slug =
-    String(value || "")
-      .trim()
-      .toLowerCase();
+  const slug = String(value || "")
+    .trim()
+    .toLowerCase();
 
   if (slug === "epl") {
     return {
@@ -118,7 +117,6 @@ function normalizeLeague(value) {
   if (slug === "premierleague") {
     return {
       slug: "premierleague",
-
       config: LEAGUE_CONFIG.premierleague,
     };
   }
@@ -126,61 +124,40 @@ function normalizeLeague(value) {
   if (slug === "premier-league") {
     return {
       slug: "premier-league",
-
-      config:
-        LEAGUE_CONFIG[
-          "premier-league"
-        ],
+      config: LEAGUE_CONFIG["premier-league"],
     };
   }
 
   if (LEAGUE_CONFIG[slug]) {
     return {
       slug,
-
-      config:
-        LEAGUE_CONFIG[slug],
+      config: LEAGUE_CONFIG[slug],
     };
   }
 
   return {
     slug,
-
     config: null,
   };
 }
-
 
 /* =====================================================
 GET STANDINGS
 ===================================================== */
 
-async function getStandings(
-  league
-) {
+async function getStandings(league) {
   try {
-    const {
-      slug,
-      config,
-    } =
-      normalizeLeague(
-        league
-      );
+    const { slug, config } =
+      normalizeLeague(league);
 
     if (!config) {
       return {
         success: false,
-
         league: null,
-
         season: null,
-
         count: 0,
-
         standings: [],
-
-        message:
-          "Unsupported league",
+        message: "Unsupported league",
       };
     }
 
@@ -197,14 +174,9 @@ async function getStandings(
       url
     );
 
-    const response =
-      await fetch(
-        url,
-        {
-          cache:
-            "no-store",
-        }
-      );
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       console.error(
@@ -214,49 +186,33 @@ async function getStandings(
 
       return {
         success: false,
-
         league: null,
-
-        season:
-          config.season,
-
+        season: config.season,
         count: 0,
-
         standings: [],
-
         message:
           `Backend returned ${response.status}`,
       };
     }
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
     console.log(
       "📊 Frontend standings response:",
       {
-        success:
-          data?.success,
-
-        season:
-          data?.season,
-
+        success: data?.success,
+        season: data?.season,
         league:
           data?.league?.code ||
           data?.league?.id,
-
-        count:
-          data?.count,
+        count: data?.count,
       }
     );
 
     if (
       !data ||
-      data.success !==
-        true ||
-      !Array.isArray(
-        data.standings
-      )
+      data.success !== true ||
+      !Array.isArray(data.standings)
     ) {
       console.error(
         "❌ Invalid standings response:",
@@ -265,17 +221,12 @@ async function getStandings(
 
       return {
         success: false,
-
         league: null,
-
         season:
           data?.season ||
           config.season,
-
         count: 0,
-
         standings: [],
-
         message:
           data?.message ||
           "Invalid standings response",
@@ -291,22 +242,16 @@ async function getStandings(
 
     return {
       success: false,
-
       league: null,
-
       season: null,
-
       count: 0,
-
       standings: [],
-
       message:
         error?.message ||
         "Unable to load standings",
     };
   }
 }
-
 
 /* =====================================================
 SEO
@@ -315,37 +260,25 @@ SEO
 export async function generateMetadata({
   params,
 }) {
-  const {
-    league,
-  } =
-    await params;
+  const { league } = await params;
 
-  const {
-    config,
-  } =
-    normalizeLeague(
-      league
-    );
+  const { config } =
+    normalizeLeague(league);
 
   if (!config) {
     return {
-      title:
-        "Standings | Apex Sports",
-
-      description:
-        "Football league standings",
+      title: "Standings | Apex Sports",
+      description: "Football league standings",
     };
   }
 
   return {
     title:
       `${config.name} Standings | Apex Sports`,
-
     description:
       `${config.name} football standings`,
   };
 }
-
 
 /* =====================================================
 PAGE
@@ -354,28 +287,17 @@ PAGE
 export default async function StandingsPage({
   params,
 }) {
-  const {
-    league,
-  } =
-    await params;
+  const { league } = await params;
 
-  const {
-    slug,
-    config,
-  } =
-    normalizeLeague(
-      league
-    );
+  const { slug, config } =
+    normalizeLeague(league);
 
   console.log(
-    "🔎 Standings route:",
+    "🔄 Standings route:",
     {
       league,
-
       slug,
-
-      configExists:
-        Boolean(config),
+      configExists: Boolean(config),
     }
   );
 
@@ -385,68 +307,23 @@ export default async function StandingsPage({
 
   if (!config) {
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin:
-            "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 40,
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 48,
-              marginBottom: 15,
-            }}
-          >
+      <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+        <section className="rounded-[20px] border border-gray-800 bg-gray-900 p-8 text-center sm:p-10">
+          <div className="mb-[15px] text-5xl">
             📊
           </div>
 
-          <h1
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
+          <h1 className="mb-2.5 text-2xl font-extrabold text-white sm:text-3xl">
             League Not Found
           </h1>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin: 0,
-            }}
-          >
-            The requested league
-            is not supported.
+          <p className="m-0 text-sm text-slate-400 sm:text-base">
+            The requested league is not supported.
           </p>
 
           <Link
             href="/leagues"
-            style={{
-              display:
-                "inline-block",
-              marginTop: 24,
-              color:
-                "#22c55e",
-              textDecoration:
-                "none",
-              fontWeight: 700,
-            }}
+            className="mt-6 inline-block font-bold text-green-500 no-underline transition hover:text-green-400"
           >
             ← Back to Leagues
           </Link>
@@ -455,16 +332,11 @@ export default async function StandingsPage({
     );
   }
 
-
   /* =================================================
      LOAD DATA
   ================================================= */
 
-  const data =
-    await getStandings(
-      slug
-    );
-
+  const data = await getStandings(slug);
 
   /* =================================================
      API FAILURE
@@ -472,9 +344,7 @@ export default async function StandingsPage({
 
   if (
     !data?.success ||
-    !Array.isArray(
-      data?.standings
-    ) ||
+    !Array.isArray(data?.standings) ||
     data.standings.length === 0
   ) {
     console.error(
@@ -483,65 +353,21 @@ export default async function StandingsPage({
     );
 
     return (
-      <main
-        style={{
-          maxWidth: 1200,
-          margin:
-            "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <section
-          style={{
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 40,
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 42,
-              marginBottom: 15,
-            }}
-          >
+      <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+        <section className="rounded-[20px] border border-gray-800 bg-gray-900 p-8 text-center sm:p-10">
+          <div className="mb-[15px] text-[42px]">
             📊
           </div>
 
-          <h1
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
+          <h1 className="mb-2.5 text-2xl font-extrabold text-white sm:text-3xl">
             {config.name} Standings
           </h1>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin: 0,
-            }}
-          >
-            Standings are temporarily
-            unavailable.
+          <p className="m-0 text-sm text-slate-400 sm:text-base">
+            Standings are temporarily unavailable.
           </p>
 
-          <p
-            style={{
-              color:
-                "#ef4444",
-              margin:
-                "15px 0 0",
-              fontSize: 14,
-            }}
-          >
+          <p className="mt-[15px] text-sm text-red-500">
             {data?.message ||
               "Unable to load standings"}
           </p>
@@ -550,66 +376,33 @@ export default async function StandingsPage({
     );
   }
 
-
   /* =================================================
      DATA
   ================================================= */
 
-  const table =
-    data.standings;
+  const table = data.standings;
 
-  const leagueData =
-    data.league || {};
+  const leagueData = data.league || {};
 
   const season =
     data.season ||
     leagueData.season ||
     config.season;
 
-
   /* =================================================
      PAGE
   ================================================= */
 
   return (
-    <main
-      style={{
-        maxWidth: 1200,
-        margin:
-          "40px auto",
-        padding: 20,
-        color: "#fff",
-      }}
-    >
-
+    <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
       {/* =============================================
           HEADER
       ============================================= */}
 
-      <section
-        style={{
-          background:
-            "linear-gradient(145deg,#111827,#0b1220)",
-          border:
-            "1px solid #1f2937",
-          borderRadius: 20,
-          padding: 25,
-          marginBottom: 25,
-          display:
-            "flex",
-          alignItems:
-            "center",
-          gap: 20,
-          flexWrap:
-            "wrap",
-        }}
-      >
-
+      <section className="mb-[25px] flex flex-wrap items-center gap-5 rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-6 sm:p-[25px]">
         {leagueData.logo ? (
           <Image
-            src={
-              leagueData.logo
-            }
+            src={leagueData.logo}
             alt={
               leagueData.name ||
               config.name
@@ -617,186 +410,67 @@ export default async function StandingsPage({
             width={76}
             height={76}
             unoptimized
-            style={{
-              objectFit:
-                "contain",
-            }}
+            className="h-[76px] w-[76px] object-contain"
           />
         ) : (
-          <div
-            style={{
-              width: 76,
-              height: 76,
-              borderRadius: 16,
-              background:
-                "#1e293b",
-              display:
-                "flex",
-              alignItems:
-                "center",
-              justifyContent:
-                "center",
-              color:
-                "#22c55e",
-              fontWeight: 800,
-              fontSize: 22,
-            }}
-          >
+          <div className="flex h-[76px] w-[76px] shrink-0 items-center justify-center rounded-2xl bg-slate-800 text-[22px] font-extrabold text-green-500">
             {leagueData.code ||
               config.competition}
           </div>
         )}
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: 240,
-          }}
-        >
-          <div
-            style={{
-              color:
-                "#22c55e",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing:
-                "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+        <div className="min-w-[240px] flex-1">
+          <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-green-500">
             ⚡ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize:
-                "clamp(28px,5vw,40px)",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="m-0 text-[clamp(28px,5vw,40px)] font-extrabold leading-tight text-white">
             {leagueData.name ||
               config.name}
           </h1>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-              margin:
-                "7px 0 0",
-            }}
-          >
+          <p className="m-0 mt-1.5 text-sm text-slate-400">
             {leagueData.country ||
               config.country}
           </p>
 
-          <div
-            style={{
-              display:
-                "flex",
-              gap: 10,
-              flexWrap:
-                "wrap",
-              marginTop: 12,
-            }}
-          >
+          <div className="mt-3 flex flex-wrap gap-2.5">
             <Badge
-              label={
-                `Season ${season}`
-              }
+              label={`Season ${season}`}
               positive
             />
 
             <Badge
-              label={
-                `${table.length} Teams`
-              }
+              label={`${table.length} Teams`}
             />
 
             <Badge
-              label={
-                "Football-data.org"
-              }
+              label="Football-data.org"
             />
           </div>
         </div>
       </section>
 
-
       {/* =============================================
           STANDINGS TABLE
       ============================================= */}
 
-      <section
-        style={{
-          background:
-            "#111827",
-          border:
-            "1px solid #1f2937",
-          borderRadius: 20,
-          overflow:
-            "hidden",
-        }}
-      >
-        <div
-          style={{
-            padding:
-              "20px 22px",
-            borderBottom:
-              "1px solid #1f2937",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: 22,
-            }}
-          >
+      <section className="overflow-hidden rounded-[20px] border border-gray-800 bg-gray-900">
+        <div className="border-b border-gray-800 px-5 py-5 sm:px-[22px]">
+          <h2 className="m-0 text-xl font-bold text-white sm:text-[22px]">
             League Table
           </h2>
 
-          <p
-            style={{
-              margin:
-                "6px 0 0",
-              color:
-                "#64748b",
-              fontSize: 13,
-            }}
-          >
-            Current{" "}
-            {config.name}{" "}
-            standings
-            for the{" "}
-            {season}{" "}
-            season.
+          <p className="m-0 mt-1.5 text-[13px] text-slate-500">
+            Current {config.name} standings
+            for the {season} season.
           </p>
         </div>
 
-        <div
-          style={{
-            overflowX:
-              "auto",
-          }}
-        >
-          <table
-            style={{
-              width: "100%",
-              minWidth: 780,
-              borderCollapse:
-                "collapse",
-            }}
-          >
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[780px] border-collapse">
             <thead>
-              <tr
-                style={{
-                  background:
-                    "#1e293b",
-                }}
-              >
+              <tr className="bg-slate-800">
                 {[
                   "#",
                   "Club",
@@ -808,49 +482,30 @@ export default async function StandingsPage({
                   "GA",
                   "GD",
                   "Pts",
-                ].map(
-                  (heading) => (
-                    <th
-                      key={
-                        heading
-                      }
-                      style={{
-                        padding:
-                          "14px 12px",
-                        textAlign:
-                          heading ===
-                          "Club"
-                            ? "left"
-                            : "center",
-                        color:
-                          "#cbd5e1",
-                        fontSize: 12,
-                        fontWeight:
-                          800,
-                        whiteSpace:
-                          "nowrap",
-                      }}
-                    >
-                      {heading}
-                    </th>
-                  )
-                )}
+                ].map((heading) => (
+                  <th
+                    key={heading}
+                    className={`whitespace-nowrap px-3.5 py-3 text-xs font-extrabold text-slate-300 ${
+                      heading === "Club"
+                        ? "text-left"
+                        : "text-center"
+                    }`}
+                  >
+                    {heading}
+                  </th>
+                ))}
               </tr>
             </thead>
 
             <tbody>
               {table.map(
-                (
-                  row,
-                  index
-                ) => {
+                (row, index) => {
                   const rank =
                     row?.rank ??
                     index + 1;
 
                   const team =
-                    row?.team ||
-                    {};
+                    row?.team || {};
 
                   const teamName =
                     row?.name ||
@@ -903,112 +558,43 @@ export default async function StandingsPage({
                   return (
                     <tr
                       key={`${row?.id || team?.id || "team"}-${rank}`}
-                      style={{
-                        borderBottom:
-                          "1px solid #1e293b",
-                      }}
+                      className="border-b border-slate-800 transition hover:bg-slate-800/40"
                     >
                       <td
+                        className="px-3 py-3.5 text-center font-extrabold"
                         style={{
-                          padding:
-                            "14px 12px",
-                          textAlign:
-                            "center",
-                          fontWeight:
-                            800,
-                          color:
-                            getRankColor(
-                              rank
-                            ),
+                          color: getRankColor(
+                            rank
+                          ),
                         }}
                       >
                         {rank}
                       </td>
 
-                      <td
-                        style={{
-                          padding:
-                            "14px 12px",
-                        }}
-                      >
-                        <div
-                          style={{
-                            display:
-                              "flex",
-                            alignItems:
-                              "center",
-                            gap: 12,
-                            minWidth:
-                              220,
-                          }}
-                        >
+                      <td className="px-3 py-3.5">
+                        <div className="flex min-w-[220px] items-center gap-3">
                           {teamLogo ? (
                             <Image
-                              src={
-                                teamLogo
-                              }
-                              alt={
-                                teamName
-                              }
-                              width={
-                                34
-                              }
-                              height={
-                                34
-                              }
+                              src={teamLogo}
+                              alt={teamName}
+                              width={34}
+                              height={34}
                               unoptimized
-                              style={{
-                                objectFit:
-                                  "contain",
-                              }}
+                              className="h-[34px] w-[34px] shrink-0 object-contain"
                             />
                           ) : (
-                            <div
-                              style={{
-                                width: 34,
-                                height: 34,
-                                minWidth: 34,
-                                borderRadius: 9,
-                                background:
-                                  "#1e293b",
-                                display:
-                                  "flex",
-                                alignItems:
-                                  "center",
-                                justifyContent:
-                                  "center",
-                                color:
-                                  "#64748b",
-                                fontSize: 10,
-                                fontWeight:
-                                  800,
-                              }}
-                            >
+                            <div className="flex h-[34px] w-[34px] shrink-0 items-center justify-center rounded-[9px] bg-slate-800 text-[10px] font-extrabold text-slate-500">
                               FC
                             </div>
                           )}
 
                           <div>
-                            <strong
-                              style={{
-                                color:
-                                  "#fff",
-                                fontSize:
-                                  14,
-                              }}
-                            >
+                            <strong className="text-sm font-bold text-white">
                               {teamName}
                             </strong>
 
                             {row?.tla && (
-                              <div
-                                style={{
-                                  color:
-                                    "#64748b",
-                                  fontSize:
-                                    11,
-                                }}
-                              >
+                              <div className="text-[11px] text-slate-500">
                                 {row.tla}
                               </div>
                             )}
@@ -1016,53 +602,30 @@ export default async function StandingsPage({
                         </div>
                       </td>
 
-                      <TableNumber
-                        value={
-                          played
-                        }
-                      />
+                      <TableNumber value={played} />
 
                       <TableNumber
-                        value={
-                          wins
-                        }
+                        value={wins}
                         color="#22c55e"
                       />
 
                       <TableNumber
-                        value={
-                          draws
-                        }
+                        value={draws}
                         color="#facc15"
                       />
 
                       <TableNumber
-                        value={
-                          losses
-                        }
+                        value={losses}
                         color="#ef4444"
                       />
 
-                      <TableNumber
-                        value={
-                          goalsFor
-                        }
-                      />
+                      <TableNumber value={goalsFor} />
 
-                      <TableNumber
-                        value={
-                          goalsAgainst
-                        }
-                      />
+                      <TableNumber value={goalsAgainst} />
 
                       <td
+                        className="px-3 py-3.5 text-center font-bold"
                         style={{
-                          padding:
-                            "14px 12px",
-                          textAlign:
-                            "center",
-                          fontWeight:
-                            700,
                           color:
                             goalDifference >
                             0
@@ -1079,20 +642,7 @@ export default async function StandingsPage({
                           : goalDifference}
                       </td>
 
-                      <td
-                        style={{
-                          padding:
-                            "14px 12px",
-                          textAlign:
-                            "center",
-                          fontWeight:
-                            900,
-                          color:
-                            "#fff",
-                          fontSize:
-                            16,
-                        }}
-                      >
+                      <td className="px-3 py-3.5 text-center text-base font-black text-white">
                         {points}
                       </td>
                     </tr>
@@ -1104,41 +654,22 @@ export default async function StandingsPage({
         </div>
       </section>
 
-
       {/* =============================================
           FOOTER
       ============================================= */}
 
-      <div
-        style={{
-          display:
-            "flex",
-          justifyContent:
-            "space-between",
-          flexWrap:
-            "wrap",
-          gap: 10,
-          marginTop: 14,
-          color:
-            "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-3.5 flex flex-wrap justify-between gap-2.5 text-xs text-slate-500">
         <span>
-          Showing{" "}
-          {table.length}{" "}
-          teams
+          Showing {table.length} teams
         </span>
 
         <span>
-          Source:
-          football-data.org
+          Source: football-data.org
         </span>
       </div>
     </main>
   );
 }
-
 
 /* =====================================================
 TABLE NUMBER
@@ -1150,22 +681,16 @@ function TableNumber({
 }) {
   return (
     <td
+      className="px-3 py-3.5 text-center font-semibold"
       style={{
-        padding:
-          "14px 12px",
-        textAlign:
-          "center",
-        fontWeight: 600,
         color:
-          color ||
-          "#e2e8f0",
+          color || "#e2e8f0",
       }}
     >
       {value}
     </td>
   );
 }
-
 
 /* =====================================================
 BADGE
@@ -1177,36 +702,16 @@ function Badge({
 }) {
   return (
     <span
-      style={{
-        display:
-          "inline-flex",
-        alignItems:
-          "center",
-        padding:
-          "6px 10px",
-        borderRadius:
-          999,
-        background:
-          positive
-            ? "rgba(34,197,94,.12)"
-            : "#1e293b",
-        border:
-          positive
-            ? "1px solid rgba(34,197,94,.25)"
-            : "1px solid #334155",
-        color:
-          positive
-            ? "#22c55e"
-            : "#94a3b8",
-        fontSize: 11,
-        fontWeight: 700,
-      }}
+      className={`inline-flex items-center rounded-full px-2.5 py-1.5 text-[11px] font-bold ${
+        positive
+          ? "border border-green-500/25 bg-green-500/10 text-green-500"
+          : "border border-slate-700 bg-slate-800 text-slate-400"
+      }`}
     >
       {label}
     </span>
   );
 }
-
 
 /* =====================================================
 RANK COLOR
@@ -1225,10 +730,7 @@ function getRankColor(rank) {
     return "#fb923c";
   }
 
-  if (
-    rank >= 4 &&
-    rank <= 6
-  ) {
+  if (rank >= 4 && rank <= 6) {
     return "#22c55e";
   }
 
