@@ -1,8 +1,8 @@
+
 export const dynamic = "force-dynamic";
 
 import Image from "next/image";
 import Link from "next/link";
-
 
 /* =====================================================
 API
@@ -12,17 +12,12 @@ const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "http://127.0.0.1:5000";
 
-
 /* =====================================================
 CONFIG
 ===================================================== */
 
-const LEAGUE =
-  "epl";
-
-const SEASON =
-  2026;
-
+const LEAGUE = "epl";
+const SEASON = 2026;
 
 /* =====================================================
 GET TOP ASSISTS
@@ -45,14 +40,9 @@ async function getTopAssists() {
   );
 
   try {
-    const response =
-      await fetch(
-        url,
-        {
-          cache:
-            "no-store",
-        }
-      );
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
 
     console.log(
       "📡 Top assists API status:",
@@ -65,45 +55,30 @@ async function getTopAssists() {
       );
     }
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
     console.log(
       "📊 Top assists response:",
       {
-        success:
-          data?.success,
-
-        season:
-          data?.season,
-
-        total:
-          data?.total,
-
-        count:
-          data?.count,
-
-        source:
-          data?.source,
+        success: data?.success,
+        season: data?.season,
+        total: data?.total,
+        count: data?.count,
+        source: data?.source,
       }
     );
 
     if (
       !data ||
       data.success !== true ||
-      !Array.isArray(
-        data.players
-      )
+      !Array.isArray(data.players)
     ) {
       return {
         success: false,
-
         players: [],
-
         season:
           data?.season ||
           SEASON,
-
         message:
           data?.message ||
           "No assist data available.",
@@ -112,9 +87,7 @@ async function getTopAssists() {
 
     return {
       ...data,
-
-      players:
-        data.players,
+      players: data.players,
     };
   } catch (error) {
     console.error(
@@ -124,12 +97,8 @@ async function getTopAssists() {
 
     return {
       success: false,
-
       players: [],
-
-      season:
-        SEASON,
-
+      season: SEASON,
       message:
         error?.message ||
         "Unable to load top assists.",
@@ -137,266 +106,108 @@ async function getTopAssists() {
   }
 }
 
-
 /* =====================================================
 METADATA
 ===================================================== */
 
 export const metadata = {
-  title:
-    "Top Assists | Apex Sports",
+  title: "Top Assists | Apex Sports",
 
   description:
     "Top football assist providers from the Premier League.",
 };
-
 
 /* =====================================================
 PAGE
 ===================================================== */
 
 export default async function TopAssistsPage() {
-  const data =
-    await getTopAssists();
+  const data = await getTopAssists();
 
   const players =
     data.success &&
-    Array.isArray(
-      data.players
-    )
+    Array.isArray(data.players)
       ? data.players
       : [];
 
-
   return (
-    <main
-      style={{
-        maxWidth:
-          "1200px",
-
-        margin:
-          "40px auto",
-
-        padding:
-          "20px",
-
-        color:
-          "white",
-      }}
-    >
-
+    <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
       {/* =================================================
           HEADER
       ================================================= */}
 
-      <header
-        style={{
-          marginBottom:
-            30,
-        }}
-      >
-        <div
-          style={{
-            color:
-              "#22c55e",
-
-            fontSize:
-              12,
-
-            fontWeight:
-              800,
-
-            letterSpacing:
-              "1.2px",
-
-            textTransform:
-              "uppercase",
-
-            marginBottom:
-              8,
-          }}
-        >
+      <header className="mb-[30px]">
+        <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-green-500">
           ⚡ Apex Sports
         </div>
 
-        <h1
-          style={{
-            margin:
-              0,
-
-            fontSize:
-              "clamp(28px, 5vw, 44px)",
-
-            fontWeight:
-              800,
-          }}
-        >
+        <h1 className="text-[clamp(28px,5vw,44px)] font-extrabold leading-tight text-white">
           🎯 Top Assists
         </h1>
 
-        <p
-          style={{
-            color:
-              "#94a3b8",
-
-            margin:
-              "10px 0 0",
-
-            fontSize:
-              15,
-          }}
-        >
-          Premier League assist
-          leaders for the{" "}
-          {data?.season ||
-            SEASON}
-          /
+        <p className="mt-2.5 text-[15px] text-slate-400">
+          Premier League assist leaders
+          for the{" "}
+          {data?.season || SEASON}/
           {String(
-            (data?.season ||
-              SEASON) + 1
+            (data?.season || SEASON) + 1
           ).slice(-2)}{" "}
           season.
         </p>
 
-        <div
-          style={{
-            display:
-              "inline-flex",
-
-            marginTop:
-              14,
-
-            padding:
-              "7px 12px",
-
-            borderRadius:
-              999,
-
-            background:
-              "rgba(34,197,94,.10)",
-
-            border:
-              "1px solid rgba(34,197,94,.25)",
-
-            color:
-              "#22c55e",
-
-            fontSize:
-              12,
-
-            fontWeight:
-              700,
-          }}
-        >
-          Source:
-          football-data.org
+        <div className="mt-3.5 inline-flex items-center rounded-full border border-green-500/25 bg-green-500/10 px-3 py-1.5 text-xs font-bold text-green-500">
+          Source: football-data.org
         </div>
       </header>
-
 
       {/* =================================================
           EMPTY STATE
       ================================================= */}
 
       {players.length === 0 ? (
-        <div
-          style={{
-            background:
-              "#111827",
-
-            border:
-              "1px solid #1f2937",
-
-            padding:
-              "50px 30px",
-
-            borderRadius:
-              20,
-
-            textAlign:
-              "center",
-          }}
-        >
-          <div
-            style={{
-              fontSize:
-                48,
-
-              marginBottom:
-                15,
-            }}
-          >
+        <div className="rounded-[20px] border border-gray-800 bg-gray-900 px-[30px] py-[50px] text-center">
+          <div className="mb-[15px] text-5xl">
             🎯
           </div>
 
-          <h2
-            style={{
-              margin:
-                "0 0 10px",
-            }}
-          >
+          <h2 className="mb-2.5 text-2xl font-bold text-white">
             No Assist Data Available
           </h2>
 
-          <p
-            style={{
-              color:
-                "#94a3b8",
-
-              margin:
-                0,
-            }}
-          >
+          <p className="m-0 text-sm text-slate-400 sm:text-base">
             {data?.message ||
-              `No Premier League assist data is currently available for the ${data?.season || SEASON} season.`}
+              `No Premier League assist data is currently available for the ${
+                data?.season || SEASON
+              } season.`}
           </p>
         </div>
       ) : (
-
         /* =================================================
            PLAYER LIST
         ================================================= */
 
-        <div
-          style={{
-            display:
-              "grid",
-
-            gap:
-              16,
-          }}
-        >
+        <div className="grid gap-4">
           {players.map(
-            (
-              player,
-              index
-            ) => {
+            (player, index) => {
               const playerData =
-                player?.player ||
-                {};
+                player?.player || {};
 
               const statistics =
                 Array.isArray(
                   player?.statistics
                 ) &&
-                player.statistics
-                  .length > 0
+                player.statistics.length > 0
                   ? player.statistics[0]
                   : {};
 
               const team =
-                statistics?.team ||
-                {};
+                statistics?.team || {};
 
               const goals =
-                statistics
-                  ?.goals ||
-                {};
+                statistics?.goals || {};
 
               const games =
-                statistics
-                  ?.games ||
-                {};
+                statistics?.games || {};
 
               const playerId =
                 playerData?.id ??
@@ -431,249 +242,86 @@ export default async function TopAssistsPage() {
                   games?.minutes
                 ) || 0;
 
+              const rankStyles =
+                index === 0
+                  ? "bg-yellow-400/15 text-yellow-400"
+                  : index === 1
+                  ? "bg-slate-400/15 text-slate-300"
+                  : index === 2
+                  ? "bg-orange-500/15 text-orange-400"
+                  : "bg-slate-800 text-green-500";
+
               return (
                 <Link
                   key={`${playerId}-${index}`}
                   href={`/player/${playerId}`}
-                  style={{
-                    textDecoration:
-                      "none",
-
-                    color:
-                      "inherit",
-                  }}
+                  className="block text-inherit no-underline"
                 >
-                  <article
-                    style={{
-                      background:
-                        "linear-gradient(145deg,#111827,#0b1220)",
-
-                      border:
-                        "1px solid #1f2937",
-
-                      borderRadius:
-                        18,
-
-                      padding:
-                        20,
-
-                      display:
-                        "grid",
-
-                      gridTemplateColumns:
-                        "60px minmax(260px,1.5fr) minmax(180px,1fr) repeat(4,90px)",
-
-                      gap:
-                        18,
-
-                      alignItems:
-                        "center",
-                    }}
-                  >
-
+                  <article className="grid items-center gap-4 rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-4 transition hover:border-slate-700 hover:bg-slate-900 sm:p-5 md:grid-cols-[60px_minmax(260px,1.5fr)_minmax(180px,1fr)_repeat(4,90px)] md:gap-[18px]">
                     {/* =================================
                         RANK
                     ================================= */}
 
                     <div
-                      style={{
-                        width:
-                          48,
-
-                        height:
-                          48,
-
-                        borderRadius:
-                          14,
-
-                        background:
-                          index === 0
-                            ? "rgba(250,204,21,.15)"
-                            : index === 1
-                            ? "rgba(148,163,184,.15)"
-                            : index === 2
-                            ? "rgba(249,115,22,.15)"
-                            : "#1e293b",
-
-                        display:
-                          "flex",
-
-                        alignItems:
-                          "center",
-
-                        justifyContent:
-                          "center",
-
-                        color:
-                          index === 0
-                            ? "#facc15"
-                            : index === 1
-                            ? "#cbd5e1"
-                            : index === 2
-                            ? "#fb923c"
-                            : "#22c55e",
-
-                        fontWeight:
-                          800,
-
-                        fontSize:
-                          16,
-                      }}
+                      className={`flex h-12 w-12 items-center justify-center rounded-[14px] text-base font-extrabold ${rankStyles}`}
                     >
                       #{index + 1}
                     </div>
-
 
                     {/* =================================
                         PLAYER
                     ================================= */}
 
-                    <div
-                      style={{
-                        display:
-                          "flex",
-
-                        alignItems:
-                          "center",
-
-                        gap:
-                          16,
-
-                        minWidth:
-                          0,
-                      }}
-                    >
+                    <div className="flex min-w-0 items-center gap-4">
                       <PlayerAvatar
                         src={
                           playerData?.photo
                         }
-
                         name={
                           playerName
                         }
                       />
 
-                      <div
-                        style={{
-                          minWidth:
-                            0,
-                        }}
-                      >
-                        <h2
-                          style={{
-                            margin:
-                              0,
-
-                            fontSize:
-                              18,
-
-                            fontWeight:
-                              700,
-
-                            color:
-                              "#fff",
-
-                            overflow:
-                              "hidden",
-
-                            textOverflow:
-                              "ellipsis",
-
-                            whiteSpace:
-                              "nowrap",
-                          }}
-                        >
+                      <div className="min-w-0">
+                        <h2 className="overflow-hidden text-ellipsis whitespace-nowrap text-[18px] font-bold text-white">
                           {playerName}
                         </h2>
 
-                        <p
-                          style={{
-                            margin:
-                              "5px 0 0",
-
-                            color:
-                              "#94a3b8",
-
-                            fontSize:
-                              12,
-                          }}
-                        >
+                        <p className="mt-1.5 text-xs text-slate-400">
                           {playerData?.nationality ||
                             "Football Player"}
                         </p>
                       </div>
                     </div>
 
-
                     {/* =================================
                         TEAM
                     ================================= */}
 
-                    <div
-                      style={{
-                        display:
-                          "flex",
-
-                        alignItems:
-                          "center",
-
-                        justifyContent:
-                          "center",
-
-                        gap:
-                          10,
-
-                        minWidth:
-                          0,
-                      }}
-                    >
+                    <div className="flex min-w-0 items-center justify-center gap-2.5">
                       <TeamAvatar
                         src={
                           team?.logo
                         }
-
                         name={
                           teamName
                         }
                       />
 
-                      <strong
-                        style={{
-                          color:
-                            "#e2e8f0",
-
-                          fontSize:
-                            14,
-
-                          overflow:
-                            "hidden",
-
-                          textOverflow:
-                            "ellipsis",
-
-                          whiteSpace:
-                            "nowrap",
-                        }}
-                      >
+                      <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-200">
                         {teamName}
                       </strong>
                     </div>
-
 
                     {/* =================================
                         ASSISTS
                     ================================= */}
 
                     <StatBox
-                      value={
-                        assists
-                      }
-
+                      value={assists}
                       label="Assists"
-
                       primary
                     />
-
 
                     {/* =================================
                         GOALS
@@ -683,10 +331,8 @@ export default async function TopAssistsPage() {
                       value={
                         totalGoals
                       }
-
                       label="Goals"
                     />
-
 
                     {/* =================================
                         APPEARANCES
@@ -696,10 +342,8 @@ export default async function TopAssistsPage() {
                       value={
                         appearances
                       }
-
                       label="Matches"
                     />
-
 
                     {/* =================================
                         MINUTES
@@ -707,10 +351,8 @@ export default async function TopAssistsPage() {
 
                     <StatBox
                       value={
-                        minutes ||
-                        "-"
+                        minutes || "-"
                       }
-
                       label="Minutes"
                     />
                   </article>
@@ -724,7 +366,6 @@ export default async function TopAssistsPage() {
   );
 }
 
-
 /* =====================================================
 PLAYER AVATAR
 ===================================================== */
@@ -733,108 +374,38 @@ function PlayerAvatar({
   src,
   name,
 }) {
-  const initials =
-    String(
-      name || "P"
+  const initials = String(
+    name || "P"
+  )
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) =>
+      part
+        .charAt(0)
+        .toUpperCase()
     )
-      .trim()
-      .split(/\s+/)
-      .slice(0, 2)
-      .map(
-        (part) =>
-          part
-            .charAt(0)
-            .toUpperCase()
-      )
-      .join("");
+    .join("");
 
   return (
-    <div
-      style={{
-        width:
-          64,
-
-        height:
-          64,
-
-        minWidth:
-          64,
-
-        borderRadius:
-          "50%",
-
-        overflow:
-          "hidden",
-
-        background:
-          "linear-gradient(145deg,#1e293b,#334155)",
-
-        border:
-          "1px solid #475569",
-
-        display:
-          "flex",
-
-        alignItems:
-          "center",
-
-        justifyContent:
-          "center",
-      }}
-    >
+    <div className="flex h-16 w-16 min-w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-600 bg-[linear-gradient(145deg,#1e293b,#334155)]">
       {src ? (
         <Image
-          src={
-            src
-          }
-
-          alt={
-            name ||
-            "Player"
-          }
-
-          width={
-            64
-          }
-
-          height={
-            64
-          }
-
+          src={src}
+          alt={name || "Player"}
+          width={64}
+          height={64}
           unoptimized
-
-          style={{
-            width:
-              "100%",
-
-            height:
-              "100%",
-
-            objectFit:
-              "cover",
-          }}
+          className="h-full w-full object-cover"
         />
       ) : (
-        <span
-          style={{
-            color:
-              "#22c55e",
-
-            fontSize:
-              20,
-
-            fontWeight:
-              800,
-          }}
-        >
-          {initials ||
-            "P"}
+        <span className="text-xl font-extrabold text-green-500">
+          {initials || "P"}
         </span>
       )}
     </div>
   );
 }
-
 
 /* =====================================================
 TEAM AVATAR
@@ -845,79 +416,24 @@ function TeamAvatar({
   name,
 }) {
   return (
-    <div
-      style={{
-        width:
-          44,
-
-        height:
-          44,
-
-        minWidth:
-          44,
-
-        borderRadius:
-          10,
-
-        background:
-          "#111827",
-
-        display:
-          "flex",
-
-        alignItems:
-          "center",
-
-        justifyContent:
-          "center",
-      }}
-    >
+    <div className="flex h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-[10px] bg-gray-900">
       {src ? (
         <Image
-          src={
-            src
-          }
-
-          alt={
-            name ||
-            "Team"
-          }
-
-          width={
-            36
-          }
-
-          height={
-            36
-          }
-
+          src={src}
+          alt={name || "Team"}
+          width={36}
+          height={36}
           unoptimized
-
-          style={{
-            objectFit:
-              "contain",
-          }}
+          className="object-contain"
         />
       ) : (
-        <span
-          style={{
-            color:
-              "#64748b",
-
-            fontSize:
-              11,
-
-            fontWeight:
-              800,
-          }}
-        >
+        <span className="text-[11px] font-extrabold text-slate-500">
           FC
         </span>
       )}
     </div>
   );
 }
-
 
 /* =====================================================
 STAT BOX
@@ -929,48 +445,21 @@ function StatBox({
   primary = false,
 }) {
   return (
-    <div
-      style={{
-        textAlign:
-          "center",
-      }}
-    >
+    <div className="text-center">
       <div
-        style={{
-          color:
-            primary
-              ? "#22c55e"
-              : "#fff",
-
-          fontSize:
-            primary
-              ? 27
-              : 21,
-
-          fontWeight:
-            800,
-
-          lineHeight:
-            1,
-
-          marginBottom:
-            6,
-        }}
+        className={`mb-1.5 font-extrabold leading-none ${
+          primary
+            ? "text-[27px] text-green-500"
+            : "text-[21px] text-white"
+        }`}
       >
         {value}
       </div>
 
-      <small
-        style={{
-          color:
-            "#94a3b8",
-
-          fontSize:
-            11,
-        }}
-      >
+      <small className="text-[11px] text-slate-400">
         {label}
       </small>
     </div>
   );
 }
+
