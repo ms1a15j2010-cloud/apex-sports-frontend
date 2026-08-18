@@ -107,9 +107,10 @@ const STAT_CONFIG = [
 ===================================================== */
 
 function statValue(team, key) {
-  const item = team?.statistics?.find(
-    (s) => s.type === key
-  );
+  const item =
+    team?.statistics?.find(
+      (s) => s.type === key
+    );
 
   return item?.value ?? 0;
 }
@@ -125,12 +126,18 @@ function numeric(value) {
   );
 }
 
-function format(value, percent, decimal) {
-  if (decimal)
+function format(
+  value,
+  percent,
+  decimal
+) {
+  if (decimal) {
     return Number(value).toFixed(2);
+  }
 
-  if (percent)
-  return `${numeric(value)}%`;
+  if (percent) {
+    return `${numeric(value)}%`;
+  }
 
   return numeric(value);
 }
@@ -147,28 +154,12 @@ export default function MatchStatistics({
     statistics.length < 2
   ) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 24,
-          padding: 32,
-          marginBottom: 32,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            marginBottom: 18,
-          }}
-        >
+      <section className="mb-8 rounded-[24px] bg-gray-900 p-5 sm:p-8">
+        <h2 className="mb-[18px] text-2xl font-bold text-white">
           📊 Match Statistics
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <p className="m-0 text-slate-400">
           Statistics unavailable.
         </p>
       </section>
@@ -181,77 +172,48 @@ export default function MatchStatistics({
   const rows = useMemo(() => {
     return STAT_CONFIG.map((stat) => ({
       ...stat,
-      home: statValue(home, stat.key),
-      away: statValue(away, stat.key),
+      home: statValue(
+        home,
+        stat.key
+      ),
+      away: statValue(
+        away,
+        stat.key
+      ),
     }));
   }, [home, away]);
 
   const possession =
     rows.find(
-      (r) =>
-        r.key === "Ball Possession"
+      (row) =>
+        row.key ===
+        "Ball Possession"
     ) || {};
 
   const xg =
     rows.find(
-      (r) =>
-        r.key ===
+      (row) =>
+        row.key ===
         "expected_goals"
     ) || {};
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 24,
-        padding: 32,
-        marginBottom: 32,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems: "center",
-          marginBottom: 30,
-          flexWrap: "wrap",
-          gap: 12,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-          }}
-        >
+    <section className="mb-8 rounded-[24px] bg-gray-900 p-5 sm:p-8">
+      <div className="mb-[30px] flex flex-wrap items-center justify-between gap-3">
+        <h2 className="m-0 text-2xl font-bold text-white">
           📊 Match Statistics
         </h2>
 
-        <span
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <span className="text-sm text-slate-400">
           Live Comparison
         </span>
       </div>
 
-      {/* CONTINUE IN PART 2 */}
-            {/* ===========================
+      {/* ===========================
           HIGHLIGHT CARDS
       =========================== */}
 
-      <div
-      className="statistics-highlights"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(260px,1fr))",
-          gap: 20,
-          marginBottom: 32,
-        }}
-      >
+      <div className="mb-8 grid grid-cols-1 gap-5 md:grid-cols-2">
         <HighlightCard
           title="Possession"
           icon="📊"
@@ -287,12 +249,7 @@ export default function MatchStatistics({
           STAT BARS
       =========================== */}
 
-      <div
-        style={{
-          display: "grid",
-          gap: 18,
-        }}
-      >
+      <div className="grid gap-[18px]">
         {rows.map((row) => (
           <StatisticBar
             key={row.key}
@@ -323,59 +280,25 @@ function HighlightCard({
 }) {
   return (
     <div
-     className="statistic-card"
+      className="rounded-[18px] bg-gray-800 p-[22px]"
       style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 22,
         borderLeft: `5px solid ${color}`,
       }}
     >
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: 18,
-          marginBottom: 18,
-        }}
-      >
+      <div className="mb-[18px] text-[18px] font-bold text-white">
         {icon} {title}
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems: "center",
-        }}
-      >
-        <span
-          style={{
-            color: "#22c55e",
-            fontSize: 28,
-            fontWeight: 800,
-          }}
-        >
+      <div className="flex items-center justify-between">
+        <span className="text-[28px] font-extrabold text-green-500">
           {home}
         </span>
 
-        <span
-          style={{
-            color: "#94a3b8",
-            fontWeight: 700,
-          }}
-        >
+        <span className="font-bold text-slate-400">
           VS
         </span>
 
-        <span
-          style={{
-            color: "#ef4444",
-            fontSize: 28,
-            fontWeight: 800,
-          }}
-        >
+        <span className="text-[28px] font-extrabold text-red-500">
           {away}
         </span>
       </div>
@@ -418,33 +341,14 @@ function StatisticBar({
     right > left;
 
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 18,
-      }}
-    >
-      <div
-       className="statistic-header"
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "70px 1fr 70px",
-          gap: 15,
-          alignItems: "center",
-          marginBottom: 12,
-        }}
-      >
+    <div className="rounded-[18px] bg-gray-800 p-[18px]">
+      <div className="mb-3 grid grid-cols-[60px_minmax(0,1fr)_60px] items-center gap-3 sm:grid-cols-[70px_minmax(0,1fr)_70px] sm:gap-[15px]">
         <div
-          style={{
-            color: homeWinner
-              ? "#22c55e"
-              : "#fff",
-            fontWeight: 800,
-            fontSize: 18,
-            textAlign: "center",
-          }}
+          className={`text-center text-[18px] font-extrabold ${
+            homeWinner
+              ? "text-green-500"
+              : "text-white"
+          }`}
         >
           {format(
             home,
@@ -453,25 +357,16 @@ function StatisticBar({
           )}
         </div>
 
-        <div
-          style={{
-            color: "#fff",
-            textAlign: "center",
-            fontWeight: 700,
-          }}
-        >
+        <div className="text-center font-bold text-white">
           {icon} {title}
         </div>
 
         <div
-          style={{
-            color: awayWinner
-              ? "#ef4444"
-              : "#fff",
-            fontWeight: 800,
-            fontSize: 18,
-            textAlign: "center",
-          }}
+          className={`text-center text-[18px] font-extrabold ${
+            awayWinner
+              ? "text-red-500"
+              : "text-white"
+          }`}
         >
           {format(
             away,
@@ -479,32 +374,20 @@ function StatisticBar({
             decimal
           )}
         </div>
-
       </div>
 
-      {/* CONTINUE IN PART 3 */}
-            <div
-        style={{
-          display: "flex",
-          height: 14,
-          borderRadius: 999,
-          overflow: "hidden",
-          background: "#374151",
-        }}
-      >
+      <div className="flex h-3.5 overflow-hidden rounded-full bg-gray-700">
         <div
+          className="bg-green-500 transition-[width] duration-500 ease-in-out"
           style={{
             width: `${leftWidth}%`,
-            background: "#22c55e",
-            transition: "width .6s ease",
           }}
         />
 
         <div
+          className="bg-red-500 transition-[width] duration-500 ease-in-out"
           style={{
             width: `${rightWidth}%`,
-            background: "#ef4444",
-            transition: "width .6s ease",
           }}
         />
       </div>
