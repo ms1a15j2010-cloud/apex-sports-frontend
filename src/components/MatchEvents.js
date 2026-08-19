@@ -5,36 +5,12 @@ export default function MatchEvents({
 }) {
   if (!events || events.length === 0) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 18,
-          padding: 28,
-          marginBottom: 24,
-          border: "1px solid #1f2937",
-        }}
-      >
-        <h2
-          style={{
-            margin: "0 0 20px",
-            color: "#fff",
-            fontSize: 22,
-            fontWeight: 800,
-          }}
-        >
+      <section className="mb-6 rounded-[18px] border border-gray-800 bg-gray-900 p-5 sm:p-7">
+        <h2 className="mb-5 text-[22px] font-extrabold text-white">
           Match Events
         </h2>
 
-        <div
-          style={{
-            background: "#0f172a",
-            borderRadius: 14,
-            padding: "28px 20px",
-            textAlign: "center",
-            color: "#64748b",
-            fontSize: 14,
-          }}
-        >
+        <div className="rounded-[14px] bg-slate-950 px-5 py-7 text-center text-sm text-slate-500">
           No match events available.
         </div>
       </section>
@@ -42,32 +18,12 @@ export default function MatchEvents({
   }
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 18,
-        padding: 28,
-        marginBottom: 24,
-        border: "1px solid #1f2937",
-      }}
-    >
-      <h2
-        style={{
-          margin: "0 0 24px",
-          color: "#fff",
-          fontSize: 22,
-          fontWeight: 800,
-        }}
-      >
+    <section className="mb-6 rounded-[18px] border border-gray-800 bg-gray-900 p-5 sm:p-7">
+      <h2 className="mb-6 text-[22px] font-extrabold text-white">
         Match Events
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 12,
-        }}
-      >
+      <div className="grid gap-3">
         {events.map(
           (event, index) => {
             const minute =
@@ -142,110 +98,30 @@ export default function MatchEvents({
                   event?.id ||
                   `${index}-${type}`
                 }
-                style={{
-                  background:
-                    "#0f172a",
-                  borderRadius:
-                    14,
-                  padding:
-                    16,
-                  border:
-                    "1px solid #1e293b",
-                }}
+                className="rounded-[14px] border border-slate-800 bg-slate-950 p-4"
               >
-                <div
-                  style={{
-                    display:
-                      "flex",
-                    alignItems:
-                      "center",
-                    justifyContent:
-                      "space-between",
-                    gap: 15,
-                    flexWrap:
-                      "wrap",
-                  }}
-                >
+                <div className="flex flex-wrap items-center justify-between gap-[15px]">
                   {/* LEFT */}
 
-                  <div
-                    style={{
-                      display:
-                        "flex",
-                      alignItems:
-                        "center",
-                      gap: 12,
-                      minWidth: 0,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 38,
-                        height: 38,
-                        minWidth: 38,
-                        borderRadius:
-                          "50%",
-                        background:
-                          "#1e293b",
-                        display:
-                          "flex",
-                        alignItems:
-                          "center",
-                        justifyContent:
-                          "center",
-                        fontSize: 17,
-                      }}
-                    >
+                  <div className="flex min-w-0 items-center gap-3">
+                    <div className="flex h-[38px] w-[38px] min-w-[38px] items-center justify-center rounded-full bg-slate-800 text-[17px]">
                       {icon}
                     </div>
 
-                    <div
-                      style={{
-                        minWidth:
-                          0,
-                      }}
-                    >
-                      <div
-                        style={{
-                          color:
-                            "#fff",
-                          fontWeight:
-                            800,
-                          fontSize:
-                            14,
-                        }}
-                      >
+                    <div className="min-w-0">
+                      <div className="text-sm font-extrabold text-white">
                         {detail}
                       </div>
 
                       {player && (
-                        <div
-                          style={{
-                            marginTop:
-                              4,
-                            color:
-                              "#cbd5e1",
-                            fontSize:
-                              13,
-                          }}
-                        >
+                        <div className="mt-1 break-words text-[13px] text-slate-300">
                           {player}
                         </div>
                       )}
 
                       {assist && (
-                        <div
-                          style={{
-                            marginTop:
-                              3,
-                            color:
-                              "#64748b",
-                            fontSize:
-                              11,
-                          }}
-                        >
-                          Assist:{" "}
-                          {assist}
+                        <div className="mt-[3px] break-words text-[11px] text-slate-500">
+                          Assist: {assist}
                         </div>
                       )}
                     </div>
@@ -253,24 +129,9 @@ export default function MatchEvents({
 
                   {/* RIGHT */}
 
-                  <div
-                    style={{
-                      textAlign:
-                        "right",
-                    }}
-                  >
-                    <div
-                      style={{
-                        color:
-                          "#22c55e",
-                        fontSize:
-                          14,
-                        fontWeight:
-                          800,
-                      }}
-                    >
-                      {minute !==
-                      null
+                  <div className="text-right">
+                    <div className="text-sm font-extrabold text-green-500">
+                      {minute !== null
                         ? `${minute}'${
                             extra
                               ? `+${extra}`
@@ -279,47 +140,20 @@ export default function MatchEvents({
                         : "—"}
                     </div>
 
-                    {(
-                      homeScore !==
-                        undefined ||
+                    {(homeScore !==
+                      undefined ||
                       awayScore !==
-                        undefined
-                    ) && (
-                      <div
-                        style={{
-                          marginTop:
-                            4,
-                          color:
-                            "#64748b",
-                          fontSize:
-                            11,
-                        }}
-                      >
-                        {homeScore ??
-                          "—"}{" "}
-                        -{" "}
-                        {awayScore ??
-                          "—"}
+                        undefined) && (
+                      <div className="mt-1 text-[11px] text-slate-500">
+                        {homeScore ?? "—"} -{" "}
+                        {awayScore ?? "—"}
                       </div>
                     )}
                   </div>
                 </div>
 
                 {team?.name && (
-                  <div
-                    style={{
-                      marginTop:
-                        12,
-                      paddingTop:
-                        10,
-                      borderTop:
-                        "1px solid #1e293b",
-                      color:
-                        "#64748b",
-                      fontSize:
-                        11,
-                    }}
-                  >
+                  <div className="mt-3 border-t border-slate-800 pt-2.5 text-[11px] text-slate-500">
                     {team.name}
                   </div>
                 )}
@@ -331,3 +165,4 @@ export default function MatchEvents({
     </section>
   );
 }
+
