@@ -14,10 +14,9 @@ export default function MatchScoreboard({
   const awayStats = statistics[1] || {};
 
   function statValue(team, type) {
-    const stat =
-      team.statistics?.find(
-        (s) => s.type === type
-      );
+    const stat = team.statistics?.find(
+      (s) => s.type === type
+    );
 
     return stat?.value ?? 0;
   }
@@ -107,70 +106,28 @@ export default function MatchScoreboard({
     );
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+      <h2 className="mb-[30px] text-white">
         📊 Match Scoreboard
       </h2>
 
       {/* SCORE */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr auto 1fr",
-          alignItems: "center",
-          marginBottom: 40,
-        }}
-      >
-        <div
-          style={{
-            textAlign: "center",
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-            }}
-          >
+      <div className="mb-10 grid grid-cols-[1fr_auto_1fr] items-center">
+        <div className="text-center">
+          <h3 className="text-white">
             {home.name}
           </h3>
         </div>
 
-        <div
-          style={{
-            fontSize: 50,
-            color: "#fff",
-            fontWeight: "bold",
-          }}
-        >
+        <div className="text-[50px] font-bold text-white">
           {goals.home ?? 0}
           {" : "}
           {goals.away ?? 0}
         </div>
 
-        <div
-          style={{
-            textAlign: "center",
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-            }}
-          >
+        <div className="text-center">
+          <h3 className="text-white">
             {away.name}
           </h3>
         </div>
@@ -233,46 +190,16 @@ function StatRow({
   right,
 }) {
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns:
-          "70px 1fr 70px",
-        alignItems: "center",
-        marginBottom: 18,
-        gap: 15,
-      }}
-    >
-      <div
-        style={{
-          color: "#22c55e",
-          fontWeight: "bold",
-          textAlign: "center",
-        }}
-      >
+    <div className="mb-[18px] grid grid-cols-[70px_1fr_70px] items-center gap-[15px]">
+      <div className="text-center font-bold text-green-500">
         {left}
       </div>
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 12,
-          padding: 14,
-          textAlign: "center",
-          color: "#fff",
-          fontWeight: 600,
-        }}
-      >
+      <div className="rounded-xl bg-gray-800 p-[14px] text-center font-semibold text-white">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#ef4444",
-          fontWeight: "bold",
-          textAlign: "center",
-        }}
-      >
+      <div className="text-center font-bold text-red-500">
         {right}
       </div>
     </div>
@@ -289,20 +216,8 @@ function StatBar({
   rightLabel,
 }) {
   return (
-    <div
-      style={{
-        marginBottom: 35,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          color: "#fff",
-          marginBottom: 10,
-        }}
-      >
+    <div className="mb-[35px]">
+      <div className="mb-2.5 flex justify-between text-white">
         <span>
           {left}
           {leftLabel}
@@ -316,16 +231,9 @@ function StatBar({
         </span>
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          height: 16,
-          borderRadius: 50,
-          overflow: "hidden",
-          background: "#374151",
-        }}
-      >
+      <div className="flex h-4 overflow-hidden rounded-full bg-gray-700">
         <div
+          className="h-full"
           style={{
             width: `${left}%`,
             background: leftColor,
@@ -333,6 +241,7 @@ function StatBar({
         />
 
         <div
+          className="h-full"
           style={{
             width: `${right}%`,
             background: rightColor,
