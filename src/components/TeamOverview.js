@@ -1,4 +1,4 @@
-import Image from "next/image";
+"use client";
 
 export default function TeamOverview({ team }) {
   if (!team) return null;
@@ -38,82 +38,32 @@ export default function TeamOverview({ team }) {
   return (
     <section
       id="overview"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 18,
-        padding: 28,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[18px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-7"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            margin: 0,
-            fontSize: 30,
-            color: "#fff",
-          }}
-        >
+        <h2 className="m-0 text-[30px] text-white">
           🏆 Club Information
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Official club information and
           current football-data.org data.
         </p>
       </div>
 
-      {/* =================================================
-          MAIN CONTENT
-      ================================================= */}
+      {/* MAIN CONTENT */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "minmax(320px,1.3fr) minmax(280px,1fr)",
-          gap: 30,
-        }}
-      >
-        {/* =================================================
-            LEFT
-        ================================================= */}
+      <div className="grid grid-cols-1 gap-[30px] xl:grid-cols-[minmax(320px,1.3fr)_minmax(280px,1fr)]">
+        {/* LEFT */}
 
-        <div>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-            }}
-          >
+        <div className="min-w-0">
+          <table className="w-full border-collapse">
             <tbody>
               <Row
                 title="Team ID"
@@ -122,9 +72,7 @@ export default function TeamOverview({ team }) {
 
               <Row
                 title="Club Name"
-                value={
-                  team.name || "-"
-                }
+                value={team.name || "-"}
               />
 
               <Row
@@ -134,9 +82,7 @@ export default function TeamOverview({ team }) {
 
               <Row
                 title="Founded"
-                value={
-                  team.founded || "-"
-                }
+                value={team.founded || "-"}
               />
 
               <Row
@@ -151,23 +97,18 @@ export default function TeamOverview({ team }) {
               <Row
                 title="Club Colors"
                 value={
-                  team.clubColors ||
-                  "-"
+                  team.clubColors || "-"
                 }
               />
 
               <Row
                 title="Stadium"
-                value={
-                  venue.name || "-"
-                }
+                value={venue.name || "-"}
               />
 
               <Row
                 title="City"
-                value={
-                  venue.city || "-"
-                }
+                value={venue.city || "-"}
               />
 
               <Row
@@ -179,9 +120,7 @@ export default function TeamOverview({ team }) {
 
               <Row
                 title="Coach"
-                value={
-                  coachName || "-"
-                }
+                value={coachName || "-"}
               />
 
               <Row
@@ -195,31 +134,12 @@ export default function TeamOverview({ team }) {
           </table>
         </div>
 
-        {/* =================================================
-            RIGHT
-        ================================================= */}
+        {/* RIGHT */}
 
         <div>
           {/* STADIUM */}
 
-          <div
-            style={{
-              height: 260,
-              background:
-                "linear-gradient(135deg,#1f2937,#111827)",
-              borderRadius: 15,
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#94a3b8",
-              fontSize: 18,
-              fontWeight: 700,
-              border:
-                "1px solid #293548",
-              textAlign: "center",
-              padding: 20,
-            }}
-          >
+          <div className="flex h-[260px] items-center justify-center rounded-[15px] border border-[#293548] bg-gradient-to-br from-gray-800 to-gray-900 p-5 text-center text-lg font-bold text-slate-400">
             🏟{" "}
             {venue.name ||
               "Stadium information unavailable"}
@@ -227,15 +147,7 @@ export default function TeamOverview({ team }) {
 
           {/* QUICK FACTS */}
 
-          <div
-            style={{
-              marginTop: 18,
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(2,1fr)",
-              gap: 16,
-            }}
-          >
+          <div className="mt-[18px] grid grid-cols-2 gap-4">
             <MiniCard
               title="Coach"
               value={
@@ -257,8 +169,7 @@ export default function TeamOverview({ team }) {
             <MiniCard
               title="Founded"
               value={
-                team.founded ||
-                "-"
+                team.founded || "-"
               }
             />
 
@@ -269,48 +180,22 @@ export default function TeamOverview({ team }) {
 
             <MiniCard
               title="Code"
-              value={
-                team.tla ||
-                "-"
-              }
+              value={team.tla || "-"}
             />
           </div>
         </div>
       </div>
 
-      {/* =================================================
-          ABOUT CLUB
-      ================================================= */}
+      {/* ABOUT CLUB */}
 
-      <div
-        style={{
-          marginTop: 30,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 14,
-          }}
-        >
+      <div className="mt-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-6">
+        <h3 className="mb-[14px] text-white">
           About the Club
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.85,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.85] text-slate-300">
           <strong>
-            {team.name ||
-              "This club"}
+            {team.name || "This club"}
           </strong>{" "}
           is a football club based in{" "}
           <strong>{country}</strong>.
@@ -329,22 +214,9 @@ export default function TeamOverview({ team }) {
         </p>
       </div>
 
-      {/* =================================================
-          DATA SOURCE
-      ================================================= */}
+      {/* DATA SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          display: "flex",
-          justifyContent:
-            "space-between",
-          gap: 12,
-          flexWrap: "wrap",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] flex flex-wrap justify-between gap-3 text-xs text-slate-500">
         <span>
           Source: football-data.org
         </span>
@@ -363,32 +235,12 @@ ROW
 
 function Row({ title, value }) {
   return (
-    <tr
-      style={{
-        borderBottom:
-          "1px solid #1f2937",
-      }}
-    >
-      <td
-        style={{
-          padding: "14px 0",
-          color: "#94a3b8",
-          width: 180,
-          verticalAlign: "top",
-          fontSize: 14,
-        }}
-      >
+    <tr className="border-b border-gray-800">
+      <td className="w-[180px] align-top py-[14px] pr-4 text-sm text-slate-400">
         {title}
       </td>
 
-      <td
-        style={{
-          padding: "14px 0",
-          color: "#fff",
-          fontWeight: 600,
-          overflowWrap: "anywhere",
-        }}
-      >
+      <td className="break-words py-[14px] font-semibold text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </td>
     </tr>
@@ -404,34 +256,12 @@ function MiniCard({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 12,
-        padding: 18,
-        textAlign: "center",
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 8,
-        }}
-      >
+    <div className="rounded-xl border border-[#293548] bg-gray-800 p-[18px] text-center">
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 800,
-          fontSize: 18,
-          overflowWrap: "anywhere",
-        }}
-      >
+      <div className="break-words text-[18px] font-extrabold text-white [overflow-wrap:anywhere]">
         {value}
       </div>
     </div>
