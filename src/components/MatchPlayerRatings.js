@@ -7,28 +7,12 @@ export default function MatchPlayerRatings({
 }) {
   if (!lineups || lineups.length < 2) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            marginBottom: 20,
-          }}
-        >
+      <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+        <h2 className="mb-5 text-white">
           ⭐ Player Ratings
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <p className="text-slate-400">
           Player ratings unavailable.
         </p>
       </section>
@@ -39,38 +23,15 @@ export default function MatchPlayerRatings({
   const away = lineups[1];
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+      <h2 className="mb-[30px] text-white">
         ⭐ Player Ratings
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr 1fr",
-          gap: 30,
-        }}
-      >
-        <TeamRatings
-          team={home}
-        />
+      <div className="grid grid-cols-1 gap-[30px] md:grid-cols-2">
+        <TeamRatings team={home} />
 
-        <TeamRatings
-          team={away}
-        />
+        <TeamRatings team={away} />
       </div>
     </section>
   );
@@ -78,69 +39,39 @@ export default function MatchPlayerRatings({
 
 /* ========================================= */
 
-function TeamRatings({
-  team,
-}) {
+function TeamRatings({ team }) {
   const players = [
     ...(team.startXI || []),
     ...(team.substitutes || []),
   ];
 
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 20,
-      }}
-    >
+    <div className="rounded-[18px] bg-gray-800 p-5">
       {/* Header */}
 
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 14,
-          marginBottom: 25,
-        }}
-      >
+      <div className="mb-[25px] flex items-center gap-[14px]">
         <Image
           src={
             team.team?.logo ||
             "/team.png"
           }
-          alt={
-            team.team?.name
-          }
+          alt={team.team?.name}
           width={42}
           height={42}
         />
 
-        <h3
-          style={{
-            color: "#fff",
-          }}
-        >
+        <h3 className="text-white">
           {team.team?.name}
         </h3>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 12,
-        }}
-      >
-        {players.map(
-          (item, index) => (
-            <PlayerRow
-              key={index}
-              player={
-                item.player
-              }
-            />
-          )
-        )}
+      <div className="grid gap-3">
+        {players.map((item, index) => (
+          <PlayerRow
+            key={index}
+            player={item.player}
+          />
+        ))}
       </div>
     </div>
   );
@@ -148,88 +79,31 @@ function TeamRatings({
 
 /* ========================================= */
 
-function PlayerRow({
-  player = {},
-}) {
+function PlayerRow({ player = {} }) {
   const rating =
     player.rating ||
     randomRating();
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns:
-          "55px 1fr auto",
-        gap: 16,
-        alignItems:
-          "center",
-        background:
-          "#111827",
-        borderRadius: 14,
-        padding: 14,
-      }}
-    >
-      <div
-        style={{
-          width: 46,
-          height: 46,
-          borderRadius:
-            "50%",
-          background:
-            "#374151",
-          display: "flex",
-          alignItems:
-            "center",
-          justifyContent:
-            "center",
-          color: "#fff",
-          fontWeight:
-            "bold",
-        }}
-      >
-        {player.number ||
-          "-"}
+    <div className="grid grid-cols-[55px_1fr_auto] items-center gap-4 rounded-[14px] bg-gray-900 p-[14px]">
+      <div className="flex h-[46px] w-[46px] items-center justify-center rounded-full bg-gray-700 font-bold text-white">
+        {player.number || "-"}
       </div>
 
-      <div>
-        <div
-          style={{
-            color: "#fff",
-            fontWeight: 600,
-            marginBottom: 5,
-          }}
-        >
+      <div className="min-w-0">
+        <div className="mb-[5px] text-white font-semibold">
           {player.name}
         </div>
 
-        <div
-          style={{
-            color:
-              "#94a3b8",
-            fontSize: 13,
-          }}
-        >
-          {player.pos ||
-            "Player"}
+        <div className="text-[13px] text-slate-400">
+          {player.pos || "Player"}
         </div>
       </div>
 
       <div
+        className="min-w-[56px] rounded-xl px-2.5 py-2 text-center font-bold text-white"
         style={{
-          minWidth: 56,
-          padding:
-            "8px 10px",
-          borderRadius: 12,
-          textAlign:
-            "center",
-          fontWeight:
-            "bold",
-          color: "#fff",
-          background:
-            ratingColor(
-              rating
-            ),
+          background: ratingColor(rating),
         }}
       >
         {rating}
@@ -250,11 +124,8 @@ function randomRating() {
   );
 }
 
-function ratingColor(
-  rating
-) {
-  const r =
-    Number(rating);
+function ratingColor(rating) {
+  const r = Number(rating);
 
   if (r >= 8)
     return "#16a34a";
