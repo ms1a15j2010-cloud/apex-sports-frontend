@@ -46,69 +46,25 @@ export default function TeamSidebar({
     competitions[0] || null;
 
   return (
-    <aside
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 18,
-        padding: 24,
-        color: "#fff",
-        position: "sticky",
-        top: 20,
-        border:
-          "1px solid #1e293b",
-        boxShadow:
-          "0 8px 24px rgba(0,0,0,.30)",
-      }}
-    >
+    <aside className="sticky top-5 rounded-[18px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-6 text-white shadow-[0_8px_24px_rgba(0,0,0,0.30)]">
       {/* =================================================
           TEAM
       ================================================= */}
 
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: 28,
-        }}
-      >
-        <div
-          style={{
-            width: 130,
-            height: 130,
-            margin: "0 auto",
-            borderRadius: "50%",
-            background: "#1f2937",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
+      <div className="mb-7 text-center">
+        <div className="mx-auto flex h-[130px] w-[130px] items-center justify-center rounded-full border border-[#293548] bg-gray-800">
           {teamLogo ? (
             <Image
               src={teamLogo}
-              alt={
-                team.name ||
-                "Team"
-              }
+              alt={team.name || "Team"}
               width={105}
               height={105}
               priority
               unoptimized
-              style={{
-                objectFit:
-                  "contain",
-              }}
+              className="object-contain"
             />
           ) : (
-            <div
-              style={{
-                color: "#22c55e",
-                fontSize: 28,
-                fontWeight: 900,
-              }}
-            >
+            <div className="text-[28px] font-black text-green-500">
               {team.tla ||
                 team.name
                   ?.slice(0, 3)
@@ -118,23 +74,12 @@ export default function TeamSidebar({
           )}
         </div>
 
-        <h2
-          style={{
-            margin:
-              "16px 0 6px",
-            fontSize: 24,
-          }}
-        >
+        <h2 className="my-4 mb-1.5 text-[24px]">
           {team.name ||
             "Unknown Team"}
         </h2>
 
-        <div
-          style={{
-            color: "#94a3b8",
-            fontSize: 14,
-          }}
-        >
+        <div className="text-sm text-slate-400">
           {area.name ||
             team.country ||
             "England"}
@@ -145,18 +90,11 @@ export default function TeamSidebar({
           TEAM INFORMATION
       ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gap: 12,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 grid gap-3">
         <SidebarItem
           title="Founded"
           value={
-            team.founded ||
-            "-"
+            team.founded || "-"
           }
         />
 
@@ -181,16 +119,14 @@ export default function TeamSidebar({
         <SidebarItem
           title="Stadium"
           value={
-            venue.name ||
-            "-"
+            venue.name || "-"
           }
         />
 
         <SidebarItem
           title="City"
           value={
-            venue.city ||
-            "-"
+            venue.city || "-"
           }
         />
 
@@ -207,20 +143,8 @@ export default function TeamSidebar({
           QUICK NAVIGATION
       ================================================= */}
 
-      <div
-        style={{
-          borderTop:
-            "1px solid #1f2937",
-          paddingTop: 20,
-        }}
-      >
-        <h3
-          style={{
-            margin:
-              "0 0 15px",
-            fontSize: 18,
-          }}
-        >
+      <div className="border-t border-gray-800 pt-5">
+        <h3 className="mb-[15px] text-[18px]">
           Quick Navigation
         </h3>
 
@@ -280,31 +204,12 @@ export default function TeamSidebar({
       ================================================= */}
 
       {primaryCompetition && (
-        <div
-          style={{
-            marginTop: 28,
-            borderTop:
-              "1px solid #1f2937",
-            paddingTop: 20,
-          }}
-        >
-          <h3
-            style={{
-              margin:
-                "0 0 12px",
-            }}
-          >
+        <div className="mt-7 border-t border-gray-800 pt-5">
+          <h3 className="mb-3">
             Competition
           </h3>
 
-          <div
-            style={{
-              display: "flex",
-              alignItems:
-                "center",
-              gap: 12,
-            }}
-          >
+          <div className="flex items-center gap-3">
             {primaryCompetition.emblem ? (
               <Image
                 src={
@@ -317,42 +222,15 @@ export default function TeamSidebar({
                 width={30}
                 height={30}
                 unoptimized
-                style={{
-                  objectFit:
-                    "contain",
-                }}
+                className="object-contain"
               />
             ) : (
-              <div
-                style={{
-                  width: 30,
-                  height: 30,
-                  borderRadius: 8,
-                  background:
-                    "#1f2937",
-                  display:
-                    "flex",
-                  alignItems:
-                    "center",
-                  justifyContent:
-                    "center",
-                  color:
-                    "#22c55e",
-                  fontSize: 11,
-                  fontWeight: 800,
-                }}
-              >
+              <div className="flex h-[30px] w-[30px] items-center justify-center rounded-lg bg-gray-800 text-[11px] font-extrabold text-green-500">
                 FC
               </div>
             )}
 
-            <span
-              style={{
-                color: "#22c55e",
-                fontWeight: 700,
-                fontSize: 14,
-              }}
-            >
+            <span className="text-sm font-bold text-green-500">
               {primaryCompetition.name ||
                 "Premier League"}
             </span>
@@ -365,27 +243,12 @@ export default function TeamSidebar({
       ================================================= */}
 
       {team.website && (
-        <div
-          style={{
-            marginTop: 25,
-            borderTop:
-              "1px solid #1f2937",
-            paddingTop: 20,
-          }}
-        >
+        <div className="mt-[25px] border-t border-gray-800 pt-5">
           <a
             href={team.website}
             target="_blank"
             rel="noreferrer"
-            style={{
-              display: "block",
-              color: "#3b82f6",
-              textDecoration:
-                "none",
-              fontWeight: 700,
-              wordBreak:
-                "break-word",
-            }}
+            className="block break-words font-bold text-blue-500 no-underline transition-colors hover:text-blue-400"
           >
             🌐 Official Website
           </a>
@@ -404,35 +267,12 @@ function SidebarItem({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 12,
-        padding:
-          "12px 14px",
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 12,
-          marginBottom: 5,
-        }}
-      >
+    <div className="rounded-xl border border-[#293548] bg-gray-800 px-[14px] py-3">
+      <div className="mb-[5px] text-xs text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 600,
-          fontSize: 14,
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <div className="break-words text-sm font-semibold text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </div>
     </div>
@@ -450,18 +290,7 @@ function SidebarLink({
   return (
     <Link
       href={href}
-      style={{
-        display: "block",
-        color: "#cbd5e1",
-        textDecoration: "none",
-        padding:
-          "9px 4px",
-        borderBottom:
-          "1px solid #1f2937",
-        fontSize: 14,
-        transition:
-          "color .2s ease",
-      }}
+      className="block border-b border-gray-800 px-1 py-[9px] text-sm text-slate-300 no-underline transition-colors duration-200 hover:text-white"
     >
       {text}
     </Link>
