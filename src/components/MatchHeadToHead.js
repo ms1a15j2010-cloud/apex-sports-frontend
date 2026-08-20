@@ -8,28 +8,12 @@ export default function MatchHeadToHead({
 }) {
   if (!h2h || h2h.length === 0) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            marginBottom: 20,
-          }}
-        >
+      <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+        <h2 className="mb-5 text-white">
           🤝 Head to Head
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <p className="text-slate-400">
           No previous meetings found.
         </p>
       </section>
@@ -37,29 +21,12 @@ export default function MatchHeadToHead({
   }
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+      <h2 className="mb-[30px] text-white">
         🤝 Head to Head
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 18,
-        }}
-      >
+      <div className="grid gap-[18px]">
         {h2h.map((match) => (
           <HeadToHeadCard
             key={match.fixture?.id}
@@ -73,9 +40,7 @@ export default function MatchHeadToHead({
 
 /* ===================================== */
 
-function HeadToHeadCard({
-  match,
-}) {
+function HeadToHeadCard({ match }) {
   const fixture =
     match.fixture || {};
 
@@ -94,45 +59,17 @@ function HeadToHeadCard({
   return (
     <Link
       href={`/match/${fixture.id}`}
-      style={{
-        textDecoration: "none",
-      }}
+      className="no-underline"
     >
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 20,
-          transition:
-            ".25s",
-        }}
-      >
+      <div className="rounded-[18px] bg-gray-800 p-5 transition-[0.25s] hover:bg-gray-750">
         {/* Top */}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            alignItems: "center",
-            marginBottom: 18,
-            flexWrap: "wrap",
-            gap: 12,
-          }}
-        >
-          <div
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+        <div className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
+          <div className="text-slate-400">
             {league.name}
           </div>
 
-          <div
-            style={{
-              color: "#94a3b8",
-            }}
-          >
+          <div className="text-slate-400">
             {fixture.date
               ? new Date(
                   fixture.date
@@ -143,98 +80,44 @@ function HeadToHeadCard({
 
         {/* Teams */}
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "1fr auto 1fr",
-            alignItems:
-              "center",
-            gap: 20,
-          }}
-        >
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-5">
           {/* Home */}
 
-          <div
-            style={{
-              display: "flex",
-              alignItems:
-                "center",
-              gap: 12,
-            }}
-          >
+          <div className="flex items-center gap-3">
             <Image
               src={
                 home.logo ||
                 "/team.png"
               }
-              alt={
-                home.name
-              }
+              alt={home.name}
               width={42}
               height={42}
+              className="object-contain"
             />
 
-            <strong
-              style={{
-                color: "#fff",
-              }}
-            >
+            <strong className="text-white">
               {home.name}
             </strong>
           </div>
 
           {/* Score */}
 
-          <div
-            style={{
-              textAlign:
-                "center",
-            }}
-          >
-            <div
-              style={{
-                color: "#fff",
-                fontSize: 28,
-                fontWeight:
-                  "bold",
-              }}
-            >
+          <div className="text-center">
+            <div className="text-[28px] font-bold text-white">
               {goals.home}
               {" - "}
               {goals.away}
             </div>
 
-            <div
-              style={{
-                marginTop: 6,
-                color:
-                  "#22c55e",
-                fontSize: 13,
-              }}
-            >
-              {fixture.status
-                ?.short}
+            <div className="mt-1.5 text-[13px] text-green-500">
+              {fixture.status?.short}
             </div>
           </div>
 
           {/* Away */}
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent:
-                "flex-end",
-              alignItems:
-                "center",
-              gap: 12,
-            }}
-          >
-            <strong
-              style={{
-                color: "#fff",
-              }}
-            >
+          <div className="flex items-center justify-end gap-3">
+            <strong className="text-white">
               {away.name}
             </strong>
 
@@ -243,11 +126,10 @@ function HeadToHeadCard({
                 away.logo ||
                 "/team.png"
               }
-              alt={
-                away.name
-              }
+              alt={away.name}
               width={42}
               height={42}
+              className="object-contain"
             />
           </div>
         </div>
