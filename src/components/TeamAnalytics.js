@@ -95,8 +95,7 @@ export default function TeamAnalytics({
       : "0.00";
 
   const goalDifference =
-    goalsFor -
-    goalsAgainst;
+    goalsFor - goalsAgainst;
 
   const home =
     statistics.home || {};
@@ -111,75 +110,29 @@ export default function TeamAnalytics({
   return (
     <section
       id="analytics"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           📈 Performance Analytics
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Current-season team performance
           calculated from football-data.org
           results.
         </p>
       </div>
 
-      {/* =================================================
-          SUMMARY CARDS
-      ================================================= */}
+      {/* SUMMARY CARDS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(200px,1fr))",
-          gap: 18,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[18px]">
         <AnalyticsCard
           title="Matches Played"
           value={played}
@@ -231,27 +184,10 @@ export default function TeamAnalytics({
         />
       </div>
 
-      {/* =================================================
-          PERFORMANCE BARS
-      ================================================= */}
+      {/* PERFORMANCE BARS */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 16,
-          padding: 25,
-          border:
-            "1px solid #293548",
-          marginBottom: 30,
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 22px",
-          }}
-        >
+      <div className="mb-[30px] rounded-2xl border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[22px] text-white">
           Performance Breakdown
         </h3>
 
@@ -280,19 +216,9 @@ export default function TeamAnalytics({
         />
       </div>
 
-      {/* =================================================
-          DETAILED STATISTICS
-      ================================================= */}
+      {/* DETAILED STATISTICS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(180px,1fr))",
-          gap: 16,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-4">
         <SmallStat
           label="Wins"
           value={wins}
@@ -343,18 +269,9 @@ export default function TeamAnalytics({
         />
       </div>
 
-      {/* =================================================
-          HOME / AWAY ANALYSIS
-      ================================================= */}
+      {/* HOME / AWAY ANALYSIS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(280px,1fr))",
-          gap: 20,
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
         <RecordPanel
           title="🏠 Home Performance"
           record={home}
@@ -366,67 +283,26 @@ export default function TeamAnalytics({
         />
       </div>
 
-      {/* =================================================
-          FORM
-      ================================================= */}
+      {/* FORM */}
 
-      <div
-        style={{
-          marginTop: 30,
-          background: "#1f2937",
-          borderRadius: 16,
-          padding: 22,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent:
-              "space-between",
-            gap: 15,
-            flexWrap:
-              "wrap",
-            marginBottom: 16,
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-              margin: 0,
-            }}
-          >
+      <div className="mt-[30px] rounded-2xl border border-[#293548] bg-gray-800 p-[22px]">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-[15px]">
+          <h3 className="m-0 text-white">
             📋 Recent Form
           </h3>
 
-          <span
-            style={{
-              color: "#94a3b8",
-              fontSize: 12,
-            }}
-          >
+          <span className="text-xs text-slate-400">
             Last 5 matches
           </span>
         </div>
 
         {form ? (
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="flex flex-wrap gap-2.5">
             {form
               .slice(-5)
               .split("")
               .map(
-                (
-                  result,
-                  index
-                ) => (
+                (result, index) => (
                   <FormBadge
                     key={`${result}-${index}`}
                     result={result}
@@ -435,33 +311,15 @@ export default function TeamAnalytics({
               )}
           </div>
         ) : (
-          <div
-            style={{
-              color:
-                "#94a3b8",
-              fontSize: 14,
-            }}
-          >
-            Recent form is
-            unavailable.
+          <div className="text-sm text-slate-400">
+            Recent form is unavailable.
           </div>
         )}
       </div>
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
         {statistics.season
           ? ` • Season ${statistics.season}`
@@ -483,39 +341,23 @@ function AnalyticsCard({
 }) {
   return (
     <div
+      className="rounded-2xl bg-gray-800 p-[22px] text-center"
       style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 22,
-        textAlign: "center",
-        border:
-          `1px solid ${color}40`,
+        border: `1px solid ${color}40`,
       }}
     >
-      <div
-        style={{
-          fontSize: 30,
-          marginBottom: 10,
-        }}
-      >
+      <div className="mb-2.5 text-[30px]">
         {icon}
       </div>
 
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 7,
-        }}
-      >
+      <div className="mb-[7px] text-[13px] text-slate-400">
         {title}
       </div>
 
       <div
+        className="text-[28px] font-black"
         style={{
           color,
-          fontWeight: 900,
-          fontSize: 28,
         }}
       >
         {value}
@@ -543,49 +385,19 @@ function ProgressBar({
     );
 
   return (
-    <div
-      style={{
-        marginBottom: 22,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          color: "#fff",
-          marginBottom: 8,
-          fontSize: 13,
-          fontWeight: 700,
-        }}
-      >
+    <div className="mb-[22px]">
+      <div className="mb-2 flex justify-between text-[13px] font-bold text-white">
         <span>{label}</span>
 
-        <span>
-          {safeValue}%
-        </span>
+        <span>{safeValue}%</span>
       </div>
 
-      <div
-        style={{
-          width: "100%",
-          height: 12,
-          background:
-            "#374151",
-          borderRadius: 20,
-          overflow:
-            "hidden",
-        }}
-      >
+      <div className="h-3 w-full overflow-hidden rounded-[20px] bg-gray-700">
         <div
+          className="h-full rounded-[20px] transition-[width] duration-[800ms] ease"
           style={{
-            width:
-              `${safeValue}%`,
-            height: "100%",
+            width: `${safeValue}%`,
             background: color,
-            borderRadius: 20,
-            transition:
-              "width .8s ease",
           }}
         />
       </div>
@@ -602,33 +414,12 @@ function SmallStat({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 18,
-        textAlign: "center",
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          marginBottom: 8,
-          fontSize: 13,
-        }}
-      >
+    <div className="rounded-[14px] border border-[#293548] bg-gray-800 p-[18px] text-center">
+      <div className="mb-2 text-[13px] text-slate-400">
         {label}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 900,
-          fontSize: 24,
-        }}
-      >
+      <div className="text-[24px] font-black text-white">
         {value ?? 0}
       </div>
     </div>
@@ -663,22 +454,8 @@ function RecordPanel({
       : 0;
 
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 20,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <h3
-        style={{
-          color: "#fff",
-          margin:
-            "0 0 18px",
-        }}
-      >
+    <div className="rounded-2xl border border-[#293548] bg-gray-800 p-5">
+      <h3 className="mb-[18px] text-white">
         {title}
       </h3>
 
@@ -719,33 +496,12 @@ function StatRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        gap: 15,
-        padding:
-          "11px 0",
-        borderBottom:
-          "1px solid #374151",
-      }}
-    >
-      <span
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-        }}
-      >
+    <div className="flex justify-between gap-[15px] border-b border-gray-700 py-[11px]">
+      <span className="text-[13px] text-slate-400">
         {label}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-          fontSize: 14,
-        }}
-      >
+      <strong className="text-sm text-white">
         {value ?? "-"}
       </strong>
     </div>
@@ -778,27 +534,16 @@ function FormBadge({
 
   const current =
     config[result] || {
-      background:
-        "#374151",
-      color:
-        "#cbd5e1",
+      background: "#374151",
+      color: "#cbd5e1",
     };
 
   return (
     <div
+      className="flex h-[38px] w-[38px] items-center justify-center rounded-[10px] text-[13px] font-black"
       style={{
-        width: 38,
-        height: 38,
-        borderRadius: 10,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background:
-          current.background,
-        color:
-          current.color,
-        fontWeight: 900,
-        fontSize: 13,
+        background: current.background,
+        color: current.color,
       }}
     >
       {result}
