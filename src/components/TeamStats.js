@@ -7,44 +7,17 @@ export default function TeamStats({
     return (
       <section
         id="statistics"
-        style={{
-          background:
-            "linear-gradient(145deg,#111827,#0f172a)",
-          borderRadius: 18,
-          padding: 28,
-          marginBottom: 30,
-          color: "#fff",
-          border:
-            "1px solid #1e293b",
-        }}
+        className="mb-[30px] rounded-[18px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-7 text-white"
       >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            margin: 0,
-          }}
-        >
+        <h2 className="m-0">
           📊 Team Statistics
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            marginTop: 12,
-          }}
-        >
+        <p className="mt-3 text-slate-400">
           No team statistics available.
         </p>
       </section>
@@ -133,76 +106,29 @@ export default function TeamStats({
   return (
     <section
       id="statistics"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 18,
-        padding: 28,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[18px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-7"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            margin: 0,
-            color: "#fff",
-            fontSize: 30,
-          }}
-        >
+        <h2 className="m-0 text-[30px] text-white">
           📊 Team Statistics
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Current-season performance
           calculated from football-data.org
           match results.
         </p>
       </div>
 
-      {/* =================================================
-          TOP CARDS
-      ================================================= */}
+      {/* TOP CARDS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(170px,1fr))",
-          gap: 16,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-4">
         <Card
           title="Matches"
           value={played}
@@ -248,21 +174,10 @@ export default function TeamStats({
         />
       </div>
 
-      {/* =================================================
-          GOAL STATISTICS
-      ================================================= */}
+      {/* GOAL STATISTICS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(280px,1fr))",
-          gap: 20,
-        }}
-      >
-        <InfoPanel
-          title="⚽ Goal Statistics"
-        >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
+        <InfoPanel title="⚽ Goal Statistics">
           <Stat
             label="Goals For"
             value={goalsFor}
@@ -294,13 +209,9 @@ export default function TeamStats({
           />
         </InfoPanel>
 
-        {/* =================================================
-            PERFORMANCE
-        ================================================= */}
+        {/* PERFORMANCE */}
 
-        <InfoPanel
-          title="📈 Performance"
-        >
+        <InfoPanel title="📈 Performance">
           <Stat
             label="Win Rate"
             value={`${winRate}%`}
@@ -318,9 +229,7 @@ export default function TeamStats({
 
           <Stat
             label="Current Form"
-            value={
-              form || "N/A"
-            }
+            value={form || "N/A"}
           />
 
           <Stat
@@ -343,19 +252,9 @@ export default function TeamStats({
         </InfoPanel>
       </div>
 
-      {/* =================================================
-          HOME / AWAY BREAKDOWN
-      ================================================= */}
+      {/* HOME / AWAY BREAKDOWN */}
 
-      <div
-        style={{
-          marginTop: 25,
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(280px,1fr))",
-          gap: 20,
-        }}
-      >
+      <div className="mt-[25px] grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-5">
         <RecordPanel
           title="🏠 Home Performance"
           record={home}
@@ -367,47 +266,22 @@ export default function TeamStats({
         />
       </div>
 
-      {/* =================================================
-          BIGGEST RESULTS
-      ================================================= */}
+      {/* BIGGEST RESULTS */}
 
       {(statistics.biggestWin ||
         statistics.biggestLoss) && (
-        <div
-          style={{
-            marginTop: 25,
-            background: "#1f2937",
-            borderRadius: 16,
-            padding: 20,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h3
-            style={{
-              margin:
-                "0 0 18px",
-              color: "#fff",
-            }}
-          >
+        <div className="mt-[25px] rounded-2xl border border-[#293548] bg-gray-800 p-5">
+          <h3 className="mb-[18px] text-white">
             🏅 Biggest Results
           </h3>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(220px,1fr))",
-              gap: 15,
-            }}
-          >
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[15px]">
             <Stat
               label="Biggest Win"
               value={
                 statistics
                   .biggestWin
-                  ?.score ||
-                "N/A"
+                  ?.score || "N/A"
               }
             />
 
@@ -416,46 +290,22 @@ export default function TeamStats({
               value={
                 statistics
                   .biggestLoss
-                  ?.score ||
-                "N/A"
+                  ?.score || "N/A"
               }
             />
           </div>
         </div>
       )}
 
-      {/* =================================================
-          FORM
-      ================================================= */}
+      {/* FORM */}
 
-      <div
-        style={{
-          marginTop: 25,
-          background: "#1f2937",
-          borderRadius: 16,
-          padding: 20,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            margin:
-              "0 0 15px",
-            color: "#fff",
-          }}
-        >
+      <div className="mt-[25px] rounded-2xl border border-[#293548] bg-gray-800 p-5">
+        <h3 className="mb-[15px] text-white">
           📋 Recent Form
         </h3>
 
         {form ? (
-          <div
-            style={{
-              display: "flex",
-              gap: 10,
-              flexWrap: "wrap",
-            }}
-          >
+          <div className="flex flex-wrap gap-2.5">
             {form
               .split("")
               .map(
@@ -468,32 +318,15 @@ export default function TeamStats({
               )}
           </div>
         ) : (
-          <div
-            style={{
-              color:
-                "#94a3b8",
-              fontSize: 14,
-            }}
-          >
+          <div className="text-sm text-slate-400">
             Form data unavailable.
           </div>
         )}
       </div>
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
         {statistics.season
           ? ` • Season ${statistics.season}`
@@ -513,30 +346,14 @@ function Card({
   color,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 20,
-        textAlign: "center",
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          marginBottom: 8,
-          fontSize: 13,
-        }}
-      >
+    <div className="rounded-[14px] border border-[#293548] bg-gray-800 p-5 text-center">
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
       <div
+        className="text-[28px] font-black"
         style={{
-          fontSize: 28,
-          fontWeight: 900,
           color,
         }}
       >
@@ -555,23 +372,8 @@ function InfoPanel({
   children,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 20,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <h3
-        style={{
-          color: "#fff",
-          margin:
-            "0 0 18px",
-          fontSize: 19,
-        }}
-      >
+    <div className="rounded-2xl border border-[#293548] bg-gray-800 p-5">
+      <h3 className="mb-[18px] text-[19px] text-white">
         {title}
       </h3>
 
@@ -589,35 +391,12 @@ function Stat({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        alignItems: "center",
-        gap: 15,
-        padding:
-          "11px 0",
-        borderBottom:
-          "1px solid #374151",
-      }}
-    >
-      <span
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-        }}
-      >
+    <div className="flex items-center justify-between gap-[15px] border-b border-gray-700 py-[11px]">
+      <span className="text-[13px] text-slate-400">
         {label}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-          fontSize: 14,
-          textAlign: "right",
-        }}
-      >
+      <strong className="text-right text-sm text-white">
         {value ?? "-"}
       </strong>
     </div>
@@ -652,22 +431,8 @@ function RecordPanel({
       : 0;
 
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 20,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <h3
-        style={{
-          color: "#fff",
-          margin:
-            "0 0 18px",
-        }}
-      >
+    <div className="rounded-2xl border border-[#293548] bg-gray-800 p-5">
+      <h3 className="mb-[18px] text-white">
         {title}
       </h3>
 
@@ -727,8 +492,7 @@ function FormBadge({
   };
 
   const current =
-    config[result] ||
-    {
+    config[result] || {
       background: "#374151",
       color: "#cbd5e1",
       label: result,
@@ -736,17 +500,11 @@ function FormBadge({
 
   return (
     <div
+      className="flex h-[38px] w-[38px] items-center justify-center rounded-[10px] font-black"
       style={{
-        width: 38,
-        height: 38,
-        borderRadius: 10,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
         background:
           current.background,
         color: current.color,
-        fontWeight: 900,
       }}
     >
       {current.label}
