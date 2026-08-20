@@ -3,44 +3,16 @@
 export default function TeamCoach({ coach }) {
   if (!coach) {
     return (
-      <section
-        style={{
-          background:
-            "linear-gradient(145deg,#111827,#0f172a)",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
-          border: "1px solid #1e293b",
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <section className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: "0 0 20px",
-          }}
-        >
+        <h2 className="mb-5 text-white">
           👔 Head Coach
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: 0,
-          }}
-        >
+        <p className="m-0 text-slate-400">
           Coach information unavailable.
         </p>
       </section>
@@ -55,161 +27,66 @@ export default function TeamCoach({ coach }) {
     "Unknown Coach";
 
   const firstName =
-    coach.firstName ||
-    "-";
+    coach.firstName || "-";
 
   const lastName =
-    coach.lastName ||
-    "-";
+    coach.lastName || "-";
 
   const nationality =
-    coach.nationality ||
-    "-";
+    coach.nationality || "-";
 
   const birthDate =
-    coach.dateOfBirth ||
-    "-";
+    coach.dateOfBirth || "-";
 
   return (
     <section
       id="coach"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           👔 Head Coach
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Current coaching information
           provided by football-data.org.
         </p>
       </div>
 
-      {/* =================================================
-          COACH CONTENT
-      ================================================= */}
+      {/* COACH CONTENT */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "minmax(260px,320px) 1fr",
-          gap: 30,
-          alignItems: "stretch",
-        }}
-      >
+      <div className="grid grid-cols-1 items-stretch gap-[30px] xl:grid-cols-[minmax(260px,320px)_1fr]">
         {/* LEFT PROFILE */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 25,
-            textAlign: "center",
-            border: "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              width: 150,
-              height: 150,
-              margin: "0 auto",
-              borderRadius: "50%",
-              background:
-                "linear-gradient(135deg,#111827,#293548)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              border:
-                "3px solid #22c55e",
-              color: "#22c55e",
-              fontSize: 48,
-              fontWeight: 900,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px] text-center">
+          <div className="mx-auto flex h-[150px] w-[150px] items-center justify-center rounded-full border-[3px] border-green-500 bg-gradient-to-br from-gray-900 to-slate-800 text-[48px] font-black text-green-500">
             {coachName
               .slice(0, 1)
               .toUpperCase()}
           </div>
 
-          <h2
-            style={{
-              margin:
-                "20px 0 6px",
-              color: "#fff",
-              fontSize: 24,
-            }}
-          >
+          <h2 className="my-5 mb-1.5 text-[24px] text-white">
             {coachName}
           </h2>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#94a3b8",
-              fontSize: 14,
-            }}
-          >
+          <p className="m-0 text-sm text-slate-400">
             Head Coach
           </p>
         </div>
 
         {/* RIGHT INFORMATION */}
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(210px,1fr))",
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
           <InfoCard
             title="Coach ID"
-            value={
-              coach.id ?? "-"
-            }
+            value={coach.id ?? "-"}
           />
 
           <InfoCard
@@ -234,35 +111,14 @@ export default function TeamCoach({ coach }) {
         </div>
       </div>
 
-      {/* =================================================
-          PROFILE SUMMARY
-      ================================================= */}
+      {/* PROFILE SUMMARY */}
 
-      <div
-        style={{
-          marginTop: 30,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          border: "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin: "0 0 15px",
-          }}
-        >
+      <div className="mt-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[15px] text-white">
           Coach Profile
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.85,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.85] text-slate-300">
           <strong>{coachName}</strong>{" "}
           is the current head coach
           associated with this football
@@ -274,20 +130,9 @@ export default function TeamCoach({ coach }) {
         </p>
       </div>
 
-      {/* =================================================
-          DATA SOURCE
-      ================================================= */}
+      {/* DATA SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -303,32 +148,12 @@ function InfoCard({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 20,
-        border: "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 8,
-        }}
-      >
+    <div className="rounded-[14px] border border-[#293548] bg-gray-800 p-5">
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontSize: 18,
-          fontWeight: 800,
-          overflowWrap: "anywhere",
-        }}
-      >
+      <div className="break-words text-[18px] font-extrabold text-white [overflow-wrap:anywhere]">
         {value ?? "-"}
       </div>
     </div>
