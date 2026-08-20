@@ -97,9 +97,7 @@ export default function TeamTabs() {
 
       for (const tab of tabs) {
         const section =
-          document.getElementById(
-            tab.id
-          );
+          document.getElementById(tab.id);
 
         if (!section) {
           continue;
@@ -108,9 +106,7 @@ export default function TeamTabs() {
         const rect =
           section.getBoundingClientRect();
 
-        if (
-          rect.top <= offset
-        ) {
+        if (rect.top <= offset) {
           current = tab.id;
         }
       }
@@ -153,8 +149,7 @@ export default function TeamTabs() {
     }
 
     const y =
-      section.getBoundingClientRect()
-        .top +
+      section.getBoundingClientRect().top +
       window.scrollY -
       135;
 
@@ -167,36 +162,8 @@ export default function TeamTabs() {
   }
 
   return (
-    <section
-      style={{
-        position: "sticky",
-        top: 10,
-        zIndex: 50,
-        background:
-          "rgba(17,24,39,.96)",
-        backdropFilter:
-          "blur(12px)",
-        WebkitBackdropFilter:
-          "blur(12px)",
-        borderRadius: 16,
-        padding: 12,
-        marginBottom: 30,
-        border:
-          "1px solid #293548",
-        boxShadow:
-          "0 8px 25px rgba(0,0,0,.25)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          gap: 10,
-          overflowX: "auto",
-          scrollbarWidth: "none",
-          WebkitOverflowScrolling:
-            "touch",
-        }}
-      >
+    <section className="sticky top-2.5 z-50 mb-[30px] rounded-2xl border border-[#293548] bg-gray-900/[0.96] p-3 shadow-[0_8px_25px_rgba(0,0,0,0.25)] backdrop-blur-[12px]">
+      <div className="flex gap-2.5 overflow-x-auto [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
         {tabs.map((tab) => {
           const isActive =
             active === tab.id;
@@ -205,40 +172,19 @@ export default function TeamTabs() {
             <button
               key={tab.id}
               type="button"
-              onClick={() =>
-                goTo(tab.id)
-              }
+              onClick={() => goTo(tab.id)}
               aria-current={
                 isActive
                   ? "page"
                   : undefined
               }
-              style={{
-                flexShrink: 0,
-                border: "none",
-                cursor: "pointer",
-                padding:
-                  "10px 15px",
-                borderRadius: 10,
-                background:
-                  isActive
-                    ? "#22c55e"
-                    : "#1f2937",
-                color: "#fff",
-                fontWeight: 700,
-                display: "flex",
-                alignItems:
-                  "center",
-                gap: 7,
-                transition:
-                  "all .2s ease",
-                whiteSpace:
-                  "nowrap",
-              }}
+              className={`flex shrink-0 cursor-pointer items-center gap-[7px] whitespace-nowrap rounded-[10px] px-[15px] py-2.5 font-bold text-white transition-all duration-200 ${
+                isActive
+                  ? "bg-green-500"
+                  : "bg-gray-800"
+              }`}
             >
-              <span>
-                {tab.icon}
-              </span>
+              <span>{tab.icon}</span>
 
               {tab.label}
             </button>
