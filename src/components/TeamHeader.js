@@ -21,46 +21,15 @@ export default function TeamHeader({ team }) {
       .join(" ");
 
   return (
-    <section
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-        boxShadow:
-          "0 10px 30px rgba(0,0,0,.35)",
-      }}
-    >
+    <section className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
       {/* =================================================
           TEAM HEADER
       ================================================= */}
 
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 30,
-          alignItems: "center",
-        }}
-      >
+      <div className="flex flex-wrap items-center gap-[30px]">
         {/* TEAM LOGO */}
 
-        <div
-          style={{
-            width: 140,
-            height: 140,
-            background: "#1f2937",
-            borderRadius: "50%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexShrink: 0,
-            border:
-              "1px solid #293548",
-          }}
-        >
+        <div className="flex h-[140px] w-[140px] shrink-0 items-center justify-center rounded-full border border-[#293548] bg-gray-800">
           {teamLogo ? (
             <Image
               src={teamLogo}
@@ -69,18 +38,10 @@ export default function TeamHeader({ team }) {
               height={110}
               priority
               unoptimized
-              style={{
-                objectFit: "contain",
-              }}
+              className="object-contain"
             />
           ) : (
-            <div
-              style={{
-                color: "#22c55e",
-                fontSize: 32,
-                fontWeight: 900,
-              }}
-            >
+            <div className="text-[32px] font-black text-green-500">
               {team.tla ||
                 team.name
                   ?.slice(0, 3)
@@ -92,59 +53,23 @@ export default function TeamHeader({ team }) {
 
         {/* TEAM INFORMATION */}
 
-        <div
-          style={{
-            flex: 1,
-            minWidth: 260,
-          }}
-        >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing: "1.2px",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
+        <div className="min-w-[260px] flex-1">
+          <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              fontSize: 40,
-              margin:
-                "0 0 10px",
-              color: "#fff",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="m-0 mb-2.5 text-[40px] font-extrabold text-white">
             {team.name ||
               "Unknown Team"}
           </h1>
 
-          <div
-            style={{
-              color: "#94a3b8",
-              marginBottom: 16,
-              fontSize: 14,
-            }}
-          >
+          <div className="mb-4 text-sm text-slate-400">
             {area.name ||
               team.country ||
               "England"}
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(170px,1fr))",
-              gap: 12,
-              color: "#cbd5e1",
-            }}
-          >
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3 text-slate-300">
             <Info
               label="Country"
               value={
@@ -157,8 +82,7 @@ export default function TeamHeader({ team }) {
             <Info
               label="Founded"
               value={
-                team.founded ||
-                "-"
+                team.founded || "-"
               }
             />
 
@@ -174,8 +98,7 @@ export default function TeamHeader({ team }) {
             <Info
               label="Colors"
               value={
-                team.clubColors ||
-                "-"
+                team.clubColors || "-"
               }
             />
           </div>
@@ -183,93 +106,31 @@ export default function TeamHeader({ team }) {
 
         {/* COACH */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 16,
-            padding: 20,
-            minWidth: 260,
-            maxWidth: 340,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h3
-            style={{
-              margin:
-                "0 0 16px",
-              color: "#fff",
-            }}
-          >
+        <div className="min-w-[260px] max-w-[340px] rounded-2xl border border-[#293548] bg-gray-800 p-5">
+          <h3 className="mb-4 text-white">
             👔 Head Coach
           </h3>
 
           {coachName ? (
-            <div
-              style={{
-                display: "flex",
-                gap: 15,
-                alignItems:
-                  "center",
-              }}
-            >
-              <div
-                style={{
-                  width: 70,
-                  height: 70,
-                  borderRadius:
-                    "50%",
-                  background:
-                    "#111827",
-                  display:
-                    "flex",
-                  alignItems:
-                    "center",
-                  justifyContent:
-                    "center",
-                  color:
-                    "#22c55e",
-                  fontSize: 22,
-                  fontWeight: 800,
-                  flexShrink: 0,
-                }}
-              >
+            <div className="flex items-center gap-[15px]">
+              <div className="flex h-[70px] w-[70px] shrink-0 items-center justify-center rounded-full bg-gray-900 text-[22px] font-extrabold text-green-500">
                 {coachName
                   .slice(0, 1)
                   .toUpperCase()}
               </div>
 
               <div>
-                <div
-                  style={{
-                    color: "#fff",
-                    fontWeight: 700,
-                    fontSize: 18,
-                  }}
-                >
+                <div className="text-[18px] font-bold text-white">
                   {coachName}
                 </div>
 
-                <div
-                  style={{
-                    color:
-                      "#94a3b8",
-                    marginTop: 5,
-                  }}
-                >
+                <div className="mt-[5px] text-slate-400">
                   {coach.nationality ||
                     "-"}
                 </div>
 
                 {coach.dateOfBirth && (
-                  <div
-                    style={{
-                      color:
-                        "#64748b",
-                      fontSize: 12,
-                      marginTop: 5,
-                    }}
-                  >
+                  <div className="mt-[5px] text-xs text-slate-500">
                     Born{" "}
                     {coach.dateOfBirth}
                   </div>
@@ -277,12 +138,7 @@ export default function TeamHeader({ team }) {
               </div>
             </div>
           ) : (
-            <p
-              style={{
-                color: "#94a3b8",
-                margin: 0,
-              }}
-            >
+            <p className="m-0 text-slate-400">
               Coach information unavailable.
             </p>
           )}
@@ -293,67 +149,19 @@ export default function TeamHeader({ team }) {
           STADIUM
       ================================================= */}
 
-      <div
-        style={{
-          marginTop: 35,
-          display: "grid",
-          gridTemplateColumns:
-            "minmax(320px,1fr) minmax(280px,360px)",
-          gap: 25,
-        }}
-      >
+      <div className="mt-[35px] grid grid-cols-1 gap-[25px] xl:grid-cols-[minmax(320px,1fr)_minmax(280px,360px)]">
         {/* STADIUM IMAGE */}
 
-        <div
-          style={{
-            position: "relative",
-            width: "100%",
-            height: 280,
-            borderRadius: 18,
-            overflow: "hidden",
-            background: "#1f2937",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background:
-                "linear-gradient(135deg,#111827,#1f2937)",
-              display: "flex",
-              alignItems:
-                "center",
-              justifyContent:
-                "center",
-              color: "#64748b",
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          >
+        <div className="relative h-[280px] w-full overflow-hidden rounded-[18px] border border-[#293548] bg-gray-800">
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800 text-lg font-bold text-slate-500">
             🏟 {venue.name || "Stadium"}
           </div>
         </div>
 
         {/* STADIUM DETAILS */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 25,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h2
-            style={{
-              margin:
-                "0 0 18px",
-              color: "#fff",
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+          <h2 className="mb-[18px] text-white">
             🏟 Stadium
           </h2>
 
@@ -398,35 +206,14 @@ export default function TeamHeader({ team }) {
 INFO
 ===================================================== */
 
-function Info({
-  label,
-  value,
-}) {
+function Info({ label, value }) {
   return (
-    <div
-      style={{
-        marginBottom: 12,
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 3,
-        }}
-      >
+    <div className="mb-3">
+      <div className="mb-[3px] text-[13px] text-slate-400">
         {label}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 600,
-          fontSize: 16,
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <div className="break-words text-base font-semibold text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </div>
     </div>
