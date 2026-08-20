@@ -7,28 +7,12 @@ export default function MatchStandings({
 }) {
   if (!standings || standings.length === 0) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 30,
-          marginBottom: 30,
-        }}
-      >
-        <h2
-          style={{
-            color: "#fff",
-            marginBottom: 20,
-          }}
-        >
+      <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+        <h2 className="mb-5 text-white">
           📊 League Standings
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <p className="text-slate-400">
           Standings unavailable.
         </p>
       </section>
@@ -41,43 +25,15 @@ export default function MatchStandings({
     standings;
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "#fff",
-          marginBottom: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px]">
+      <h2 className="mb-[30px] text-white">
         📊 League Standings
       </h2>
 
-      <div
-        style={{
-          overflowX: "auto",
-        }}
-      >
-        <table
-          style={{
-            width: "100%",
-            borderCollapse:
-              "collapse",
-            minWidth: 900,
-          }}
-        >
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[900px] border-collapse">
           <thead>
-            <tr
-              style={{
-                background:
-                  "#1f2937",
-              }}
-            >
+            <tr className="bg-gray-800">
               {[
                 "#",
                 "Team",
@@ -89,38 +45,24 @@ export default function MatchStandings({
                 "GA",
                 "GD",
                 "Pts",
-              ].map(
-                (head) => (
-                  <th
-                    key={head}
-                    style={{
-                      padding: 16,
-                      color:
-                        "#fff",
-                      textAlign:
-                        "center",
-                      borderBottom:
-                        "1px solid #374151",
-                    }}
-                  >
-                    {head}
-                  </th>
-                )
-              )}
+              ].map((head) => (
+                <th
+                  key={head}
+                  className="border-b border-gray-700 p-4 text-center text-white"
+                >
+                  {head}
+                </th>
+              ))}
             </tr>
           </thead>
 
           <tbody>
-            {table.map(
-              (club) => (
-                <StandingsRow
-                  key={
-                    club.team.id
-                  }
-                  club={club}
-                />
-              )
-            )}
+            {table.map((club) => (
+              <StandingsRow
+                key={club.team.id}
+                club={club}
+              />
+            ))}
           </tbody>
         </table>
       </div>
@@ -130,52 +72,24 @@ export default function MatchStandings({
 
 /* ====================================== */
 
-function StandingsRow({
-  club,
-}) {
+function StandingsRow({ club }) {
   return (
-    <tr
-      style={{
-        background:
-          "#111827",
-        borderBottom:
-          "1px solid #374151",
-      }}
-    >
+    <tr className="border-b border-gray-700 bg-gray-900">
       <Cell>
         {club.rank}
       </Cell>
 
-      <td
-        style={{
-          padding: 14,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems:
-              "center",
-            gap: 12,
-          }}
-        >
+      <td className="p-[14px]">
+        <div className="flex items-center gap-3">
           <Image
-            src={
-              club.team.logo
-            }
-            alt={
-              club.team.name
-            }
+            src={club.team.logo}
+            alt={club.team.name}
             width={32}
             height={32}
+            className="object-contain"
           />
 
-          <span
-            style={{
-              color: "#fff",
-              fontWeight: 600,
-            }}
-          >
+          <span className="font-semibold text-white">
             {club.team.name}
           </span>
         </div>
@@ -209,9 +123,7 @@ function StandingsRow({
         {club.goalsDiff}
       </Cell>
 
-      <Cell
-        bold
-      >
+      <Cell bold>
         {club.points}
       </Cell>
     </tr>
@@ -226,15 +138,11 @@ function Cell({
 }) {
   return (
     <td
-      style={{
-        padding: 14,
-        color: "#fff",
-        textAlign:
-          "center",
-        fontWeight: bold
-          ? "bold"
-          : "normal",
-      }}
+      className={`p-[14px] text-center text-white ${
+        bold
+          ? "font-bold"
+          : "font-normal"
+      }`}
     >
       {children}
     </td>
