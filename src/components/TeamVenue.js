@@ -8,128 +8,49 @@ export default function TeamVenue({
   return (
     <section
       id="venue"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            margin: 0,
-            color: "#fff",
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🏟 Stadium Information
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Official venue information available
           from football-data.org.
         </p>
       </div>
 
-      {/* =================================================
-          VENUE LAYOUT
-      ================================================= */}
+      {/* VENUE LAYOUT */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "minmax(280px,1fr) minmax(280px,1fr)",
-          gap: 25,
-          alignItems: "stretch",
-        }}
-      >
-        {/* =================================================
-            VISUAL PANEL
-        ================================================= */}
+      <div className="grid grid-cols-1 items-stretch gap-[25px] xl:grid-cols-2">
+        {/* VISUAL PANEL */}
 
-        <div
-          style={{
-            minHeight: 280,
-            borderRadius: 18,
-            background:
-              "linear-gradient(135deg,#1f2937,#111827)",
-            border: "1px solid #293548",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 30,
-            textAlign: "center",
-          }}
-        >
+        <div className="flex min-h-[280px] items-center justify-center rounded-[18px] border border-[#293548] bg-gradient-to-br from-gray-800 to-gray-900 p-[30px] text-center">
           <div>
-            <div
-              style={{
-                fontSize: 64,
-                marginBottom: 15,
-              }}
-            >
+            <div className="mb-[15px] text-[64px]">
               🏟️
             </div>
 
-            <h3
-              style={{
-                margin: 0,
-                color: "#fff",
-                fontSize: 24,
-              }}
-            >
+            <h3 className="m-0 text-[24px] text-white">
               {venue.name ||
                 "Stadium"}
             </h3>
 
-            <p
-              style={{
-                margin:
-                  "8px 0 0",
-                color: "#94a3b8",
-                fontSize: 14,
-              }}
-            >
+            <p className="mt-2 text-sm text-slate-400">
               {venue.city ||
                 "City unavailable"}
             </p>
           </div>
         </div>
 
-        {/* =================================================
-            DETAILS
-        ================================================= */}
+        {/* DETAILS */}
 
         <div>
           <StatRow
@@ -174,20 +95,9 @@ export default function TeamVenue({
         </div>
       </div>
 
-      {/* =================================================
-          SOURCE NOTE
-      ================================================= */}
+      {/* SOURCE NOTE */}
 
-      <div
-        style={{
-          marginTop: 20,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-5 border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -203,35 +113,12 @@ function StatRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 12,
-        padding: 18,
-        marginBottom: 14,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          marginBottom: 6,
-          fontSize: 13,
-        }}
-      >
+    <div className="mb-[14px] rounded-xl border border-[#293548] bg-gray-800 p-[18px]">
+      <div className="mb-1.5 text-[13px] text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: 18,
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <div className="break-words text-[18px] font-bold text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </div>
     </div>
