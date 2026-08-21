@@ -14,70 +14,28 @@ export default function TeamInjuries({
   return (
     <section
       id="injuries"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🚑 Injury Report
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Current team injury information.
         </p>
       </div>
 
-      {/* =================================================
-          AVAILABLE INJURY DATA
-      ================================================= */}
+      {/* AVAILABLE INJURY DATA */}
 
       {hasInjuries ? (
-        <div
-          style={{
-            display: "grid",
-            gap: 16,
-          }}
-        >
+        <div className="grid gap-4">
           {injuries.map(
             (injury, index) => {
               const player =
@@ -106,80 +64,30 @@ export default function TeamInjuries({
                     playerId ??
                     `injury-${index}`
                   }
-                  style={{
-                    background:
-                      "#1f2937",
-                    borderRadius:
-                      16,
-                    padding: 20,
-                    border:
-                      "1px solid #293548",
-                    display: "grid",
-                    gridTemplateColumns:
-                      "1fr auto",
-                    gap: 20,
-                    alignItems:
-                      "center",
-                  }}
+                  className="grid grid-cols-1 items-center gap-5 rounded-2xl border border-[#293548] bg-gray-800 p-5 md:grid-cols-[1fr_auto]"
                 >
                   <div>
                     {playerId ? (
                       <Link
                         href={`/player/${playerId}`}
-                        style={{
-                          color:
-                            "#fff",
-                          textDecoration:
-                            "none",
-                          fontSize:
-                            18,
-                          fontWeight:
-                            800,
-                        }}
+                        className="text-[18px] font-extrabold text-white no-underline hover:text-green-500"
                       >
                         {player?.name ||
                           "Unknown Player"}
                       </Link>
                     ) : (
-                      <div
-                        style={{
-                          color:
-                            "#fff",
-                          fontSize:
-                            18,
-                          fontWeight:
-                            800,
-                        }}
-                      >
+                      <div className="text-[18px] font-extrabold text-white">
                         {player?.name ||
                           "Unknown Player"}
                       </div>
                     )}
 
-                    <div
-                      style={{
-                        color:
-                          "#94a3b8",
-                        marginTop:
-                          6,
-                        fontSize:
-                            13,
-                      }}
-                    >
+                    <div className="mt-1.5 text-[13px] text-slate-400">
                       {team?.name ||
                         "Team"}
                     </div>
 
-                    <div
-                      style={{
-                        color:
-                          "#cbd5e1",
-                        marginTop:
-                          10,
-                        lineHeight:
-                          1.6,
-                      }}
-                    >
+                    <div className="mt-2.5 leading-[1.6] text-slate-300">
                       <strong>
                         Reason:
                       </strong>{" "}
@@ -187,16 +95,7 @@ export default function TeamInjuries({
                     </div>
 
                     {date && (
-                      <div
-                        style={{
-                          color:
-                            "#64748b",
-                          fontSize:
-                            12,
-                          marginTop:
-                            8,
-                        }}
-                      >
+                      <div className="mt-2 text-xs text-slate-500">
                         Reported:{" "}
                         {new Date(
                           date
@@ -205,24 +104,7 @@ export default function TeamInjuries({
                     )}
                   </div>
 
-                  <div
-                    style={{
-                      background:
-                        "#991b1b",
-                      color:
-                        "#fee2e2",
-                      padding:
-                        "8px 14px",
-                      borderRadius:
-                        999,
-                      fontSize:
-                        12,
-                      fontWeight:
-                        800,
-                      whiteSpace:
-                        "nowrap",
-                    }}
-                  >
+                  <div className="justify-self-start whitespace-nowrap rounded-full bg-red-800 px-[14px] py-2 text-xs font-extrabold text-red-100 md:justify-self-end">
                     Injured
                   </div>
                 </article>
@@ -231,52 +113,18 @@ export default function TeamInjuries({
           )}
         </div>
       ) : (
-        /* =================================================
-           DATA UNAVAILABLE
-        ================================================= */
+        /* DATA UNAVAILABLE */
 
-        <div
-          style={{
-            background:
-              "#1f2937",
-            borderRadius: 18,
-            padding: 40,
-            textAlign: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 52,
-              marginBottom: 16,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-10 text-center">
+          <div className="mb-4 text-[52px]">
             🚑
           </div>
 
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 10px",
-              fontSize: 20,
-            }}
-          >
+          <h3 className="mb-2.5 text-[20px] text-white">
             Injury Data Unavailable
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-              maxWidth: 650,
-              marginInline:
-                "auto",
-              lineHeight: 1.8,
-              fontSize: 14,
-            }}
-          >
+          <p className="mx-auto m-0 max-w-[650px] text-sm leading-[1.8] text-slate-400">
             The current football-data.org
             data source does not provide
             the team injury information that
@@ -284,42 +132,15 @@ export default function TeamInjuries({
             API-Football.
           </p>
 
-          <div
-            style={{
-              display:
-                "inline-block",
-              marginTop: 16,
-              padding:
-                "7px 12px",
-              borderRadius:
-                999,
-              background:
-                "#111827",
-              color:
-                "#64748b",
-              fontSize: 11,
-              fontWeight: 700,
-            }}
-          >
+          <div className="mt-4 inline-block rounded-full bg-gray-900 px-3 py-[7px] text-[11px] font-bold text-slate-500">
             Source limitation
           </div>
         </div>
       )}
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
