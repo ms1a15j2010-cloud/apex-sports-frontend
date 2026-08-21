@@ -12,71 +12,28 @@ export default function TeamTrophies({
   return (
     <section
       id="trophies"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🏆 Club Honours
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Historical trophy and honours information.
         </p>
       </div>
 
-      {/* =================================================
-          AVAILABLE TROPHIES
-      ================================================= */}
+      {/* AVAILABLE TROPHIES */}
 
       {hasTrophies ? (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill,minmax(280px,1fr))",
-            gap: 18,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-[18px]">
           {trophies.map(
             (trophy, index) => (
               <article
@@ -84,57 +41,21 @@ export default function TeamTrophies({
                   trophy?.id ??
                   index
                 }
-                style={{
-                  background:
-                    "#1f2937",
-                  borderRadius: 18,
-                  padding: 22,
-                  border:
-                    "1px solid #293548",
-                }}
+                className="rounded-[18px] border border-[#293548] bg-gray-800 p-[22px]"
               >
                 {/* Trophy icon */}
 
-                <div
-                  style={{
-                    width: 64,
-                    height: 64,
-                    borderRadius: 16,
-                    background:
-                      "#111827",
-                    display: "flex",
-                    alignItems:
-                      "center",
-                    justifyContent:
-                      "center",
-                    fontSize: 32,
-                    marginBottom: 18,
-                  }}
-                >
+                <div className="mb-[18px] flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-900 text-[32px]">
                   🏆
                 </div>
 
-                <h3
-                  style={{
-                    color: "#fff",
-                    margin:
-                      "0 0 8px",
-                    fontSize: 20,
-                  }}
-                >
+                <h3 className="mb-2 text-[20px] text-white">
                   {trophy?.league ||
                     "Competition"}
                 </h3>
 
                 {trophy?.country && (
-                  <div
-                    style={{
-                      color:
-                        "#94a3b8",
-                      fontSize: 13,
-                      marginBottom: 16,
-                    }}
-                  >
+                  <div className="mb-4 text-[13px] text-slate-400">
                     {trophy.country}
                   </div>
                 )}
@@ -159,52 +80,18 @@ export default function TeamTrophies({
           )}
         </div>
       ) : (
-        /* =================================================
-           UNAVAILABLE
-        ================================================= */
+        /* UNAVAILABLE */
 
-        <div
-          style={{
-            background:
-              "#1f2937",
-            borderRadius: 18,
-            padding: 40,
-            textAlign: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 58,
-              marginBottom: 16,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-10 text-center">
+          <div className="mb-4 text-[58px]">
             🏆
           </div>
 
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 10px",
-              fontSize: 21,
-            }}
-          >
+          <h3 className="mb-2.5 text-[21px] text-white">
             Trophy History Unavailable
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-              maxWidth: 650,
-              marginInline:
-                "auto",
-              lineHeight: 1.8,
-              fontSize: 14,
-            }}
-          >
+          <p className="mx-auto m-0 max-w-[650px] text-sm leading-[1.8] text-slate-400">
             Historical club trophy data is
             not provided by the current
             football-data.org source.
@@ -213,41 +100,15 @@ export default function TeamTrophies({
             unverified honours.
           </p>
 
-          <div
-            style={{
-              display:
-                "inline-block",
-              marginTop: 16,
-              padding:
-                "7px 12px",
-              borderRadius: 999,
-              background:
-                "#111827",
-              color:
-                "#64748b",
-              fontSize: 11,
-              fontWeight: 700,
-            }}
-          >
+          <div className="mt-4 inline-block rounded-full bg-gray-900 px-3 py-[7px] text-[11px] font-bold text-slate-500">
             Source limitation
           </div>
         </div>
       )}
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -263,35 +124,12 @@ function Info({
   value,
 }) {
   return (
-    <div
-      style={{
-        background:
-          "#111827",
-        borderRadius: 12,
-        padding: 14,
-        marginTop: 10,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color:
-            "#94a3b8",
-          fontSize: 12,
-          marginBottom: 6,
-        }}
-      >
+    <div className="mt-2.5 rounded-xl border border-[#293548] bg-gray-900 p-[14px]">
+      <div className="mb-1.5 text-xs text-slate-400">
         {label}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 800,
-          fontSize: 16,
-        }}
-      >
+      <div className="text-base font-extrabold text-white">
         {value || "-"}
       </div>
     </div>
