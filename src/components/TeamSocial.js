@@ -34,103 +34,32 @@ export default function TeamSocial({
   return (
     <section
       id="social"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🌐 Club Social & Contact
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-            lineHeight: 1.6,
-          }}
-        >
+        <p className="mt-2 text-sm leading-[1.6] text-slate-400">
           Official club information and
           available contact links.
         </p>
       </div>
 
-      {/* =================================================
-          CLUB IDENTITY
-      ================================================= */}
+      {/* CLUB IDENTITY */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "minmax(260px,320px) 1fr",
-          gap: 25,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] grid grid-cols-1 gap-[25px] xl:grid-cols-[minmax(260px,320px)_1fr]">
         {/* LOGO */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 25,
-            textAlign: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              width: 150,
-              height: 150,
-              margin: "0 auto",
-              borderRadius: "50%",
-              background:
-                "#111827",
-              display: "flex",
-              alignItems:
-                "center",
-              justifyContent:
-                "center",
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px] text-center">
+          <div className="mx-auto flex h-[150px] w-[150px] items-center justify-center rounded-full bg-gray-900">
             {teamLogo ? (
               <Image
                 src={teamLogo}
@@ -141,67 +70,29 @@ export default function TeamSocial({
                 width={120}
                 height={120}
                 unoptimized
-                style={{
-                  objectFit:
-                    "contain",
-                }}
+                className="object-contain"
               />
             ) : (
-              <span
-                style={{
-                  color:
-                    "#22c55e",
-                  fontSize: 30,
-                  fontWeight: 900,
-                }}
-              >
-                {team.tla ||
-                  "FC"}
+              <span className="text-[30px] font-black text-green-500">
+                {team.tla || "FC"}
               </span>
             )}
           </div>
 
-          <h2
-            style={{
-              color: "#fff",
-              margin:
-                "18px 0 6px",
-              fontSize: 23,
-            }}
-          >
+          <h2 className="my-[18px] mb-1.5 text-[23px] text-white">
             {team.name ||
               "Unknown Team"}
           </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-              fontSize: 14,
-            }}
-          >
+          <p className="m-0 text-sm text-slate-400">
             {country}
           </p>
         </div>
 
         {/* INFORMATION */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 25,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 20px",
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+          <h3 className="mb-5 text-white">
             Club Information
           </h3>
 
@@ -213,8 +104,7 @@ export default function TeamSocial({
           <InfoRow
             title="Founded"
             value={
-              team.founded ||
-              "-"
+              team.founded || "-"
             }
           />
 
@@ -226,68 +116,41 @@ export default function TeamSocial({
           <InfoRow
             title="Stadium"
             value={
-              venue.name ||
-              "-"
+              venue.name || "-"
             }
           />
 
           <InfoRow
             title="City"
             value={
-              venue.city ||
-              "-"
+              venue.city || "-"
             }
           />
 
           <InfoRow
             title="Address"
             value={
-              venue.address ||
-              "-"
+              venue.address || "-"
             }
           />
 
           <InfoRow
             title="Club Colors"
             value={
-              team.clubColors ||
-              "-"
+              team.clubColors || "-"
             }
           />
         </div>
       </div>
 
-      {/* =================================================
-          OFFICIAL LINKS
-      ================================================= */}
+      {/* OFFICIAL LINKS */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          marginBottom: 30,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 20px",
-          }}
-        >
+      <div className="mb-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-5 text-white">
           Official Links
         </h3>
 
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 14,
-          }}
-        >
+        <div className="flex flex-wrap gap-[14px]">
           <SocialButton
             icon="🌍"
             title="Official Website"
@@ -320,15 +183,7 @@ export default function TeamSocial({
         </div>
 
         {!website && (
-          <p
-            style={{
-              color: "#64748b",
-              margin:
-                "18px 0 0",
-              fontSize: 12,
-              lineHeight: 1.6,
-            }}
-          >
+          <p className="mt-[18px] text-xs leading-[1.6] text-slate-500">
             The current football-data.org
             team resource does not provide
             the club's social-media URLs or
@@ -337,38 +192,14 @@ export default function TeamSocial({
         )}
       </div>
 
-      {/* =================================================
-          CONTACT
-      ================================================= */}
+      {/* CONTACT */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          marginBottom: 30,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 18px",
-          }}
-        >
+      <div className="mb-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[18px] text-white">
           📍 Club Contact
         </h3>
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(240px,1fr))",
-            gap: 16,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-4">
           <ContactCard
             title="Country"
             value={country}
@@ -377,16 +208,14 @@ export default function TeamSocial({
           <ContactCard
             title="City"
             value={
-              venue.city ||
-              "-"
+              venue.city || "-"
             }
           />
 
           <ContactCard
             title="Address"
             value={
-              venue.address ||
-              "-"
+              venue.address || "-"
             }
           />
 
@@ -400,36 +229,14 @@ export default function TeamSocial({
         </div>
       </div>
 
-      {/* =================================================
-          ABOUT
-      ================================================= */}
+      {/* ABOUT */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 18px",
-          }}
-        >
+      <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[18px] text-white">
           About This Club
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.9,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.9] text-slate-300">
           <strong>
             {team.name ||
               "This club"}
@@ -449,20 +256,9 @@ export default function TeamSocial({
         </p>
       </div>
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -478,40 +274,12 @@ function InfoRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        alignItems:
-          "flex-start",
-        gap: 20,
-        padding:
-          "12px 0",
-        borderBottom:
-          "1px solid rgba(255,255,255,.08)",
-      }}
-    >
-      <span
-        style={{
-          color:
-            "#94a3b8",
-          fontSize: 13,
-          flexShrink: 0,
-        }}
-      >
+    <div className="flex items-start justify-between gap-5 border-b border-white/[0.08] py-3">
+      <span className="shrink-0 text-[13px] text-slate-400">
         {title}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-          fontSize: 14,
-          textAlign: "right",
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <strong className="break-words text-right text-sm text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </strong>
     </div>
@@ -543,27 +311,12 @@ function SocialButton({
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      className="flex items-center gap-2.5 rounded-[14px] px-[18px] py-[13px] text-sm font-bold text-white no-underline transition-opacity hover:opacity-90"
       style={{
-        textDecoration:
-          "none",
-        color: "#fff",
         background: color,
-        padding:
-          "13px 18px",
-        borderRadius: 14,
-        display: "flex",
-        alignItems:
-          "center",
-        gap: 10,
-        fontWeight: 700,
-        fontSize: 14,
       }}
     >
-      <span
-        style={{
-          fontSize: 20,
-        }}
-      >
+      <span className="text-[20px]">
         {icon}
       </span>
 
@@ -583,30 +336,9 @@ function UnavailableButton({
   return (
     <div
       title={`${title} link is not available from the current data source`}
-      style={{
-        color: "#64748b",
-        background:
-          "#111827",
-        border:
-          "1px solid #293548",
-        padding:
-          "13px 18px",
-        borderRadius: 14,
-        display: "flex",
-        alignItems:
-          "center",
-        gap: 10,
-        fontWeight: 700,
-        fontSize: 14,
-        opacity: 0.75,
-        cursor: "default",
-      }}
+      className="flex cursor-default items-center gap-2.5 rounded-[14px] border border-[#293548] bg-gray-900 px-[18px] py-[13px] text-sm font-bold text-slate-500 opacity-75"
     >
-      <span
-        style={{
-          fontSize: 20,
-        }}
-      >
+      <span className="text-[20px]">
         {icon}
       </span>
 
@@ -624,36 +356,12 @@ function ContactCard({
   value,
 }) {
   return (
-    <div
-      style={{
-        background:
-          "#111827",
-        borderRadius: 14,
-        padding: 18,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color:
-            "#94a3b8",
-          fontSize: 12,
-          marginBottom: 7,
-        }}
-      >
+    <div className="rounded-[14px] border border-[#293548] bg-gray-900 p-[18px]">
+      <div className="mb-[7px] text-xs text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontSize: 14,
-          fontWeight: 700,
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <div className="break-words text-sm font-bold text-white [overflow-wrap:anywhere]">
         {value || "-"}
       </div>
     </div>
