@@ -41,8 +41,7 @@ export default function TeamSquad({
 
         return {
           id:
-            player.id ??
-            null,
+            player.id ?? null,
 
           name:
             player.name ||
@@ -70,9 +69,7 @@ export default function TeamSquad({
 
           age:
             player.age ??
-            calculateAge(
-              birthDate
-            ),
+            calculateAge(birthDate),
 
           height:
             player.height ||
@@ -122,17 +119,16 @@ export default function TeamSquad({
   ===================================================== */
 
   const positions = useMemo(() => {
-    const uniquePositions =
-      [
-        ...new Set(
-          formattedPlayers
-            .map(
-              (player) =>
-                player.position
-            )
-            .filter(Boolean)
-        ),
-      ].sort();
+    const uniquePositions = [
+      ...new Set(
+        formattedPlayers
+          .map(
+            (player) =>
+              player.position
+          )
+          .filter(Boolean)
+      ),
+    ].sort();
 
     return [
       "All",
@@ -170,85 +166,37 @@ export default function TeamSquad({
           );
         }
       );
-    },
-    [
+    }, [
       formattedPlayers,
       search,
       position,
-    ]
-  );
+    ]);
 
   return (
     <section
       id="squad"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           👥 Team Squad
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Current squad provided by
           football-data.org.
         </p>
       </div>
 
-      {/* =================================================
-          CONTROLS
-      ================================================= */}
+      {/* CONTROLS */}
 
-      <div
-        style={{
-          display: "flex",
-          gap: 15,
-          flexWrap: "wrap",
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] flex flex-wrap gap-[15px]">
         <input
           value={search}
           onChange={(event) =>
@@ -257,20 +205,7 @@ export default function TeamSquad({
             )
           }
           placeholder="Search player..."
-          style={{
-            flex: 1,
-            minWidth: 240,
-            background:
-              "#1f2937",
-            color: "#fff",
-            border:
-              "1px solid #293548",
-            outline: "none",
-            padding:
-              "13px 15px",
-            borderRadius: 10,
-            fontSize: 14,
-          }}
+          className="min-w-[240px] flex-1 rounded-[10px] border border-[#293548] bg-gray-800 px-[15px] py-[13px] text-sm text-white outline-none placeholder:text-slate-500 focus:border-green-500"
         />
 
         <select
@@ -280,18 +215,7 @@ export default function TeamSquad({
               event.target.value
             )
           }
-          style={{
-            background:
-              "#1f2937",
-            color: "#fff",
-            border:
-              "1px solid #293548",
-            outline: "none",
-            padding:
-              "13px 15px",
-            borderRadius: 10,
-            fontSize: 14,
-          }}
+          className="rounded-[10px] border border-[#293548] bg-gray-800 px-[15px] py-[13px] text-sm text-white outline-none focus:border-green-500"
         >
           {positions.map(
             (item) => (
@@ -306,162 +230,50 @@ export default function TeamSquad({
         </select>
       </div>
 
-      {/* =================================================
-          RESULT COUNT
-      ================================================= */}
+      {/* RESULT COUNT */}
 
-      <div
-        style={{
-          color: "#64748b",
-          fontSize: 13,
-          marginBottom: 18,
-        }}
-      >
+      <div className="mb-[18px] text-[13px] text-slate-500">
         Showing{" "}
-        <strong
-          style={{
-            color: "#cbd5e1",
-          }}
-        >
+        <strong className="text-slate-300">
           {filteredPlayers.length}
         </strong>{" "}
         of{" "}
-        <strong
-          style={{
-            color: "#cbd5e1",
-          }}
-        >
+        <strong className="text-slate-300">
           {formattedPlayers.length}
         </strong>{" "}
         players
       </div>
 
-      {/* =================================================
-          EMPTY STATE
-      ================================================= */}
+      {/* EMPTY STATE */}
 
       {formattedPlayers.length ===
       0 ? (
-        <div
-          style={{
-            background:
-              "#1f2937",
-            borderRadius: 16,
-            padding: 35,
-            textAlign:
-              "center",
-            color:
-              "#94a3b8",
-          }}
-        >
+        <div className="rounded-2xl bg-gray-800 p-[35px] text-center text-slate-400">
           No squad players are
           available.
         </div>
       ) : filteredPlayers.length ===
         0 ? (
-        <div
-          style={{
-            background:
-              "#1f2937",
-            borderRadius: 16,
-            padding: 35,
-            textAlign:
-              "center",
-            color:
-              "#94a3b8",
-          }}
-        >
+        <div className="rounded-2xl bg-gray-800 p-[35px] text-center text-slate-400">
           No players match your
           search/filter.
         </div>
       ) : (
-        /* =================================================
-           SQUAD GRID
-        ================================================= */
+        /* SQUAD GRID */
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fill,minmax(270px,1fr))",
-            gap: 20,
-          }}
-        >
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(270px,1fr))] gap-5">
           {filteredPlayers.map(
             (player) => (
               <Link
                 key={player.id}
                 href={`/player/${player.id}`}
-                style={{
-                  textDecoration:
-                    "none",
-                  color: "#fff",
-                  display:
-                    "block",
-                }}
+                className="block text-white no-underline"
               >
-                <article
-                  style={{
-                    background:
-                      "#1f2937",
-                    borderRadius:
-                      18,
-                    padding: 22,
-                    border:
-                      "1px solid #293548",
-                    height:
-                      "100%",
-                    transition:
-                      "transform .25s ease, border-color .25s ease, box-shadow .25s ease",
-                  }}
-                  onMouseEnter={(
-                    event
-                  ) => {
-                    event.currentTarget.style.transform =
-                      "translateY(-5px)";
-
-                    event.currentTarget.style.borderColor =
-                      "#22c55e";
-
-                    event.currentTarget.style.boxShadow =
-                      "0 12px 25px rgba(0,0,0,.28)";
-                  }}
-                  onMouseLeave={(
-                    event
-                  ) => {
-                    event.currentTarget.style.transform =
-                      "translateY(0)";
-
-                    event.currentTarget.style.borderColor =
-                      "#293548";
-
-                    event.currentTarget.style.boxShadow =
-                      "none";
-                  }}
-                >
+                <article className="h-full rounded-[18px] border border-[#293548] bg-gray-800 p-[22px] transition-all duration-300 hover:-translate-y-[5px] hover:border-green-500 hover:shadow-[0_12px_25px_rgba(0,0,0,0.28)]">
                   {/* TOP ROW */}
 
-                  <div
-                    style={{
-                      display:
-                        "flex",
-                      justifyContent:
-                        "space-between",
-                      alignItems:
-                        "center",
-                      gap: 12,
-                      marginBottom:
-                        18,
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: 24,
-                        fontWeight: 900,
-                        color:
-                          "#22c55e",
-                      }}
-                    >
+                  <div className="mb-[18px] flex items-center justify-between gap-3">
+                    <div className="text-[24px] font-black text-green-500">
                       #
                       {player.number !==
                       "-"
@@ -469,39 +281,14 @@ export default function TeamSquad({
                         : "—"}
                     </div>
 
-                    <div
-                      style={{
-                        background:
-                          "#111827",
-                        borderRadius:
-                          30,
-                        padding:
-                          "6px 12px",
-                        fontSize: 12,
-                        color:
-                          "#cbd5e1",
-                        fontWeight:
-                          700,
-                      }}
-                    >
-                      {
-                        player.position
-                      }
+                    <div className="rounded-[30px] bg-gray-900 px-3 py-1.5 text-xs font-bold text-slate-300">
+                      {player.position}
                     </div>
                   </div>
 
                   {/* PLAYER IMAGE */}
 
-                  <div
-                    style={{
-                      display:
-                        "flex",
-                      justifyContent:
-                        "center",
-                      marginBottom:
-                        18,
-                    }}
-                  >
+                  <div className="mb-[18px] flex justify-center">
                     {player.photo ? (
                       <Image
                         src={
@@ -513,39 +300,10 @@ export default function TeamSquad({
                         width={100}
                         height={100}
                         unoptimized
-                        style={{
-                          borderRadius:
-                            "50%",
-                          objectFit:
-                            "cover",
-                          border:
-                            "3px solid #293548",
-                        }}
+                        className="rounded-full border-[3px] border-[#293548] object-cover"
                       />
                     ) : (
-                      <div
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius:
-                            "50%",
-                          background:
-                            "linear-gradient(135deg,#111827,#293548)",
-                          display:
-                            "flex",
-                          alignItems:
-                            "center",
-                          justifyContent:
-                            "center",
-                          color:
-                            "#22c55e",
-                          fontSize: 32,
-                          fontWeight:
-                            900,
-                          border:
-                            "3px solid #293548",
-                        }}
-                      >
+                      <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border-[3px] border-[#293548] bg-gradient-to-br from-gray-900 to-slate-800 text-[32px] font-black text-green-500">
                         {player.name
                           ?.slice(
                             0,
@@ -559,32 +317,13 @@ export default function TeamSquad({
 
                   {/* NAME */}
 
-                  <h3
-                    style={{
-                      textAlign:
-                        "center",
-                      margin:
-                        "0 0 16px",
-                      fontSize: 20,
-                      color:
-                        "#fff",
-                    }}
-                  >
+                  <h3 className="mb-4 text-center text-[20px] text-white">
                     {player.name}
                   </h3>
 
                   {/* PLAYER DATA */}
 
-                  <div
-                    style={{
-                      display:
-                        "grid",
-                      gap: 8,
-                      color:
-                        "#cbd5e1",
-                      fontSize: 13,
-                    }}
-                  >
+                  <div className="grid gap-2 text-[13px] text-slate-300">
                     <Row
                       label="Age"
                       value={
@@ -635,20 +374,9 @@ export default function TeamSquad({
         </div>
       )}
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -664,30 +392,10 @@ function Row({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        gap: 12,
-        padding:
-          "8px 0",
-        borderBottom:
-          "1px solid #293548",
-      }}
-    >
-      <span>
-        {label}
-      </span>
+    <div className="flex justify-between gap-3 border-b border-[#293548] py-2">
+      <span>{label}</span>
 
-      <strong
-        style={{
-          color: "#fff",
-          textAlign: "right",
-          overflowWrap:
-            "anywhere",
-        }}
-      >
+      <strong className="break-words text-right text-white [overflow-wrap:anywhere]">
         {value ?? "-"}
       </strong>
     </div>
