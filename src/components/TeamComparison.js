@@ -94,91 +94,30 @@ export default function TeamComparison({
   return (
     <section
       id="comparison"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           📊 Performance Comparison
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-            lineHeight: 1.6,
-          }}
-        >
+        <p className="mt-2 text-sm leading-[1.6] text-slate-400">
           A normalized comparison of the
           team's current-season performance.
         </p>
       </div>
 
-      {/* =================================================
-          RATE COMPARISON
-      ================================================= */}
+      {/* RATE COMPARISON */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(280px,1fr))",
-          gap: 30,
-        }}
-      >
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 24,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 25px",
-              fontSize: 20,
-            }}
-          >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[30px]">
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-6">
+          <h3 className="mb-[25px] text-[20px] text-white">
             📈 Result Rates
           </h3>
 
@@ -213,27 +152,10 @@ export default function TeamComparison({
           />
         </div>
 
-        {/* =================================================
-            EFFICIENCY
-        ================================================= */}
+        {/* EFFICIENCY */}
 
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 24,
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 25px",
-              fontSize: 20,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-6">
+          <h3 className="mb-[25px] text-[20px] text-white">
             ⚡ Team Efficiency
           </h3>
 
@@ -273,19 +195,9 @@ export default function TeamComparison({
         </div>
       </div>
 
-      {/* =================================================
-          RECORD SUMMARY
-      ================================================= */}
+      {/* RECORD SUMMARY */}
 
-      <div
-        style={{
-          marginTop: 25,
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(160px,1fr))",
-          gap: 15,
-        }}
-      >
+      <div className="mt-[25px] grid grid-cols-[repeat(auto-fit,minmax(160px,1fr))] gap-[15px]">
         <MetricCard
           label="Wins"
           value={wins}
@@ -323,46 +235,21 @@ export default function TeamComparison({
         />
       </div>
 
-      {/* =================================================
-          ANALYSIS
-      ================================================= */}
+      {/* ANALYSIS */}
 
-      <div
-        style={{
-          marginTop: 30,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 15px",
-          }}
-        >
+      <div className="mt-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-6">
+        <h3 className="mb-[15px] text-white">
           📌 Analysis
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.85,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.85] text-slate-300">
           The team has played{" "}
           <strong>{played}</strong>{" "}
           matches, winning{" "}
-          <strong>{wins}</strong>,
-          drawing{" "}
-          <strong>{draws}</strong> and
-          losing{" "}
-          <strong>{losses}</strong>.
-          The team has scored{" "}
+          <strong>{wins}</strong>, drawing{" "}
+          <strong>{draws}</strong> and losing{" "}
+          <strong>{losses}</strong>. The
+          team has scored{" "}
           <strong>{goalsFor}</strong>{" "}
           goals and conceded{" "}
           <strong>{goalsAgainst}</strong>,
@@ -372,32 +259,17 @@ export default function TeamComparison({
               ? `+${goalDifference}`
               : goalDifference}
           </strong>
-          .
-          {" "}
-          The current points total is{" "}
-          <strong>{points}</strong>{" "}
-          with an average of{" "}
-          <strong>
-            {pointsPerGame}
-          </strong>{" "}
+          . The current points total is{" "}
+          <strong>{points}</strong> with an
+          average of{" "}
+          <strong>{pointsPerGame}</strong>{" "}
           points per match.
         </p>
       </div>
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
         {statistics.season
           ? ` • Season ${statistics.season}`
@@ -426,46 +298,19 @@ function ProgressBar({
     );
 
   return (
-    <div
-      style={{
-        marginBottom: 22,
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          marginBottom: 8,
-          color: "#fff",
-          fontWeight: 600,
-          fontSize: 13,
-        }}
-      >
+    <div className="mb-[22px]">
+      <div className="mb-2 flex justify-between text-[13px] font-semibold text-white">
         <span>{title}</span>
 
-        <span>
-          {safeValue}%
-        </span>
+        <span>{safeValue}%</span>
       </div>
 
-      <div
-        style={{
-          background: "#374151",
-          height: 12,
-          borderRadius: 30,
-          overflow: "hidden",
-        }}
-      >
+      <div className="h-3 overflow-hidden rounded-[30px] bg-gray-700">
         <div
+          className="h-full rounded-[30px] transition-[width] duration-[800ms] ease"
           style={{
-            width:
-              `${safeValue}%`,
+            width: `${safeValue}%`,
             background: color,
-            height: "100%",
-            borderRadius: 30,
-            transition:
-              "width .8s ease",
           }}
         />
       </div>
@@ -482,33 +327,12 @@ function InfoRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        gap: 15,
-        padding:
-          "11px 0",
-        borderBottom:
-          "1px solid rgba(255,255,255,.08)",
-      }}
-    >
-      <span
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-        }}
-      >
+    <div className="flex justify-between gap-[15px] border-b border-white/[0.08] py-[11px]">
+      <span className="text-[13px] text-slate-400">
         {label}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-          fontSize: 14,
-        }}
-      >
+      <strong className="text-sm text-white">
         {value ?? "-"}
       </strong>
     </div>
@@ -526,30 +350,19 @@ function MetricCard({
 }) {
   return (
     <div
+      className="rounded-[14px] bg-gray-800 p-[18px] text-center"
       style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 18,
-        textAlign: "center",
-        border:
-          `1px solid ${color}40`,
+        border: `1px solid ${color}40`,
       }}
     >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 12,
-          marginBottom: 8,
-        }}
-      >
+      <div className="mb-2 text-xs text-slate-400">
         {label}
       </div>
 
       <div
+        className="text-[24px] font-black"
         style={{
           color,
-          fontSize: 24,
-          fontWeight: 900,
         }}
       >
         {value}
