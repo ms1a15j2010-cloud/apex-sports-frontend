@@ -53,86 +53,36 @@ export default function TeamAchievements({
   return (
     <section
       id="achievements"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🏆 Team Achievements
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-            lineHeight: 1.6,
-          }}
-        >
+        <p className="mt-2 text-sm leading-[1.6] text-slate-400">
           Major trophies and
           championship history.
         </p>
       </div>
 
-      {/* =================================================
-          TROPHIES AVAILABLE
-      ================================================= */}
+      {/* TROPHIES AVAILABLE */}
 
       {available ? (
         <>
           {/* SUMMARY */}
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(200px,1fr))",
-              gap: 18,
-              marginBottom: 30,
-            }}
-          >
+          <div className="mb-[30px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[18px]">
             <StatCard
               icon="🏆"
               title="Total Trophies"
-              value={
-                trophies.length
-              }
+              value={trophies.length}
               color="#facc15"
             />
 
@@ -148,32 +98,21 @@ export default function TeamAchievements({
             <StatCard
               icon="🥈"
               title="Runner-up"
-              value={
-                runnersUp.length
-              }
+              value={runnersUp.length}
               color="#3b82f6"
             />
 
             <StatCard
               icon="🌍"
               title="Competitions"
-              value={
-                competitions.length
-              }
+              value={competitions.length}
               color="#8b5cf6"
             />
           </div>
 
           {/* TROPHY LIST */}
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(280px,1fr))",
-              gap: 18,
-            }}
-          >
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[18px]">
             {trophies.map(
               (trophy, index) => (
                 <div
@@ -181,86 +120,29 @@ export default function TeamAchievements({
                     trophy?.id ??
                     index
                   }
-                  style={{
-                    background:
-                      "#1f2937",
-                    borderRadius: 18,
-                    padding: 22,
-                    border:
-                      "1px solid #293548",
-                  }}
+                  className="rounded-[18px] border border-[#293548] bg-gray-800 p-[22px]"
                 >
-                  <div
-                    style={{
-                      display:
-                        "flex",
-                      justifyContent:
-                        "space-between",
-                      alignItems:
-                        "center",
-                      gap: 12,
-                      marginBottom:
-                        16,
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: 30,
-                      }}
-                    >
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <span className="text-[30px]">
                       🏆
                     </span>
 
-                    <span
-                      style={{
-                        background:
-                          "#0f172a",
-                        color:
-                          "#facc15",
-                        padding:
-                          "6px 12px",
-                        borderRadius:
-                          999,
-                        fontSize: 12,
-                        fontWeight:
-                          800,
-                      }}
-                    >
+                    <span className="rounded-full bg-slate-900 px-3 py-1.5 text-xs font-extrabold text-yellow-400">
                       {trophy?.place ||
                         "Achievement"}
                     </span>
                   </div>
 
-                  <h3
-                    style={{
-                      color: "#fff",
-                      margin:
-                        "0 0 10px",
-                      fontSize: 20,
-                    }}
-                  >
+                  <h3 className="mb-2.5 text-[20px] text-white">
                     {trophy?.league ||
                       "Competition"}
                   </h3>
 
-                  <div
-                    style={{
-                      color:
-                        "#94a3b8",
-                      fontSize: 13,
-                    }}
-                  >
+                  <div className="text-[13px] text-slate-400">
                     Season
                   </div>
 
-                  <div
-                    style={{
-                      color: "#fff",
-                      fontWeight: 800,
-                      fontSize: 18,
-                      marginTop: 5,
-                    }}
-                  >
+                  <div className="mt-[5px] text-[18px] font-extrabold text-white">
                     {trophy?.season ||
                       "-"}
                   </div>
@@ -270,51 +152,18 @@ export default function TeamAchievements({
           </div>
         </>
       ) : (
-        /* =================================================
-           UNAVAILABLE STATE
-        ================================================= */
+        /* UNAVAILABLE STATE */
 
-        <div
-          style={{
-            background:
-              "#1f2937",
-            borderRadius: 18,
-            padding: 40,
-            textAlign: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 58,
-              marginBottom: 18,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-10 text-center">
+          <div className="mb-[18px] text-[58px]">
             🏆
           </div>
 
-          <h3
-            style={{
-              color: "#fff",
-              margin:
-                "0 0 10px",
-              fontSize: 21,
-            }}
-          >
+          <h3 className="mb-2.5 text-[21px] text-white">
             Trophy History Unavailable
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-              lineHeight: 1.8,
-              maxWidth: 600,
-              marginInline:
-                "auto",
-            }}
-          >
+          <p className="mx-auto m-0 max-w-[600px] leading-[1.8] text-slate-400">
             Historical team trophy data
             is not provided by the current
             football-data.org source.
@@ -323,41 +172,15 @@ export default function TeamAchievements({
             unverified trophy information.
           </p>
 
-          <div
-            style={{
-              display:
-                "inline-block",
-              marginTop: 18,
-              padding:
-                "8px 14px",
-              borderRadius: 999,
-              background:
-                "#0f172a",
-              color:
-                "#64748b",
-              fontSize: 12,
-              fontWeight: 700,
-            }}
-          >
+          <div className="mt-[18px] inline-block rounded-full bg-slate-900 px-[14px] py-2 text-xs font-bold text-slate-500">
             Source: football-data.org
           </div>
         </div>
       )}
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -376,42 +199,23 @@ function StatCard({
 }) {
   return (
     <div
+      className="rounded-2xl bg-gray-800 p-[22px] text-center"
       style={{
-        background:
-          "#1f2937",
-        borderRadius: 16,
-        padding: 22,
-        textAlign:
-          "center",
-        border:
-          `1px solid ${color}40`,
+        border: `1px solid ${color}40`,
       }}
     >
-      <div
-        style={{
-          fontSize: 30,
-          marginBottom: 12,
-        }}
-      >
+      <div className="mb-3 text-[30px]">
         {icon}
       </div>
 
-      <div
-        style={{
-          color:
-            "#94a3b8",
-          marginBottom: 8,
-          fontSize: 13,
-        }}
-      >
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
       <div
+        className="text-[28px] font-black"
         style={{
           color,
-          fontSize: 28,
-          fontWeight: 900,
         }}
       >
         {value}
