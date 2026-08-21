@@ -46,76 +46,29 @@ export default function TeamHistory({
   return (
     <section
       id="history"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform:
-              "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           📖 Club History
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           Club identity, foundation,
           venue information and recent
           historical results.
         </p>
       </div>
 
-      {/* =================================================
-          SUMMARY CARDS
-      ================================================= */}
+      {/* SUMMARY CARDS */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(200px,1fr))",
-          gap: 18,
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[18px]">
         <HistoryCard
           icon="📅"
           title="Founded"
@@ -145,27 +98,10 @@ export default function TeamHistory({
         />
       </div>
 
-      {/* =================================================
-          CLUB TIMELINE
-      ================================================= */}
+      {/* CLUB TIMELINE */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          marginBottom: 30,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 25px",
-          }}
-        >
+      <div className="mb-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[25px] text-white">
           Club Timeline
         </h3>
 
@@ -180,7 +116,11 @@ export default function TeamHistory({
           title="Home Stadium"
           description={
             venueName !== "-"
-              ? `${venueName}${venueCity !== "-" ? ` in ${venueCity}` : ""}.`
+              ? `${venueName}${
+                  venueCity !== "-"
+                    ? ` in ${venueCity}`
+                    : ""
+                }.`
               : "Home stadium information is unavailable."
           }
         />
@@ -210,47 +150,20 @@ export default function TeamHistory({
         )}
       </div>
 
-      {/* =================================================
-          RECENT HISTORY
-      ================================================= */}
+      {/* RECENT HISTORY */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          marginBottom: 30,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 20px",
-          }}
-        >
+      <div className="mb-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-5 text-white">
           🕘 Recent Match History
         </h3>
 
         {matches.length === 0 ? (
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-            }}
-          >
+          <p className="m-0 text-slate-400">
             Recent historical matches are
             not available.
           </p>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gap: 12,
-            }}
-          >
+          <div className="grid gap-3">
             {matches
               .slice(0, 10)
               .map(
@@ -279,10 +192,8 @@ export default function TeamHistory({
                           "en-US",
                           {
                             day: "numeric",
-                            month:
-                              "short",
-                            year:
-                              "numeric",
+                            month: "short",
+                            year: "numeric",
                           }
                         )
                       : "-";
@@ -293,48 +204,15 @@ export default function TeamHistory({
                         match?.id ??
                         index
                       }
-                      style={{
-                        background:
-                          "#111827",
-                        borderRadius:
-                          14,
-                        padding: 16,
-                        display:
-                          "grid",
-                        gridTemplateColumns:
-                          "1fr auto 1fr",
-                        alignItems:
-                          "center",
-                        gap: 12,
-                        border:
-                          "1px solid #293548",
-                      }}
+                      className="grid grid-cols-[1fr_auto_1fr] items-center gap-3 rounded-[14px] border border-[#293548] bg-gray-900 p-4"
                     >
-                      <div
-                        style={{
-                          color: "#fff",
-                          fontWeight: 700,
-                        }}
-                      >
+                      <div className="break-words font-bold text-white [overflow-wrap:anywhere]">
                         {home.name ||
                           "Home Team"}
                       </div>
 
-                      <div
-                        style={{
-                          textAlign:
-                            "center",
-                          minWidth: 80,
-                        }}
-                      >
-                        <div
-                          style={{
-                            color:
-                              "#fff",
-                            fontWeight:
-                              900,
-                          }}
-                        >
+                      <div className="min-w-[80px] text-center">
+                        <div className="font-black text-white">
                           {score.home ??
                             0}{" "}
                           -{" "}
@@ -342,30 +220,12 @@ export default function TeamHistory({
                             0}
                         </div>
 
-                        <div
-                          style={{
-                            color:
-                              "#64748b",
-                            fontSize:
-                              11,
-                            marginTop:
-                              4,
-                          }}
-                        >
+                        <div className="mt-1 text-[11px] text-slate-500">
                           {date}
                         </div>
                       </div>
 
-                      <div
-                        style={{
-                          color:
-                            "#fff",
-                          fontWeight:
-                            700,
-                          textAlign:
-                            "right",
-                        }}
-                      >
+                      <div className="break-words text-right font-bold text-white [overflow-wrap:anywhere]">
                         {away.name ||
                           "Away Team"}
                       </div>
@@ -377,36 +237,14 @@ export default function TeamHistory({
         )}
       </div>
 
-      {/* =================================================
-          CLUB IDENTITY
-      ================================================= */}
+      {/* CLUB IDENTITY */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            margin:
-              "0 0 18px",
-          }}
-        >
+      <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-[25px]">
+        <h3 className="mb-[18px] text-white">
           Club Identity
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.9,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.9] text-slate-300">
           <strong>
             {team.name ||
               "This club"}
@@ -425,20 +263,9 @@ export default function TeamHistory({
         </p>
       </div>
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -457,41 +284,23 @@ function HistoryCard({
 }) {
   return (
     <div
+      className="rounded-2xl bg-gray-800 p-[22px] text-center"
       style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 22,
-        textAlign: "center",
-        border:
-          `1px solid ${color}40`,
+        border: `1px solid ${color}40`,
       }}
     >
-      <div
-        style={{
-          fontSize: 30,
-          marginBottom: 12,
-        }}
-      >
+      <div className="mb-3 text-[30px]">
         {icon}
       </div>
 
-      <div
-        style={{
-          color: "#94a3b8",
-          marginBottom: 8,
-          fontSize: 13,
-        }}
-      >
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
       <div
+        className="break-words text-[22px] font-black [overflow-wrap:anywhere]"
         style={{
           color,
-          fontSize: 22,
-          fontWeight: 900,
-          overflowWrap:
-            "anywhere",
         }}
       >
         {value}
@@ -510,50 +319,17 @@ function TimelineItem({
   description,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 20,
-        marginBottom: 22,
-      }}
-    >
-      <div
-        style={{
-          width: 90,
-          color: "#22c55e",
-          fontWeight: 800,
-          flexShrink: 0,
-          fontSize: 13,
-        }}
-      >
+    <div className="mb-[22px] flex gap-5">
+      <div className="w-[90px] shrink-0 text-[13px] font-extrabold text-green-500">
         {year}
       </div>
 
-      <div
-        style={{
-          flex: 1,
-          borderLeft:
-            "3px solid #22c55e",
-          paddingLeft: 18,
-        }}
-      >
-        <div
-          style={{
-            color: "#fff",
-            fontWeight: 800,
-            marginBottom: 6,
-          }}
-        >
+      <div className="flex-1 border-l-[3px] border-green-500 pl-[18px]">
+        <div className="mb-1.5 font-extrabold text-white">
           {title}
         </div>
 
-        <div
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.7,
-            fontSize: 14,
-          }}
-        >
+        <div className="text-sm leading-[1.7] text-slate-300">
           {description}
         </div>
       </div>
