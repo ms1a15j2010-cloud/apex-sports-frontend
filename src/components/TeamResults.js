@@ -36,112 +36,45 @@ export default function TeamResults({
   return (
     <section
       id="results"
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
+      className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
     >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 28,
-          }}
-        >
+        <h2 className="m-0 text-[28px] text-white">
           🏁 Latest Results
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
+        <p className="mt-2 text-sm text-slate-400">
           The team's most recent completed
           matches.
         </p>
       </div>
 
-      {/* =================================================
-          EMPTY STATE
-      ================================================= */}
+      {/* EMPTY STATE */}
 
       {matches.length === 0 ? (
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 18,
-            padding: 40,
-            textAlign: "center",
-            border:
-              "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 48,
-              marginBottom: 14,
-            }}
-          >
+        <div className="rounded-[18px] border border-[#293548] bg-gray-800 p-10 text-center">
+          <div className="mb-[14px] text-[48px]">
             🏁
           </div>
 
-          <h3
-            style={{
-              color: "#fff",
-              margin: "0 0 8px",
-            }}
-          >
+          <h3 className="mb-2 text-white">
             No Results Available
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin: 0,
-              fontSize: 14,
-            }}
-          >
+          <p className="m-0 text-sm text-slate-400">
             No completed team results are
             available from the current data
             source.
           </p>
         </div>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gap: 16,
-          }}
-        >
+        <div className="grid gap-4">
           {matches.map(
             (match, index) => {
               const matchId =
@@ -197,33 +130,18 @@ export default function TeamResults({
                 competition?.logo ||
                 null;
 
-              const homeLogo =
-                home?.crest ||
-                home?.logo ||
-                null;
-
-              const awayLogo =
-                away?.crest ||
-                away?.logo ||
-                null;
-
               const dateText = matchDate
                 ? new Date(
                     matchDate
                   ).toLocaleString(
                     "en-US",
                     {
-                      weekday:
-                        "short",
+                      weekday: "short",
                       day: "numeric",
-                      month:
-                        "short",
-                      year:
-                        "numeric",
-                      hour:
-                        "numeric",
-                      minute:
-                        "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "numeric",
+                      minute: "2-digit",
                     }
                   )
                 : "Unknown Date";
@@ -241,62 +159,11 @@ export default function TeamResults({
                   : "#22c55e";
 
               const card = (
-                <article
-                  style={{
-                    background:
-                      "#1f2937",
-                    borderRadius: 18,
-                    padding: 20,
-                    border:
-                      "1px solid #293548",
-                    transition:
-                      "transform .25s ease, box-shadow .25s ease, border-color .25s ease",
-                  }}
-                  onMouseEnter={(event) => {
-                    event.currentTarget.style.transform =
-                      "translateY(-3px)";
+                <article className="rounded-[18px] border border-[#293548] bg-gray-800 p-5 transition-all duration-300 hover:-translate-y-[3px] hover:border-green-500 hover:shadow-[0_10px_24px_rgba(0,0,0,0.30)]">
+                  {/* DATE / COMPETITION */}
 
-                    event.currentTarget.style.boxShadow =
-                      "0 10px 24px rgba(0,0,0,.30)";
-
-                    event.currentTarget.style.borderColor =
-                      "#22c55e";
-                  }}
-                  onMouseLeave={(event) => {
-                    event.currentTarget.style.transform =
-                      "translateY(0)";
-
-                    event.currentTarget.style.boxShadow =
-                      "none";
-
-                    event.currentTarget.style.borderColor =
-                      "#293548";
-                  }}
-                >
-                  {/* =================================================
-                      DATE / COMPETITION
-                  ================================================= */}
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent:
-                        "space-between",
-                      alignItems: "center",
-                      gap: 15,
-                      flexWrap: "wrap",
-                      marginBottom: 20,
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems:
-                          "center",
-                        gap: 10,
-                        minWidth: 0,
-                      }}
-                    >
+                  <div className="mb-5 flex flex-wrap items-center justify-between gap-[15px]">
+                    <div className="flex min-w-0 items-center gap-2.5">
                       {competitionLogo ? (
                         <Image
                           src={
@@ -308,76 +175,27 @@ export default function TeamResults({
                           width={26}
                           height={26}
                           unoptimized
-                          style={{
-                            objectFit:
-                              "contain",
-                            flexShrink: 0,
-                          }}
+                          className="shrink-0 object-contain"
                         />
                       ) : (
-                        <div
-                          style={{
-                            width: 26,
-                            height: 26,
-                            borderRadius: 7,
-                            background:
-                              "#111827",
-                            display: "flex",
-                            alignItems:
-                              "center",
-                            justifyContent:
-                              "center",
-                            color:
-                              "#22c55e",
-                            fontSize: 10,
-                            fontWeight: 900,
-                          }}
-                        >
+                        <div className="flex h-[26px] w-[26px] shrink-0 items-center justify-center rounded-[7px] bg-gray-900 text-[10px] font-black text-green-500">
                           PL
                         </div>
                       )}
 
-                      <span
-                        style={{
-                          color:
-                            "#cbd5e1",
-                          fontSize: 13,
-                          fontWeight: 700,
-                          overflow: "hidden",
-                          textOverflow:
-                            "ellipsis",
-                          whiteSpace:
-                            "nowrap",
-                        }}
-                      >
+                      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-[13px] font-bold text-slate-300">
                         {competitionName}
                       </span>
                     </div>
 
-                    <div
-                      style={{
-                        color:
-                          "#64748b",
-                        fontSize: 12,
-                      }}
-                    >
+                    <div className="text-xs text-slate-500">
                       {dateText}
                     </div>
                   </div>
 
-                  {/* =================================================
-                      TEAMS / SCORE
-                  ================================================= */}
+                  {/* TEAMS / SCORE */}
 
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns:
-                        "1fr auto 1fr",
-                      alignItems: "center",
-                      gap: 18,
-                    }}
-                  >
+                  <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-[18px]">
                     {/* HOME */}
 
                     <TeamBlock
@@ -387,40 +205,18 @@ export default function TeamResults({
 
                     {/* SCORE */}
 
-                    <div
-                      style={{
-                        textAlign: "center",
-                        minWidth: 95,
-                      }}
-                    >
-                      <div
-                        style={{
-                          fontSize: 28,
-                          fontWeight: 900,
-                          color: "#22c55e",
-                        }}
-                      >
+                    <div className="min-w-[95px] text-center">
+                      <div className="text-[28px] font-black text-green-500">
                         {homeGoals}
                         {" - "}
                         {awayGoals}
                       </div>
 
                       <div
+                        className="mt-1.5 inline-block rounded-full bg-gray-900 px-2.5 py-1 text-[11px] font-extrabold uppercase"
                         style={{
-                          marginTop: 6,
-                          display:
-                            "inline-block",
-                          padding:
-                            "4px 10px",
-                          borderRadius: 999,
-                          background:
-                            "#111827",
                           color:
                             resultColor,
-                          fontSize: 11,
-                          fontWeight: 800,
-                          textTransform:
-                            "uppercase",
                         }}
                       >
                         {resultText}
@@ -435,28 +231,9 @@ export default function TeamResults({
                     />
                   </div>
 
-                  {/* =================================================
-                      MATCH DETAILS
-                  ================================================= */}
+                  {/* MATCH DETAILS */}
 
-                  <div
-                    style={{
-                      marginTop: 18,
-                      paddingTop: 15,
-                      borderTop:
-                        "1px solid #293548",
-                      display: "flex",
-                      justifyContent:
-                        "space-between",
-                      alignItems:
-                        "center",
-                      gap: 12,
-                      flexWrap: "wrap",
-                      color:
-                        "#94a3b8",
-                      fontSize: 12,
-                    }}
-                  >
+                  <div className="mt-[18px] flex flex-wrap items-center justify-between gap-3 border-t border-[#293548] pt-[15px] text-xs text-slate-400">
                     <span>
                       📍{" "}
                       {venue?.name ||
@@ -476,9 +253,7 @@ export default function TeamResults({
               if (!matchId) {
                 return (
                   <div
-                    key={
-                      `result-${index}`
-                    }
+                    key={`result-${index}`}
                   >
                     {card}
                   </div>
@@ -489,12 +264,7 @@ export default function TeamResults({
                 <Link
                   key={matchId}
                   href={`/match/${matchId}`}
-                  style={{
-                    color: "inherit",
-                    textDecoration:
-                      "none",
-                    display: "block",
-                  }}
+                  className="block text-inherit no-underline"
                 >
                   {card}
                 </Link>
@@ -504,20 +274,9 @@ export default function TeamResults({
         </div>
       )}
 
-      {/* =================================================
-          SOURCE
-      ================================================= */}
+      {/* SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          paddingTop: 16,
-          borderTop:
-            "1px solid #293548",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] border-t border-[#293548] pt-4 text-xs text-slate-500">
         Source: football-data.org
       </div>
     </section>
@@ -547,16 +306,11 @@ function TeamBlock({
 
   return (
     <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent:
-          isRight
-            ? "flex-end"
-            : "flex-start",
-        gap: 10,
-        minWidth: 0,
-      }}
+      className={`flex min-w-0 items-center gap-2.5 ${
+        isRight
+          ? "justify-end"
+          : "justify-start"
+      }`}
     >
       {!isRight &&
         (logo ? (
@@ -566,30 +320,18 @@ function TeamBlock({
             width={42}
             height={42}
             unoptimized
-            style={{
-              objectFit:
-                "contain",
-              flexShrink: 0,
-            }}
+            className="shrink-0 object-contain"
           />
         ) : (
-          <TeamFallback
-            name={name}
-          />
+          <TeamFallback name={name} />
         ))}
 
       <strong
-        style={{
-          color: "#fff",
-          fontSize: 14,
-          lineHeight: 1.35,
-          textAlign:
-            isRight
-              ? "right"
-              : "left",
-          overflowWrap:
-            "anywhere",
-        }}
+        className={`break-words text-sm leading-[1.35] text-white [overflow-wrap:anywhere] ${
+          isRight
+            ? "text-right"
+            : "text-left"
+        }`}
       >
         {name}
       </strong>
@@ -602,16 +344,10 @@ function TeamBlock({
             width={42}
             height={42}
             unoptimized
-            style={{
-              objectFit:
-                "contain",
-              flexShrink: 0,
-            }}
+            className="shrink-0 object-contain"
           />
         ) : (
-          <TeamFallback
-            name={name}
-          />
+          <TeamFallback name={name} />
         ))}
     </div>
   );
@@ -625,23 +361,7 @@ function TeamFallback({
   name,
 }) {
   return (
-    <div
-      style={{
-        width: 42,
-        height: 42,
-        borderRadius: 10,
-        background:
-          "#111827",
-        display: "flex",
-        alignItems: "center",
-        justifyContent:
-          "center",
-        color: "#22c55e",
-        fontSize: 11,
-        fontWeight: 900,
-        flexShrink: 0,
-      }}
-    >
+    <div className="flex h-[42px] w-[42px] shrink-0 items-center justify-center rounded-[10px] bg-gray-900 text-[11px] font-black text-green-500">
       {name
         ?.slice(0, 2)
         ?.toUpperCase() ||
