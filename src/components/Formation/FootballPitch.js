@@ -1,222 +1,76 @@
 "use client";
-import PlayerMarker from "./PlayerMarker";
+
 export default function FootballPitch({
   children,
   height = 900,
 }) {
   return (
-    <div
-      style={{
-        width: "100%",
-        maxWidth: 700,
-        margin: "0 auto",
-      }}
-    >
+    <div className="mx-auto w-full max-w-[700px]">
       <div
-        style={{
-          position: "relative",
-          width: "100%",
-          aspectRatio: "68 / 105",
-          background:
-            "linear-gradient(to bottom,#15803d,#166534)",
-
-          border: "4px solid white",
-          borderRadius: 12,
-          overflow: "hidden",
-        }}
+        className="relative w-full overflow-hidden rounded-xl border-4 border-white bg-gradient-to-b from-green-700 to-green-800"
+        style={{ aspectRatio: "68 / 105" }}
       >
         {/* Grass stripes */}
 
         {Array.from({ length: 10 }).map((_, i) => (
           <div
             key={i}
+            className={`absolute left-0 right-0 h-[10%] ${
+              i % 2 === 0
+                ? "bg-white/[0.03]"
+                : "bg-transparent"
+            }`}
             style={{
-              position: "absolute",
-              left: 0,
-              right: 0,
               top: `${i * 10}%`,
-              height: "10%",
-              background:
-                i % 2 === 0
-                  ? "rgba(255,255,255,.03)"
-                  : "transparent",
             }}
           />
         ))}
 
         {/* Center line */}
 
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: 0,
-            right: 0,
-            height: 2,
-            background: "white",
-            transform: "translateY(-1px)",
-          }}
-        />
+        <div className="absolute left-0 right-0 top-1/2 h-[2px] -translate-y-px bg-white" />
 
         {/* Center circle */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: 120,
-            height: 120,
-            border: "3px solid white",
-            borderRadius: "50%",
-            left: "50%",
-            top: "50%",
-            transform:
-              "translate(-50%,-50%)",
-          }}
-        />
+        <div className="absolute left-1/2 top-1/2 h-[120px] w-[120px] -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-white" />
 
         {/* Kickoff spot */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            background: "white",
-            left: "50%",
-            top: "50%",
-            transform:
-              "translate(-50%,-50%)",
-          }}
-        />
+        <div className="absolute left-1/2 top-1/2 h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white" />
 
         {/* Top penalty area */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: "60%",
-            height: "16%",
-            left: "20%",
-            top: 0,
-            border: "3px solid white",
-            borderTop: "none",
-          }}
-        />
+        <div className="absolute left-[20%] top-0 h-[16%] w-[60%] border-3 border-white border-t-0" />
 
         {/* Bottom penalty area */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: "60%",
-            height: "16%",
-            left: "20%",
-            bottom: 0,
-            border: "3px solid white",
-            borderBottom: "none",
-          }}
-        />
+        <div className="absolute bottom-0 left-[20%] h-[16%] w-[60%] border-3 border-white border-b-0" />
 
         {/* Top goal area */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: "28%",
-            height: "7%",
-            left: "36%",
-            top: 0,
-            border: "3px solid white",
-            borderTop: "none",
-          }}
-        />
+        <div className="absolute left-[36%] top-0 h-[7%] w-[28%] border-3 border-white border-t-0" />
 
         {/* Bottom goal area */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: "28%",
-            height: "7%",
-            left: "36%",
-            bottom: 0,
-            border: "3px solid white",
-            borderBottom: "none",
-          }}
-        />
+        <div className="absolute bottom-0 left-[36%] h-[7%] w-[28%] border-3 border-white border-b-0" />
 
         {/* Top penalty spot */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            background: "white",
-            left: "50%",
-            top: "11%",
-            transform:
-              "translateX(-50%)",
-          }}
-        />
+        <div className="absolute left-1/2 top-[11%] h-2 w-2 -translate-x-1/2 rounded-full bg-white" />
 
         {/* Bottom penalty spot */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: 8,
-            height: 8,
-            borderRadius: "50%",
-            background: "white",
-            left: "50%",
-            bottom: "11%",
-            transform:
-              "translateX(-50%)",
-          }}
-        />
+        <div className="absolute bottom-[11%] left-1/2 h-2 w-2 -translate-x-1/2 rounded-full bg-white" />
 
         {/* Top penalty arc */}
 
         <div
-          style={{
-            position: "absolute",
-            width: 90,
-            height: 45,
-            border: "3px solid white",
-            borderBottom: "none",
-            borderLeftColor: "transparent",
-            borderRightColor: "transparent",
-            borderRadius:
-              "90px 90px 0 0",
-            left: "50%",
-            top: "13%",
-            transform:
-              "translateX(-50%) rotate(180deg)",
-          }}
+          className="absolute left-1/2 top-[13%] h-[45px] w-[90px] -translate-x-1/2 rotate-180 rounded-[90px_90px_0_0] border-[3px] border-white border-b-0 border-l-transparent border-r-transparent"
         />
 
         {/* Bottom penalty arc */}
 
-        <div
-          style={{
-            position: "absolute",
-            width: 90,
-            height: 45,
-            border: "3px solid white",
-            borderBottom: "none",
-            borderLeftColor: "transparent",
-            borderRightColor: "transparent",
-            borderRadius:
-              "90px 90px 0 0",
-            left: "50%",
-            bottom: "13%",
-            transform:
-              "translateX(-50%)",
-          }}
-        />
+        <div className="absolute bottom-[13%] left-1/2 h-[45px] w-[90px] -translate-x-1/2 rounded-[90px_90px_0_0] border-[3px] border-white border-b-0 border-l-transparent border-r-transparent" />
 
         {/* Corner arcs */}
 
@@ -228,27 +82,14 @@ export default function FootballPitch({
         ].map((corner, i) => (
           <div
             key={i}
-            style={{
-              position: "absolute",
-              width: 24,
-              height: 24,
-              border: "3px solid white",
-              borderRadius: "50%",
-              ...corner,
-              transform:
-                "translate(-50%,-50%)",
-            }}
+            className="absolute h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border-[3px] border-white"
+            style={corner}
           />
         ))}
 
         {/* Player layer */}
 
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
-        >
+        <div className="absolute inset-0">
           {children}
         </div>
       </div>

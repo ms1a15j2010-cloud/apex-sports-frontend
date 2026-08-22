@@ -10,217 +10,195 @@ export default function FormationPitch({
   const COLS = 5;
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 18,
-        padding: 25,
-        marginTop: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "white",
-          marginBottom: 20,
-        }}
-      >
+    <section className="mt-[30px] rounded-[18px] bg-gray-900 p-[25px]">
+      <h2 className="mb-5 text-white">
         👥 Formation
       </h2>
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
+      <div className="flex justify-center">
         <div
-          style={{
-            position: "relative",
-            width: "100%",
-            maxWidth: 720,
-            aspectRatio: "68 / 105",
-            overflow: "hidden",
-            borderRadius: 20,
-            border: "4px solid rgba(255,255,255,.15)",
-            boxShadow:
-              "0 20px 45px rgba(0,0,0,.45)",
-
-            background: `
-              repeating-linear-gradient(
-                90deg,
-                #1d8f45 0px,
-                #1d8f45 60px,
-                #18793b 60px,
-                #18793b 120px
-              )
-            `,
-          }}
+          className="
+            relative
+            aspect-[68/105]
+            w-full
+            max-w-[720px]
+            overflow-hidden
+            rounded-[20px]
+            border-4
+            border-white/15
+            shadow-[0_20px_45px_rgba(0,0,0,0.45)]
+            bg-[repeating-linear-gradient(90deg,#1d8f45_0px,#1d8f45_60px,#18793b_60px,#18793b_120px)]
+          "
         >
           {/* Pitch Border */}
 
-          <div
-            style={{
-              position: "absolute",
-              inset: "2%",
-              border: "2px solid rgba(255,255,255,.45)",
-            }}
-          />
+          <div className="absolute inset-[2%] border-2 border-white/45" />
 
           {/* Halfway Line */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "2%",
-              bottom: "2%",
-              width: 2,
-              background: "rgba(255,255,255,.45)",
-              transform: "translateX(-50%)",
-            }}
+            className="
+              absolute
+              left-1/2
+              top-[2%]
+              bottom-[2%]
+              w-[2px]
+              -translate-x-1/2
+              bg-white/45
+            "
           />
 
           {/* Centre Circle */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: "24%",
-              aspectRatio: "1",
-              borderRadius: "50%",
-              border: "2px solid rgba(255,255,255,.45)",
-              transform: "translate(-50%,-50%)",
-            }}
+            className="
+              absolute
+              left-1/2
+              top-1/2
+              aspect-square
+              w-[24%]
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              border-2
+              border-white/45
+            "
           />
 
           {/* Centre Spot */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "50%",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#fff",
-              transform: "translate(-50%,-50%)",
-            }}
+            className="
+              absolute
+              left-1/2
+              top-1/2
+              h-2
+              w-2
+              -translate-x-1/2
+              -translate-y-1/2
+              rounded-full
+              bg-white
+            "
           />
 
           {/* Top Penalty Area */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "21%",
-              top: "2%",
-              width: "58%",
-              height: "16%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderTop: "none",
-            }}
+            className="
+              absolute
+              left-[21%]
+              top-[2%]
+              h-[16%]
+              w-[58%]
+              border-2
+              border-white/45
+              border-t-0
+            "
           />
 
           {/* Bottom Penalty Area */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "21%",
-              bottom: "2%",
-              width: "58%",
-              height: "16%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderBottom: "none",
-            }}
+            className="
+              absolute
+              bottom-[2%]
+              left-[21%]
+              h-[16%]
+              w-[58%]
+              border-2
+              border-white/45
+              border-b-0
+            "
           />
 
           {/* Top Goal Box */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "35%",
-              top: "2%",
-              width: "30%",
-              height: "7%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderTop: "none",
-            }}
+            className="
+              absolute
+              left-[35%]
+              top-[2%]
+              h-[7%]
+              w-[30%]
+              border-2
+              border-white/45
+              border-t-0
+            "
           />
 
           {/* Bottom Goal Box */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "35%",
-              bottom: "2%",
-              width: "30%",
-              height: "7%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderBottom: "none",
-            }}
+            className="
+              absolute
+              bottom-[2%]
+              left-[35%]
+              h-[7%]
+              w-[30%]
+              border-2
+              border-white/45
+              border-b-0
+            "
           />
-                    {/* Top Penalty Spot */}
+
+          {/* Top Penalty Spot */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              top: "13%",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#fff",
-              transform: "translateX(-50%)",
-            }}
+            className="
+              absolute
+              left-1/2
+              top-[13%]
+              h-2
+              w-2
+              -translate-x-1/2
+              rounded-full
+              bg-white
+            "
           />
 
           {/* Bottom Penalty Spot */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "50%",
-              bottom: "13%",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: "#fff",
-              transform: "translateX(-50%)",
-            }}
+            className="
+              absolute
+              bottom-[13%]
+              left-1/2
+              h-2
+              w-2
+              -translate-x-1/2
+              rounded-full
+              bg-white
+            "
           />
 
           {/* Top Goal */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "43%",
-              top: "-1%",
-              width: "14%",
-              height: "3%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderBottom: "none",
-            }}
+            className="
+              absolute
+              left-[43%]
+              top-[-1%]
+              h-[3%]
+              w-[14%]
+              border-2
+              border-white/45
+              border-b-0
+            "
           />
 
           {/* Bottom Goal */}
 
           <div
-            style={{
-              position: "absolute",
-              left: "43%",
-              bottom: "-1%",
-              width: "14%",
-              height: "3%",
-              border: "2px solid rgba(255,255,255,.45)",
-              borderTop: "none",
-            }}
+            className="
+              absolute
+              bottom-[-1%]
+              left-[43%]
+              h-[3%]
+              w-[14%]
+              border-2
+              border-white/45
+              border-t-0
+            "
           />
 
           {/* Home Players */}
@@ -272,6 +250,6 @@ export default function FormationPitch({
           })}
         </div>
       </div>
-          </section>
+    </section>
   );
 }

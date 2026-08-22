@@ -50,41 +50,19 @@ export default function PlayerMarker({
       onClick={() =>
         onClick && onClick(player)
       }
+      className="absolute z-20 w-[92px] -translate-x-1/2 -translate-y-1/2 cursor-pointer text-center transition-all duration-200 ease-in-out"
       style={{
-        position: "absolute",
         left: `${player.gridX}%`,
         top: `${player.gridY}%`,
-        transform:
-          "translate(-50%,-50%)",
-        width: 92,
-        textAlign: "center",
-        zIndex: 20,
-        cursor: "pointer",
-        transition:
-          "all .25s ease",
       }}
     >
       {/* Rating */}
 
       {rating > 0 && (
         <div
+          className="absolute left-1/2 top-[-12px] min-w-[34px] -translate-x-1/2 rounded-[20px] border-2 border-[#111827] px-2 py-[3px] text-[11px] font-bold text-white"
           style={{
-            position: "absolute",
-            top: -12,
-            left: "50%",
-            transform:
-              "translateX(-50%)",
-            background:
-              ratingColor,
-            color: "#fff",
-            padding:
-              "3px 8px",
-            borderRadius: 20,
-            fontSize: 11,
-            fontWeight: 700,
-            border:
-              "2px solid #111827",
-            minWidth: 34,
+            backgroundColor: ratingColor,
           }}
         >
           {rating.toFixed(1)}
@@ -94,29 +72,9 @@ export default function PlayerMarker({
       {/* Player */}
 
       <div
+        className="relative mx-auto flex h-[58px] w-[58px] items-center justify-center overflow-hidden rounded-full border-[3px] bg-[#0f172a] shadow-[0_6px_15px_rgba(0,0,0,0.4)]"
         style={{
-          width: 58,
-          height: 58,
-          margin:
-            "0 auto",
-          borderRadius:
-            "50%",
-          overflow:
-            "hidden",
-          border:
-            `3px solid ${borderColor}`,
-          background:
-            "#0f172a",
-          boxShadow:
-            "0 6px 15px rgba(0,0,0,.4)",
-          position:
-            "relative",
-          display:
-            "flex",
-          alignItems:
-            "center",
-          justifyContent:
-            "center",
+          borderColor,
         }}
       >
         {playerPhoto ? (
@@ -126,27 +84,10 @@ export default function PlayerMarker({
             width={58}
             height={58}
             unoptimized
-            style={{
-              width:
-                "100%",
-              height:
-                "100%",
-              objectFit:
-                "cover",
-            }}
+            className="h-full w-full object-cover"
           />
         ) : (
-          <span
-            style={{
-              color:
-                "#22c55e",
-              fontSize:
-                18,
-              fontWeight:
-                800,
-              lineHeight: 1,
-            }}
-          >
+          <span className="text-[18px] font-extrabold leading-none text-green-500">
             {initials}
           </span>
         )}
@@ -154,30 +95,7 @@ export default function PlayerMarker({
         {/* Captain */}
 
         {player.captain && (
-          <div
-            style={{
-              position: "absolute",
-              top: -2,
-              right: -2,
-              width: 20,
-              height: 20,
-              borderRadius:
-                "50%",
-              background:
-                "#2563eb",
-              color: "#fff",
-              display:
-                "flex",
-              justifyContent:
-                "center",
-              alignItems:
-                "center",
-              fontSize: 10,
-              fontWeight: 700,
-              border:
-                "2px solid white",
-            }}
-          >
+          <div className="absolute right-[-2px] top-[-2px] flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-blue-600 text-[10px] font-bold text-white">
             C
           </div>
         )}
@@ -186,15 +104,7 @@ export default function PlayerMarker({
 
         {(player.position === "G" ||
           player.position === "GK") && (
-          <div
-            style={{
-              position:
-                "absolute",
-              left: -4,
-              top: -4,
-              fontSize: 15,
-            }}
-          >
+          <div className="absolute left-[-4px] top-[-4px] text-[15px]">
             🧤
           </div>
         )}
@@ -202,50 +112,19 @@ export default function PlayerMarker({
 
       {/* Name */}
 
-      <div
-        style={{
-          color: "#fff",
-          fontWeight: 700,
-          fontSize: 11,
-          marginTop: 6,
-          whiteSpace:
-            "nowrap",
-          overflow:
-            "hidden",
-          textOverflow:
-            "ellipsis",
-        }}
-      >
+      <div className="mt-[6px] overflow-hidden text-ellipsis whitespace-nowrap text-[11px] font-bold text-white">
         {playerName}
       </div>
 
       {/* Number */}
 
-      <div
-        style={{
-          color:
-            "#cbd5e1",
-          fontSize: 11,
-        }}
-      >
+      <div className="text-[11px] text-slate-300">
         #{player.number}
       </div>
 
       {/* Match Icons */}
 
-      <div
-        style={{
-          display:
-            "flex",
-          justifyContent:
-            "center",
-          gap: 3,
-          marginTop: 4,
-          minHeight: 18,
-          flexWrap:
-            "wrap",
-        }}
-      >
+      <div className="mt-1 flex min-h-[18px] flex-wrap justify-center gap-[3px]">
         {player.goals > 0 && (
           <span title="Goals">
             ⚽ {player.goals}
