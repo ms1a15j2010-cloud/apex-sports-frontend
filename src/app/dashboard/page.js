@@ -13,16 +13,7 @@ import QuickActions from "@/components/Dashboard/QuickActions";
 
 export default function DashboardPage() {
   return (
-    <main
-      style={{
-        maxWidth: 1400,
-        margin: "40px auto",
-        padding: "20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: 30,
-      }}
-    >
+    <main className="mx-auto my-10 flex w-full max-w-[1400px] flex-col gap-[30px] px-5">
       <DashboardHero />
 
       <FeaturedMatch />
@@ -37,14 +28,7 @@ export default function DashboardPage() {
 
       <LatestResults />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(350px,1fr))",
-          gap: 25,
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(350px,1fr))] gap-[25px]">
         <TopScorersMini />
 
         <StandingsMini />

@@ -87,20 +87,8 @@ export default function SearchPage() {
   }, [query]);
 
   return (
-    <main
-      style={{
-        maxWidth: 1300,
-        margin: "40px auto",
-        padding: 20,
-        color: "white",
-      }}
-    >
-      <h1
-        style={{
-          marginBottom: 30,
-          fontSize: 40,
-        }}
-      >
+    <main className="mx-auto my-10 max-w-[1300px] p-5 text-white">
+      <h1 className="mb-[30px] text-[40px]">
         🔍 Search
       </h1>
 
@@ -123,12 +111,7 @@ export default function SearchPage() {
       />
 
       {loading && (
-        <div
-          style={{
-            marginTop: 30,
-            color: "#94a3b8",
-          }}
-        >
+        <div className="mt-[30px] text-slate-400">
           Searching...
         </div>
       )}

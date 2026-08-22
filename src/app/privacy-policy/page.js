@@ -1,7 +1,8 @@
 import Link from "next/link";
+
 export default function PrivacyPolicy() {
   return (
-    <main style={{ padding: "2rem", maxWidth: 800, margin: "auto" }}>
+    <main className="mx-auto max-w-[800px] p-8">
       <h1>Privacy Policy</h1>
 
       <p>
@@ -20,6 +21,7 @@ export default function PrivacyPolicy() {
       </p>
 
       <p>Contact: admin@apexsports.com</p>
+
       <Link href="/">← Back to live scores</Link>
     </main>
   );
