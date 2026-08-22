@@ -9,29 +9,12 @@ export default function MatchCard({ match }) {
   return (
     <Link
       href={`/match/${match.fixture?.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-      }}
+      className="text-inherit no-underline"
     >
-      <div
-        style={{
-          background: "#111827",
-          border: "1px solid #1f2937",
-          borderRadius: 16,
-          padding: 18,
-        }}
-      >
+      <div className="rounded-2xl border border-gray-800 bg-gray-900 p-[18px]">
         {/* League */}
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 16,
-          }}
-        >
+        <div className="mb-4 flex items-center gap-2">
           {match.league?.logo && (
             <Image
               src={match.league.logo}
@@ -41,33 +24,15 @@ export default function MatchCard({ match }) {
             />
           )}
 
-          <span
-            style={{
-              color: "#94a3b8",
-              fontSize: 13,
-            }}
-          >
+          <span className="text-[13px] text-slate-400">
             {match.league?.name}
           </span>
         </div>
 
         {/* Teams */}
 
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr auto 1fr",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {match.home?.logo && (
               <Image
                 src={match.home.logo}
@@ -80,34 +45,17 @@ export default function MatchCard({ match }) {
             <span>{match.home?.name}</span>
           </div>
 
-          <div style={{ textAlign: "center" }}>
-            <div
-              style={{
-                fontWeight: "bold",
-                fontSize: 20,
-              }}
-            >
+          <div className="text-center">
+            <div className="text-xl font-bold">
               {match.goals?.home ?? "-"} : {match.goals?.away ?? "-"}
             </div>
 
-            <div
-              style={{
-                color: "#22c55e",
-                fontSize: 13,
-              }}
-            >
+            <div className="text-[13px] text-green-500">
               {match.status?.short}
             </div>
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              gap: 10,
-            }}
-          >
+          <div className="flex items-center justify-end gap-2.5">
             <span>{match.away?.name}</span>
 
             {match.away?.logo && (
@@ -121,15 +69,7 @@ export default function MatchCard({ match }) {
           </div>
         </div>
 
-        <div
-          style={{
-            marginTop: 15,
-            display: "flex",
-            justifyContent: "space-between",
-            color: "#94a3b8",
-            fontSize: 12,
-          }}
-        >
+        <div className="mt-[15px] flex justify-between text-xs text-slate-400">
           <span>{match.fixture?.venue?.name || "Unknown Venue"}</span>
 
           <span>{match.status?.long}</span>

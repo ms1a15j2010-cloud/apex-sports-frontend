@@ -9,24 +9,9 @@ export default function TeamCard({ team }) {
   return (
     <Link
       href={`/team/${team.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-      }}
+      className="text-inherit no-underline"
     >
-      <div
-        style={{
-          background: "#111827",
-          border: "1px solid #1f2937",
-          borderRadius: 16,
-          padding: 20,
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-          transition: ".25s",
-          cursor: "pointer",
-        }}
-      >
+      <div className="flex cursor-pointer items-center gap-4 rounded-2xl border border-gray-800 bg-gray-900 p-5 transition duration-200">
         <Image
           src={team.logo}
           alt={team.name}
@@ -34,23 +19,12 @@ export default function TeamCard({ team }) {
           height={60}
         />
 
-        <div style={{ flex: 1 }}>
-          <h3
-            style={{
-              margin: 0,
-              color: "white",
-            }}
-          >
+        <div className="flex-1">
+          <h3 className="m-0 text-white">
             {team.name}
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              marginTop: 6,
-              marginBottom: 0,
-            }}
-          >
+          <p className="mb-0 mt-1.5 text-slate-400">
             {team.country}
           </p>
         </div>

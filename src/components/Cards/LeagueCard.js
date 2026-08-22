@@ -9,22 +9,9 @@ export default function LeagueCard({ league }) {
   return (
     <Link
       href={`/league/${league.league.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-      }}
+      className="text-inherit no-underline"
     >
-      <div
-        style={{
-          background: "#111827",
-          border: "1px solid #1f2937",
-          borderRadius: 16,
-          padding: 20,
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
+      <div className="flex items-center gap-4 rounded-2xl border border-gray-800 bg-gray-900 p-5">
         <Image
           src={league.league.logo}
           alt={league.league.name}
@@ -33,32 +20,15 @@ export default function LeagueCard({ league }) {
         />
 
         <div>
-          <h3
-            style={{
-              margin: 0,
-              color: "white",
-            }}
-          >
+          <h3 className="m-0 text-white">
             {league.league.name}
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              marginTop: 6,
-              marginBottom: 0,
-            }}
-          >
+          <p className="mb-0 mt-1.5 text-slate-400">
             {league.country?.name}
           </p>
 
-          <p
-            style={{
-              color: "#22c55e",
-              marginTop: 4,
-              marginBottom: 0,
-            }}
-          >
+          <p className="mb-0 mt-1 text-green-500">
             Season {league.seasons?.[0]?.year}
           </p>
         </div>

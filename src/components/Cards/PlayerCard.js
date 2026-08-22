@@ -9,59 +9,27 @@ export default function PlayerCard({ player }) {
   return (
     <Link
       href={`/player/${player.id}`}
-      style={{
-        textDecoration: "none",
-        color: "inherit",
-      }}
+      className="text-inherit no-underline"
     >
-      <div
-        style={{
-          background: "#111827",
-          border: "1px solid #1f2937",
-          borderRadius: 16,
-          padding: 20,
-          display: "flex",
-          alignItems: "center",
-          gap: 16,
-        }}
-      >
+      <div className="flex items-center gap-4 rounded-2xl border border-gray-800 bg-gray-900 p-5">
         <Image
           src={player.photo}
           alt={player.name}
           width={70}
           height={70}
-          style={{
-            borderRadius: "50%",
-          }}
+          className="rounded-full"
         />
 
-        <div style={{ flex: 1 }}>
-          <h3
-            style={{
-              margin: 0,
-              color: "white",
-            }}
-          >
+        <div className="flex-1">
+          <h3 className="m-0 text-white">
             {player.name}
           </h3>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              marginTop: 5,
-              marginBottom: 0,
-            }}
-          >
+          <p className="mb-0 mt-[5px] text-slate-400">
             {player.team}
           </p>
 
-          <p
-            style={{
-              color: "#22c55e",
-              marginTop: 4,
-              marginBottom: 0,
-            }}
-          >
+          <p className="mb-0 mt-1 text-green-500">
             {player.position}
           </p>
         </div>
