@@ -17,18 +17,32 @@ export default function TopScorersMini() {
       try {
         const data = await api.getTopScorersMini();
 
-        if (!mounted) return;
+        if (!mounted) {
+          return;
+        }
 
         if (data?.success) {
-          setPlayers(Array.isArray(data.players) ? data.players : []);
+          setPlayers(
+            Array.isArray(data.players)
+              ? data.players
+              : []
+          );
         } else {
           setPlayers([]);
         }
       } catch (err) {
-        console.error("TopScorersMini:", err);
-        if (mounted) setPlayers([]);
+        console.error(
+          "TopScorersMini:",
+          err
+        );
+
+        if (mounted) {
+          setPlayers([]);
+        }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
@@ -40,26 +54,19 @@ export default function TopScorersMini() {
   }, []);
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 25,
-        color: "#fff",
-      }}
-    >
-      <h2
-        style={{
-          marginBottom: 20,
-        }}
-      >
+    <section className="rounded-[20px] bg-gray-900 p-[25px] text-white">
+      <h2 className="mb-5 text-2xl font-bold">
         ⚽ Top Scorers
       </h2>
 
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <p className="text-gray-400">
+          Loading...
+        </p>
+      )}
 
       {!loading && players.length === 0 && (
-        <p style={{ color: "#94a3b8" }}>
+        <p className="text-slate-400">
           No top scorers available.
         </p>
       )}
@@ -96,30 +103,16 @@ export default function TopScorersMini() {
             <Link
               key={id}
               href={`/player/${id}`}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-              }}
+              className="block text-inherit no-underline"
             >
               <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns:
-                    "35px 50px 1fr auto",
-                  alignItems: "center",
-                  gap: 15,
-                  padding: "14px 0",
-                  borderBottom:
-                    index !== players.length - 1
-                      ? "1px solid #1f2937"
-                      : "none",
-                }}
+                className={`grid grid-cols-[35px_50px_minmax(0,1fr)_auto] items-center gap-[15px] py-3.5 ${
+                  index !== players.length - 1
+                    ? "border-b border-gray-800"
+                    : ""
+                }`}
               >
-                <strong
-                  style={{
-                    color: "#22c55e",
-                  }}
-                >
+                <strong className="text-green-500">
                   {index + 1}
                 </strong>
 
@@ -129,38 +122,20 @@ export default function TopScorersMini() {
                   width={50}
                   height={50}
                   unoptimized
-                  style={{
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                  }}
+                  className="h-[50px] w-[50px] rounded-full object-cover"
                 />
 
-                <div>
-                  <div
-                    style={{
-                      fontWeight: 700,
-                    }}
-                  >
+                <div className="min-w-0">
+                  <div className="truncate font-bold">
                     {name}
                   </div>
 
-                  <div
-                    style={{
-                      color: "#94a3b8",
-                      fontSize: 13,
-                    }}
-                  >
+                  <div className="truncate text-[13px] text-slate-400">
                     {teamName}
                   </div>
                 </div>
 
-                <div
-                  style={{
-                    fontWeight: 700,
-                    fontSize: 24,
-                    color: "#22c55e",
-                  }}
-                >
+                <div className="text-2xl font-bold text-green-500">
                   {goals}
                 </div>
               </div>

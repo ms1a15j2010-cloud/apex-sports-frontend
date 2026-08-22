@@ -7,98 +7,59 @@ const actions = [
     title: "Live Matches",
     href: "/live",
     icon: "🔴",
-    color: "#ef4444",
+    color: "border-red-500",
+    textColor: "text-red-500",
   },
   {
     title: "Today's Matches",
     href: "/today",
     icon: "📅",
-    color: "#3b82f6",
+    color: "border-blue-500",
+    textColor: "text-blue-500",
   },
   {
     title: "Leagues",
     href: "/leagues",
     icon: "🏆",
-    color: "#f59e0b",
+    color: "border-amber-500",
+    textColor: "text-amber-500",
   },
   {
     title: "Search",
     href: "/search",
     icon: "🔍",
-    color: "#06b6d4",
+    color: "border-cyan-500",
+    textColor: "text-cyan-500",
   },
 ];
 
 export default function QuickActions() {
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 25,
-        color: "#fff",
-      }}
-    >
-      <h2
-        style={{
-          fontSize: 28,
-          marginBottom: 25,
-        }}
-      >
+    <section className="rounded-[20px] bg-[#111827] p-6 text-white sm:p-7">
+      <h2 className="mb-6 text-2xl font-bold sm:text-[28px]">
         ⚡ Quick Actions
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(180px,1fr))",
-          gap: 20,
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-5">
         {actions.map((item) => (
           <Link
             key={item.href}
             href={item.href}
-            style={{
-              textDecoration: "none",
-              color: "#fff",
-            }}
+            className="text-white no-underline"
           >
             <div
-              style={{
-                background: "#1f2937",
-                borderRadius: 16,
-                padding: 25,
-                textAlign: "center",
-                border: `2px solid ${item.color}`,
-                transition: "0.25s",
-                cursor: "pointer",
-              }}
+              className={`cursor-pointer rounded-2xl border-2 ${item.color} bg-[#1f2937] p-6 text-center transition duration-300 hover:-translate-y-1 hover:bg-[#273449]`}
             >
-              <div
-                style={{
-                  fontSize: 42,
-                  marginBottom: 12,
-                }}
-              >
+              <div className="mb-3 text-[42px]">
                 {item.icon}
               </div>
 
-              <h3
-                style={{
-                  fontSize: 18,
-                  marginBottom: 8,
-                }}
-              >
+              <h3 className="mb-2 text-lg font-semibold">
                 {item.title}
               </h3>
 
               <span
-                style={{
-                  color: item.color,
-                  fontWeight: 700,
-                }}
+                className={`font-bold ${item.textColor}`}
               >
                 Open →
               </span>

@@ -32,9 +32,14 @@ export default function StandingsMini() {
         }
       } catch (err) {
         console.error("StandingsMini:", err);
-        if (mounted) setTeams([]);
+
+        if (mounted) {
+          setTeams([]);
+        }
       } finally {
-        if (mounted) setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
@@ -47,32 +52,26 @@ export default function StandingsMini() {
 
   if (loading) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 25,
-          color: "#fff",
-        }}
-      >
-        <h2>🏆 League Standings</h2>
-        <p style={{ color: "#94a3b8" }}>Loading...</p>
+      <section className="rounded-[20px] bg-[#111827] p-6 text-white sm:p-7">
+        <h2 className="text-2xl font-bold">
+          🏆 League Standings
+        </h2>
+
+        <p className="mt-3 text-[#94a3b8]">
+          Loading...
+        </p>
       </section>
     );
   }
 
   if (teams.length === 0) {
     return (
-      <section
-        style={{
-          background: "#111827",
-          borderRadius: 20,
-          padding: 25,
-          color: "#fff",
-        }}
-      >
-        <h2>🏆 League Standings</h2>
-        <p style={{ color: "#94a3b8" }}>
+      <section className="rounded-[20px] bg-[#111827] p-6 text-white sm:p-7">
+        <h2 className="text-2xl font-bold">
+          🏆 League Standings
+        </h2>
+
+        <p className="mt-3 text-[#94a3b8]">
           Standings unavailable.
         </p>
       </section>
@@ -80,96 +79,85 @@ export default function StandingsMini() {
   }
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 25,
-        color: "#fff",
-      }}
-    >
-      <h2 style={{ marginBottom: 20 }}>
+    <section className="rounded-[20px] bg-[#111827] p-6 text-white sm:p-7">
+      <h2 className="mb-5 text-2xl font-bold">
         🏆 League Standings
       </h2>
 
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-        }}
-      >
-        <thead>
-          <tr
-            style={{
-              color: "#94a3b8",
-              borderBottom: "1px solid #1f2937",
-            }}
-          >
-            <th align="center">#</th>
-            <th align="left">Club</th>
-            <th align="center">Pts</th>
-          </tr>
-        </thead>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="border-b border-[#1f2937] text-[#94a3b8]">
+              <th className="px-2 py-3 text-center text-sm font-semibold">
+                #
+              </th>
 
-        <tbody>
-          {teams.map((team, index) => {
-            const key =
-              team?.team?.id ??
-              team?.id ??
-              `${team?.rank ?? index}-${index}`;
+              <th className="px-2 py-3 text-left text-sm font-semibold">
+                Club
+              </th>
 
-            return (
-              <tr
-                key={key}
-                style={{
-                  borderBottom: "1px solid #1f2937",
-                }}
-              >
-                <td align="center">
-                  {team?.rank ?? "-"}
-                </td>
+              <th className="px-2 py-3 text-center text-sm font-semibold">
+                Pts
+              </th>
+            </tr>
+          </thead>
 
-                <td>
-                  <Link
-                    href={`/team/${team?.team?.id ?? team?.id ?? ""}`}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 10,
-                      color: "#fff",
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Image
-                      src={
-                        team?.team?.logo ||
-                        "/images/team-placeholder.png"
-                      }
-                      alt={team?.team?.name || "Team"}
-                      width={28}
-                      height={28}
-                    />
+          <tbody>
+            {teams.map((team, index) => {
+              const teamId =
+                team?.team?.id ??
+                team?.id ??
+                "";
 
-                    <span>
-                      {team?.team?.name || "Unknown Team"}
-                    </span>
-                  </Link>
-                </td>
+              const key =
+                team?.team?.id ??
+                team?.id ??
+                `${team?.rank ?? index}-${index}`;
 
-                <td
-                  align="center"
-                  style={{
-                    color: "#22c55e",
-                    fontWeight: 700,
-                  }}
+              return (
+                <tr
+                  key={key}
+                  className="border-b border-[#1f2937] last:border-b-0"
                 >
-                  {team?.points ?? 0}
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  <td className="px-2 py-3 text-center">
+                    {team?.rank ?? "-"}
+                  </td>
+
+                  <td className="px-2 py-3">
+                    <Link
+                      href={`/team/${teamId}`}
+                      className="flex items-center gap-2.5 text-white no-underline transition hover:text-blue-400"
+                    >
+                      <Image
+                        src={
+                          team?.team?.logo ||
+                          "/images/team-placeholder.png"
+                        }
+                        alt={
+                          team?.team?.name ||
+                          "Team"
+                        }
+                        width={28}
+                        height={28}
+                        className="shrink-0 object-contain"
+                      />
+
+                      <span className="truncate">
+                        {team?.team?.name ||
+                          "Unknown Team"}
+                      </span>
+                    </Link>
+                  </td>
+
+                  <td className="px-2 py-3 text-center font-bold text-[#22c55e]">
+                    {team?.points ?? 0}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </section>
   );
 }

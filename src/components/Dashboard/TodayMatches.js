@@ -6,10 +6,8 @@ import { api } from "@/lib/api";
 
 export default function TodayMatches() {
   const [matches, setMatches] = useState([]);
-  const [loading, setLoading] =
-    useState(true);
-  const [error, setError] =
-    useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -19,8 +17,7 @@ export default function TodayMatches() {
         setLoading(true);
         setError("");
 
-        const data =
-          await api.getTodayMatches();
+        const data = await api.getTodayMatches();
 
         if (!mounted) {
           return;
@@ -39,10 +36,7 @@ export default function TodayMatches() {
           return;
         }
 
-        console.error(
-          "TodayMatches:",
-          err
-        );
+        console.error("TodayMatches:", err);
 
         setError(
           err?.message ||
@@ -105,8 +99,7 @@ export default function TodayMatches() {
   }
 
   function getMatchTime(match) {
-    const date =
-      match?.fixture?.date;
+    const date = match?.fixture?.date;
 
     if (!date) {
       return "Time TBD";
@@ -123,12 +116,12 @@ export default function TodayMatches() {
 
   if (loading) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-6 text-white sm:p-7">
+        <h2 className="text-2xl font-bold">
           Today&apos;s Matches
         </h2>
 
-        <div style={styles.message}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-6 text-[#9ca3af]">
           Loading today&apos;s matches...
         </div>
       </section>
@@ -137,12 +130,12 @@ export default function TodayMatches() {
 
   if (error) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-6 text-white sm:p-7">
+        <h2 className="text-2xl font-bold">
           Today&apos;s Matches
         </h2>
 
-        <div style={styles.message}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-6 text-[#9ca3af]">
           {error}
         </div>
       </section>
@@ -151,12 +144,12 @@ export default function TodayMatches() {
 
   if (!matches.length) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-6 text-white sm:p-7">
+        <h2 className="text-2xl font-bold">
           Today&apos;s Matches
         </h2>
 
-        <div style={styles.empty}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-7 text-center text-[#9ca3af]">
           No matches scheduled today.
         </div>
       </section>
@@ -164,19 +157,19 @@ export default function TodayMatches() {
   }
 
   return (
-    <section style={styles.section}>
-      <div style={styles.header}>
+    <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-6 text-white sm:p-7">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 style={styles.title}>
+          <h2 className="text-2xl font-bold">
             Today&apos;s Matches
           </h2>
 
-          <p style={styles.subtitle}>
+          <p className="mt-1.5 text-sm text-[#9ca3af]">
             Matches scheduled for today.
           </p>
         </div>
 
-        <span style={styles.count}>
+        <span className="text-sm font-bold text-blue-400">
           {matches.length}{" "}
           {matches.length === 1
             ? "match"
@@ -184,199 +177,70 @@ export default function TodayMatches() {
         </span>
       </div>
 
-      <div style={styles.grid}>
-        {matches.map(
-          (match, index) => {
-            const id =
-              getMatchId(match);
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[18px]">
+        {matches.map((match, index) => {
+          const id = getMatchId(match);
+          const key = id ?? `today-${index}`;
 
-            const key =
-              id ?? `today-${index}`;
+          return (
+            <Link
+              key={key}
+              href={id ? `/match/${id}` : "#"}
+              className={`block rounded-2xl border border-[#1e293b] bg-[#0f172a] p-5 text-white no-underline transition duration-200 ${
+                id
+                  ? "hover:-translate-y-0.5 hover:border-[#334155]"
+                  : "pointer-events-none"
+              }`}
+            >
+              <div className="mb-5 text-center text-[13px] font-bold text-blue-400">
+                {getMatchTime(match)}
+              </div>
 
-            return (
-              <Link
-                key={key}
-                href={
-                  id
-                    ? `/match/${id}`
-                    : "#"
-                }
-                style={{
-                  ...styles.card,
-                  pointerEvents: id
-                    ? "auto"
-                    : "none",
-                }}
-              >
-                <div style={styles.time}>
-                  {getMatchTime(match)}
-                </div>
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3.5">
+                <div className="flex min-w-0 flex-col items-center gap-2.5 text-center text-sm font-semibold text-[#e5e7eb]">
+                  {getHomeLogo(match) ? (
+                    <img
+                      src={getHomeLogo(match)}
+                      alt={getHomeName(match)}
+                      className="h-[50px] w-[50px] object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-[50px] w-[50px] items-center justify-center rounded-xl bg-[#1f2937]">
+                      ⚽
+                    </div>
+                  )}
 
-                <div style={styles.teams}>
-                  <div style={styles.team}>
-                    {getHomeLogo(match) ? (
-                      <img
-                        src={getHomeLogo(match)}
-                        alt={getHomeName(match)}
-                        style={styles.logo}
-                      />
-                    ) : (
-                      <div style={styles.placeholder}>
-                        ⚽
-                      </div>
-                    )}
-
-                    <span>
-                      {getHomeName(match)}
-                    </span>
-                  </div>
-
-                  <span style={styles.vs}>
-                    VS
+                  <span>
+                    {getHomeName(match)}
                   </span>
-
-                  <div style={styles.team}>
-                    {getAwayLogo(match) ? (
-                      <img
-                        src={getAwayLogo(match)}
-                        alt={getAwayName(match)}
-                        style={styles.logo}
-                      />
-                    ) : (
-                      <div style={styles.placeholder}>
-                        ⚽
-                      </div>
-                    )}
-
-                    <span>
-                      {getAwayName(match)}
-                    </span>
-                  </div>
                 </div>
-              </Link>
-            );
-          }
-        )}
+
+                <span className="text-xs font-extrabold text-[#6b7280]">
+                  VS
+                </span>
+
+                <div className="flex min-w-0 flex-col items-center gap-2.5 text-center text-sm font-semibold text-[#e5e7eb]">
+                  {getAwayLogo(match) ? (
+                    <img
+                      src={getAwayLogo(match)}
+                      alt={getAwayName(match)}
+                      className="h-[50px] w-[50px] object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-[50px] w-[50px] items-center justify-center rounded-xl bg-[#1f2937]">
+                      ⚽
+                    </div>
+                  )}
+
+                  <span>
+                    {getAwayName(match)}
+                  </span>
+                </div>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
 }
-
-const styles = {
-  section: {
-    background: "#111827",
-    borderRadius: 20,
-    padding: 28,
-    marginBottom: 30,
-    border: "1px solid #1f2937",
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 15,
-    marginBottom: 24,
-  },
-
-  title: {
-    margin: 0,
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: 700,
-  },
-
-  subtitle: {
-    margin: "6px 0 0",
-    color: "#9ca3af",
-    fontSize: 14,
-  },
-
-  count: {
-    color: "#60a5fa",
-    fontSize: 14,
-    fontWeight: 700,
-  },
-
-  grid: {
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: 18,
-  },
-
-  card: {
-    display: "block",
-    textDecoration: "none",
-    background: "#0f172a",
-    border: "1px solid #1e293b",
-    borderRadius: 16,
-    padding: 20,
-    color: "#ffffff",
-  },
-
-  time: {
-    textAlign: "center",
-    color: "#60a5fa",
-    fontSize: 13,
-    fontWeight: 700,
-    marginBottom: 20,
-  },
-
-  teams: {
-    display: "grid",
-    gridTemplateColumns:
-      "1fr auto 1fr",
-    alignItems: "center",
-    gap: 14,
-  },
-
-  team: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
-    gap: 9,
-    color: "#e5e7eb",
-    fontSize: 14,
-    fontWeight: 600,
-  },
-
-  logo: {
-    width: 50,
-    height: 50,
-    objectFit: "contain",
-  },
-
-  placeholder: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    background: "#1f2937",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  vs: {
-    color: "#6b7280",
-    fontSize: 12,
-    fontWeight: 800,
-  },
-
-  message: {
-    marginTop: 20,
-    padding: 25,
-    background: "#0f172a",
-    borderRadius: 14,
-    color: "#9ca3af",
-  },
-
-  empty: {
-    padding: 30,
-    background: "#0f172a",
-    borderRadius: 14,
-    color: "#9ca3af",
-    textAlign: "center",
-  },
-};

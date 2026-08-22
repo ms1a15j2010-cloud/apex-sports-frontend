@@ -5,14 +5,11 @@ import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
 export default function LatestResults() {
-  const [matches, setMatches] =
-    useState([]);
+  const [matches, setMatches] = useState([]);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -22,8 +19,7 @@ export default function LatestResults() {
         setLoading(true);
         setError("");
 
-        const data =
-          await api.getLatestResults();
+        const data = await api.getLatestResults();
 
         if (!mounted) {
           return;
@@ -42,10 +38,7 @@ export default function LatestResults() {
           return;
         }
 
-        console.error(
-          "LatestResults:",
-          err
-        );
+        console.error("LatestResults:", err);
 
         setError(
           err?.message ||
@@ -143,9 +136,7 @@ export default function LatestResults() {
     }
 
     try {
-      return new Date(
-        date
-      ).toLocaleDateString(
+      return new Date(date).toLocaleDateString(
         "en-US",
         {
           month: "short",
@@ -160,12 +151,12 @@ export default function LatestResults() {
 
   if (loading) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 sm:p-7">
+        <h2 className="m-0 text-2xl font-bold text-white">
           Latest Results
         </h2>
 
-        <div style={styles.message}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-[25px] text-[#9ca3af]">
           Loading latest results...
         </div>
       </section>
@@ -174,12 +165,12 @@ export default function LatestResults() {
 
   if (error) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 sm:p-7">
+        <h2 className="m-0 text-2xl font-bold text-white">
           Latest Results
         </h2>
 
-        <div style={styles.message}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-[25px] text-[#9ca3af]">
           {error}
         </div>
       </section>
@@ -188,12 +179,12 @@ export default function LatestResults() {
 
   if (!matches.length) {
     return (
-      <section style={styles.section}>
-        <h2 style={styles.title}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 sm:p-7">
+        <h2 className="m-0 text-2xl font-bold text-white">
           Latest Results
         </h2>
 
-        <div style={styles.empty}>
+        <div className="mt-5 rounded-[14px] bg-[#0f172a] p-[30px] text-center text-[#9ca3af]">
           No recent results available.
         </div>
       </section>
@@ -201,19 +192,19 @@ export default function LatestResults() {
   }
 
   return (
-    <section style={styles.section}>
-      <div style={styles.header}>
+    <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 sm:p-7">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-[15px]">
         <div>
-          <h2 style={styles.title}>
+          <h2 className="m-0 text-2xl font-bold text-white">
             Latest Results
           </h2>
 
-          <p style={styles.subtitle}>
+          <p className="mt-1.5 text-sm text-[#9ca3af]">
             Recently completed matches.
           </p>
         </div>
 
-        <span style={styles.count}>
+        <span className="text-sm font-bold text-[#60a5fa]">
           {matches.length}{" "}
           {matches.length === 1
             ? "result"
@@ -221,235 +212,90 @@ export default function LatestResults() {
         </span>
       </div>
 
-      <div style={styles.grid}>
-        {matches.map(
-          (match, index) => {
-            const id =
-              getMatchId(match);
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[18px]">
+        {matches.map((match, index) => {
+          const id = getMatchId(match);
 
-            const key =
-              id ??
-              `result-${index}`;
+          const key =
+            id ?? `result-${index}`;
 
-            const homeScore =
-              getHomeScore(match);
+          const homeScore =
+            getHomeScore(match);
 
-            const awayScore =
-              getAwayScore(match);
+          const awayScore =
+            getAwayScore(match);
 
-            return (
-              <Link
-                key={key}
-                href={
-                  id
-                    ? `/match/${id}`
-                    : "#"
-                }
-                style={{
-                  ...styles.card,
-                  pointerEvents: id
-                    ? "auto"
-                    : "none",
-                }}
-              >
-                <div style={styles.date}>
-                  {formatDate(match)}
+          return (
+            <Link
+              key={key}
+              href={id ? `/match/${id}` : "#"}
+              className={`block rounded-2xl border border-[#1e293b] bg-[#0f172a] p-5 text-white no-underline ${
+                id
+                  ? "pointer-events-auto"
+                  : "pointer-events-none"
+              }`}
+            >
+              <div className="mb-5 text-center text-xs text-[#9ca3af]">
+                {formatDate(match)}
+              </div>
+
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-[14px]">
+                <div className="flex flex-col items-center gap-[9px] text-center">
+                  {getHomeLogo(match) ? (
+                    <img
+                      src={getHomeLogo(match)}
+                      alt={getHomeName(match)}
+                      className="h-[50px] w-[50px] object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-[50px] w-[50px] items-center justify-center rounded-xl bg-[#1f2937]">
+                      ⚽
+                    </div>
+                  )}
+
+                  <span className="text-sm font-semibold text-[#e5e7eb]">
+                    {getHomeName(match)}
+                  </span>
                 </div>
 
-                <div style={styles.teams}>
-                  <div style={styles.team}>
-                    {getHomeLogo(match) ? (
-                      <img
-                        src={getHomeLogo(match)}
-                        alt={getHomeName(match)}
-                        style={styles.logo}
-                      />
-                    ) : (
-                      <div style={styles.placeholder}>
-                        ⚽
-                      </div>
-                    )}
+                <div className="flex gap-[5px] whitespace-nowrap text-[22px] font-extrabold text-white">
+                  <span>
+                    {homeScore ?? "—"}
+                  </span>
 
-                    <span style={styles.teamName}>
-                      {getHomeName(match)}
-                    </span>
-                  </div>
+                  <span>-</span>
 
-                  <div style={styles.score}>
-                    <span>
-                      {homeScore ??
-                        "—"}
-                    </span>
-
-                    <span>
-                      -
-                    </span>
-
-                    <span>
-                      {awayScore ??
-                        "—"}
-                    </span>
-                  </div>
-
-                  <div style={styles.team}>
-                    {getAwayLogo(match) ? (
-                      <img
-                        src={getAwayLogo(match)}
-                        alt={getAwayName(match)}
-                        style={styles.logo}
-                      />
-                    ) : (
-                      <div style={styles.placeholder}>
-                        ⚽
-                      </div>
-                    )}
-
-                    <span style={styles.teamName}>
-                      {getAwayName(match)}
-                    </span>
-                  </div>
+                  <span>
+                    {awayScore ?? "—"}
+                  </span>
                 </div>
 
-                <div style={styles.completed}>
-                  FT
+                <div className="flex flex-col items-center gap-[9px] text-center">
+                  {getAwayLogo(match) ? (
+                    <img
+                      src={getAwayLogo(match)}
+                      alt={getAwayName(match)}
+                      className="h-[50px] w-[50px] object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-[50px] w-[50px] items-center justify-center rounded-xl bg-[#1f2937]">
+                      ⚽
+                    </div>
+                  )}
+
+                  <span className="text-sm font-semibold text-[#e5e7eb]">
+                    {getAwayName(match)}
+                  </span>
                 </div>
-              </Link>
-            );
-          }
-        )}
+              </div>
+
+              <div className="mt-[18px] text-center text-[11px] font-extrabold text-[#22c55e]">
+                FT
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );
 }
-
-const styles = {
-  section: {
-    background: "#111827",
-    borderRadius: 20,
-    padding: 28,
-    marginBottom: 30,
-    border: "1px solid #1f2937",
-  },
-
-  header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    gap: 15,
-    marginBottom: 24,
-  },
-
-  title: {
-    margin: 0,
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: 700,
-  },
-
-  subtitle: {
-    margin: "6px 0 0",
-    color: "#9ca3af",
-    fontSize: 14,
-  },
-
-  count: {
-    color: "#60a5fa",
-    fontSize: 14,
-    fontWeight: 700,
-  },
-
-  grid: {
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: 18,
-  },
-
-  card: {
-    display: "block",
-    textDecoration: "none",
-    background: "#0f172a",
-    borderRadius: 16,
-    padding: 20,
-    border: "1px solid #1e293b",
-    color: "#ffffff",
-  },
-
-  date: {
-    textAlign: "center",
-    color: "#9ca3af",
-    fontSize: 12,
-    marginBottom: 20,
-  },
-
-  teams: {
-    display: "grid",
-    gridTemplateColumns:
-      "1fr auto 1fr",
-    alignItems: "center",
-    gap: 14,
-  },
-
-  team: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    textAlign: "center",
-    gap: 9,
-  },
-
-  teamName: {
-    color: "#e5e7eb",
-    fontSize: 14,
-    fontWeight: 600,
-  },
-
-  logo: {
-    width: 50,
-    height: 50,
-    objectFit: "contain",
-  },
-
-  placeholder: {
-    width: 50,
-    height: 50,
-    borderRadius: 12,
-    background: "#1f2937",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  score: {
-    display: "flex",
-    gap: 5,
-    color: "#ffffff",
-    fontSize: 22,
-    fontWeight: 800,
-    whiteSpace: "nowrap",
-  },
-
-  completed: {
-    marginTop: 18,
-    textAlign: "center",
-    color: "#22c55e",
-    fontSize: 11,
-    fontWeight: 800,
-  },
-
-  message: {
-    marginTop: 20,
-    padding: 25,
-    background: "#0f172a",
-    borderRadius: 14,
-    color: "#9ca3af",
-  },
-
-  empty: {
-    padding: 30,
-    background: "#0f172a",
-    borderRadius: 14,
-    color: "#9ca3af",
-    textAlign: "center",
-  },
-};

@@ -44,11 +44,6 @@ export default function LiveNow() {
 
         /* ==============================================
            PROVIDER RATE LIMIT
-
-           Backend may return:
-
-           status: 429
-           apiLimitReached: true
         ============================================== */
 
         if (
@@ -226,20 +221,20 @@ export default function LiveNow() {
 
   if (loading) {
     return (
-      <section style={styles.section}>
-        <div style={styles.header}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-7">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-5">
           <div>
-            <h2 style={styles.title}>
+            <h2 className="m-0 text-2xl font-extrabold text-white">
               🔴 Live Now
             </h2>
 
-            <p style={styles.subtitle}>
+            <p className="mt-1.5 text-sm text-[#9ca3af]">
               Live matches currently being monitored.
             </p>
           </div>
 
-          <div style={styles.monitoring}>
-            <span style={styles.dot}>
+          <div className="flex items-center gap-2 text-[13px] font-bold text-[#cbd5e1]">
+            <span className="text-sm text-[#22c55e]">
               ●
             </span>
 
@@ -249,12 +244,12 @@ export default function LiveNow() {
           </div>
         </div>
 
-        <div style={styles.empty}>
-          <div style={styles.emptyIcon}>
+        <div className="rounded-2xl border border-[#1e293b] bg-[#0f172a] p-9 text-center">
+          <div className="mb-2.5 text-4xl">
             ⚽
           </div>
 
-          <p style={styles.emptyText}>
+          <p className="m-0 text-sm text-[#9ca3af]">
             Checking for live matches...
           </p>
         </div>
@@ -268,20 +263,20 @@ export default function LiveNow() {
 
   if (!matches.length) {
     return (
-      <section style={styles.section}>
-        <div style={styles.header}>
+      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-7">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-5">
           <div>
-            <h2 style={styles.title}>
+            <h2 className="m-0 text-2xl font-extrabold text-white">
               🔴 Live Now
             </h2>
 
-            <p style={styles.subtitle}>
+            <p className="mt-1.5 text-sm text-[#9ca3af]">
               Live matches currently being monitored.
             </p>
           </div>
 
-          <div style={styles.monitoring}>
-            <span style={styles.dot}>
+          <div className="flex items-center gap-2 text-[13px] font-bold text-[#cbd5e1]">
+            <span className="text-sm text-[#22c55e]">
               ●
             </span>
 
@@ -291,16 +286,16 @@ export default function LiveNow() {
           </div>
         </div>
 
-        <div style={styles.empty}>
-          <div style={styles.emptyIcon}>
+        <div className="rounded-2xl border border-[#1e293b] bg-[#0f172a] p-9 text-center">
+          <div className="mb-2.5 text-4xl">
             ⚽
           </div>
 
-          <h3 style={styles.emptyTitle}>
+          <h3 className="m-0 text-xl text-white">
             No live matches
           </h3>
 
-          <p style={styles.emptyText}>
+          <p className="mx-auto mt-2 max-w-[550px] text-sm leading-[1.6] text-[#9ca3af]">
             {error ||
               "There are currently no football matches in progress."}
           </p>
@@ -314,14 +309,14 @@ export default function LiveNow() {
   =================================================== */
 
   return (
-    <section style={styles.section}>
-      <div style={styles.header}>
+    <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-[#111827] p-7">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-5">
         <div>
-          <h2 style={styles.title}>
+          <h2 className="m-0 text-2xl font-extrabold text-white">
             🔴 Live Now
           </h2>
 
-          <p style={styles.subtitle}>
+          <p className="mt-1.5 text-sm text-[#9ca3af]">
             {matches.length}{" "}
             {matches.length === 1
               ? "match"
@@ -330,8 +325,8 @@ export default function LiveNow() {
           </p>
         </div>
 
-        <div style={styles.monitoring}>
-          <span style={styles.dot}>
+        <div className="flex items-center gap-2 text-[13px] font-bold text-[#cbd5e1]">
+          <span className="text-sm text-[#22c55e]">
             ●
           </span>
 
@@ -341,7 +336,7 @@ export default function LiveNow() {
         </div>
       </div>
 
-      <div style={styles.grid}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[18px]">
         {matches.map(
           (match, index) => {
             const id =
@@ -371,30 +366,25 @@ export default function LiveNow() {
                     ? `/match/${id}`
                     : "#"
                 }
-                style={{
-                  ...styles.card,
-                  pointerEvents: id
-                    ? "auto"
-                    : "none",
-                }}
+                className={`block rounded-2xl border border-[#1e293b] bg-[#0f172a] p-5 text-white no-underline ${
+                  id
+                    ? "pointer-events-auto"
+                    : "pointer-events-none"
+                }`}
               >
-                <div style={styles.status}>
-                  <span style={styles.liveDot}>
+                <div className="mb-[18px] text-xs font-extrabold text-[#ef4444]">
+                  <span className="mr-1.5 text-[#ef4444]">
                     ●
                   </span>
 
                   LIVE
 
-                  <span
-                    style={
-                      styles.statusText
-                    }
-                  >
+                  <span className="ml-2 font-medium text-[#9ca3af]">
                     {getStatus(match)}
                   </span>
                 </div>
 
-                <div style={styles.teams}>
+                <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3.5">
                   <Team
                     name={
                       getHomeName(
@@ -406,10 +396,9 @@ export default function LiveNow() {
                     }
                   />
 
-                  <div style={styles.score}>
+                  <div className="flex gap-[5px] whitespace-nowrap text-2xl font-black text-white">
                     <span>
-                      {homeScore ??
-                        "—"}
+                      {homeScore ?? "—"}
                     </span>
 
                     <span>
@@ -417,8 +406,7 @@ export default function LiveNow() {
                     </span>
 
                     <span>
-                      {awayScore ??
-                        "—"}
+                      {awayScore ?? "—"}
                     </span>
                   </div>
 
@@ -451,193 +439,22 @@ function Team({
   logo,
 }) {
   return (
-    <div style={styles.team}>
+    <div className="flex min-w-0 flex-col items-center justify-center gap-[9px] text-center">
       {logo ? (
         <img
           src={logo}
           alt={name}
-          style={styles.logo}
+          className="h-12 w-12 object-contain"
         />
       ) : (
-        <div
-          style={
-            styles.logoPlaceholder
-          }
-        >
+        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1f2937]">
           ⚽
         </div>
       )}
 
-      <span style={styles.teamName}>
+      <span className="text-sm font-bold leading-[1.3] text-[#e5e7eb]">
         {name}
       </span>
     </div>
   );
 }
-
-/* =====================================================
-   STYLES
-===================================================== */
-
-const styles = {
-  section: {
-    background: "#111827",
-    borderRadius: 20,
-    padding: 28,
-    marginBottom: 30,
-    border: "1px solid #1f2937",
-  },
-
-  header: {
-    display: "flex",
-    justifyContent:
-      "space-between",
-    alignItems: "center",
-    gap: 20,
-    flexWrap: "wrap",
-    marginBottom: 24,
-  },
-
-  title: {
-    margin: 0,
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: 800,
-  },
-
-  subtitle: {
-    margin:
-      "6px 0 0",
-    color: "#9ca3af",
-    fontSize: 14,
-  },
-
-  monitoring: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    color: "#cbd5e1",
-    fontSize: 13,
-    fontWeight: 700,
-  },
-
-  dot: {
-    color: "#22c55e",
-    fontSize: 14,
-  },
-
-  liveDot: {
-    color: "#ef4444",
-    marginRight: 6,
-  },
-
-  statusText: {
-    color: "#9ca3af",
-    marginLeft: 8,
-    fontWeight: 500,
-  },
-
-  grid: {
-    display: "grid",
-    gridTemplateColumns:
-      "repeat(auto-fit, minmax(280px, 1fr))",
-    gap: 18,
-  },
-
-  card: {
-    display: "block",
-    background: "#0f172a",
-    border:
-      "1px solid #1e293b",
-    borderRadius: 16,
-    padding: 20,
-    textDecoration: "none",
-    color: "#ffffff",
-  },
-
-  status: {
-    color: "#ef4444",
-    fontSize: 12,
-    fontWeight: 800,
-    marginBottom: 18,
-  },
-
-  teams: {
-    display: "grid",
-    gridTemplateColumns:
-      "1fr auto 1fr",
-    gap: 14,
-    alignItems: "center",
-  },
-
-  team: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 9,
-    textAlign: "center",
-    minWidth: 0,
-  },
-
-  logo: {
-    width: 48,
-    height: 48,
-    objectFit: "contain",
-  },
-
-  logoPlaceholder: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    background: "#1f2937",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  teamName: {
-    color: "#e5e7eb",
-    fontSize: 14,
-    fontWeight: 700,
-    lineHeight: 1.3,
-  },
-
-  score: {
-    display: "flex",
-    gap: 5,
-    color: "#ffffff",
-    fontSize: 24,
-    fontWeight: 900,
-    whiteSpace: "nowrap",
-  },
-
-  empty: {
-    background: "#0f172a",
-    borderRadius: 16,
-    padding: 36,
-    textAlign: "center",
-    border:
-      "1px solid #1e293b",
-  },
-
-  emptyIcon: {
-    fontSize: 36,
-    marginBottom: 10,
-  },
-
-  emptyTitle: {
-    margin: 0,
-    color: "#ffffff",
-    fontSize: 20,
-  },
-
-  emptyText: {
-    margin:
-      "8px auto 0",
-    color: "#9ca3af",
-    fontSize: 14,
-    lineHeight: 1.6,
-    maxWidth: 550,
-  },
-};

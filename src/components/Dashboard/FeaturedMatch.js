@@ -11,14 +11,11 @@ import { api } from "@/lib/api";
 ===================================================== */
 
 export default function FeaturedMatch() {
-  const [match, setMatch] =
-    useState(null);
+  const [match, setMatch] = useState(null);
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
   /* ===================================================
      LOAD ONCE
@@ -40,8 +37,7 @@ export default function FeaturedMatch() {
           setError("");
         }
 
-        const data =
-          await api.getFeaturedMatch();
+        const data = await api.getFeaturedMatch();
 
         if (!active) {
           return;
@@ -68,9 +64,7 @@ export default function FeaturedMatch() {
            SERVICE UNAVAILABLE
         ============================================== */
 
-        if (
-          data?.status === 503
-        ) {
+        if (data?.status === 503) {
           setMatch(null);
 
           setError(
@@ -85,13 +79,8 @@ export default function FeaturedMatch() {
            SUCCESS
         ============================================== */
 
-        if (
-          data?.success &&
-          data?.match
-        ) {
-          setMatch(
-            data.match
-          );
+        if (data?.success && data?.match) {
+          setMatch(data.match);
 
           setError("");
 
@@ -113,10 +102,7 @@ export default function FeaturedMatch() {
           return;
         }
 
-        console.error(
-          "FeaturedMatch:",
-          err
-        );
+        console.error("FeaturedMatch:", err);
 
         setMatch(null);
 
@@ -144,18 +130,12 @@ export default function FeaturedMatch() {
 
   if (loading) {
     return (
-      <section
-        style={styles.section}
-      >
-        <h2
-          style={styles.heading}
-        >
+      <section className="rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 text-white sm:p-[30px]">
+        <h2 className="m-0 mb-5 text-[24px] font-extrabold sm:text-[28px]">
           ⭐ Featured Match
         </h2>
 
-        <div
-          style={styles.loading}
-        >
+        <div className="p-10 text-center text-[#94a3b8]">
           Loading featured match...
         </div>
       </section>
@@ -168,33 +148,21 @@ export default function FeaturedMatch() {
 
   if (!match) {
     return (
-      <section
-        style={styles.section}
-      >
-        <h2
-          style={styles.heading}
-        >
+      <section className="rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 text-white sm:p-[30px]">
+        <h2 className="m-0 mb-5 text-[24px] font-extrabold sm:text-[28px]">
           ⭐ Featured Match
         </h2>
 
-        <div
-          style={styles.empty}
-        >
-          <div
-            style={styles.emptyIcon}
-          >
+        <div className="rounded-2xl border border-[#1e293b] bg-[#0f172a] p-10 text-center">
+          <div className="mb-2.5 text-[36px]">
             ⚽
           </div>
 
-          <div
-            style={styles.emptyTitle}
-          >
+          <div className="text-lg font-bold text-white">
             Featured match unavailable
           </div>
 
-          <div
-            style={styles.emptyText}
-          >
+          <div className="mt-2 text-sm leading-[1.6] text-[#94a3b8]">
             {error ||
               "No featured match is currently available."}
           </div>
@@ -235,22 +203,14 @@ export default function FeaturedMatch() {
 
   const homeScore =
     goals?.home ??
-    match?.score
-      ?.fulltime
-      ?.home ??
-    match?.score
-      ?.fullTime
-      ?.home ??
+    match?.score?.fulltime?.home ??
+    match?.score?.fullTime?.home ??
     null;
 
   const awayScore =
     goals?.away ??
-    match?.score
-      ?.fulltime
-      ?.away ??
-    match?.score
-      ?.fullTime
-      ?.away ??
+    match?.score?.fulltime?.away ??
+    match?.score?.fullTime?.away ??
     null;
 
   const matchDate =
@@ -263,12 +223,8 @@ export default function FeaturedMatch() {
   =================================================== */
 
   const content = (
-    <div
-      style={styles.card}
-    >
-      <div
-        style={styles.league}
-      >
+    <div className="rounded-2xl border border-[#374151] bg-[#1f2937] p-4 sm:p-6">
+      <div className="mb-5 flex items-center gap-2.5 font-semibold text-[#94a3b8]">
         {league?.logo && (
           <Image
             src={league.logo}
@@ -287,38 +243,23 @@ export default function FeaturedMatch() {
         </span>
       </div>
 
-      <div
-        style={styles.content}
-      >
-        <Team
-          team={home}
-        />
+      <div className="grid grid-cols-1 items-center gap-6 md:grid-cols-[1fr_auto_1fr] md:gap-6">
+        <Team team={home} />
 
-        <div
-          style={styles.score}
-        >
-          <div
-            style={styles.scoreText}
-          >
-            {homeScore ??
-              "—"}{" "}
-            :{" "}
-            {awayScore ??
-              "—"}
+        <div className="text-center">
+          <div className="text-[34px] font-extrabold text-[#22c55e] sm:text-[42px]">
+            {homeScore ?? "—"} :{" "}
+            {awayScore ?? "—"}
           </div>
 
-          <div
-            style={styles.status}
-          >
+          <div className="mt-2.5 font-semibold text-[#94a3b8]">
             {status?.long ||
               status?.short ||
               "Upcoming"}
           </div>
 
           {matchDate && (
-            <div
-              style={styles.date}
-            >
+            <div className="mt-2.5 text-sm text-[#94a3b8]">
               {new Date(
                 matchDate
               ).toLocaleString()}
@@ -340,24 +281,14 @@ export default function FeaturedMatch() {
 
   if (fixtureId) {
     return (
-      <section
-        style={styles.section}
-      >
-        <h2
-          style={styles.heading}
-        >
+      <section className="rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 text-white sm:p-[30px]">
+        <h2 className="m-0 mb-5 text-[24px] font-extrabold sm:text-[28px]">
           ⭐ Featured Match
         </h2>
 
         <Link
           href={`/match/${fixtureId}`}
-          style={{
-            textDecoration:
-              "none",
-
-            color:
-              "inherit",
-          }}
+          className="block no-underline text-inherit"
         >
           {content}
         </Link>
@@ -366,12 +297,8 @@ export default function FeaturedMatch() {
   }
 
   return (
-    <section
-      style={styles.section}
-    >
-      <h2
-        style={styles.heading}
-      >
+    <section className="rounded-[20px] border border-[#1f2937] bg-[#111827] p-5 text-white sm:p-[30px]">
+      <h2 className="m-0 mb-5 text-[24px] font-extrabold sm:text-[28px]">
         ⭐ Featured Match
       </h2>
 
@@ -400,14 +327,11 @@ function Team({
 
   return (
     <div
-      style={{
-        ...styles.team,
-
-        justifyContent:
-          reverse
-            ? "flex-end"
-            : "flex-start",
-      }}
+      className={`flex min-w-0 items-center gap-[15px] ${
+        reverse
+          ? "justify-end"
+          : "justify-start"
+      }`}
     >
       {!reverse &&
         (logo ? (
@@ -416,29 +340,20 @@ function Team({
             alt={name}
             width={60}
             height={60}
-            style={styles.teamLogo}
+            className="shrink-0 object-contain"
           />
         ) : (
-          <div
-            style={
-              styles.logoPlaceholder
-            }
-          >
+          <div className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-[#374151]">
             ⚽
           </div>
         ))}
 
       <div
-        style={{
-          fontWeight: 700,
-
-          fontSize: 20,
-
-          textAlign:
-            reverse
-              ? "right"
-              : "left",
-        }}
+        className={`text-lg font-bold sm:text-xl ${
+          reverse
+            ? "text-right"
+            : "text-left"
+        }`}
       >
         {name}
       </div>
@@ -450,243 +365,13 @@ function Team({
             alt={name}
             width={60}
             height={60}
-            style={styles.teamLogo}
+            className="shrink-0 object-contain"
           />
         ) : (
-          <div
-            style={
-              styles.logoPlaceholder
-            }
-          >
+          <div className="flex h-[60px] w-[60px] shrink-0 items-center justify-center rounded-full bg-[#374151]">
             ⚽
           </div>
         ))}
     </div>
   );
 }
-
-/* =====================================================
-   STYLES
-===================================================== */
-
-const styles = {
-  section: {
-    background:
-      "#111827",
-
-    borderRadius:
-      20,
-
-    padding:
-      30,
-
-    color:
-      "#ffffff",
-
-    border:
-      "1px solid #1f2937",
-  },
-
-  heading: {
-    fontSize:
-      28,
-
-    margin:
-      "0 0 25px",
-
-    fontWeight:
-      800,
-  },
-
-  loading: {
-    textAlign:
-      "center",
-
-    padding:
-      40,
-
-    color:
-      "#94a3b8",
-  },
-
-  empty: {
-    textAlign:
-      "center",
-
-    padding:
-      40,
-
-    borderRadius:
-      16,
-
-    background:
-      "#0f172a",
-
-    border:
-      "1px solid #1e293b",
-  },
-
-  emptyIcon: {
-    fontSize:
-      36,
-
-    marginBottom:
-      10,
-  },
-
-  emptyTitle: {
-    color:
-      "#ffffff",
-
-    fontSize:
-      18,
-
-    fontWeight:
-      700,
-  },
-
-  emptyText: {
-    marginTop:
-      8,
-
-    color:
-      "#94a3b8",
-
-    fontSize:
-      14,
-
-    lineHeight:
-      1.6,
-  },
-
-  card: {
-    background:
-      "#1f2937",
-
-    borderRadius:
-      16,
-
-    padding:
-      25,
-
-    border:
-      "1px solid #374151",
-  },
-
-  league: {
-    display:
-      "flex",
-
-    alignItems:
-      "center",
-
-    gap:
-      10,
-
-    marginBottom:
-      20,
-
-    color:
-      "#94a3b8",
-
-    fontWeight:
-      600,
-  },
-
-  content: {
-    display:
-      "grid",
-
-    gridTemplateColumns:
-      "1fr auto 1fr",
-
-    alignItems:
-      "center",
-
-    gap:
-      25,
-  },
-
-  team: {
-    display:
-      "flex",
-
-    alignItems:
-      "center",
-
-    gap:
-      15,
-
-    minWidth:
-      0,
-  },
-
-  teamLogo: {
-    objectFit:
-      "contain",
-  },
-
-  score: {
-    textAlign:
-      "center",
-  },
-
-  scoreText: {
-    fontSize:
-      42,
-
-    fontWeight:
-      800,
-
-    color:
-      "#22c55e",
-  },
-
-  status: {
-    marginTop:
-      10,
-
-    color:
-      "#94a3b8",
-
-    fontWeight:
-      600,
-  },
-
-  date: {
-    marginTop:
-      10,
-
-    color:
-      "#94a3b8",
-
-    fontSize:
-      14,
-  },
-
-  logoPlaceholder: {
-    width:
-      60,
-
-    height:
-      60,
-
-    borderRadius:
-      "50%",
-
-    background:
-      "#374151",
-
-    display:
-      "flex",
-
-    alignItems:
-      "center",
-
-    justifyContent:
-      "center",
-
-    flexShrink:
-      0,
-  },
-};
