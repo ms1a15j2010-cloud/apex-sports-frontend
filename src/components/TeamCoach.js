@@ -3,7 +3,10 @@
 export default function TeamCoach({ coach }) {
   if (!coach) {
     return (
-      <section className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]">
+      <section
+        id="coach"
+        className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]"
+      >
         <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>

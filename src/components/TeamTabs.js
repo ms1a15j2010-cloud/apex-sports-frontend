@@ -56,7 +56,7 @@ const tabs = [
   {
     id: "history",
     label: "History",
-    icon: "📖",
+    icon: "📜",
   },
   {
     id: "achievements",
@@ -71,7 +71,7 @@ const tabs = [
   {
     id: "injuries",
     label: "Injuries",
-    icon: "🏥",
+    icon: "🚑",
   },
   {
     id: "trophies",
@@ -116,25 +116,28 @@ export default function TeamTabs() {
 
     updateActiveTab();
 
-    window.addEventListener(
-      "scroll",
-      updateActiveTab,
-      { passive: true }
-    );
+    const main =
+      document.querySelector("main");
 
     window.addEventListener(
       "resize",
       updateActiveTab
     );
 
+    main?.addEventListener(
+      "scroll",
+      updateActiveTab,
+      { passive: true }
+    );
+
     return () => {
       window.removeEventListener(
-        "scroll",
+        "resize",
         updateActiveTab
       );
 
-      window.removeEventListener(
-        "resize",
+      main?.removeEventListener(
+        "scroll",
         updateActiveTab
       );
     };
@@ -148,12 +151,26 @@ export default function TeamTabs() {
       return;
     }
 
+    const main =
+      document.querySelector("main");
+
+    if (!main) {
+      return;
+    }
+
+    const mainRect =
+      main.getBoundingClientRect();
+
+    const sectionRect =
+      section.getBoundingClientRect();
+
     const y =
-      section.getBoundingClientRect().top +
-      window.scrollY -
+      sectionRect.top -
+      mainRect.top +
+      main.scrollTop -
       135;
 
-    window.scrollTo({
+    main.scrollTo({
       top: y,
       behavior: "smooth",
     });
@@ -172,7 +189,9 @@ export default function TeamTabs() {
             <button
               key={tab.id}
               type="button"
-              onClick={() => goTo(tab.id)}
+              onClick={() =>
+                goTo(tab.id)
+              }
               aria-current={
                 isActive
                   ? "page"
