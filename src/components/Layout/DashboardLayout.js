@@ -17,21 +17,10 @@ export default function DashboardLayout({
         onMenu={() => setOpen(!open)}
       />
 
-      <div
-        style={{
-          display: "flex",
-          background: "#0f172a",
-          minHeight: "100vh",
-        }}
-      >
+      <div className="flex min-h-screen bg-[#0f172a]">
         <Sidebar open={open} />
 
-        <main
-          style={{
-            flex: 1,
-            padding: 30,
-          }}
-        >
+        <main className="min-w-0 flex-1 p-[30px]">
           {children}
         </main>
       </div>

@@ -17,34 +17,16 @@ const links = [
 export default function Sidebar({ open }) {
   return (
     <aside
-      style={{
-        width: open ? 250 : 0,
-        overflow: "hidden",
-        transition: ".3s",
-        background: "#111827",
-        borderRight: "1px solid #1f2937",
-        minHeight: "100vh",
-      }}
+      className={`overflow-hidden bg-[#111827] border-r border-[#1f2937] transition-all duration-300 ${
+        open ? "w-[250px]" : "w-0"
+      }`}
     >
-      <div
-        style={{
-          padding: 20,
-          display: "flex",
-          flexDirection: "column",
-          gap: 14,
-        }}
-      >
+      <div className="flex min-h-screen flex-col gap-[14px] p-5">
         {links.map(([name, href]) => (
           <Link
             key={href}
             href={href}
-            style={{
-              color: "white",
-              textDecoration: "none",
-              padding: "12px",
-              borderRadius: 10,
-              background: "#1f2937",
-            }}
+            className="rounded-[10px] bg-[#1f2937] p-3 text-white no-underline"
           >
             {name}
           </Link>
