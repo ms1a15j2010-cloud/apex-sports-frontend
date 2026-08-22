@@ -22,18 +22,15 @@ export default function SettingsPage() {
 
   useEffect(() => {
     try {
-      const saved =
-        localStorage.getItem(
-          "apex-sports-settings"
-        );
+      const saved = localStorage.getItem(
+        "apex-sports-settings"
+      );
 
       if (saved) {
-        setSettings(
-          (prev) => ({
-            ...prev,
-            ...JSON.parse(saved),
-          })
-        );
+        setSettings((prev) => ({
+          ...prev,
+          ...JSON.parse(saved),
+        }));
       }
     } catch (error) {
       console.error(
@@ -47,10 +44,7 @@ export default function SettingsPage() {
      UPDATE SETTING
   ===================================================== */
 
-  function updateSetting(
-    key,
-    value
-  ) {
+  function updateSetting(key, value) {
     const updated = {
       ...settings,
       [key]: value,
@@ -102,48 +96,19 @@ export default function SettingsPage() {
      TOGGLE
   ===================================================== */
 
-  function Toggle({
-    checked,
-    onChange,
-  }) {
+  function Toggle({ checked, onChange }) {
     return (
       <button
         type="button"
-        onClick={() =>
-          onChange(!checked)
-        }
+        onClick={() => onChange(!checked)}
         aria-pressed={checked}
-        style={{
-          width: 48,
-          height: 26,
-          borderRadius: 20,
-          border: "none",
-          padding: 3,
-          cursor: "pointer",
-          background: checked
-            ? "#ef4444"
-            : "#374151",
-          transition:
-            "background .2s ease",
-          display: "flex",
-          alignItems: "center",
-          justifyContent:
-            checked
-              ? "flex-end"
-              : "flex-start",
-        }}
+        className={`flex h-[26px] w-12 shrink-0 cursor-pointer items-center rounded-full border-0 p-[3px] transition-colors duration-200 ease-in-out ${
+          checked
+            ? "justify-end bg-red-500"
+            : "justify-start bg-gray-700"
+        }`}
       >
-        <span
-          style={{
-            width: 20,
-            height: 20,
-            borderRadius: "50%",
-            background: "#fff",
-            display: "block",
-            boxShadow:
-              "0 1px 4px rgba(0,0,0,.35)",
-          }}
-        />
+        <span className="block h-5 w-5 rounded-full bg-white shadow-[0_1px_4px_rgba(0,0,0,0.35)]" />
       </button>
     );
   }
@@ -158,59 +123,21 @@ export default function SettingsPage() {
     settingKey,
   }) {
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent:
-            "space-between",
-          gap: 20,
-          padding:
-            "20px 0",
-          borderBottom:
-            "1px solid #1f2937",
-        }}
-      >
-        <div
-          style={{
-            minWidth: 0,
-          }}
-        >
-          <h3
-            style={{
-              margin: 0,
-              color: "#fff",
-              fontSize: 15,
-              fontWeight: 700,
-            }}
-          >
+      <div className="flex items-center justify-between gap-5 border-b border-gray-800 py-5 last:border-b-0">
+        <div className="min-w-0">
+          <h3 className="m-0 text-[15px] font-bold text-white">
             {title}
           </h3>
 
-          <p
-            style={{
-              margin:
-                "6px 0 0",
-              color: "#9ca3af",
-              fontSize: 13,
-              lineHeight: 1.5,
-            }}
-          >
+          <p className="mt-1.5 text-[13px] leading-[1.5] text-gray-400">
             {description}
           </p>
         </div>
 
         <Toggle
-          checked={
-            settings[
-              settingKey
-            ]
-          }
+          checked={settings[settingKey]}
           onChange={(value) =>
-            updateSetting(
-              settingKey,
-              value
-            )
+            updateSetting(settingKey, value)
           }
         />
       </div>
@@ -222,63 +149,20 @@ export default function SettingsPage() {
   ===================================================== */
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "#030712",
-        color: "#fff",
-        padding:
-          "40px 20px 70px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 900,
-          margin: "0 auto",
-        }}
-      >
+    <main className="min-h-screen bg-gray-950 px-5 pb-[70px] pt-10 text-white">
+      <div className="mx-auto w-full max-w-[900px]">
         {/* HEADER */}
 
-        <header
-          style={{
-            marginBottom: 30,
-          }}
-        >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing:
-                "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+        <header className="mb-[30px]">
+          <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize:
-                "clamp(30px, 5vw, 44px)",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="m-0 text-[clamp(30px,5vw,44px)] font-extrabold">
             Settings
           </h1>
 
-          <p
-            style={{
-              margin:
-                "10px 0 0",
-              color: "#9ca3af",
-              fontSize: 15,
-            }}
-          >
+          <p className="mt-2.5 text-[15px] text-gray-400">
             Customize your Apex Sports
             experience.
           </p>
@@ -286,43 +170,13 @@ export default function SettingsPage() {
 
         {/* LIVE EXPERIENCE */}
 
-        <section
-          style={{
-            background:
-              "linear-gradient(145deg, #111827, #0b1220)",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding:
-              "8px 24px 4px",
-            marginBottom: 20,
-          }}
-        >
-          <div
-            style={{
-              padding:
-                "16px 0 8px",
-            }}
-          >
-            <h2
-              style={{
-                margin: 0,
-                color: "#fff",
-                fontSize: 18,
-                fontWeight: 800,
-              }}
-            >
+        <section className="mb-5 rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] px-6 pb-1 pt-2">
+          <div className="px-0 pb-2 pt-4">
+            <h2 className="m-0 text-lg font-extrabold text-white">
               Live Experience
             </h2>
 
-            <p
-              style={{
-                margin:
-                  "5px 0 0",
-                color: "#6b7280",
-                fontSize: 12,
-              }}
-            >
+            <p className="mt-[5px] text-xs text-gray-500">
               Control live scores and
               match updates.
             </p>
@@ -349,43 +203,13 @@ export default function SettingsPage() {
 
         {/* DISPLAY */}
 
-        <section
-          style={{
-            background:
-              "linear-gradient(145deg, #111827, #0b1220)",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding:
-              "8px 24px 4px",
-            marginBottom: 20,
-          }}
-        >
-          <div
-            style={{
-              padding:
-                "16px 0 8px",
-            }}
-          >
-            <h2
-              style={{
-                margin: 0,
-                color: "#fff",
-                fontSize: 18,
-                fontWeight: 800,
-              }}
-            >
+        <section className="mb-5 rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] px-6 pb-1 pt-2">
+          <div className="px-0 pb-2 pt-4">
+            <h2 className="m-0 text-lg font-extrabold text-white">
               Display
             </h2>
 
-            <p
-              style={{
-                margin:
-                  "5px 0 0",
-                color: "#6b7280",
-                fontSize: 12,
-              }}
-            >
+            <p className="mt-[5px] text-xs text-gray-500">
               Adjust how match information
               is displayed.
             </p>
@@ -400,37 +224,12 @@ export default function SettingsPage() {
 
         {/* ACCOUNT INFORMATION */}
 
-        <section
-          style={{
-            background:
-              "linear-gradient(145deg, #111827, #0b1220)",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 20,
-            padding: 24,
-            marginBottom: 20,
-          }}
-        >
-          <h2
-            style={{
-              margin:
-                "0 0 8px",
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: 800,
-            }}
-          >
+        <section className="mb-5 rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-6">
+          <h2 className="mb-2 text-lg font-extrabold text-white">
             Apex Sports
           </h2>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#9ca3af",
-              fontSize: 13,
-              lineHeight: 1.6,
-            }}
-          >
+          <p className="m-0 text-[13px] leading-[1.6] text-gray-400">
             Your preferences are stored
             locally in this browser.
           </p>
@@ -438,29 +237,11 @@ export default function SettingsPage() {
 
         {/* RESET */}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "flex-end",
-          }}
-        >
+        <div className="flex justify-end">
           <button
             type="button"
             onClick={resetSettings}
-            style={{
-              border:
-                "1px solid #374151",
-              background:
-                "transparent",
-              color: "#d1d5db",
-              borderRadius: 10,
-              padding:
-                "11px 18px",
-              cursor: "pointer",
-              fontSize: 13,
-              fontWeight: 700,
-            }}
+            className="cursor-pointer rounded-[10px] border border-gray-700 bg-transparent px-[18px] py-[11px] text-[13px] font-bold text-gray-300 transition hover:border-gray-600 hover:bg-gray-900 hover:text-white"
           >
             Reset Settings
           </button>
