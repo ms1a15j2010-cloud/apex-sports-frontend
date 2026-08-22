@@ -10,19 +10,17 @@ export default function FollowMatch({
   useEffect(() => {
     if (!match) return;
 
-    const saved =
-      JSON.parse(
-        localStorage.getItem("followedMatches") || "[]"
-      );
+    const saved = JSON.parse(
+      localStorage.getItem("followedMatches") || "[]"
+    );
 
     setFollowing(saved.includes(match.fixture.id));
   }, [match]);
 
   function toggleFollow() {
-    const saved =
-      JSON.parse(
-        localStorage.getItem("followedMatches") || "[]"
-      );
+    const saved = JSON.parse(
+      localStorage.getItem("followedMatches") || "[]"
+    );
 
     let updated;
 
@@ -45,48 +43,36 @@ export default function FollowMatch({
   }
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 18,
-        padding: 24,
-        marginBottom: 25,
-      }}
-    >
-      <h2
-        style={{
-          marginBottom: 20,
-        }}
-      >
+    <section className="mb-[25px] rounded-[18px] bg-gray-900 p-6">
+      <h2 className="mb-5">
         Follow Match
       </h2>
 
       <button
         onClick={toggleFollow}
-        style={{
-          padding: "14px 24px",
-          borderRadius: 12,
-          border: "none",
-          cursor: "pointer",
-          fontSize: 16,
-          fontWeight: "bold",
-          background: following
-            ? "#dc2626"
-            : "#22c55e",
-          color: "#fff",
-        }}
+        className={`
+          cursor-pointer
+          rounded-xl
+          border-0
+          px-6
+          py-[14px]
+          text-base
+          font-bold
+          text-white
+          transition
+          ${
+            following
+              ? "bg-red-600 hover:bg-red-700"
+              : "bg-green-500 hover:bg-green-600"
+          }
+        `}
       >
         {following
           ? "★ Following"
           : "☆ Follow Match"}
       </button>
 
-      <p
-        style={{
-          marginTop: 15,
-          color: "#94a3b8",
-        }}
-      >
+      <p className="mt-[15px] text-slate-400">
         Save this match to quickly find it later.
       </p>
     </section>

@@ -2,154 +2,137 @@
 
 export default function Events({ events }) {
   if (!events?.length) {
-  return (
-    <section
-      style={{
-        marginTop: 30,
-        background: "#111827",
-        borderRadius: 18,
-        padding: 28,
-        color: "white",
-        textAlign: "center",
-      }}
-    >
-      No events available.
-    </section>
-  );
-}
+    return (
+      <section className="mt-[30px] rounded-[18px] bg-gray-900 p-7 text-center text-white">
+        No events available.
+      </section>
+    );
+  }
 
   const badge = (type, detail) => {
     const t = (type || "").toLowerCase();
     const d = (detail || "").toLowerCase();
-if (d.includes("own goal"))
-  return {
-    icon: "🥅",
-    color: "#ea580c",
-  };
-    if (t.includes("goal"))
-      return { icon: "⚽", color: "#16a34a" };
 
-    if (d.includes("yellow"))
-      return { icon: "🟨", color: "#ca8a04" };
+    if (d.includes("own goal")) {
+      return {
+        icon: "🥅",
+        color: "#ea580c",
+      };
+    }
 
-    if (d.includes("red"))
-      return { icon: "🟥", color: "#dc2626" };
+    if (t.includes("goal")) {
+      return {
+        icon: "⚽",
+        color: "#16a34a",
+      };
+    }
+
+    if (d.includes("yellow")) {
+      return {
+        icon: "🟨",
+        color: "#ca8a04",
+      };
+    }
+
+    if (d.includes("red")) {
+      return {
+        icon: "🟥",
+        color: "#dc2626",
+      };
+    }
 
     if (
-  t.includes("subst") ||
-  t.includes("substitution")
-)
+      t.includes("subst") ||
+      t.includes("substitution")
+    ) {
+      return {
+        icon: "🔄",
+        color: "#2563eb",
+      };
+    }
 
-if (
-  t.includes("penalty") ||
-  d.includes("penalty")
-)
-  return {
-     icon: "❌",
-    color: "#b91c1c",
-  };
+    if (
+      t.includes("penalty") ||
+      d.includes("penalty")
+    ) {
+      return {
+        icon: "❌",
+        color: "#b91c1c",
+      };
+    }
 
-    if (t.includes("var"))
-      return { icon: "📺", color: "#9333ea" };
+    if (t.includes("var")) {
+      return {
+        icon: "📺",
+        color: "#9333ea",
+      };
+    }
 
-    return { icon: "•", color: "#475569" };
+    return {
+      icon: "•",
+      color: "#475569",
+    };
   };
 
   return (
-    <section
-      style={{
-        marginTop: 30,
-        background: "#111827",
-        borderRadius: 18,
-        padding: 28,
-      }}
-    >
-      <h2
-        style={{
-          marginBottom: 25,
-          fontSize: 28,
-        }}
-      >
+    <section className="mt-[30px] rounded-[18px] bg-gray-900 p-7">
+      <h2 className="mb-[25px] text-[28px]">
         📝 Match Events
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 16,
-        }}
-      >
+      <div className="grid gap-4">
         {events.map((event, index) => {
-          const b = badge(event.type, event.detail);
+          const b = badge(
+            event.type,
+            event.detail
+          );
 
           return (
             <div
-             key={`${event.time?.elapsed}-${event.type}-${event.player?.id || index}`}
-              style={{
-                background: "#1e293b",
-                borderRadius: 12,
-                padding: 18,
-                display: "flex",
-                alignItems: "center",
-                gap: 18,
-              }}
+              key={`${event.time?.elapsed}-${event.type}-${event.player?.id || index}`}
+              className="
+                flex
+                items-center
+                gap-[18px]
+                rounded-xl
+                bg-slate-800
+                p-[18px]
+              "
             >
-              <div
-                style={{
-                  width: 70,
-                  textAlign: "center",
-                  fontWeight: "bold",
-                  color: "#22c55e",
-                }}
-              >
-               {event.time?.elapsed ?? "-"}
-
+              <div className="w-[70px] shrink-0 text-center font-bold text-green-500">
+                {event.time?.elapsed ?? "-"}
               </div>
 
               <div
+                className="
+                  flex
+                  h-[46px]
+                  w-[46px]
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-full
+                  text-[22px]
+                "
                 style={{
-                  width: 46,
-                  height: 46,
-                  borderRadius: "50%",
                   background: b.color,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontSize: 22,
                 }}
               >
                 {b.icon}
               </div>
 
-              <div
-                style={{
-                  flex: 1,
-                }}
-              >
-                <div
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 18,
-                  }}
-                >
-                  {event.player?.name || "Unknown Player"}
+              <div className="min-w-0 flex-1">
+                <div className="text-[18px] font-bold">
+                  {event.player?.name ||
+                    "Unknown Player"}
                 </div>
 
-                <div
-                  style={{
-                    color: "#94a3b8",
-                    marginTop: 4,
-                  }}
-                >
-                  {event.team?.name || "Unknown Team"}
+                <div className="mt-1 text-slate-400">
+                  {event.team?.name ||
+                    "Unknown Team"}
                 </div>
 
-                <div
-                  style={{
-                    marginTop: 8,
-                    color: "#e2e8f0",
-                  }}
-                >
+                <div className="mt-2 text-slate-200">
                   {event.type || "Event"}
 
                   {event.detail && (
@@ -161,24 +144,13 @@ if (
                 </div>
 
                 {event.assist?.name && (
-                  <div
-                    style={{
-                      marginTop: 6,
-                      color: "#22c55e",
-                    }}
-                  >
+                  <div className="mt-1.5 text-green-500">
                     Assist: {event.assist.name}
                   </div>
                 )}
 
                 {event.comments && (
-                  <div
-                    style={{
-                      marginTop: 6,
-                      color: "#94a3b8",
-                      fontSize: 13,
-                    }}
-                  >
+                  <div className="mt-1.5 text-[13px] text-slate-400">
                     {event.comments}
                   </div>
                 )}
