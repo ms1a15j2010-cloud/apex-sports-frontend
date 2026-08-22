@@ -65,58 +65,23 @@ export default function PlayerHistory({
     0;
 
   return (
-    <section
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
-    >
+    <section className="mb-[30px] rounded-[20px] border border-[#1e293b] bg-gradient-to-br from-[#111827] to-[#0f172a] p-[30px]">
       {/* =================================================
           HEADER
       ================================================= */}
 
-      <div
-        style={{
-          marginBottom: 28,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-7">
+        <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 26,
-          }}
-        >
+        <h2 className="m-0 text-[26px] text-white">
           📖 Player History
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
-          Personal and professional history
-          currently available for{" "}
-          {player.name || "this player"}.
+        <p className="m-[8px_0_0] text-[14px] text-slate-400">
+          Personal and professional history currently available
+          for {player.name || "this player"}.
         </p>
       </div>
 
@@ -124,12 +89,7 @@ export default function PlayerHistory({
           HISTORY TIMELINE
       ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gap: 18,
-        }}
-      >
+      <div className="grid gap-[18px]">
         {/* BIRTH */}
 
         <TimelineCard
@@ -237,26 +197,12 @@ export default function PlayerHistory({
 
       {Array.isArray(history) &&
         history.length > 0 && (
-          <div
-            style={{
-              marginTop: 35,
-            }}
-          >
-            <h3
-              style={{
-                color: "#fff",
-                marginBottom: 18,
-              }}
-            >
+          <div className="mt-[35px]">
+            <h3 className="mb-[18px] text-white">
               Recent Match History
             </h3>
 
-            <div
-              style={{
-                display: "grid",
-                gap: 12,
-              }}
-            >
+            <div className="grid gap-3">
               {history
                 .slice(0, 10)
                 .map((match, index) => (
@@ -276,30 +222,12 @@ export default function PlayerHistory({
           CAREER OVERVIEW
       ================================================= */}
 
-      <div
-        style={{
-          marginTop: 35,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 25,
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 18,
-          }}
-        >
+      <div className="mt-[35px] rounded-[18px] bg-[#1f2937] p-[25px]">
+        <h3 className="mb-[18px] text-white">
           Career Overview
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.9,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 text-[#cbd5e1] leading-[1.9]">
           <strong>
             {player.name ||
               "This player"}
@@ -331,46 +259,18 @@ function TimelineCard({
   children,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 18,
-        padding: 22,
-        borderLeft:
-          "5px solid #22c55e",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          marginBottom: 16,
-        }}
-      >
-        <span
-          style={{
-            fontSize: 26,
-          }}
-        >
+    <div className="rounded-[18px] border-l-[5px] border-green-500 bg-[#1f2937] p-[22px]">
+      <div className="mb-4 flex items-center gap-2.5">
+        <span className="text-[26px]">
           {icon}
         </span>
 
-        <h3
-          style={{
-            color: "#fff",
-            margin: 0,
-          }}
-        >
+        <h3 className="m-0 text-white">
           {title}
         </h3>
       </div>
 
-      <div
-        style={{
-          color: "#cbd5e1",
-        }}
-      >
+      <div className="text-[#cbd5e1]">
         {children}
       </div>
     </div>
@@ -386,34 +286,12 @@ function HistoryRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent:
-          "space-between",
-        gap: 20,
-        padding:
-          "10px 0",
-        borderBottom:
-          "1px solid #293548",
-      }}
-    >
-      <span
-        style={{
-          color: "#94a3b8",
-          fontSize: 14,
-        }}
-      >
+    <div className="flex items-center justify-between gap-5 border-b border-[#293548] py-2.5 last:border-b-0 max-[500px]:items-start max-[500px]:flex-col max-[500px]:gap-1">
+      <span className="text-[14px] text-slate-400">
         {label}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-          textAlign: "right",
-          fontSize: 14,
-        }}
-      >
+      <strong className="break-words text-right text-[14px] text-white max-[500px]:text-left">
         {value}
       </strong>
     </div>
@@ -457,89 +335,43 @@ function MatchHistoryCard({
     match?.goals?.away ??
     null;
 
+  const isFinished =
+    status === "FINISHED" ||
+    status === "FT";
+
   return (
-    <div
-      style={{
-        background: "#0f172a",
-        borderRadius: 14,
-        padding: 16,
-        border: "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "1fr auto 1fr",
-          alignItems: "center",
-          gap: 15,
-        }}
-      >
-        <strong
-          style={{
-            color: "#fff",
-            textAlign: "left",
-          }}
-        >
+    <div className="rounded-[14px] border border-[#293548] bg-[#0f172a] p-4">
+      <div className="grid grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-[15px] max-[600px]:grid-cols-1 max-[600px]:gap-3">
+        <strong className="break-words text-left text-white max-[600px]:text-center">
           {home}
         </strong>
 
-        <div
-          style={{
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              color: "#fff",
-              fontWeight: 800,
-            }}
-          >
+        <div className="text-center">
+          <div className="font-extrabold text-white">
             {homeScore ?? "-"}
             {" - "}
             {awayScore ?? "-"}
           </div>
 
           <div
-            style={{
-              color:
-                status === "FINISHED" ||
-                status === "FT"
-                  ? "#22c55e"
-                  : "#f59e0b",
-              fontSize: 11,
-              marginTop: 4,
-              textTransform:
-                "uppercase",
-            }}
+            className={`mt-1 text-[11px] uppercase ${
+              isFinished
+                ? "text-green-500"
+                : "text-amber-500"
+            }`}
           >
-            {status ||
-              "Unknown"}
+            {status || "Unknown"}
           </div>
         </div>
 
-        <strong
-          style={{
-            color: "#fff",
-            textAlign: "right",
-          }}
-        >
+        <strong className="break-words text-right text-white max-[600px]:text-center">
           {away}
         </strong>
       </div>
 
       {date && (
-        <div
-          style={{
-            marginTop: 10,
-            color: "#64748b",
-            fontSize: 12,
-            textAlign: "center",
-          }}
-        >
-          {new Date(
-            date
-          ).toLocaleDateString(
+        <div className="mt-2.5 text-center text-[12px] text-slate-500">
+          {new Date(date).toLocaleDateString(
             "en-US",
             {
               weekday: "short",

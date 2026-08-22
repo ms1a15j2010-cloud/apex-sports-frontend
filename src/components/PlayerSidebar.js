@@ -44,24 +44,10 @@ export default function PlayerSidebar({
     player.photo || null;
 
   return (
-    <aside
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 25,
-        marginBottom: 30,
-        boxShadow:
-          "0 8px 24px rgba(0,0,0,.35)",
-      }}
-    >
+    <aside className="mb-[30px] rounded-[20px] bg-gray-900 p-[25px] shadow-[0_8px_24px_rgba(0,0,0,0.35)]">
       {/* PLAYER */}
 
-      <div
-        style={{
-          textAlign: "center",
-          marginBottom: 30,
-        }}
-      >
+      <div className="mb-[30px] text-center">
         {playerPhoto ? (
           <Image
             src={playerPhoto}
@@ -73,85 +59,34 @@ export default function PlayerSidebar({
             height={170}
             priority
             unoptimized
-            style={{
-              borderRadius: "50%",
-              objectFit: "cover",
-              border:
-                "4px solid #22c55e",
-            }}
+            className="mx-auto rounded-full border-4 border-green-500 object-cover"
           />
         ) : (
-          <div
-            style={{
-              width: 170,
-              height: 170,
-              margin: "0 auto",
-              borderRadius: "50%",
-              background:
-                "linear-gradient(145deg, #1f2937, #111827)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              color: "#22c55e",
-              border:
-                "4px solid #22c55e",
-              fontSize: 56,
-              fontWeight: 800,
-            }}
-          >
+          <div className="mx-auto flex h-[170px] w-[170px] items-center justify-center rounded-full border-4 border-green-500 bg-gradient-to-br from-gray-800 to-gray-900 text-[56px] font-extrabold text-green-500">
             {(player.name || "P")
               .charAt(0)
               .toUpperCase()}
           </div>
         )}
 
-        <h2
-          style={{
-            color: "#fff",
-            marginTop: 18,
-            marginBottom: 8,
-          }}
-        >
+        <h2 className="mb-2 mt-[18px] text-white">
           {player.name ||
             "Unknown Player"}
         </h2>
 
-        <div
-          style={{
-            color: "#94a3b8",
-          }}
-        >
+        <div className="text-slate-400">
           {position}
         </div>
       </div>
 
       {/* CLUB */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 16,
-          padding: 18,
-          marginBottom: 24,
-        }}
-      >
-        <div
-          style={{
-            color: "#94a3b8",
-            marginBottom: 12,
-            fontWeight: 600,
-          }}
-        >
+      <div className="mb-6 rounded-2xl bg-gray-800 p-[18px]">
+        <div className="mb-3 font-semibold text-slate-400">
           Current Club
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 12,
-          }}
-        >
+        <div className="flex items-center gap-3">
           {clubLogo ? (
             <Image
               src={clubLogo}
@@ -159,35 +94,15 @@ export default function PlayerSidebar({
               width={42}
               height={42}
               unoptimized
-              style={{
-                objectFit: "contain",
-              }}
+              className="object-contain"
             />
           ) : (
-            <div
-              style={{
-                width: 42,
-                height: 42,
-                borderRadius: 10,
-                background:
-                  "#111827",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#22c55e",
-                fontSize: 15,
-                fontWeight: 800,
-              }}
-            >
+            <div className="flex h-[42px] w-[42px] items-center justify-center rounded-[10px] bg-gray-900 text-[15px] font-extrabold text-green-500">
               FC
             </div>
           )}
 
-          <strong
-            style={{
-              color: "#fff",
-            }}
-          >
+          <strong className="break-words text-white [overflow-wrap:anywhere]">
             {club}
           </strong>
         </div>
@@ -195,13 +110,7 @@ export default function PlayerSidebar({
 
       {/* INFORMATION */}
 
-      <div
-        style={{
-          display: "grid",
-          gap: 14,
-          marginBottom: 25,
-        }}
-      >
+      <div className="mb-[25px] grid gap-[14px]">
         <InfoRow
           label="Nationality"
           value={nationality}
@@ -235,20 +144,8 @@ export default function PlayerSidebar({
 
       {/* QUICK LINKS */}
 
-      <div
-        style={{
-          borderTop:
-            "1px solid #374151",
-          paddingTop: 20,
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 15,
-            fontSize: 18,
-          }}
-        >
+      <div className="border-t border-gray-700 pt-5">
+        <h3 className="mb-[15px] text-[18px] text-white">
           Quick Links
         </h3>
 
@@ -279,31 +176,12 @@ function InfoRow({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 12,
-        padding: "14px 18px",
-        display: "flex",
-        justifyContent:
-          "space-between",
-        alignItems: "center",
-      }}
-    >
-      <span
-        style={{
-          color: "#94a3b8",
-          fontSize: 14,
-        }}
-      >
+    <div className="flex items-center justify-between gap-3 rounded-xl bg-gray-800 px-[18px] py-[14px]">
+      <span className="text-sm text-slate-400">
         {label}
       </span>
 
-      <strong
-        style={{
-          color: "#fff",
-        }}
-      >
+      <strong className="break-words text-right text-white [overflow-wrap:anywhere]">
         {value}
       </strong>
     </div>
@@ -318,25 +196,9 @@ function SidebarLink({
   return (
     <Link
       href={href}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: 12,
-        padding: "12px 14px",
-        marginBottom: 10,
-        borderRadius: 12,
-        textDecoration: "none",
-        background: "#1f2937",
-        color: "#fff",
-        transition:
-          "all .25s ease",
-      }}
+      className="mb-[10px] flex items-center gap-3 rounded-xl bg-gray-800 px-[14px] py-3 text-white no-underline transition-all duration-200 hover:bg-gray-700"
     >
-      <span
-        style={{
-          fontSize: 18,
-        }}
-      >
+      <span className="text-[18px]">
         {icon}
       </span>
 

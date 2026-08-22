@@ -8,31 +8,11 @@ export default function PlayerHeader({ player }) {
   const playerPhoto = player.photo || null;
 
   return (
-    <section
-      style={{
-        background: "#111827",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        boxShadow: "0 10px 30px rgba(0,0,0,.35)",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          alignItems: "center",
-          gap: 30,
-        }}
-      >
+    <section className="mb-[30px] rounded-[20px] bg-gray-900 p-[30px] shadow-[0_10px_30px_rgba(0,0,0,0.35)]">
+      <div className="flex flex-wrap items-center gap-[30px]">
         {/* PLAYER PHOTO */}
 
-        <div
-          style={{
-            textAlign: "center",
-            minWidth: 220,
-          }}
-        >
+        <div className="min-w-[220px] text-center">
           {playerPhoto ? (
             <Image
               src={playerPhoto}
@@ -41,104 +21,52 @@ export default function PlayerHeader({ player }) {
               height={180}
               priority
               unoptimized
-              style={{
-                borderRadius: "50%",
-                objectFit: "cover",
-                border: "4px solid #22c55e",
-              }}
+              className="rounded-full border-4 border-green-500 object-cover"
             />
           ) : (
             <div
-              aria-label={
-                player.name || "Player"
-              }
-              style={{
-                width: 180,
-                height: 180,
-                margin: "0 auto",
-                borderRadius: "50%",
-                background:
-                  "linear-gradient(145deg, #1f2937, #111827)",
-                border:
-                  "4px solid #22c55e",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#22c55e",
-                fontSize: 64,
-                fontWeight: 800,
-              }}
+              aria-label={player.name || "Player"}
+              className="mx-auto flex h-[180px] w-[180px] items-center justify-center rounded-full border-4 border-green-500 bg-gradient-to-br from-gray-800 to-gray-900 text-[64px] font-extrabold text-green-500"
             >
-              {(player.name || "P")
-                .charAt(0)
-                .toUpperCase()}
+              {(player.name || "P").charAt(0).toUpperCase()}
             </div>
           )}
 
-          <h2
-            style={{
-              color: "#fff",
-              marginTop: 20,
-              marginBottom: 5,
-            }}
-          >
+          <h2 className="mb-[5px] mt-5 text-white">
             {player.name || "Unknown Player"}
           </h2>
 
-          <div
-            style={{
-              color: "#94a3b8",
-            }}
-          >
-            {player.position ||
-              "Football Player"}
+          <div className="text-slate-400">
+            {player.position || "Football Player"}
           </div>
         </div>
 
         {/* INFORMATION */}
 
-        <div
-          style={{
-            flex: 1,
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(220px,1fr))",
-            gap: 18,
-          }}
-        >
+        <div className="grid min-w-0 flex-1 grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-[18px]">
           <InfoCard
             title="Nationality"
-            value={
-              player.nationality || "-"
-            }
+            value={player.nationality || "-"}
           />
 
           <InfoCard
             title="Age"
-            value={
-              player.age || "-"
-            }
+            value={player.age || "-"}
           />
 
           <InfoCard
             title="Height"
-            value={
-              player.height || "-"
-            }
+            value={player.height || "-"}
           />
 
           <InfoCard
             title="Weight"
-            value={
-              player.weight || "-"
-            }
+            value={player.weight || "-"}
           />
 
           <InfoCard
             title="Birth Date"
-            value={
-              player.birth?.date || "-"
-            }
+            value={player.birth?.date || "-"}
           />
 
           <InfoCard
@@ -164,45 +92,23 @@ export default function PlayerHeader({ player }) {
 
           <InfoCard
             title="Jersey Number"
-            value={
-              player.number || "-"
-            }
+            value={player.number || "-"}
           />
         </div>
       </div>
 
       {/* SUMMARY */}
 
-      <div
-        style={{
-          marginTop: 35,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 15,
-          }}
-        >
+      <div className="mt-[35px] rounded-[18px] bg-gray-800 p-6">
+        <h3 className="mb-[15px] text-white">
           Player Overview
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.9,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.9] text-slate-300">
           <strong>
-            {player.name ||
-              "This player"}
+            {player.name || "This player"}
           </strong>{" "}
-          is a professional football
-          player representing{" "}
+          is a professional football player representing{" "}
           <strong>
             {player.team?.name ||
               player.club?.name ||
@@ -216,12 +122,10 @@ export default function PlayerHeader({ player }) {
           <strong>
             {player.nationality || "-"}
           </strong>
-          . Personal information, career
-          statistics, transfers, injuries
-          and performance data are
-          automatically updated from the
-          football data provider whenever
-          new information becomes
+          . Personal information, career statistics,
+          transfers, injuries and performance data are
+          automatically updated from the football data
+          provider whenever new information becomes
           available.
         </p>
       </div>
@@ -229,35 +133,14 @@ export default function PlayerHeader({ player }) {
   );
 }
 
-function InfoCard({
-  title,
-  value,
-}) {
+function InfoCard({ title, value }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 20,
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 14,
-          marginBottom: 8,
-        }}
-      >
+    <div className="rounded-[14px] bg-gray-800 p-5">
+      <div className="mb-2 text-sm text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color: "#fff",
-          fontSize: 20,
-          fontWeight: 700,
-        }}
-      >
+      <div className="text-xl font-bold text-white">
         {value}
       </div>
     </div>

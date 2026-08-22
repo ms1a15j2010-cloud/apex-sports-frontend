@@ -65,317 +65,170 @@ export default function PlayerOverview({
     0;
 
   return (
-    <section
-      style={{
-        background:
-          "linear-gradient(145deg, #111827, #0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
-    >
-      {/* =================================================
-          HEADER
-      ================================================= */}
+    <section className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-[30px]">
+      {/* HEADER */}
 
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+      <div className="mb-[25px]">
+        <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 26,
-          }}
-        >
+        <h2 className="m-0 text-[26px] text-white">
           📋 Player Overview
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin:
-              "8px 0 0",
-            fontSize: 14,
-            lineHeight: 1.6,
-          }}
-        >
-          Profile information and
-          current-season details for{" "}
-          {player.name ||
-            "this player"}.
+        <p className="mt-2 text-sm leading-[1.6] text-slate-400">
+          Profile information and current-season details
+          for {player.name || "this player"}.
         </p>
       </div>
 
-      {/* =================================================
-          PROFILE INFORMATION
-      ================================================= */}
+      {/* PROFILE INFORMATION */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(220px,1fr))",
-          gap: 16,
-        }}
-      >
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
         <InfoCard
           title="Player ID"
-          value={
-            player.id ?? "-"
-          }
+          value={player.id ?? "-"}
         />
 
         <InfoCard
           title="Full Name"
-          value={
-            player.name || "-"
-          }
+          value={player.name || "-"}
         />
 
         <InfoCard
           title="First Name"
-          value={
-            player.firstname ||
-            "-"
-          }
+          value={player.firstname || "-"}
         />
 
         <InfoCard
           title="Last Name"
-          value={
-            player.lastname ||
-            "-"
-          }
+          value={player.lastname || "-"}
         />
 
         <InfoCard
           title="Nationality"
-          value={
-            nationality
-          }
+          value={nationality}
         />
 
         <InfoCard
           title="Age"
-          value={
-            age ?? "-"
-          }
+          value={age ?? "-"}
         />
 
         <InfoCard
           title="Position"
-          value={
-            position
-          }
+          value={position}
         />
 
         <InfoCard
           title="Jersey Number"
-          value={
-            number ?? "-"
-          }
+          value={number ?? "-"}
         />
 
         <InfoCard
           title="Current Club"
-          value={
-            team?.name ||
-            "-"
-          }
+          value={team?.name || "-"}
         />
 
         <InfoCard
           title="Competition"
-          value={
-            league?.name ||
-            "Premier League"
-          }
+          value={league?.name || "Premier League"}
         />
 
         <InfoCard
           title="Season"
-          value={
-            league?.season ||
-            "-"
-          }
+          value={league?.season || "-"}
         />
 
         <InfoCard
           title="Birth Date"
-          value={
-            birthDate
-          }
+          value={birthDate}
         />
 
         <InfoCard
           title="Birth Place"
-          value={
-            birthPlace ||
-            "-"
-          }
+          value={birthPlace || "-"}
         />
 
         <InfoCard
           title="Appearances"
-          value={
-            appearances
-          }
+          value={appearances}
         />
 
         <InfoCard
           title="Goals"
-          value={
-            goals
-          }
+          value={goals}
           highlight
         />
 
         <InfoCard
           title="Assists"
-          value={
-            assists
-          }
+          value={assists}
         />
       </div>
 
-      {/* =================================================
-          AVAILABLE PERSONAL DATA
-      ================================================= */}
+      {/* AVAILABLE PERSONAL DATA */}
 
-      {(player.height ||
-        player.weight) && (
-        <>
-          <div
-            style={{
-              marginTop: 25,
-              display: "grid",
-              gridTemplateColumns:
-                "repeat(auto-fit,minmax(220px,1fr))",
-              gap: 16,
-            }}
-          >
-            {player.height && (
-              <InfoCard
-                title="Height"
-                value={
-                  player.height
-                }
-              />
-            )}
+      {(player.height || player.weight) && (
+        <div className="mt-[25px] grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+          {player.height && (
+            <InfoCard
+              title="Height"
+              value={player.height}
+            />
+          )}
 
-            {player.weight && (
-              <InfoCard
-                title="Weight"
-                value={
-                  player.weight
-                }
-              />
-            )}
-          </div>
-        </>
+          {player.weight && (
+            <InfoCard
+              title="Weight"
+              value={player.weight}
+            />
+          )}
+        </div>
       )}
 
-      {/* =================================================
-          ABOUT PLAYER
-      ================================================= */}
+      {/* ABOUT PLAYER */}
 
-      <div
-        style={{
-          marginTop: 30,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
-          border:
-            "1px solid #293548",
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 15,
-          }}
-        >
+      <div className="mt-[30px] rounded-[18px] border border-[#293548] bg-gray-800 p-6">
+        <h3 className="mb-[15px] text-white">
           About Player
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.85,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.85] text-slate-300">
           <strong>
-            {player.name ||
-              "This player"}
+            {player.name || "This player"}
           </strong>{" "}
-          is a professional football
-          player currently associated
-          with{" "}
+          is a professional football player currently
+          associated with{" "}
           <strong>
-            {team?.name ||
-              "their club"}
+            {team?.name || "their club"}
           </strong>
           . The player is listed as a{" "}
-          <strong>
-            {position}
-          </strong>{" "}
+          <strong>{position}</strong>{" "}
           and represents{" "}
-          <strong>
-            {nationality}
-          </strong>
-          .
+          <strong>{nationality}</strong>.
           {age
             ? ` The current recorded age is ${age}.`
             : ""}
           {league?.season
-            ? ` This profile is using ${league?.name || "league"} season ${league.season}.`
+            ? ` This profile is using ${
+                league?.name || "league"
+              } season ${league.season}.`
             : ""}
         </p>
       </div>
 
-      {/* =================================================
-          DATA SOURCE
-      ================================================= */}
+      {/* DATA SOURCE */}
 
-      <div
-        style={{
-          marginTop: 18,
-          display: "flex",
-          justifyContent:
-            "space-between",
-          gap: 12,
-          flexWrap: "wrap",
-          color: "#64748b",
-          fontSize: 12,
-        }}
-      >
+      <div className="mt-[18px] flex flex-wrap justify-between gap-3 text-xs text-slate-500">
         <span>
           Source:
           football-data.org
         </span>
 
         <span>
-          Player ID:{" "}
-          {player.id ?? "-"}
+          Player ID: {player.id ?? "-"}
         </span>
       </div>
     </section>
@@ -386,26 +239,18 @@ export default function PlayerOverview({
 AGE CALCULATOR
 ===================================================== */
 
-function calculateAge(
-  birthDate
-) {
+function calculateAge(birthDate) {
   if (!birthDate) {
     return null;
   }
 
-  const birth =
-    new Date(birthDate);
+  const birth = new Date(birthDate);
 
-  if (
-    Number.isNaN(
-      birth.getTime()
-    )
-  ) {
+  if (Number.isNaN(birth.getTime())) {
     return null;
   }
 
-  const today =
-    new Date();
+  const today = new Date();
 
   let age =
     today.getFullYear() -
@@ -417,11 +262,9 @@ function calculateAge(
 
   if (
     monthDifference < 0 ||
-    (
-      monthDifference === 0 &&
+    (monthDifference === 0 &&
       today.getDate() <
-        birth.getDate()
-    )
+        birth.getDate())
   ) {
     age--;
   }
@@ -439,35 +282,17 @@ function InfoCard({
   highlight = false,
 }) {
   return (
-    <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 14,
-        padding: 18,
-        border:
-          "1px solid #293548",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 8,
-        }}
-      >
+    <div className="rounded-[14px] border border-[#293548] bg-gray-800 p-[18px]">
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
       <div
-        style={{
-          color: highlight
-            ? "#22c55e"
-            : "#fff",
-          fontSize: 20,
-          fontWeight: 800,
-          overflowWrap:
-            "anywhere",
-        }}
+        className={`text-xl font-extrabold [overflow-wrap:anywhere] ${
+          highlight
+            ? "text-green-500"
+            : "text-white"
+        }`}
       >
         {value ?? "-"}
       </div>

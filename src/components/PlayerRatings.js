@@ -14,140 +14,98 @@ export default function PlayerRatings({
       ? statistics[0]
       : player.statistics?.[0] || {};
 
-  const games =
-    stat.games || {};
+  const games = stat.games || {};
+  const goals = stat.goals || {};
+  const shots = stat.shots || {};
+  const passes = stat.passes || {};
+  const tackles = stat.tackles || {};
+  const duels = stat.duels || {};
+  const dribbles = stat.dribbles || {};
+  const fouls = stat.fouls || {};
+  const cards = stat.cards || {};
+  const penalty = stat.penalty || {};
 
-  const goals =
-    stat.goals || {};
+  const rating = Number(games.rating || 0);
 
-  const shots =
-    stat.shots || {};
+  const appearances = Number(
+    games.appearances ??
+      games.appearences ??
+      0
+  );
 
-  const passes =
-    stat.passes || {};
+  const minutes = Number(
+    games.minutes || 0
+  );
 
-  const tackles =
-    stat.tackles || {};
+  const goalsScored = Number(
+    goals.total || 0
+  );
 
-  const duels =
-    stat.duels || {};
+  const assists = Number(
+    goals.assists || 0
+  );
 
-  const dribbles =
-    stat.dribbles || {};
+  const shotsTotal = Number(
+    shots.total || 0
+  );
 
-  const fouls =
-    stat.fouls || {};
+  const shotsOnTarget = Number(
+    shots.on || 0
+  );
 
-  const cards =
-    stat.cards || {};
+  const passesTotal = Number(
+    passes.total || 0
+  );
 
-  const penalty =
-    stat.penalty || {};
+  const keyPasses = Number(
+    passes.key || 0
+  );
 
-  const rating =
-    Number(games.rating || 0);
+  const tacklesTotal = Number(
+    tackles.total || 0
+  );
 
-  const appearances =
-    Number(
-      games.appearances ??
-        games.appearences ??
-        0
-    );
+  const duelsTotal = Number(
+    duels.total || 0
+  );
 
-  const minutes =
-    Number(
-      games.minutes || 0
-    );
+  const duelsWon = Number(
+    duels.won || 0
+  );
 
-  const goalsScored =
-    Number(
-      goals.total || 0
-    );
+  const dribbleAttempts = Number(
+    dribbles.attempts || 0
+  );
 
-  const assists =
-    Number(
-      goals.assists || 0
-    );
+  const dribbleSuccess = Number(
+    dribbles.success || 0
+  );
 
-  const shotsTotal =
-    Number(
-      shots.total || 0
-    );
+  const yellowCards = Number(
+    cards.yellow || 0
+  );
 
-  const shotsOnTarget =
-    Number(
-      shots.on || 0
-    );
+  const redCards = Number(
+    cards.red || 0
+  );
 
-  const passesTotal =
-    Number(
-      passes.total || 0
-    );
+  const foulsCommitted = Number(
+    fouls.committed || 0
+  );
 
-  const keyPasses =
-    Number(
-      passes.key || 0
-    );
+  const foulsDrawn = Number(
+    fouls.drawn || 0
+  );
 
-  const tacklesTotal =
-    Number(
-      tackles.total || 0
-    );
-
-  const duelsTotal =
-    Number(
-      duels.total || 0
-    );
-
-  const duelsWon =
-    Number(
-      duels.won || 0
-    );
-
-  const dribbleAttempts =
-    Number(
-      dribbles.attempts || 0
-    );
-
-  const dribbleSuccess =
-    Number(
-      dribbles.success || 0
-    );
-
-  const yellowCards =
-    Number(
-      cards.yellow || 0
-    );
-
-  const redCards =
-    Number(
-      cards.red || 0
-    );
-
-  const foulsCommitted =
-    Number(
-      fouls.committed || 0
-    );
-
-  const foulsDrawn =
-    Number(
-      fouls.drawn || 0
-    );
-
-  const ratingProgress =
-    Math.min(
-      Math.max(
-        (rating / 10) * 100,
-        0
-      ),
-      100
-    );
+  const ratingProgress = Math.min(
+    Math.max((rating / 10) * 100, 0),
+    100
+  );
 
   const shotAccuracy =
     shotsTotal > 0
       ? Math.round(
-          (shotsOnTarget /
-            shotsTotal) *
+          (shotsOnTarget / shotsTotal) *
             100
         )
       : 0;
@@ -155,9 +113,7 @@ export default function PlayerRatings({
   const duelWinRate =
     duelsTotal > 0
       ? Math.round(
-          (duelsWon /
-            duelsTotal) *
-            100
+          (duelsWon / duelsTotal) * 100
         )
       : 0;
 
@@ -171,83 +127,28 @@ export default function PlayerRatings({
       : 0;
 
   return (
-    <section
-      style={{
-        background:
-          "linear-gradient(145deg,#111827,#0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border:
-          "1px solid #1e293b",
-      }}
-    >
+    <section className="mb-[30px] rounded-[20px] border border-slate-800 bg-gradient-to-br from-gray-900 to-slate-900 p-4 sm:p-5 md:p-6 lg:p-[30px]">
       {/* =================================================
           HEADER
       ================================================= */}
 
-      <div
-        style={{
-          display: "flex",
-          justifyContent:
-            "space-between",
-          alignItems: "center",
-          gap: 20,
-          flexWrap: "wrap",
-          marginBottom: 30,
-        }}
-      >
-        <div>
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing: "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+      <div className="mb-[30px] flex flex-wrap items-center justify-between gap-5">
+        <div className="min-w-0">
+          <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h2
-            style={{
-              color: "#fff",
-              margin: 0,
-              fontSize: 28,
-              fontWeight: 800,
-            }}
-          >
+          <h2 className="m-0 text-2xl font-extrabold text-white sm:text-[28px]">
             ⭐ Player Ratings
           </h2>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin:
-                "8px 0 0",
-              fontSize: 14,
-            }}
-          >
-            Current performance rating
-            and player efficiency.
+          <p className="mt-2 text-sm text-slate-400">
+            Current performance rating and
+            player efficiency.
           </p>
         </div>
 
-        <div
-          style={{
-            padding:
-              "10px 16px",
-            borderRadius: 999,
-            background:
-              "rgba(34,197,94,.12)",
-            color: "#22c55e",
-            fontWeight: 700,
-            fontSize: 13,
-          }}
-        >
+        <div className="rounded-full bg-green-500/10 px-4 py-2 text-[13px] font-bold text-green-500">
           {stat.league?.name ||
             "Premier League"}
         </div>
@@ -257,70 +158,31 @@ export default function PlayerRatings({
           PLAYER SUMMARY
       ================================================= */}
 
-      <div
-        style={{
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 22,
-          marginBottom: 25,
-          display: "flex",
-          alignItems: "center",
-          justifyContent:
-            "space-between",
-          gap: 25,
-          flexWrap: "wrap",
-        }}
-      >
-        <div>
-          <div
-            style={{
-              color: "#94a3b8",
-              fontSize: 13,
-              marginBottom: 6,
-            }}
-          >
+      <div className="mb-[25px] flex flex-wrap items-center justify-between gap-6 rounded-[18px] bg-gray-800 p-5 sm:p-[22px]">
+        <div className="min-w-0">
+          <div className="mb-1.5 text-[13px] text-slate-400">
             Player
           </div>
 
-          <h3
-            style={{
-              color: "#fff",
-              margin: 0,
-              fontSize: 22,
-            }}
-          >
+          <h3 className="m-0 break-words text-xl font-bold text-white sm:text-[22px]">
             {player.name ||
               "Unknown Player"}
           </h3>
 
-          <div
-            style={{
-              color: "#64748b",
-              marginTop: 6,
-              fontSize: 13,
-            }}
-          >
+          <div className="mt-1.5 text-[13px] text-slate-500">
             {player.team?.name ||
               stat.team?.name ||
               "Unknown Team"}
           </div>
         </div>
 
-        <div
-          style={{
-            textAlign: "center",
-            minWidth: 120,
-          }}
-        >
+        <div className="min-w-[120px] text-center">
           <div
+            className="text-[34px] font-black leading-none"
             style={{
-              color:
-                getRatingColor(
-                  rating
-                ),
-              fontSize: 34,
-              lineHeight: 1,
-              fontWeight: 900,
+              color: getRatingColor(
+                rating
+              ),
             }}
           >
             {rating
@@ -328,24 +190,11 @@ export default function PlayerRatings({
               : "-"}
           </div>
 
-          <div
-            style={{
-              color: "#facc15",
-              fontSize: 18,
-              marginTop: 7,
-              letterSpacing: 2,
-            }}
-          >
+          <div className="mt-1.5 text-lg tracking-[2px] text-yellow-400">
             {getStars(rating)}
           </div>
 
-          <div
-            style={{
-              color: "#94a3b8",
-              fontSize: 12,
-              marginTop: 5,
-            }}
-          >
+          <div className="mt-1 text-xs text-slate-400">
             Rating
           </div>
         </div>
@@ -355,22 +204,8 @@ export default function PlayerRatings({
           RATING BAR
       ================================================= */}
 
-      <div
-        style={{
-          marginBottom: 30,
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent:
-              "space-between",
-            marginBottom: 8,
-            color: "#cbd5e1",
-            fontSize: 13,
-            fontWeight: 700,
-          }}
-        >
+      <div className="mb-[30px]">
+        <div className="mb-2 flex items-center justify-between gap-4 text-[13px] font-bold text-slate-300">
           <span>
             Overall Rating
           </span>
@@ -382,28 +217,15 @@ export default function PlayerRatings({
           </span>
         </div>
 
-        <div
-          style={{
-            width: "100%",
-            height: 12,
-            background: "#374151",
-            borderRadius: 999,
-            overflow:
-              "hidden",
-          }}
-        >
+        <div className="h-3 w-full overflow-hidden rounded-full bg-gray-700">
           <div
+            className="h-full rounded-full transition-all duration-700 ease-in-out"
             style={{
-              width:
-                `${ratingProgress}%`,
-              height: "100%",
-              background:
+              width: `${ratingProgress}%`,
+              backgroundColor:
                 getRatingColor(
                   rating
                 ),
-              borderRadius: 999,
-              transition:
-                "width .8s ease",
             }}
           />
         </div>
@@ -413,37 +235,29 @@ export default function PlayerRatings({
           CORE RATINGS
       ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(180px,1fr))",
-          gap: 15,
-          marginBottom: 25,
-        }}
-      >
+      <div className="mb-[25px] grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-[15px]">
         <RatingCard
           title="Appearances"
           value={appearances}
-          color="#3b82f6"
+          color="blue"
         />
 
         <RatingCard
           title="Minutes"
           value={minutes}
-          color="#8b5cf6"
+          color="purple"
         />
 
         <RatingCard
           title="Goals"
           value={goalsScored}
-          color="#22c55e"
+          color="green"
         />
 
         <RatingCard
           title="Assists"
           value={assists}
-          color="#f59e0b"
+          color="amber"
         />
       </div>
 
@@ -453,15 +267,7 @@ export default function PlayerRatings({
 
       <SectionTitle title="Attacking" />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(170px,1fr))",
-          gap: 14,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5">
         <StatCard
           title="Goals"
           value={goalsScored}
@@ -517,15 +323,7 @@ export default function PlayerRatings({
 
       <SectionTitle title="Passing" />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(170px,1fr))",
-          gap: 14,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5">
         <StatCard
           title="Total Passes"
           value={passesTotal}
@@ -552,15 +350,7 @@ export default function PlayerRatings({
 
       <SectionTitle title="Defending" />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(170px,1fr))",
-          gap: 14,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5">
         <StatCard
           title="Tackles"
           value={tacklesTotal}
@@ -602,15 +392,7 @@ export default function PlayerRatings({
 
       <SectionTitle title="Discipline" />
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fit,minmax(170px,1fr))",
-          gap: 14,
-          marginBottom: 28,
-        }}
-      >
+      <div className="mb-7 grid grid-cols-[repeat(auto-fit,minmax(170px,1fr))] gap-3.5">
         <StatCard
           title="🟨 Yellow Cards"
           value={yellowCards}
@@ -626,39 +408,20 @@ export default function PlayerRatings({
           SUMMARY
       ================================================= */}
 
-      <div
-        style={{
-          marginTop: 10,
-          background: "#1f2937",
-          borderRadius: 18,
-          padding: 24,
-        }}
-      >
-        <h3
-          style={{
-            color: "#fff",
-            marginBottom: 15,
-          }}
-        >
+      <div className="mt-2 rounded-[18px] bg-gray-800 p-5 sm:p-6">
+        <h3 className="mb-[15px] text-lg font-bold text-white">
           Rating Summary
         </h3>
 
-        <p
-          style={{
-            color: "#cbd5e1",
-            lineHeight: 1.8,
-            margin: 0,
-          }}
-        >
+        <p className="m-0 leading-[1.8] text-slate-300">
           {player.name ||
             "This player"}{" "}
           has a current rating of{" "}
           <strong
             style={{
-              color:
-                getRatingColor(
-                  rating
-                ),
+              color: getRatingColor(
+                rating
+              ),
             }}
           >
             {rating
@@ -693,14 +456,7 @@ function SectionTitle({
   title,
 }) {
   return (
-    <h3
-      style={{
-        color: "#22c55e",
-        margin:
-          "10px 0 16px",
-        fontSize: 19,
-      }}
-    >
+    <h3 className="my-[10px] mb-4 text-[19px] font-semibold text-green-500">
       {title}
     </h3>
   );
@@ -715,34 +471,28 @@ function RatingCard({
   value,
   color,
 }) {
+  const colorClasses = {
+    blue: "border-blue-500/25 text-blue-500",
+    purple:
+      "border-purple-500/25 text-purple-500",
+    green:
+      "border-green-500/25 text-green-500",
+    amber:
+      "border-amber-500/25 text-amber-500",
+  };
+
   return (
     <div
-      style={{
-        background: "#1f2937",
-        borderRadius: 16,
-        padding: 20,
-        textAlign: "center",
-        border:
-          `1px solid ${color}40`,
-      }}
+      className={`rounded-2xl border bg-gray-800 p-5 text-center ${
+        colorClasses[color] ||
+        "border-slate-700 text-white"
+      }`}
     >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 13,
-          marginBottom: 9,
-        }}
-      >
+      <div className="mb-2 text-[13px] text-slate-400">
         {title}
       </div>
 
-      <div
-        style={{
-          color,
-          fontSize: 28,
-          fontWeight: 800,
-        }}
-      >
+      <div className="text-[28px] font-extrabold">
         {value}
       </div>
     </div>
@@ -758,33 +508,12 @@ function StatCard({
   value,
 }) {
   return (
-    <div
-      style={{
-        background: "#0f172a",
-        borderRadius: 12,
-        padding: 16,
-        textAlign: "center",
-        border:
-          "1px solid #1e293b",
-      }}
-    >
-      <div
-        style={{
-          color: "#94a3b8",
-          fontSize: 12,
-          marginBottom: 7,
-        }}
-      >
+    <div className="rounded-xl border border-slate-800 bg-slate-900 p-4 text-center">
+      <div className="mb-1.5 text-xs text-slate-400">
         {title}
       </div>
 
-      <strong
-        style={{
-          color: "#fff",
-          fontSize: 19,
-          fontWeight: 800,
-        }}
-      >
+      <strong className="text-[19px] font-extrabold text-white">
         {value ?? 0}
       </strong>
     </div>
@@ -795,9 +524,7 @@ function StatCard({
 STARS
 ===================================================== */
 
-function getStars(
-  rating
-) {
+function getStars(rating) {
   if (!rating) {
     return "☆☆☆☆☆";
   }
@@ -825,9 +552,7 @@ function getStars(
 RATING COLOR
 ===================================================== */
 
-function getRatingColor(
-  rating
-) {
+function getRatingColor(rating) {
   if (!rating) {
     return "#64748b";
   }

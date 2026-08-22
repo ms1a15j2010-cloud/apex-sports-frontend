@@ -5,203 +5,76 @@ export default function PlayerTrophies({
   available = false,
 }) {
   return (
-    <section
-      style={{
-        background:
-          "linear-gradient(145deg, #111827, #0f172a)",
-        borderRadius: 20,
-        padding: 30,
-        marginBottom: 30,
-        border: "1px solid #1e293b",
-      }}
-    >
-      <div
-        style={{
-          marginBottom: 25,
-        }}
-      >
-        <div
-          style={{
-            color: "#ef4444",
-            fontSize: 12,
-            fontWeight: 800,
-            letterSpacing: "1.2px",
-            textTransform: "uppercase",
-            marginBottom: 8,
-          }}
-        >
+    <section className="mb-[30px] rounded-[20px] border border-[#1e293b] bg-gradient-to-br from-[#111827] to-[#0f172a] p-[30px]">
+      <div className="mb-[25px]">
+        <div className="mb-2 text-[12px] font-extrabold uppercase tracking-[1.2px] text-red-500">
           ⚽ Apex Sports
         </div>
 
-        <h2
-          style={{
-            color: "#fff",
-            margin: 0,
-            fontSize: 26,
-          }}
-        >
+        <h2 className="m-0 text-[26px] text-white">
           🏆 Player Trophies
         </h2>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            margin: "8px 0 0",
-            fontSize: 14,
-          }}
-        >
-          Major trophies and titles
-          won throughout the player's
+        <p className="m-[8px_0_0] text-[14px] text-slate-400">
+          Major trophies and titles won throughout the player's
           career.
         </p>
       </div>
 
       {!available ? (
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 16,
-            padding: 35,
-            textAlign: "center",
-            border: "1px solid #293548",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 42,
-              marginBottom: 15,
-            }}
-          >
+        <div className="rounded-2xl border border-[#293548] bg-[#1f2937] p-[35px] text-center">
+          <div className="mb-[15px] text-[42px]">
             🏆
           </div>
 
-          <h3
-            style={{
-              margin: "0 0 10px",
-              color: "#fff",
-              fontSize: 20,
-            }}
-          >
+          <h3 className="m-[0_0_10px] text-[20px] text-white">
             Trophy History Unavailable
           </h3>
 
-          <p
-            style={{
-              margin: 0,
-              color: "#94a3b8",
-              lineHeight: 1.7,
-              fontSize: 14,
-            }}
-          >
-            Player trophy history is
-            not provided by the current
+          <p className="m-0 text-[14px] leading-[1.7] text-slate-400">
+            Player trophy history is not provided by the current
             football-data.org data source.
           </p>
 
-          <div
-            style={{
-              marginTop: 18,
-              display: "inline-block",
-              padding: "8px 14px",
-              borderRadius: 999,
-              background: "#0f172a",
-              color: "#64748b",
-              fontSize: 12,
-              fontWeight: 700,
-            }}
-          >
+          <div className="mt-[18px] inline-block rounded-full bg-[#0f172a] px-[14px] py-2 text-[12px] font-bold text-slate-500">
             Source: football-data.org
           </div>
         </div>
       ) : !Array.isArray(trophies) ||
         trophies.length === 0 ? (
-        <div
-          style={{
-            background: "#1f2937",
-            borderRadius: 16,
-            padding: 30,
-            textAlign: "center",
-            color: "#94a3b8",
-          }}
-        >
+        <div className="rounded-2xl bg-[#1f2937] p-[30px] text-center text-slate-400">
           No trophy history available.
         </div>
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit,minmax(220px,1fr))",
-            gap: 16,
-          }}
-        >
-          {trophies.map(
-            (trophy, index) => (
-              <div
-                key={
-                  trophy?.id ||
-                  index
-                }
-                style={{
-                  background: "#1f2937",
-                  borderRadius: 16,
-                  padding: 20,
-                  border:
-                    "1px solid #293548",
-                }}
-              >
-                <div
-                  style={{
-                    fontSize: 30,
-                    marginBottom: 12,
-                  }}
-                >
-                  🏆
-                </div>
-
-                <h3
-                  style={{
-                    margin: 0,
-                    color: "#fff",
-                    fontSize: 17,
-                  }}
-                >
-                  {trophy?.name ||
-                    "Trophy"}
-                </h3>
-
-                {trophy?.season && (
-                  <div
-                    style={{
-                      marginTop: 8,
-                      color: "#22c55e",
-                      fontSize: 13,
-                      fontWeight: 700,
-                    }}
-                  >
-                    Season{" "}
-                    {trophy.season}
-                  </div>
-                )}
-
-                {trophy?.team && (
-                  <div
-                    style={{
-                      marginTop: 6,
-                      color: "#94a3b8",
-                      fontSize: 13,
-                    }}
-                  >
-                    {typeof trophy.team ===
-                    "string"
-                      ? trophy.team
-                      : trophy.team?.name ||
-                        ""}
-                  </div>
-                )}
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+          {trophies.map((trophy, index) => (
+            <div
+              key={trophy?.id || index}
+              className="rounded-2xl border border-[#293548] bg-[#1f2937] p-5"
+            >
+              <div className="mb-3 text-[30px]">
+                🏆
               </div>
-            )
-          )}
+
+              <h3 className="m-0 text-[17px] text-white">
+                {trophy?.name || "Trophy"}
+              </h3>
+
+              {trophy?.season && (
+                <div className="mt-2 text-[13px] font-bold text-green-500">
+                  Season {trophy.season}
+                </div>
+              )}
+
+              {trophy?.team && (
+                <div className="mt-[6px] text-[13px] text-slate-400">
+                  {typeof trophy.team === "string"
+                    ? trophy.team
+                    : trophy.team?.name || ""}
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       )}
     </section>
