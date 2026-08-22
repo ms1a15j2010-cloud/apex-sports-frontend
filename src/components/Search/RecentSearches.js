@@ -22,43 +22,19 @@ export default function RecentSearches({
   if (!history.length) return null;
 
   return (
-    <section
-      style={{
-        marginBottom: 30,
-      }}
-    >
-      <h2
-        style={{
-          color: "white",
-          marginBottom: 15,
-        }}
-      >
+    <section className="mb-[30px]">
+      <h2 className="mb-[15px] text-white">
         🕒 Recent Searches
       </h2>
 
-      <div
-        style={{
-          display: "flex",
-          gap: 10,
-          flexWrap: "wrap",
-        }}
-      >
+      <div className="flex flex-wrap gap-[10px]">
         {history.map((item, index) => (
           <button
             key={index}
             onClick={() =>
               onSelect(item)
             }
-            style={{
-              background: "#111827",
-              color: "white",
-              border:
-                "1px solid #374151",
-              borderRadius: 30,
-              padding:
-                "8px 16px",
-              cursor: "pointer",
-            }}
+            className="cursor-pointer rounded-[30px] border border-gray-700 bg-gray-900 px-4 py-2 text-white"
           >
             {item}
           </button>

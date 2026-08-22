@@ -8,22 +8,12 @@ export default function SearchMatches({
   if (!matches.length) return null;
 
   return (
-    <section style={{ marginBottom: 30 }}>
-      <h2
-        style={{
-          color: "white",
-          marginBottom: 20,
-        }}
-      >
+    <section className="mb-[30px]">
+      <h2 className="mb-5 text-white">
         📅 Matches
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gap: 20,
-        }}
-      >
+      <div className="grid gap-5">
         {matches.map((match) => (
           <MatchCard
             key={match.fixture?.id}

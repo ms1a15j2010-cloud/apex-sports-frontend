@@ -8,23 +8,17 @@ export default function SearchPlayers({
   if (!players.length) return null;
 
   return (
-    <section style={{ marginBottom: 30 }}>
-      <h2
-        style={{
-          color: "white",
-          marginBottom: 20,
-        }}
-      >
+    <section className="mb-[30px]">
+      <h2 className="mb-5 text-white">
         👤 Players
       </h2>
 
       <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "repeat(auto-fill,minmax(320px,1fr))",
-          gap: 20,
-        }}
+        className="
+          grid
+          grid-cols-[repeat(auto-fill,minmax(320px,1fr))]
+          gap-5
+        "
       >
         {players.map((player) => (
           <PlayerCard

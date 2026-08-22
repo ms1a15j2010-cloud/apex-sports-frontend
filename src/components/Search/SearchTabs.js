@@ -13,40 +13,33 @@ export default function SearchTabs({
   onChange,
 }) {
   return (
-    <div
-      style={{
-        display: "flex",
-        gap: 12,
-        marginBottom: 25,
-        flexWrap: "wrap",
-      }}
-    >
-      {tabs.map((tab) => (
-        <button
-          key={tab}
-          onClick={() => onChange(tab)}
-          style={{
-            padding: "10px 20px",
-            borderRadius: 30,
-            cursor: "pointer",
-            border:
-              active === tab
-                ? "none"
-                : "1px solid #374151",
+    <div className="mb-[25px] flex flex-wrap gap-3">
+      {tabs.map((tab) => {
+        const isActive = active === tab;
 
-            background:
-              active === tab
-                ? "#22c55e"
-                : "#111827",
-
-            color: "white",
-
-            fontWeight: "bold",
-          }}
-        >
-          {tab}
-        </button>
-      ))}
+        return (
+          <button
+            key={tab}
+            onClick={() => onChange(tab)}
+            className={`
+              cursor-pointer
+              rounded-[30px]
+              px-5
+              py-2.5
+              font-bold
+              text-white
+              transition
+              ${
+                isActive
+                  ? "border-0 bg-green-500 hover:bg-green-600"
+                  : "border border-gray-700 bg-gray-900 hover:bg-gray-800"
+              }
+            `}
+          >
+            {tab}
+          </button>
+        );
+      })}
     </div>
   );
 }

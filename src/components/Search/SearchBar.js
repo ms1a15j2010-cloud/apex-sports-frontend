@@ -1,63 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-export default function SearchBar({
-  value,
-  onChange,
-  onSearch,
+export default function RecentSearches({
+  onSelect,
 }) {
-  const [text, setText] = useState(value || "");
+  const [history, setHistory] = useState([]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  useEffect(() => {
+    const data = JSON.parse(
+      localStorage.getItem("recent-searches") || "[]"
+    );
 
-    onSearch(text);
-  }
+    setHistory(data);
+  }, []);
+
+  if (!history.length) return null;
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{
-        display: "flex",
-        gap: 12,
-        marginBottom: 25,
-      }}
-    >
-      <input
-        type="text"
-        placeholder="Search teams, players, leagues..."
-        value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-          onChange?.(e.target.value);
-        }}
-        style={{
-          flex: 1,
-          padding: "14px 18px",
-          borderRadius: 12,
-          border: "1px solid #374151",
-          background: "#111827",
-          color: "white",
-          fontSize: 16,
-          outline: "none",
-        }}
-      />
+    <section className="mb-[30px]">
+      <h2 className="mb-[15px] text-white">
+        🕒 Recent Searches
+      </h2>
 
-      <button
-        type="submit"
-        style={{
-          padding: "14px 25px",
-          borderRadius: 12,
-          border: "none",
-          background: "#22c55e",
-          color: "white",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        Search
-      </button>
-    </form>
+      <div className="flex flex-wrap gap-[10px]">
+        {history.map((item, index) => (
+          <button
+            key={index}
+            onClick={() => onSelect(item)}
+            className="
+              cursor-pointer
+              rounded-[30px]
+              border
+              border-gray-700
+              bg-gray-900
+              px-4
+              py-2
+              text-white
+              transition
+              hover:border-gray-600
+              hover:bg-gray-800
+            "
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+    </section>
   );
 }
