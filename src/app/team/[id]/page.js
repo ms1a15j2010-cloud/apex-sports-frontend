@@ -30,11 +30,10 @@ import TeamTrophies from "@/components/TeamTrophies";
 CONFIG
 ===================================================== */
 
-const API =
-  (
-    process.env.NEXT_PUBLIC_API_URL ||
-    "http://localhost:5000"
-  ).replace(/\/$/, "");
+const API = (
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:5000"
+).replace(/\/$/, "");
 
 const SEASON = 2026;
 
@@ -42,30 +41,19 @@ const SEASON = 2026;
 SAFE JSON FETCH
 ===================================================== */
 
-async function fetchJSON(
-  url,
-  label
-) {
+async function fetchJSON(url, label) {
   try {
-    const res = await fetch(
-      url,
-      {
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(url, {
+      cache: "no-store",
+    });
 
     if (!res.ok) {
-      throw new Error(
-        `${label}: HTTP ${res.status}`
-      );
+      throw new Error(`${label}: HTTP ${res.status}`);
     }
 
     return await res.json();
   } catch (error) {
-    console.error(
-      `❌ ${label} fetch failed:`,
-      error
-    );
+    console.error(`❌ ${label} fetch failed:`, error);
 
     return null;
   }
@@ -73,14 +61,6 @@ async function fetchJSON(
 
 /* =====================================================
 TEAM PROFILE
-
-The migrated backend already supplies:
-
-- team
-- squad / players
-- fixtures
-- coach
-- venue
 ===================================================== */
 
 async function getTeam(id) {
@@ -100,10 +80,7 @@ async function getStatistics(id) {
     "Team Statistics"
   );
 
-  if (
-    !data ||
-    data.success !== true
-  ) {
+  if (!data || data.success !== true) {
     return {
       success: false,
       statistics: null,
@@ -123,10 +100,7 @@ async function getHistory(id) {
     "Team History"
   );
 
-  if (
-    !data ||
-    data.success !== true
-  ) {
+  if (!data || data.success !== true) {
     return {
       success: false,
       history: [],
@@ -140,16 +114,12 @@ async function getHistory(id) {
 METADATA
 ===================================================== */
 
-export async function generateMetadata({
-  params,
-}) {
+export async function generateMetadata({ params }) {
   const { id } = await params;
 
-  const data =
-    await getTeam(id);
+  const data = await getTeam(id);
 
-  const team =
-    data?.team || null;
+  const team = data?.team || null;
 
   return {
     title: team?.name
@@ -166,80 +136,40 @@ export async function generateMetadata({
 TEAM PAGE
 ===================================================== */
 
-export default async function TeamPage({
-  params,
-}) {
+export default async function TeamPage({ params }) {
   const { id } = await params;
 
   /* =================================================
      ONLY FETCH DATA WE ACTUALLY NEED
   ================================================= */
 
-  const [
-    teamData,
-    statisticsData,
-    historyData,
-  ] = await Promise.all([
-    getTeam(id),
-    getStatistics(id),
-    getHistory(id),
-  ]);
+  const [teamData, statisticsData, historyData] =
+    await Promise.all([
+      getTeam(id),
+      getStatistics(id),
+      getHistory(id),
+    ]);
 
   /* =================================================
      TEAM NOT FOUND
   ================================================= */
 
-  if (
-    !teamData?.success ||
-    !teamData?.team
-  ) {
+  if (!teamData?.success || !teamData?.team) {
     return (
-      <main
-        style={{
-          maxWidth: 1450,
-          margin: "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <div
-          style={{
-            background: "#111827",
-            borderRadius: 20,
-            padding: 40,
-            border:
-              "1px solid #1e293b",
-          }}
-        >
-          <h1
-            style={{
-              margin:
-                "0 0 15px",
-            }}
-          >
+      <main className="mx-auto max-w-[1450px] px-5 py-10 text-white">
+        <div className="rounded-[20px] border border-slate-800 bg-gray-900 p-10">
+          <h1 className="mb-[15px] text-2xl font-bold">
             Team Not Found
           </h1>
 
-          <p
-            style={{
-              color: "#94a3b8",
-              margin:
-                "0 0 30px",
-            }}
-          >
-            We couldn't find this team
-            or the team service is
+          <p className="mb-[30px] text-slate-400">
+            We couldn't find this team or the team service is
             currently unavailable.
           </p>
 
           <Link
             href="/leagues"
-            style={{
-              color: "#22c55e",
-              textDecoration:
-                "none",
-              fontWeight: 800,
-            }}
+            className="font-extrabold text-green-500 no-underline transition hover:text-green-400"
           >
             ← Back to Leagues
           </Link>
@@ -252,38 +182,25 @@ export default async function TeamPage({
      NORMALIZED DATA
   ================================================= */
 
-  const team =
-    teamData.team;
+  const team = teamData.team;
 
-  const players =
-    Array.isArray(
-      team.players
-    )
-      ? team.players
-      : Array.isArray(
-          team.squad
-        )
+  const players = Array.isArray(team.players)
+    ? team.players
+    : Array.isArray(team.squad)
       ? team.squad
       : [];
 
-  const fixtures =
-    Array.isArray(
-      team.fixtures
-    )
-      ? team.fixtures
-      : [];
+  const fixtures = Array.isArray(team.fixtures)
+    ? team.fixtures
+    : [];
 
   const statistics =
-    statisticsData?.success &&
-    statisticsData.statistics
+    statisticsData?.success && statisticsData.statistics
       ? statisticsData.statistics
       : null;
 
   const history =
-    historyData?.success &&
-    Array.isArray(
-      historyData.history
-    )
+    historyData?.success && Array.isArray(historyData.history)
       ? historyData.history
       : [];
 
@@ -295,31 +212,15 @@ export default async function TeamPage({
   ================================================= */
 
   const transfers = [];
-
   const injuries = [];
-
   const trophies = [];
 
-  const transfersAvailable =
-    false;
-
-  const injuriesAvailable =
-    false;
-
-  const trophiesAvailable =
-    false;
+  const transfersAvailable = false;
+  const injuriesAvailable = false;
+  const trophiesAvailable = false;
 
   return (
-    <main
-      style={{
-        maxWidth: 1450,
-        margin:
-          "0 auto",
-        padding:
-          "30px 20px 60px",
-        color: "#fff",
-      }}
-    >
+    <main className="mx-auto max-w-[1450px] px-5 pb-[60px] pt-[30px] text-white">
       {/* =================================================
           TOP TABS
       ================================================= */}
@@ -330,70 +231,43 @@ export default async function TeamPage({
           PAGE LAYOUT
       ================================================= */}
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns:
-            "320px minmax(0,1fr)",
-          gap: 25,
-          alignItems:
-            "start",
-        }}
-      >
+      <div className="grid grid-cols-1 items-start gap-[25px] lg:grid-cols-[320px_minmax(0,1fr)]">
         {/* =================================================
             SIDEBAR
         ================================================= */}
 
-        <aside>
-          <TeamSidebar
-            team={team}
-          />
+        <aside className="min-w-0">
+          <TeamSidebar team={team} />
         </aside>
 
         {/* =================================================
             MAIN CONTENT
         ================================================= */}
 
-        <div
-          style={{
-            minWidth: 0,
-            display: "flex",
-            flexDirection:
-              "column",
-            gap: 0,
-          }}
-        >
+        <div className="flex min-w-0 flex-col gap-0">
           {/* =================================================
               HEADER
           ================================================= */}
 
-          <TeamHeader
-            team={team}
-          />
+          <TeamHeader team={team} />
 
           {/* =================================================
               OVERVIEW
           ================================================= */}
 
-          <TeamOverview
-            team={team}
-          />
+          <TeamOverview team={team} />
 
           {/* =================================================
               VENUE
           ================================================= */}
 
-          <TeamVenue
-            venue={team.venue}
-          />
+          <TeamVenue venue={team.venue} />
 
           {/* =================================================
               COACH
           ================================================= */}
 
-          <TeamCoach
-            coach={team.coach}
-          />
+          <TeamCoach coach={team.coach} />
 
           {/* =================================================
               STATISTICS
@@ -408,17 +282,13 @@ export default async function TeamPage({
               ANALYTICS
           ================================================= */}
 
-          <TeamAnalytics
-            statistics={statistics}
-          />
+          <TeamAnalytics statistics={statistics} />
 
           {/* =================================================
               COMPARISON
           ================================================= */}
 
-          <TeamComparison
-            statistics={statistics}
-          />
+          <TeamComparison statistics={statistics} />
 
           {/* =================================================
               FORM
@@ -433,25 +303,19 @@ export default async function TeamPage({
               FIXTURES
           ================================================= */}
 
-          <TeamFixtures
-            fixtures={fixtures}
-          />
+          <TeamFixtures fixtures={fixtures} />
 
           {/* =================================================
               RESULTS
           ================================================= */}
 
-          <TeamResults
-            results={fixtures}
-          />
+          <TeamResults results={fixtures} />
 
           {/* =================================================
               SQUAD
           ================================================= */}
 
-          <TeamSquad
-            players={players}
-          />
+          <TeamSquad players={players} />
 
           {/* =================================================
               HISTORY
@@ -466,9 +330,7 @@ export default async function TeamPage({
               ACHIEVEMENTS
           ================================================= */}
 
-          <TeamAchievements
-            team={team}
-          />
+          <TeamAchievements team={team} />
 
           {/* =================================================
               TRANSFERS
@@ -476,9 +338,7 @@ export default async function TeamPage({
 
           <TeamTransfers
             transfers={transfers}
-            available={
-              transfersAvailable
-            }
+            available={transfersAvailable}
           />
 
           {/* =================================================
@@ -487,9 +347,7 @@ export default async function TeamPage({
 
           <TeamInjuries
             injuries={injuries}
-            available={
-              injuriesAvailable
-            }
+            available={injuriesAvailable}
           />
 
           {/* =================================================
@@ -498,20 +356,17 @@ export default async function TeamPage({
 
           <TeamTrophies
             trophies={trophies}
-            available={
-              trophiesAvailable
-            }
+            available={trophiesAvailable}
           />
 
           {/* =================================================
               SOCIAL
           ================================================= */}
 
-          <TeamSocial
-            team={team}
-          />
+          <TeamSocial team={team} />
         </div>
       </div>
     </main>
   );
 }
+
