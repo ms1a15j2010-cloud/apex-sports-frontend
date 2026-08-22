@@ -69,9 +69,6 @@ export default function TransfersClient() {
 
         /* ==============================================
            BACKEND DOES NOT CURRENTLY PROVIDE TRANSFERS
-
-           404 is handled as an unavailable dataset,
-           not a page crash.
         ============================================== */
 
         if (response.status === 404) {
@@ -375,58 +372,17 @@ export default function TransfersClient() {
 
   if (loading) {
     return (
-      <main
-        style={{
-          minHeight: "60vh",
-          padding:
-            "40px 20px",
-          background:
-            "#030712",
-          color:
-            "#fff",
-        }}
-      >
-        <div
-          style={{
-            width: "100%",
-            maxWidth: 1100,
-            margin:
-              "0 auto",
-          }}
-        >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing:
-                "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+      <main className="min-h-[60vh] bg-gray-950 px-5 py-10 text-white">
+        <div className="mx-auto w-full max-w-[1100px]">
+          <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize:
-                "clamp(30px, 5vw, 44px)",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="text-[clamp(30px,5vw,44px)] font-extrabold">
             Transfers
           </h1>
 
-          <p
-            style={{
-              color:
-                "#9ca3af",
-              marginTop: 10,
-            }}
-          >
+          <p className="mt-2.5 text-slate-400">
             Loading latest transfer
             activity...
           </p>
@@ -440,67 +396,21 @@ export default function TransfersClient() {
   ===================================================== */
 
   return (
-    <main
-      style={{
-        minHeight:
-          "100vh",
-        background:
-          "#030712",
-        color: "#fff",
-        padding:
-          "40px 20px 70px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 1100,
-          margin:
-            "0 auto",
-        }}
-      >
+    <main className="min-h-screen bg-gray-950 px-5 pb-[70px] pt-10 text-white">
+      <div className="mx-auto w-full max-w-[1100px]">
+
         {/* HEADER */}
 
-        <header
-          style={{
-            marginBottom: 30,
-          }}
-        >
-          <div
-            style={{
-              color: "#ef4444",
-              fontSize: 12,
-              fontWeight: 800,
-              letterSpacing:
-                "1.2px",
-              textTransform:
-                "uppercase",
-              marginBottom: 8,
-            }}
-          >
+        <header className="mb-[30px]">
+          <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-red-500">
             ⚽ Apex Sports
           </div>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize:
-                "clamp(30px, 5vw, 44px)",
-              fontWeight: 800,
-            }}
-          >
+          <h1 className="text-[clamp(30px,5vw,44px)] font-extrabold">
             Transfers
           </h1>
 
-          <p
-            style={{
-              margin:
-                "10px 0 0",
-              color:
-                "#9ca3af",
-              fontSize: 15,
-            }}
-          >
+          <p className="mt-2.5 text-[15px] text-gray-400">
             Latest football transfer
             activity and player
             movements.
@@ -510,35 +420,8 @@ export default function TransfersClient() {
         {/* ERROR / UNAVAILABLE */}
 
         {error && (
-          <div
-            style={{
-              marginBottom: 20,
-              padding: 18,
-              borderRadius: 14,
-
-              background:
-                "#111827",
-
-              border:
-                "1px solid #374151",
-
-              color:
-                "#cbd5e1",
-
-              fontSize: 14,
-
-              lineHeight: 1.6,
-            }}
-          >
-            <strong
-              style={{
-                display:
-                  "block",
-                color:
-                  "#ffffff",
-                marginBottom: 5,
-              }}
-            >
+          <div className="mb-5 rounded-[14px] border border-gray-700 bg-gray-900 p-[18px] text-sm leading-relaxed text-slate-300">
+            <strong className="mb-1 block text-white">
               Transfers unavailable
             </strong>
 
@@ -548,100 +431,34 @@ export default function TransfersClient() {
 
         {/* FILTER BAR */}
 
-        <section
-          style={{
-            display: "flex",
-            flexWrap:
-              "wrap",
-            gap: 12,
-            marginBottom: 24,
-            padding: 16,
-            background:
-              "#111827",
-            border:
-              "1px solid #1f2937",
-            borderRadius: 16,
-          }}
-        >
+        <section className="mb-6 flex flex-wrap gap-3 rounded-2xl border border-gray-800 bg-gray-900 p-4">
+
           <input
             type="search"
             value={search}
-            onChange={(
-              event
-            ) =>
+            onChange={(event) =>
               setSearch(
-                event.target
-                  .value
+                event.target.value
               )
             }
             placeholder="Search player or club..."
             disabled={
-              transfers.length ===
-              0
+              transfers.length === 0
             }
-            style={{
-              flex:
-                "1 1 280px",
-              minWidth: 0,
-              height: 44,
-              padding:
-                "0 14px",
-              borderRadius:
-                10,
-              border:
-                "1px solid #374151",
-              background:
-                "#030712",
-              color:
-                "#fff",
-              outline:
-                "none",
-              fontSize: 14,
-              opacity:
-                transfers.length
-                  ? 1
-                  : 0.6,
-            }}
+            className="h-11 min-w-0 flex-[1_1_280px] rounded-[10px] border border-gray-700 bg-gray-950 px-3.5 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           />
 
           <select
-            value={
-              leagueFilter
-            }
-            onChange={(
-              event
-            ) =>
+            value={leagueFilter}
+            onChange={(event) =>
               setLeagueFilter(
-                event.target
-                  .value
+                event.target.value
               )
             }
             disabled={
-              transfers.length ===
-              0
+              transfers.length === 0
             }
-            style={{
-              flex:
-                "0 1 220px",
-              height: 44,
-              padding:
-                "0 12px",
-              borderRadius:
-                10,
-              border:
-                "1px solid #374151",
-              background:
-                "#030712",
-              color:
-                "#fff",
-              fontSize: 14,
-              cursor:
-                "pointer",
-              opacity:
-                transfers.length
-                  ? 1
-                  : 0.6,
-            }}
+            className="h-11 min-w-0 flex-[0_1_220px] cursor-pointer rounded-[10px] border border-gray-700 bg-gray-950 px-3 text-sm text-white outline-none transition focus:border-red-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <option value="all">
               All leagues
@@ -662,59 +479,17 @@ export default function TransfersClient() {
 
         {/* EMPTY / UNAVAILABLE */}
 
-        {filteredTransfers.length ===
-          0 && (
-          <section
-            style={{
-              padding:
-                "60px 24px",
-              textAlign:
-                "center",
-              background:
-                "linear-gradient(145deg, #111827, #0b1220)",
-              border:
-                "1px solid #1f2937",
-              borderRadius: 20,
-            }}
-          >
-            <div
-              style={{
-                fontSize:
-                  42,
-                marginBottom:
-                  12,
-              }}
-            >
+        {filteredTransfers.length === 0 && (
+          <section className="rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] px-6 py-[60px] text-center">
+            <div className="mb-3 text-[42px]">
               🔄
             </div>
 
-            <h2
-              style={{
-                margin: 0,
-                fontSize: 20,
-                fontWeight: 800,
-              }}
-            >
+            <h2 className="text-xl font-extrabold">
               No transfer data available
             </h2>
 
-            <p
-              style={{
-                margin:
-                  "8px 0 0",
-                color:
-                  "#9ca3af",
-                fontSize: 14,
-                lineHeight:
-                  1.6,
-                maxWidth:
-                  600,
-                marginLeft:
-                  "auto",
-                marginRight:
-                  "auto",
-              }}
-            >
+            <p className="mx-auto mt-2 max-w-[600px] text-sm leading-relaxed text-gray-400">
               The current football-data.org
               backend does not provide a
               transfers dataset for this
@@ -725,15 +500,8 @@ export default function TransfersClient() {
 
         {/* TRANSFER LIST */}
 
-        {filteredTransfers.length >
-          0 && (
-          <div
-            style={{
-              display:
-                "grid",
-              gap: 14,
-            }}
-          >
+        {filteredTransfers.length > 0 && (
+          <div className="grid gap-[14px]">
             {filteredTransfers.map(
               (
                 transfer,
@@ -777,122 +545,37 @@ export default function TransfersClient() {
                         ?.id ||
                       `${player}-${index}`
                     }
-                    style={{
-                      display:
-                        "flex",
-                      alignItems:
-                        "center",
-                      gap: 18,
-                      padding: 18,
-                      background:
-                        "linear-gradient(145deg, #111827, #0b1220)",
-                      border:
-                        "1px solid #1f2937",
-                      borderRadius:
-                        18,
-                    }}
+                    className="flex flex-col items-start gap-4 rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-[18px] transition hover:border-gray-700 sm:flex-row sm:items-center sm:gap-[18px]"
                   >
-                    <div
-                      style={{
-                        width:
-                          58,
-                        height:
-                          58,
-                        flex:
-                          "0 0 58px",
-                        borderRadius:
-                          "50%",
-                        overflow:
-                          "hidden",
-                        background:
-                          "#1f2937",
-                        display:
-                          "flex",
-                        alignItems:
-                          "center",
-                        justifyContent:
-                          "center",
-                        fontSize:
-                          24,
-                      }}
-                    >
+                    {/* PLAYER IMAGE */}
+
+                    <div className="flex h-[58px] w-[58px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-gray-800 text-2xl">
                       {image ? (
                         <img
                           src={image}
-                          alt={
-                            player
-                          }
-                          width={
-                            58
-                          }
-                          height={
-                            58
-                          }
-                          style={{
-                            width:
-                              "100%",
-                            height:
-                              "100%",
-                            objectFit:
-                              "cover",
-                          }}
+                          alt={player}
+                          width={58}
+                          height={58}
+                          className="h-full w-full object-cover"
                         />
                       ) : (
                         "⚽"
                       )}
                     </div>
 
-                    <div
-                      style={{
-                        flex:
-                          1,
-                        minWidth:
-                          0,
-                      }}
-                    >
-                      <h2
-                        style={{
-                          margin: 0,
-                          color:
-                            "#fff",
-                          fontSize:
-                            17,
-                          fontWeight:
-                            800,
-                        }}
-                      >
+                    {/* PLAYER / TRANSFER INFO */}
+
+                    <div className="min-w-0 flex-1">
+                      <h2 className="m-0 text-[17px] font-extrabold text-white">
                         {player}
                       </h2>
 
-                      <div
-                        style={{
-                          marginTop:
-                            7,
-                          display:
-                            "flex",
-                          flexWrap:
-                            "wrap",
-                          alignItems:
-                            "center",
-                          gap: 8,
-                          color:
-                            "#d1d5db",
-                          fontSize:
-                            14,
-                        }}
-                      >
+                      <div className="mt-1.5 flex flex-wrap items-center gap-2 text-sm text-gray-300">
                         <span>
                           {from}
                         </span>
 
-                        <span
-                          style={{
-                            color:
-                              "#ef4444",
-                            fontWeight:
-                              800,
-                          }}
-                        >
+                        <span className="font-extrabold text-red-500">
                           →
                         </span>
 
@@ -901,21 +584,7 @@ export default function TransfersClient() {
                         </span>
                       </div>
 
-                      <div
-                        style={{
-                          display:
-                            "flex",
-                          flexWrap:
-                            "wrap",
-                          gap: 8,
-                          marginTop:
-                            8,
-                          fontSize:
-                            11,
-                          color:
-                            "#6b7280",
-                        }}
-                      >
+                      <div className="mt-2 flex flex-wrap gap-2 text-[11px] text-gray-500">
                         <span>
                           {league}
                         </span>
@@ -934,26 +603,9 @@ export default function TransfersClient() {
                       </div>
                     </div>
 
-                    <div
-                      style={{
-                        flex:
-                          "0 0 auto",
-                        padding:
-                          "7px 10px",
-                        borderRadius:
-                          8,
-                        background:
-                          "#1f2937",
-                        color:
-                          "#d1d5db",
-                        fontSize:
-                          11,
-                        fontWeight:
-                          700,
-                        textTransform:
-                          "uppercase",
-                      }}
-                    >
+                    {/* TRANSFER TYPE */}
+
+                    <div className="shrink-0 rounded-lg bg-gray-800 px-2.5 py-1.5 text-[11px] font-bold uppercase text-gray-300">
                       {getTransferType(
                         transfer
                       )}

@@ -7,16 +7,7 @@ import LatestResults from "@/components/Dashboard/LatestResults";
 
 export default function TodayPage() {
   return (
-    <main
-      style={{
-        maxWidth: 1400,
-        margin: "40px auto",
-        padding: "20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "30px",
-      }}
-    >
+    <main className="mx-auto my-10 flex w-full max-w-[1400px] flex-col gap-[30px] px-5">
       {/* Hero */}
 
       <DashboardHero />

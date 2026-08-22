@@ -110,35 +110,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        style={{
-          margin: 0,
-          padding: 0,
-          background: "#020617",
-          color: "#ffffff",
-          fontFamily: "Arial, sans-serif",
-
-          /* Prevent browser-level scrolling */
-          overflow: "hidden",
-
-          /* Full viewport application */
-          height: "100vh",
-          width: "100%",
-        }}
-      >
+      <body className="m-0 h-screen w-full overflow-hidden bg-slate-950 p-0 font-[Arial,sans-serif] text-white">
         <LiveProvider>
           {/* =====================================================
               APP SHELL
           ====================================================== */}
 
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              height: "100vh",
-              overflow: "hidden",
-            }}
-          >
+          <div className="flex h-screen w-full overflow-hidden">
             {/* =================================================
                 SIDEBAR
             ================================================== */}
@@ -149,36 +127,12 @@ export default function RootLayout({
                 RIGHT SIDE APPLICATION
             ================================================== */}
 
-            <div className="apex-main-shell"
-              style={{
-                flex: 1,
-
-                /*
-                  Sidebar is fixed at 280px,
-                  so reserve that space here.
-                */
-                marginLeft: "280px",
-
-                minWidth: 0,
-                minHeight: 0,
-
-                height: "100vh",
-
-                display: "flex",
-                flexDirection: "column",
-
-                overflow: "hidden",
-              }}
-            >
+            <div className="apex-main-shell ml-[280px] flex h-screen min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
               {/* ===============================================
                   HEADER
               ================================================ */}
 
-              <div
-                style={{
-                  flexShrink: 0,
-                }}
-              >
+              <div className="shrink-0">
                 <Header />
               </div>
 
@@ -186,40 +140,15 @@ export default function RootLayout({
                   MAIN SCROLLING AREA
               ================================================ */}
 
-              <main
-                style={{
-                  flex: 1,
-
-                  /*
-                    VERY IMPORTANT for flex scrolling.
-                  */
-                  minHeight: 0,
-                  minWidth: 0,
-
-                  /*
-                    Always show vertical scrollbar.
-                  */
-                  overflowY: "scroll",
-
-                  /*
-                    Prevent horizontal page overflow.
-                  */
-                  overflowX: "hidden",
-
-                  padding: "25px",
-
-                  background: "#020617",
-
-                  boxSizing: "border-box",
-                }}
-              >
+              <main className="box-border min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-scroll bg-slate-950 p-[25px]">
                 <Breadcrumbs />
 
                 {children}
 
                 {/* ===============================================
-                    FOOTER (Inside main scroll container)
+                    FOOTER
                 ================================================ */}
+
                 <Footer />
               </main>
             </div>
@@ -229,3 +158,4 @@ export default function RootLayout({
     </html>
   );
 }
+
