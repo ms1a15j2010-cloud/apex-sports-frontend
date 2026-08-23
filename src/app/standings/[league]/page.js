@@ -561,13 +561,10 @@ export default async function StandingsPage({
                       className="border-b border-slate-800 transition hover:bg-slate-800/40"
                     >
                       <td
-                        className="px-3 py-3.5 text-center font-extrabold"
-                        style={{
-                          color: getRankColor(
-                            rank
-                          ),
-                        }}
-                      >
+  className={`px-3 py-3.5 text-center font-extrabold ${getRankClass(
+    rank
+  )}`}
+>
                         {rank}
                       </td>
 
@@ -624,18 +621,14 @@ export default async function StandingsPage({
                       <TableNumber value={goalsAgainst} />
 
                       <td
-                        className="px-3 py-3.5 text-center font-bold"
-                        style={{
-                          color:
-                            goalDifference >
-                            0
-                              ? "#22c55e"
-                              : goalDifference <
-                                0
-                              ? "#ef4444"
-                              : "#94a3b8",
-                        }}
-                      >
+                     className={`px-3 py-3.5 text-center font-bold ${
+                       goalDifference > 0
+                         ? "text-green-500"
+                         : goalDifference < 0
+                         ? "text-red-500"
+                         : "text-slate-400"
+                     }`}
+                   >
                         {goalDifference >
                         0
                           ? `+${goalDifference}`
@@ -679,13 +672,18 @@ function TableNumber({
   value,
   color,
 }) {
+  const colorClass =
+    color === "#22c55e"
+      ? "text-green-500"
+      : color === "#facc15"
+      ? "text-yellow-400"
+      : color === "#ef4444"
+      ? "text-red-500"
+      : "text-slate-200";
+
   return (
     <td
-      className="px-3 py-3.5 text-center font-semibold"
-      style={{
-        color:
-          color || "#e2e8f0",
-      }}
+      className={`px-3 py-3.5 text-center font-semibold ${colorClass}`}
     >
       {value}
     </td>
@@ -717,26 +715,26 @@ function Badge({
 RANK COLOR
 ===================================================== */
 
-function getRankColor(rank) {
+function getRankClass(rank) {
   if (rank === 1) {
-    return "#facc15";
+    return "text-yellow-400";
   }
 
   if (rank === 2) {
-    return "#cbd5e1";
+    return "text-slate-300";
   }
 
   if (rank === 3) {
-    return "#fb923c";
+    return "text-orange-400";
   }
 
   if (rank >= 4 && rank <= 6) {
-    return "#22c55e";
+    return "text-green-500";
   }
 
   if (rank >= 18) {
-    return "#ef4444";
+    return "text-red-500";
   }
 
-  return "#94a3b8";
+  return "text-slate-400";
 }
