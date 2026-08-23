@@ -29,14 +29,9 @@ const SEASON = 2026;
 async function getPlayer(id) {
   try {
     const url =
-      `${API}/api/player/${encodeURIComponent(
-        id
-      )}?season=${SEASON}`;
+      `${API}/api/player/${encodeURIComponent(id)}?season=${SEASON}`;
 
-    console.log(
-      "🌐 Player API request:",
-      url
-    );
+    console.log("🌐 Player API request:", url);
 
     const res = await fetch(url, {
       cache: "no-store",
@@ -44,16 +39,11 @@ async function getPlayer(id) {
 
     const data = await res.json();
 
-    console.log(
-      "⚽ Player response:",
-      {
-        status: res.status,
-        success: data?.success,
-        player:
-          data?.player?.name ||
-          null,
-      }
-    );
+    console.log("⚽ Player response:", {
+      status: res.status,
+      success: data?.success,
+      player: data?.player?.name || null,
+    });
 
     if (!res.ok) {
       return {
@@ -67,10 +57,7 @@ async function getPlayer(id) {
 
     return data;
   } catch (error) {
-    console.error(
-      "❌ Player fetch failed:",
-      error
-    );
+    console.error("❌ Player fetch failed:", error);
 
     return {
       success: false,
@@ -89,14 +76,9 @@ async function getPlayer(id) {
 async function getStatistics(id) {
   try {
     const url =
-      `${API}/api/player/${encodeURIComponent(
-        id
-      )}/statistics?season=${SEASON}`;
+      `${API}/api/player/${encodeURIComponent(id)}/statistics?season=${SEASON}`;
 
-    console.log(
-      "🌐 Statistics API request:",
-      url
-    );
+    console.log("🌐 Statistics API request:", url);
 
     const res = await fetch(url, {
       cache: "no-store",
@@ -104,18 +86,13 @@ async function getStatistics(id) {
 
     const data = await res.json();
 
-    console.log(
-      "📊 Statistics response:",
-      {
-        status: res.status,
-        success: data?.success,
-        count: Array.isArray(
-          data?.statistics
-        )
-          ? data.statistics.length
-          : 0,
-      }
-    );
+    console.log("📊 Statistics response:", {
+      status: res.status,
+      success: data?.success,
+      count: Array.isArray(data?.statistics)
+        ? data.statistics.length
+        : 0,
+    });
 
     if (!res.ok) {
       return {
@@ -145,14 +122,9 @@ async function getStatistics(id) {
 async function getFixtures(id) {
   try {
     const url =
-      `${API}/api/player/${encodeURIComponent(
-        id
-      )}/fixtures?season=${SEASON}`;
+      `${API}/api/player/${encodeURIComponent(id)}/fixtures?season=${SEASON}`;
 
-    console.log(
-      "🌐 Fixtures API request:",
-      url
-    );
+    console.log("🌐 Fixtures API request:", url);
 
     const res = await fetch(url, {
       cache: "no-store",
@@ -167,13 +139,10 @@ async function getFixtures(id) {
       };
     }
 
-    console.log(
-      "📅 Fixtures response:",
-      {
-        success: data?.success,
-        count: data?.count ?? 0,
-      }
-    );
+    console.log("📅 Fixtures response:", {
+      success: data?.success,
+      count: data?.count ?? 0,
+    });
 
     return data;
   } catch (error) {
@@ -196,14 +165,9 @@ async function getFixtures(id) {
 async function getHistory(id) {
   try {
     const url =
-      `${API}/api/player/${encodeURIComponent(
-        id
-      )}/history?season=${SEASON}`;
+      `${API}/api/player/${encodeURIComponent(id)}/history?season=${SEASON}`;
 
-    console.log(
-      "🌐 History API request:",
-      url
-    );
+    console.log("🌐 History API request:", url);
 
     const res = await fetch(url, {
       cache: "no-store",
@@ -218,13 +182,10 @@ async function getHistory(id) {
       };
     }
 
-    console.log(
-      "📖 History response:",
-      {
-        success: data?.success,
-        count: data?.count ?? 0,
-      }
-    );
+    console.log("📖 History response:", {
+      success: data?.success,
+      count: data?.count ?? 0,
+    });
 
     return data;
   } catch (error) {
@@ -244,13 +205,10 @@ async function getHistory(id) {
    METADATA
 ===================================================== */
 
-export async function generateMetadata({
-  params,
-}) {
+export async function generateMetadata({ params }) {
   const { id } = await params;
 
-  const data =
-    await getPlayer(id);
+  const data = await getPlayer(id);
 
   return {
     title:
@@ -268,23 +226,14 @@ export async function generateMetadata({
    PAGE
 ===================================================== */
 
-export default async function PlayerPage({
-  params,
-}) {
+export default async function PlayerPage({ params }) {
   const { id } = await params;
 
   /* =================================================
      LOAD CRITICAL DATA
-
-     We intentionally do NOT make eight simultaneous
-     requests anymore.
-
-     Profile + Statistics + Fixtures + History
-     are sufficient for this Player page.
   ================================================= */
 
-  const playerData =
-    await getPlayer(id);
+  const playerData = await getPlayer(id);
 
   /* =================================================
      PLAYER NOT FOUND
@@ -295,40 +244,19 @@ export default async function PlayerPage({
     !playerData?.player
   ) {
     return (
-      <main
-        style={{
-          maxWidth: 1450,
-          margin: "40px auto",
-          padding: 20,
-          color: "#fff",
-        }}
-      >
-        <h1
-          style={{
-            marginBottom: 15,
-          }}
-        >
+      <main className="mx-auto my-10 max-w-[1450px] px-5 text-white">
+        <h1 className="mb-[15px] text-3xl font-bold">
           Player Not Found
         </h1>
 
-        <p
-          style={{
-            color: "#94a3b8",
-            marginBottom: 30,
-          }}
-        >
+        <p className="mb-[30px] text-slate-400">
           {playerData?.message ||
             "We couldn't find this player."}
         </p>
 
         <Link
           href="/search"
-          style={{
-            color: "#22c55e",
-            textDecoration:
-              "none",
-            fontWeight: "bold",
-          }}
+          className="font-bold text-green-500 no-underline transition hover:text-green-400"
         >
           ← Back to Search
         </Link>
@@ -336,178 +264,108 @@ export default async function PlayerPage({
     );
   }
 
-  const player =
-    playerData.player;
+  const player = playerData.player;
 
   /* =================================================
      STATISTICS
-
-     Fetch once.
-
   ================================================= */
 
-  const statData =
-    await getStatistics(id);
+  const statData = await getStatistics(id);
 
   const statistics =
     statData?.success &&
-    Array.isArray(
-      statData.statistics
-    )
+    Array.isArray(statData.statistics)
       ? statData.statistics
-      : Array.isArray(
-          player.statistics
-        )
+      : Array.isArray(player.statistics)
       ? player.statistics
       : [];
 
   /* =================================================
      FIXTURES + HISTORY
-
-     Only two remaining API requests.
   ================================================= */
 
-  const [
-    fixturesData,
-    historyData,
-  ] = await Promise.all([
-    getFixtures(id),
-    getHistory(id),
-  ]);
+  const [fixturesData, historyData] =
+    await Promise.all([
+      getFixtures(id),
+      getHistory(id),
+    ]);
 
   const fixtures =
     fixturesData?.success &&
-    Array.isArray(
-      fixturesData.fixtures
-    )
+    Array.isArray(fixturesData.fixtures)
       ? fixturesData.fixtures
-      : Array.isArray(
-          player.fixtures
-        )
+      : Array.isArray(player.fixtures)
       ? player.fixtures
       : [];
 
   const history =
     historyData?.success &&
-    Array.isArray(
-      historyData.history
-    )
+    Array.isArray(historyData.history)
       ? historyData.history
-      : Array.isArray(
-          player.history
-        )
+      : Array.isArray(player.history)
       ? player.history
       : [];
 
   /* =================================================
      CAREER
-
-     Career is already represented by the same
-     football-data.org statistics block.
   ================================================= */
 
-  const career =
-    statistics;
+  const career = statistics;
 
   /* =================================================
      PERFORMANCE
-
-     Performance uses the same current-season
-     statistics block.
   ================================================= */
 
-  const performance =
-    statistics;
+  const performance = statistics;
 
   /* =================================================
      TRANSFERS
-
-     football-data.org does not provide an
-     equivalent transfer-history endpoint.
   ================================================= */
 
   const transfers =
-    Array.isArray(
-      player.transfers
-    )
+    Array.isArray(player.transfers)
       ? player.transfers
       : [];
 
-  const transfersAvailable =
-    false;
+  const transfersAvailable = false;
 
   /* =================================================
      TROPHIES
-
-     football-data.org does not provide an
-     equivalent trophy-history endpoint.
   ================================================= */
 
   const trophies =
-    Array.isArray(
-      player.trophies
-    )
+    Array.isArray(player.trophies)
       ? player.trophies
       : [];
 
-  const trophiesAvailable =
-    false;
+  const trophiesAvailable = false;
 
   /* =================================================
      RENDER
   ================================================= */
 
   return (
-    <main
-      style={{
-        maxWidth: 1450,
-        margin: "40px auto",
-        padding: 20,
-        color: "#fff",
-
-        display: "grid",
-
-        gridTemplateColumns:
-          "320px 1fr",
-
-        gap: 25,
-
-        alignItems: "start",
-      }}
-    >
+    <main className="mx-auto my-10 grid max-w-[1450px] grid-cols-1 items-start gap-[25px] px-5 text-white lg:grid-cols-[320px_minmax(0,1fr)]">
       {/* ============================================
           LEFT SIDEBAR
       ============================================ */}
 
-      <div>
-        <PlayerSidebar
-          player={player}
-        />
+      <div className="min-w-0">
+        <PlayerSidebar player={player} />
       </div>
 
       {/* ============================================
           MAIN CONTENT
       ============================================ */}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection:
-            "column",
-          gap: 30,
-        }}
-      >
+      <div className="flex min-w-0 flex-col gap-[30px]">
         {/* PLAYER HEADER */}
 
-        <PlayerHeader
-          player={player}
-        />
+        <PlayerHeader player={player} />
 
         {/* PLAYER OVERVIEW */}
 
-        <PlayerOverview
-          player={player}
-        />
+        <PlayerOverview player={player} />
 
         {/* PLAYER STATISTICS */}
 
@@ -538,26 +396,20 @@ export default async function PlayerPage({
 
         {/* PLAYER FIXTURES */}
 
-        <PlayerFixtures
-          fixtures={fixtures}
-        />
+        <PlayerFixtures fixtures={fixtures} />
 
         {/* PLAYER TRANSFERS */}
 
         <PlayerTransfers
           transfers={transfers}
-          available={
-            transfersAvailable
-          }
+          available={transfersAvailable}
         />
 
         {/* PLAYER TROPHIES */}
 
         <PlayerTrophies
           trophies={trophies}
-          available={
-            trophiesAvailable
-          }
+          available={trophiesAvailable}
         />
 
         {/* PLAYER HISTORY */}
@@ -570,3 +422,4 @@ export default async function PlayerPage({
     </main>
   );
 }
+
