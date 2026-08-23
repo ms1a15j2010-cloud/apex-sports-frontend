@@ -5,45 +5,17 @@ export default function Error({
   reset,
 }) {
   return (
-    <main
-      style={{
-        maxWidth: "900px",
-        margin: "60px auto",
-        padding: "20px",
-        color: "white",
-      }}
-    >
-      <div
-        style={{
-          background: "#7f1d1d",
-          padding: "40px",
-          borderRadius: "16px",
-          textAlign: "center",
-        }}
-      >
+    <main className="mx-auto my-[60px] max-w-[900px] px-5 text-white">
+      <div className="rounded-2xl bg-red-900 p-10 text-center">
         <h1>Something went wrong</h1>
 
-        <p
-          style={{
-            marginTop: 15,
-            color: "#ddd",
-          }}
-        >
+        <p className="mt-[15px] text-[#ddd]">
           {error?.message}
         </p>
 
         <button
           onClick={() => reset()}
-          style={{
-            marginTop: 25,
-            padding: "12px 30px",
-            border: "none",
-            borderRadius: "10px",
-            background: "#2563eb",
-            color: "white",
-            cursor: "pointer",
-            fontWeight: "bold",
-          }}
+          className="mt-[25px] rounded-[10px] border-0 bg-blue-600 px-[30px] py-3 font-bold text-white transition hover:bg-blue-700"
         >
           Try Again
         </button>
