@@ -1,24 +1,12 @@
 export default function Loading() {
   return (
-    <main
-      style={{
-        maxWidth: "1100px",
-        margin: "50px auto",
-        padding: "20px",
-        color: "white",
-      }}
-    >
-      <div
-        style={{
-          background: "#111827",
-          padding: "40px",
-          borderRadius: "16px",
-          textAlign: "center",
-        }}
-      >
+    <main className="mx-auto my-[50px] max-w-[1100px] px-5 text-white">
+      <div className="rounded-2xl bg-gray-900 p-10 text-center">
         <h2>Loading...</h2>
 
-        <p>Please wait while data is loading.</p>
+        <p className="mt-2 text-slate-400">
+          Please wait while data is loading.
+        </p>
       </div>
     </main>
   );
