@@ -6,74 +6,153 @@ import Image from "next/image";
 export default function MatchCard({ match }) {
   if (!match) return null;
 
+  const status = match.status || {};
+  const league = match.league || {};
+  const home = match.home || {};
+  const away = match.away || {};
+  const goals = match.goals || {};
+
+  const getStatusClass = () => {
+    switch (status.short) {
+      case "LIVE":
+      case "1H":
+      case "2H":
+      case "HT":
+        return "status-live";
+
+      case "FT":
+        return "status-ft";
+
+      default:
+        return "status-upcoming";
+    }
+  };
+
+  const getStatusText = () => {
+    if (
+      ["LIVE", "1H", "2H", "HT"].includes(
+        status.short
+      )
+    ) {
+      return `${status.elapsed || 0}'`;
+    }
+
+    if (status.short === "FT") {
+      return "FT";
+    }
+
+    if (match.fixture?.date) {
+      return new Date(
+        match.fixture.date
+      ).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    return "-";
+  };
+
   return (
     <Link
-      href={`/match/${match.fixture?.id}`}
-      className="text-inherit no-underline"
+      href={`/match/${match.fixture?.id || match.id}`}
+      className="match-card-pro"
     >
-      <div className="rounded-2xl border border-gray-800 bg-gray-900 p-[18px]">
-        {/* League */}
+      {/* Header */}
 
-        <div className="mb-4 flex items-center gap-2">
-          {match.league?.logo && (
+      <div className="match-card-header">
+        <div className="league-info">
+          {league.logo ? (
             <Image
-              src={match.league.logo}
-              alt={match.league.name}
-              width={22}
-              height={22}
+              src={league.logo}
+              alt={league.name || "League"}
+              width={20}
+              height={20}
             />
+          ) : (
+            <div className="h-5 w-5 rounded-full bg-slate-700" />
           )}
 
-          <span className="text-[13px] text-slate-400">
-            {match.league?.name}
+          <div>
+            <div className="league-name">
+              {league.name || "Unknown League"}
+            </div>
+
+            <div className="league-country">
+              {league.country || "-"}
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={`match-status ${getStatusClass()}`}
+        >
+          {getStatusText()}
+        </div>
+      </div>
+
+      {/* Teams */}
+
+      <div className="teams-wrapper">
+        <div className="team-side">
+          {home.logo ? (
+            <Image
+              src={home.logo}
+              alt={home.name || "Home team"}
+              width={42}
+              height={42}
+            />
+          ) : (
+            <div className="h-[42px] w-[42px] rounded-full bg-slate-800" />
+          )}
+
+          <span>
+            {home.name || "Home Team"}
           </span>
         </div>
 
-        {/* Teams */}
+        <div className="score-center">
+          <span>
+            {goals.home ?? "-"}
+          </span>
 
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
-          <div className="flex items-center gap-2.5">
-            {match.home?.logo && (
-              <Image
-                src={match.home.logo}
-                alt={match.home.name}
-                width={32}
-                height={32}
-              />
-            )}
+          <span className="score-divider">
+            -
+          </span>
 
-            <span>{match.home?.name}</span>
-          </div>
-
-          <div className="text-center">
-            <div className="text-xl font-bold">
-              {match.goals?.home ?? "-"} : {match.goals?.away ?? "-"}
-            </div>
-
-            <div className="text-[13px] text-green-500">
-              {match.status?.short}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-end gap-2.5">
-            <span>{match.away?.name}</span>
-
-            {match.away?.logo && (
-              <Image
-                src={match.away.logo}
-                alt={match.away.name}
-                width={32}
-                height={32}
-              />
-            )}
-          </div>
+          <span>
+            {goals.away ?? "-"}
+          </span>
         </div>
 
-        <div className="mt-[15px] flex justify-between text-xs text-slate-400">
-          <span>{match.fixture?.venue?.name || "Unknown Venue"}</span>
+        <div className="team-side">
+          {away.logo ? (
+            <Image
+              src={away.logo}
+              alt={away.name || "Away team"}
+              width={42}
+              height={42}
+            />
+          ) : (
+            <div className="h-[42px] w-[42px] rounded-full bg-slate-800" />
+          )}
 
-          <span>{match.status?.long}</span>
+          <span>
+            {away.name || "Away Team"}
+          </span>
         </div>
+      </div>
+
+      {/* Footer */}
+
+      <div className="match-card-footer">
+        <span>
+          View Match
+        </span>
+
+        <span>
+          →
+        </span>
       </div>
     </Link>
   );
