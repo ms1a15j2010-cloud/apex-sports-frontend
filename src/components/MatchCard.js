@@ -6,15 +6,54 @@ import Image from "next/image";
 export default function MatchCard({ match }) {
   if (!match) return null;
 
+  /*
+   * Support multiple backend/API response formats.
+   */
+  const status = match.status || {};
+  const league = match.league || {};
+
+  const home =
+    match.home ||
+    match.teams?.home ||
+    match.homeTeam ||
+    {};
+
+  const away =
+    match.away ||
+    match.teams?.away ||
+    match.awayTeam ||
+    {};
+
+  const goals = match.goals || {};
+  const score = match.score || {};
+
+  const fullTime =
+    score.fulltime ||
+    score.fullTime ||
+    {};
+
+  /*
+   * Match ID
+   */
+  const matchId =
+    match.fixture?.id ||
+    match.id ||
+    match.matchId;
+
+  /*
+   * Status styling
+   */
   const getStatusClass = () => {
-    switch (match.status.short) {
+    switch (status.short) {
       case "LIVE":
       case "1H":
       case "2H":
       case "HT":
+      case "IN_PLAY":
         return "status-live";
 
       case "FT":
+      case "FINISHED":
         return "status-ft";
 
       default:
@@ -22,48 +61,107 @@ export default function MatchCard({ match }) {
     }
   };
 
+  /*
+   * Status text
+   */
   const getStatusText = () => {
     if (
-      ["LIVE", "1H", "2H", "HT"].includes(
-        match.status.short
-      )
+      [
+        "LIVE",
+        "1H",
+        "2H",
+        "HT",
+        "IN_PLAY",
+      ].includes(status.short)
     ) {
-      return `${match.status.elapsed || 0}'`;
+      return `${status.elapsed || 0}'`;
     }
 
-    if (match.status.short === "FT") {
+    if (
+      status.short === "FT" ||
+      status.short === "FINISHED"
+    ) {
       return "FT";
     }
 
-    return new Date(match.fixture.date).toLocaleTimeString([], {
-  hour: "2-digit",
-  minute: "2-digit",
-});
+    if (match.fixture?.date) {
+      return new Date(
+        match.fixture.date
+      ).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    if (match.utcDate) {
+      return new Date(
+        match.utcDate
+      ).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
+    return "-";
   };
+
+  /*
+   * Support both:
+   *
+   * goals.home / goals.away
+   *
+   * and:
+   *
+   * score.fulltime.home / score.fulltime.away
+   */
+  const homeGoals =
+    goals.home ??
+    fullTime.home ??
+    "-";
+
+  const awayGoals =
+    goals.away ??
+    fullTime.away ??
+    "-";
+
+  /*
+   * Safe match URL
+   */
+  const matchHref = matchId
+    ? `/match/${matchId}`
+    : "#";
 
   return (
     <Link
-      href={`/match/${match.fixture?.id || match.id}`}
+      href={matchHref}
       className="match-card-pro"
     >
       {/* Header */}
 
       <div className="match-card-header">
         <div className="league-info">
-          <Image
-            src={match.league.logo}
-            alt={match.league.name}
-            width={20}
-            height={20}
-          />
+          {league.logo ? (
+            <Image
+              src={league.logo}
+              alt={
+                league.name ||
+                "League"
+              }
+              width={20}
+              height={20}
+            />
+          ) : (
+            <div className="h-5 w-5 rounded-full bg-slate-700" />
+          )}
 
           <div>
             <div className="league-name">
-              {match.league.name}
+              {league.name ||
+                "Unknown League"}
             </div>
 
             <div className="league-country">
-              {match.league.country}
+              {league.country || "-"}
             </div>
           </div>
         </div>
@@ -78,39 +176,67 @@ export default function MatchCard({ match }) {
       {/* Teams */}
 
       <div className="teams-wrapper">
+        {/* Home Team */}
 
         <div className="team-side">
-          <Image
-            src={match.home.logo}
-            alt={match.home.name}
-            width={42}
-            height={42}
-          />
+          {home.logo ? (
+            <Image
+              src={home.logo}
+              alt={
+                home.name ||
+                "Home team"
+              }
+              width={42}
+              height={42}
+            />
+          ) : (
+            <div className="h-[42px] w-[42px] rounded-full bg-slate-800" />
+          )}
 
-          <span>{match.home.name}</span>
+          <span>
+            {home.name ||
+              "Home Team"}
+          </span>
         </div>
 
+        {/* Score */}
+
         <div className="score-center">
-          <span>{match.goals.home ?? "-"}</span>
+          <span>
+            {homeGoals}
+          </span>
 
           <span className="score-divider">
             -
           </span>
 
-          <span>{match.goals.away ?? "-"}</span>
+          <span>
+            {awayGoals}
+          </span>
         </div>
+
+        {/* Away Team */}
 
         <div className="team-side">
-          <Image
-            src={match.away.logo}
-            alt={match.away.name}
-            width={42}
-            height={42}
-          />
+          {away.logo ? (
+            <Image
+              src={away.logo}
+              alt={
+                away.name ||
+                "Away team"
+              }
+              width={42}
+              height={42}
+            />
+          ) : (
+            <div className="h-[42px] w-[42px] rounded-full bg-slate-800" />
+          )}
 
-          <span>{match.away.name}</span>
+          <span>
+            {away.name ||
+              "Away Team"}
+          </span>
         </div>
-
       </div>
 
       {/* Footer */}
