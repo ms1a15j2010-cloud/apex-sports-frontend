@@ -110,6 +110,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+    <script
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1963005458652987"
+      crossOrigin="anonymous"
+    />
+  </head>
       <body className="m-0 h-screen w-full overflow-hidden bg-slate-950 p-0 font-[Arial,sans-serif] text-white">
         <LiveProvider>
           {/* =====================================================
