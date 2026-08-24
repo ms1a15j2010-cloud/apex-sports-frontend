@@ -11,6 +11,13 @@ export default function MatchCard({ match }) {
   const home = match.home || {};
   const away = match.away || {};
   const goals = match.goals || {};
+  const score = match.score || {};
+  const fullTime = score.fulltime || score.fullTime || {};
+
+  const matchId =
+    match.fixture?.id ||
+    match.id ||
+    match.matchId;
 
   const getStatusClass = () => {
     switch (status.short) {
@@ -18,9 +25,11 @@ export default function MatchCard({ match }) {
       case "1H":
       case "2H":
       case "HT":
+      case "IN_PLAY":
         return "status-live";
 
       case "FT":
+      case "FINISHED":
         return "status-ft";
 
       default:
@@ -30,14 +39,17 @@ export default function MatchCard({ match }) {
 
   const getStatusText = () => {
     if (
-      ["LIVE", "1H", "2H", "HT"].includes(
+      ["LIVE", "1H", "2H", "HT", "IN_PLAY"].includes(
         status.short
       )
     ) {
       return `${status.elapsed || 0}'`;
     }
 
-    if (status.short === "FT") {
+    if (
+      status.short === "FT" ||
+      status.short === "FINISHED"
+    ) {
       return "FT";
     }
 
@@ -50,12 +62,35 @@ export default function MatchCard({ match }) {
       });
     }
 
+    if (match.utcDate) {
+      return new Date(
+        match.utcDate
+      ).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    }
+
     return "-";
   };
 
+  const homeGoals =
+    goals.home ??
+    fullTime.home ??
+    "-";
+
+  const awayGoals =
+    goals.away ??
+    fullTime.away ??
+    "-";
+
+  const matchHref = matchId
+    ? `/match/${matchId}`
+    : "#";
+
   return (
     <Link
-      href={`/match/${match.fixture?.id || match.id}`}
+      href={matchHref}
       className="match-card-pro"
     >
       {/* Header */}
@@ -75,7 +110,8 @@ export default function MatchCard({ match }) {
 
           <div>
             <div className="league-name">
-              {league.name || "Unknown League"}
+              {league.name ||
+                "Unknown League"}
             </div>
 
             <div className="league-country">
@@ -94,11 +130,16 @@ export default function MatchCard({ match }) {
       {/* Teams */}
 
       <div className="teams-wrapper">
+        {/* Home Team */}
+
         <div className="team-side">
           {home.logo ? (
             <Image
               src={home.logo}
-              alt={home.name || "Home team"}
+              alt={
+                home.name ||
+                "Home team"
+              }
               width={42}
               height={42}
             />
@@ -107,13 +148,16 @@ export default function MatchCard({ match }) {
           )}
 
           <span>
-            {home.name || "Home Team"}
+            {home.name ||
+              "Home Team"}
           </span>
         </div>
 
+        {/* Score */}
+
         <div className="score-center">
           <span>
-            {goals.home ?? "-"}
+            {homeGoals}
           </span>
 
           <span className="score-divider">
@@ -121,15 +165,20 @@ export default function MatchCard({ match }) {
           </span>
 
           <span>
-            {goals.away ?? "-"}
+            {awayGoals}
           </span>
         </div>
+
+        {/* Away Team */}
 
         <div className="team-side">
           {away.logo ? (
             <Image
               src={away.logo}
-              alt={away.name || "Away team"}
+              alt={
+                away.name ||
+                "Away team"
+              }
               width={42}
               height={42}
             />
@@ -138,7 +187,8 @@ export default function MatchCard({ match }) {
           )}
 
           <span>
-            {away.name || "Away Team"}
+            {away.name ||
+              "Away Team"}
           </span>
         </div>
       </div>
