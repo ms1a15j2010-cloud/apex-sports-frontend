@@ -29,7 +29,7 @@ const nextConfig = {
       {
         source: "/api/:path*",
         destination:
-          "https://apex-sports-backend-coi90g4o0-ms1a15j2010-clouds-projects.vercel.app/api/:path*",
+          "https://apex-sports-backend.vercel.app/api/:path*",
       },
     ];
   },
