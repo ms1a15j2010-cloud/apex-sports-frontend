@@ -15,106 +15,182 @@ export default function HomePage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
+    let mounted = true;
+
     async function loadMatches() {
+      if (!mounted) {
+        return;
+      }
+
       setLoading(true);
       setError("");
 
       try {
-        const data = await api.getTodayMatches();
+        let data;
 
-        if (!data.success) {
-          setMatches([]);
-          setFiltered([]);
-          setError(data.message || "Unable to load matches");
+        switch (tab) {
+          case "live":
+            data = await api.getLiveMatches();
+            break;
+
+          case "finished":
+            data = await api.getLatestResults();
+            break;
+
+          case "upcoming":
+            data = await api.getFixtures(
+              "epl",
+              2026,
+              1,
+              10
+            );
+            break;
+
+          case "today":
+          default:
+            data = await api.getTodayMatches();
+            break;
+        }
+
+        if (!mounted) {
           return;
         }
 
-        const list = Array.isArray(data.matches) ? data.matches : [];
+        if (!data?.success) {
+          setMatches([]);
+          setFiltered([]);
+          setError(
+            data?.message ||
+              "Unable to load matches"
+          );
+          return;
+        }
+
+        const list = Array.isArray(data.matches)
+          ? data.matches
+          : [];
 
         setMatches(list);
         setFiltered(list);
       } catch (err) {
-        console.error(err);
+        if (!mounted) {
+          return;
+        }
+
+        console.error(
+          "HomePage matches:",
+          err
+        );
+
         setMatches([]);
         setFiltered([]);
-        setError("Unable to connect to server.");
+
+        setError(
+          err?.message ||
+            "Unable to connect to server."
+        );
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     }
 
     loadMatches();
-  }, []);
+
+    return () => {
+      mounted = false;
+    };
+  }, [tab]);
 
   function handleSearch(value) {
-    const text = value.toLowerCase();
+    const text = value
+      .toLowerCase()
+      .trim();
+
+    if (!text) {
+      setFiltered(matches);
+      return;
+    }
+
     const result = matches.filter((m) => {
       return (
-        m.home?.name?.toLowerCase().includes(text) ||
-        m.away?.name?.toLowerCase().includes(text) ||
-        m.league?.name?.toLowerCase().includes(text)
+        m.home?.name
+          ?.toLowerCase()
+          .includes(text) ||
+        m.away?.name
+          ?.toLowerCase()
+          .includes(text) ||
+        m.teams?.home?.name
+          ?.toLowerCase()
+          .includes(text) ||
+        m.teams?.away?.name
+          ?.toLowerCase()
+          .includes(text) ||
+        m.league?.name
+          ?.toLowerCase()
+          .includes(text)
       );
     });
+
     setFiltered(result);
   }
 
-  useEffect(() => {
-    let result = [...matches];
-
-    switch (tab) {
-      case "live":
-        result = matches.filter((m) =>
-          ["LIVE", "1H", "2H", "HT"].includes(m.status?.short)
-        );
-        break;
-
-      case "finished":
-        result = matches.filter((m) => m.status?.short === "FT");
-        break;
-
-      case "upcoming":
-        result = matches.filter((m) => m.status?.short === "NS");
-        break;
-
-      default:
-        result = matches;
-    }
-
-    setFiltered(result);
-  }, [tab, matches]);
-
   return (
     <main className="w-full">
-      <HomeHero onSearch={handleSearch} />
+      <HomeHero
+        onSearch={handleSearch}
+      />
 
-      <HomeTabs activeTab={tab} setActiveTab={setTab} />
+      <HomeTabs
+        activeTab={tab}
+        setActiveTab={setTab}
+      />
 
       <SectionHeader
-        title="Today's Matches"
+        title={
+          tab === "live"
+            ? "Live Matches"
+            : tab === "finished"
+              ? "Finished Matches"
+              : tab === "upcoming"
+                ? "Upcoming Matches"
+                : "Today's Matches"
+        }
         subtitle={`${filtered.length} matches`}
       />
 
       {loading && (
-        <div className="text-center py-[60px] text-[20px] text-slate-300">
-          Loading today's matches...
+        <div className="py-[60px] text-center text-[20px] text-slate-300">
+          Loading matches...
         </div>
       )}
 
       {!loading && error && (
-        <div className="text-center text-red-500 py-[40px] text-[18px]">
+        <div className="py-[40px] text-center text-[18px] text-red-500">
           {error}
         </div>
       )}
 
-      {!loading && !error && filtered.length === 0 && (
-        <div className="text-center py-[60px] text-slate-400 text-[18px]">
-          No matches found.
-        </div>
-      )}
+      {!loading &&
+        !error &&
+        filtered.length === 0 && (
+          <div className="py-[60px] text-center text-[18px] text-slate-400">
+            {tab === "live"
+              ? "No live matches."
+              : tab === "finished"
+                ? "No finished matches available."
+                : tab === "upcoming"
+                  ? "No upcoming matches available."
+                  : "No matches scheduled today."}
+          </div>
+        )}
 
-      {!loading && !error && filtered.length > 0 && (
-        <MatchList matches={filtered} />
-      )}
+      {!loading &&
+        !error &&
+        filtered.length > 0 && (
+          <MatchList matches={filtered} />
+        )}
     </main>
   );
 }
