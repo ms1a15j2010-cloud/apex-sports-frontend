@@ -123,120 +123,6 @@ async function request(
   }
 }
 
-/* ===========================================
-   DASHBOARD
-=========================================== */
-
-const dashboard = {
-  /* -----------------------------------------
-     DASHBOARD HERO
-
-     Current backend:
-     GET /api/dashboard/hero
-  ----------------------------------------- */
-
-  getDashboardHero:
-    () =>
-      request(
-        "/api/dashboard/hero"
-      ),
-
-  /* -----------------------------------------
-     BACKWARD COMPATIBILITY
-
-     Existing DashboardHero.js currently calls:
-
-     api.getDashboard()
-
-     Keep it working.
-  ----------------------------------------- */
-
-  getDashboard:
-    () =>
-      request(
-        "/api/dashboard/hero"
-      ),
-
-  /* -----------------------------------------
-     FEATURED
-  ----------------------------------------- */
-
-  getFeaturedMatch:
-    () =>
-      request(
-        "/api/dashboard/featured"
-      ),
-
-  /* -----------------------------------------
-     LIVE
-  ----------------------------------------- */
-
-  getLiveMatches:
-    () =>
-      request(
-        "/api/dashboard/live"
-      ),
-
-  /* -----------------------------------------
-     TODAY
-  ----------------------------------------- */
-
-  getTodayMatches:
-    () =>
-      request(
-        "/api/dashboard/today"
-      ),
-
-  /* -----------------------------------------
-     TOP LEAGUES
-  ----------------------------------------- */
-
-  getTopLeagues:
-    () =>
-      request(
-        "/api/dashboard/leagues"
-      ),
-
-  /* -----------------------------------------
-     TRENDING TEAMS
-  ----------------------------------------- */
-
-  getTrendingTeams:
-    () =>
-      request(
-        "/api/dashboard/teams"
-      ),
-
-  /* -----------------------------------------
-     LATEST RESULTS
-  ----------------------------------------- */
-
-  getLatestResults:
-    () =>
-      request(
-        "/api/dashboard/results"
-      ),
-
-  /* -----------------------------------------
-     TOP SCORERS
-  ----------------------------------------- */
-
-  getTopScorersMini:
-    () =>
-      request(
-        "/api/dashboard/topscorers"
-      ),
-
-  /* -----------------------------------------
-     STANDINGS
-  ----------------------------------------- */
-
-  getStandingsMini:
-    () =>
-      request(
-        "/api/dashboard/standings"
-      ),
-};
 
 /* ===========================================
    MATCH
@@ -324,6 +210,7 @@ const match = {
       ),
 };
 
+
 /* ===========================================
    FIXTURES
 =========================================== */
@@ -367,6 +254,7 @@ const fixtures = {
       );
     },
 };
+
 
 /* ===========================================
    RESULTS
@@ -431,6 +319,7 @@ const results = {
     },
 };
 
+
 /* ===========================================
    LIVE
 =========================================== */
@@ -474,6 +363,7 @@ const live = {
       );
     },
 };
+
 
 /* ===========================================
    TODAY
@@ -527,6 +417,7 @@ const today = {
     },
 };
 
+
 /* ===========================================
    TOP LEAGUES
 =========================================== */
@@ -549,6 +440,7 @@ const topLeagues = {
     },
 };
 
+
 /* ===========================================
    TRENDING TEAMS
 =========================================== */
@@ -570,6 +462,7 @@ const trendingTeams = {
       );
     },
 };
+
 
 /* ===========================================
    TOP SCORERS MINI
@@ -605,6 +498,7 @@ const topScorersMini = {
       );
     },
 };
+
 
 /* ===========================================
    STANDINGS MINI
@@ -643,6 +537,7 @@ const standingsMini = {
     },
 };
 
+
 /* ===========================================
    TEAM
 =========================================== */
@@ -673,6 +568,7 @@ const team = {
       ),
 };
 
+
 /* ===========================================
    PLAYER
 =========================================== */
@@ -702,6 +598,7 @@ const player = {
         )}/trophies`
       ),
 };
+
 
 /* ===========================================
    LEAGUE
@@ -945,6 +842,7 @@ const league = {
     },
 };
 
+
 /* ===========================================
    SEARCH
 =========================================== */
@@ -959,11 +857,80 @@ const search = {
       ),
 };
 
+
+/* ===========================================
+   DASHBOARD
+   CURRENT BACKEND ROUTES
+=========================================== */
+
+/*
+   IMPORTANT:
+
+   We are NOT using the old:
+
+   /api/dashboard/hero
+   /api/dashboard/live
+   /api/dashboard/today
+   /api/dashboard/leagues
+   /api/dashboard/teams
+   /api/dashboard/results
+   /api/dashboard/topscorers
+   /api/dashboard/standings
+
+   The dashboard now uses the current
+   direct API endpoints.
+*/
+
+const dashboard = {
+
+  getDashboardHero:
+    () =>
+      today.get(),
+
+  getDashboard:
+    () =>
+      today.get(),
+
+  getFeaturedMatch:
+    () =>
+      today.get(),
+
+  getLiveMatches:
+    () =>
+      live.get(),
+
+  getTodayMatches:
+    () =>
+      today.get(),
+
+  getTopLeagues:
+    () =>
+      topLeagues.get(),
+
+  getTrendingTeams:
+    () =>
+      trendingTeams.get(),
+
+  getLatestResults:
+    () =>
+      results.get(),
+
+  getTopScorersMini:
+    () =>
+      topScorersMini.get(),
+
+  getStandingsMini:
+    () =>
+      standingsMini.get(),
+};
+
+
 /* ===========================================
    EXPORT
 =========================================== */
 
 export const api = {
+
   request,
 
   dashboard,
@@ -981,7 +948,10 @@ export const api = {
   league,
   search,
 
-  /* Dashboard compatibility */
+
+  /* =========================================
+     DASHBOARD COMPATIBILITY
+  ========================================= */
 
   getDashboard:
     dashboard.getDashboard,
@@ -1013,7 +983,10 @@ export const api = {
   getStandingsMini:
     dashboard.getStandingsMini,
 
-  /* Match */
+
+  /* =========================================
+     MATCH
+  ========================================= */
 
   getMatch:
     match.getMatch,
@@ -1045,12 +1018,18 @@ export const api = {
   getMatchPrediction:
     match.getPrediction,
 
-  /* Fixtures */
+
+  /* =========================================
+     FIXTURES
+  ========================================= */
 
   getFixtures:
     fixtures.get,
 
-  /* Results */
+
+  /* =========================================
+     RESULTS
+  ========================================= */
 
   getResults:
     results.get,
@@ -1058,37 +1037,58 @@ export const api = {
   getDirectResults:
     results.direct,
 
-  /* Live */
+
+  /* =========================================
+     LIVE
+  ========================================= */
 
   getLive:
     live.get,
 
-  /* Today */
+
+  /* =========================================
+     TODAY
+  ========================================= */
 
   getToday:
     today.get,
 
-  /* Top leagues */
+
+  /* =========================================
+     TOP LEAGUES
+  ========================================= */
 
   getTopLeaguesList:
     topLeagues.get,
 
-  /* Trending teams */
+
+  /* =========================================
+     TRENDING TEAMS
+  ========================================= */
 
   getTrendingTeamsList:
     trendingTeams.get,
 
-  /* Top scorers */
+
+  /* =========================================
+     TOP SCORERS
+  ========================================= */
 
   getTopScorers:
     topScorersMini.get,
 
-  /* Standings */
+
+  /* =========================================
+     STANDINGS
+  ========================================= */
 
   getStandings:
     standingsMini.get,
 
-  /* Team */
+
+  /* =========================================
+     TEAM
+  ========================================= */
 
   getTeam:
     team.getTeam,
@@ -1099,7 +1099,10 @@ export const api = {
   getTeamStatistics:
     team.getStatistics,
 
-  /* Player */
+
+  /* =========================================
+     PLAYER
+  ========================================= */
 
   getPlayer:
     player.getPlayer,
@@ -1110,7 +1113,10 @@ export const api = {
   getPlayerTrophies:
     player.getTrophies,
 
-  /* League */
+
+  /* =========================================
+     LEAGUE
+  ========================================= */
 
   getLeague:
     league.getLeague,
@@ -1136,7 +1142,10 @@ export const api = {
   getLeagueStatistics:
     league.getStatistics,
 
-  /* Search */
+
+  /* =========================================
+     SEARCH
+  ========================================= */
 
   search:
     search.query,
