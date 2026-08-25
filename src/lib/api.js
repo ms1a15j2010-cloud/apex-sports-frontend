@@ -912,8 +912,13 @@ const dashboard = {
       trendingTeams.get(),
 
   getLatestResults:
-    () =>
-      results.get(),
+  () =>
+    results.get(
+      "PL",
+      new Date().getFullYear(),
+      1,
+      10
+    ),
 
   getTopScorersMini:
     () =>
