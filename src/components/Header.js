@@ -10,8 +10,8 @@ export default function Header() {
     { name: "Live", href: "/live" },
     { name: "Fixtures", href: "/fixtures/epl" },
     { name: "Results", href: "/results/epl" },
-    { name: "Standings", href: "/standings/39" },
-    { name: "Top Scorers", href: "/top-scorers/39" },
+    { name: "Standings", href: "/standings/epl" },
+    { name: "Top Scorers", href: "/top-scorers/epl" },
   ];
 
   return (

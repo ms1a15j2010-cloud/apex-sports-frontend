@@ -244,7 +244,7 @@ export default async function LeaguePage({
         {/* TOP SCORERS */}
 
         <Link
-          href={`/topscorers/${id}`}
+          href={`/top-scorers/${id}`}
           className="rounded-xl border border-slate-800 bg-gray-900 p-[30px] text-center text-white no-underline transition duration-200 hover:-translate-y-0.5 hover:border-slate-700 hover:bg-slate-800"
         >
           <h2 className="m-0 text-xl font-bold">
