@@ -111,6 +111,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+      <meta name="p:domain_verify" content="8ba1cefbab1bcb1855dc60ef7ec80935"/>
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1963005458652987"
