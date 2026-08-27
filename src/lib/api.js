@@ -891,9 +891,35 @@ const dashboard = {
     () =>
       today.get(),
 
-  getFeaturedMatch:
-    () =>
-      today.get(),
+    getFeaturedMatch:
+    async () => {
+      const data =
+        await results.get(
+          "PL",
+          new Date().getFullYear(),
+          1,
+          1
+        );
+
+      if (
+        data?.success &&
+        Array.isArray(data.matches) &&
+        data.matches.length > 0
+      ) {
+        return {
+          success: true,
+          match: data.matches[0],
+          message: "Featured match loaded",
+        };
+      }
+
+      return {
+        success: false,
+        message:
+          data?.message ||
+          "No featured match available.",
+      };
+    },
 
   getLiveMatches:
     () =>
