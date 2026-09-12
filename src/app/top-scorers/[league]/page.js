@@ -318,15 +318,33 @@ export async function generateMetadata({
   if (!config) {
     return {
       title: "Top Scorers | Apex Sports",
-      description: "Football top scorers",
+      description:
+        "Latest football top scorer rankings, goals, assists and player statistics on Apex Sports.",
     };
   }
 
+  const title =
+    `${config.name} Top Scorers ${config.season} | Apex Sports`;
+
+  const description =
+    `View the latest ${config.name} top scorers for the ${config.season} season. Compare goals, assists, appearances and leading football players on Apex Sports.`;
+
+  const url =
+    `https://apex-sports-frontend.vercel.app/top-scorers/${slug}`;
+
   return {
-    title:
-      `${config.name} Top Scorers | Apex Sports`,
-    description:
-      `Top scorers for ${config.name} in the ${config.season} season.`,
+    title,
+    description,
+    alternates: {
+      canonical: url,
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: "Apex Sports",
+      type: "website",
+    },
   };
 }
 
