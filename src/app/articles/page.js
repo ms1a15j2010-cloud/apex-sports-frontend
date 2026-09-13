@@ -57,6 +57,33 @@ export default function ArticlesPage() {
             Read the guide →
           </Link>
         </article>
+	<article className="rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-6 transition hover:border-slate-700 sm:p-8">
+  <div className="mb-3 text-xs font-bold uppercase tracking-[0.12em] text-green-500">
+    Football Guide
+  </div>
+
+  <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
+    <Link
+      href="/articles/how-football-points-work"
+      className="text-inherit no-underline transition hover:text-green-400"
+    >
+      How Football Points Work: Wins, Draws & League Tables
+    </Link>
+  </h2>
+
+  <p className="mt-3 max-w-3xl leading-7 text-slate-400">
+    Learn how football league points are calculated, including three points
+    for a win, one point for a draw, zero for a loss, and how points affect
+    league positions.
+  </p>
+
+  <Link
+    href="/articles/how-football-points-work"
+    className="mt-5 inline-block font-bold text-green-500 no-underline transition hover:text-green-400"
+  >
+    Read the guide →
+  </Link>
+</article>
       </section>
     </main>
   );
