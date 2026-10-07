@@ -1,4 +1,3 @@
-
 export const dynamic = "force-dynamic";
 
 import Image from "next/image";
@@ -111,10 +110,10 @@ METADATA
 ===================================================== */
 
 export const metadata = {
-  title: "Top Assists | Apex Sports",
+  title: "Premier League Top Assists | Apex Sports",
 
   description:
-    "Top football assist providers from the Premier League.",
+    "View Premier League top assist providers with assists, goals, appearances and minutes played for the current season.",
 };
 
 /* =====================================================
@@ -130,8 +129,11 @@ export default async function TopAssistsPage() {
       ? data.players
       : [];
 
+  const season = data?.season || SEASON;
+
   return (
     <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+
       {/* =================================================
           HEADER
       ================================================= */}
@@ -142,17 +144,16 @@ export default async function TopAssistsPage() {
         </div>
 
         <h1 className="text-[clamp(28px,5vw,44px)] font-extrabold leading-tight text-white">
-          🎯 Top Assists
+          🎯 Premier League Top Assists
         </h1>
 
-        <p className="mt-2.5 text-[15px] text-slate-400">
-          Premier League assist leaders
-          for the{" "}
-          {data?.season || SEASON}/
-          {String(
-            (data?.season || SEASON) + 1
-          ).slice(-2)}{" "}
-          season.
+        <p className="mt-2.5 text-[15px] leading-7 text-slate-400">
+          Premier League assist leaders for the{" "}
+          {season}/
+          {String(season + 1).slice(-2)} season.
+          Compare the players creating goals for their
+          teams and view their assists, goals, appearances
+          and minutes played.
         </p>
 
         <div className="mt-3.5 inline-flex items-center rounded-full border border-green-500/25 bg-green-500/10 px-3 py-1.5 text-xs font-bold text-green-500">
@@ -161,11 +162,81 @@ export default async function TopAssistsPage() {
       </header>
 
       {/* =================================================
+          WHAT IS AN ASSIST
+      ================================================= */}
+
+      <section className="mb-8 rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-7">
+        <h2 className="text-2xl font-bold text-white">
+          What Is an Assist in Football?
+        </h2>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          An assist is credited to a player when their
+          contribution directly helps create a goal. Assist
+          statistics are commonly used to identify players
+          who provide chances and create scoring
+          opportunities for their teammates.
+        </p>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          The Top Assists ranking on Apex Sports lists the
+          leading Premier League assist providers and
+          displays additional statistics that help put their
+          creative contribution into context.
+        </p>
+      </section>
+
+      {/* =================================================
+          HOW TO READ
+      ================================================= */}
+
+      <section className="mb-8">
+        <div className="mb-4">
+          <h2 className="text-2xl font-bold text-white">
+            How to Read the Top Assists Ranking
+          </h2>
+
+          <p className="mt-2 text-sm leading-7 text-slate-400 sm:text-base">
+            Players are presented in ranking order based on
+            their recorded assists. The additional numbers
+            show how much they have contributed and how often
+            they have been involved in matches during the
+            season.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+          <InfoCard
+            title="Assists"
+            text="The main statistic used on this page to identify the leading assist providers."
+          />
+
+          <InfoCard
+            title="Goals"
+            text="The number of goals scored by the player during the season."
+          />
+
+          <InfoCard
+            title="Matches"
+            text="The number of appearances recorded for the player."
+          />
+
+          <InfoCard
+            title="Minutes"
+            text="The total playing minutes recorded for the player."
+          />
+
+        </div>
+      </section>
+
+      {/* =================================================
           EMPTY STATE
       ================================================= */}
 
       {players.length === 0 ? (
         <div className="rounded-[20px] border border-gray-800 bg-gray-900 px-[30px] py-[50px] text-center">
+
           <div className="mb-[15px] text-5xl">
             🎯
           </div>
@@ -180,189 +251,326 @@ export default async function TopAssistsPage() {
                 data?.season || SEASON
               } season.`}
           </p>
+
         </div>
       ) : (
+
         /* =================================================
            PLAYER LIST
         ================================================= */
 
-        <div className="grid gap-4">
-          {players.map(
-            (player, index) => {
-              const playerData =
-                player?.player || {};
+        <section>
 
-              const statistics =
-                Array.isArray(
-                  player?.statistics
-                ) &&
-                player.statistics.length > 0
-                  ? player.statistics[0]
-                  : {};
+          <div className="mb-5">
+            <h2 className="text-2xl font-bold text-white">
+              Premier League Assist Leaders
+            </h2>
 
-              const team =
-                statistics?.team || {};
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Explore the leading assist providers and
+              select a player to view their individual
+              football profile.
+            </p>
+          </div>
 
-              const goals =
-                statistics?.goals || {};
+          <div className="grid gap-4">
+            {players.map(
+              (player, index) => {
 
-              const games =
-                statistics?.games || {};
+                const playerData =
+                  player?.player || {};
 
-              const playerId =
-                playerData?.id ??
-                `player-${index}`;
+                const statistics =
+                  Array.isArray(
+                    player?.statistics
+                  ) &&
+                  player.statistics.length > 0
+                    ? player.statistics[0]
+                    : {};
 
-              const playerName =
-                playerData?.name ||
-                "Unknown Player";
+                const team =
+                  statistics?.team || {};
 
-              const teamName =
-                team?.name ||
-                "Unknown Team";
+                const goals =
+                  statistics?.goals || {};
 
-              const assists =
-                Number(
-                  goals?.assists
-                ) || 0;
+                const games =
+                  statistics?.games || {};
 
-              const totalGoals =
-                Number(
-                  goals?.total
-                ) || 0;
+                const playerId =
+                  playerData?.id ??
+                  `player-${index}`;
 
-              const appearances =
-                Number(
-                  games?.appearences ??
-                    games?.appearances
-                ) || 0;
+                const playerName =
+                  playerData?.name ||
+                  "Unknown Player";
 
-              const minutes =
-                Number(
-                  games?.minutes
-                ) || 0;
+                const teamName =
+                  team?.name ||
+                  "Unknown Team";
 
-              const rankStyles =
-                index === 0
-                  ? "bg-yellow-400/15 text-yellow-400"
-                  : index === 1
-                  ? "bg-slate-400/15 text-slate-300"
-                  : index === 2
-                  ? "bg-orange-500/15 text-orange-400"
-                  : "bg-slate-800 text-green-500";
+                const assists =
+                  Number(
+                    goals?.assists
+                  ) || 0;
 
-              return (
-                <Link
-                  key={`${playerId}-${index}`}
-                  href={`/player/${playerId}`}
-                  className="block text-inherit no-underline"
-                >
-                  <article className="grid items-center gap-4 rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-4 transition hover:border-slate-700 hover:bg-slate-900 sm:p-5 md:grid-cols-[60px_minmax(260px,1.5fr)_minmax(180px,1fr)_repeat(4,90px)] md:gap-[18px]">
-                    {/* =================================
-                        RANK
-                    ================================= */}
+                const totalGoals =
+                  Number(
+                    goals?.total
+                  ) || 0;
 
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-[14px] text-base font-extrabold ${rankStyles}`}
-                    >
-                      #{index + 1}
-                    </div>
+                const appearances =
+                  Number(
+                    games?.appearences ??
+                      games?.appearances
+                  ) || 0;
 
-                    {/* =================================
-                        PLAYER
-                    ================================= */}
+                const minutes =
+                  Number(
+                    games?.minutes
+                  ) || 0;
 
-                    <div className="flex min-w-0 items-center gap-4">
-                      <PlayerAvatar
-                        src={
-                          playerData?.photo
-                        }
-                        name={
-                          playerName
-                        }
-                      />
+                const rankStyles =
+                  index === 0
+                    ? "bg-yellow-400/15 text-yellow-400"
+                    : index === 1
+                    ? "bg-slate-400/15 text-slate-300"
+                    : index === 2
+                    ? "bg-orange-500/15 text-orange-400"
+                    : "bg-slate-800 text-green-500";
 
-                      <div className="min-w-0">
-                        <h2 className="overflow-hidden text-ellipsis whitespace-nowrap text-[18px] font-bold text-white">
-                          {playerName}
-                        </h2>
+                return (
+                  <Link
+                    key={`${playerId}-${index}`}
+                    href={`/player/${playerId}`}
+                    className="block text-inherit no-underline"
+                  >
 
-                        <p className="mt-1.5 text-xs text-slate-400">
-                          {playerData?.nationality ||
-                            "Football Player"}
-                        </p>
+                    <article className="grid items-center gap-4 rounded-[18px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-4 transition hover:border-slate-700 hover:bg-slate-900 sm:p-5 md:grid-cols-[60px_minmax(260px,1.5fr)_minmax(180px,1fr)_repeat(4,90px)] md:gap-[18px]">
+
+                      {/* =================================
+                          RANK
+                      ================================= */}
+
+                      <div
+                        className={`flex h-12 w-12 items-center justify-center rounded-[14px] text-base font-extrabold ${rankStyles}`}
+                      >
+                        #{index + 1}
                       </div>
-                    </div>
 
-                    {/* =================================
-                        TEAM
-                    ================================= */}
+                      {/* =================================
+                          PLAYER
+                      ================================= */}
 
-                    <div className="flex min-w-0 items-center justify-center gap-2.5">
-                      <TeamAvatar
-                        src={
-                          team?.logo
-                        }
-                        name={
-                          teamName
-                        }
+                      <div className="flex min-w-0 items-center gap-4">
+
+                        <PlayerAvatar
+                          src={
+                            playerData?.photo
+                          }
+                          name={
+                            playerName
+                          }
+                        />
+
+                        <div className="min-w-0">
+
+                          <h3 className="overflow-hidden text-ellipsis whitespace-nowrap text-[18px] font-bold text-white">
+                            {playerName}
+                          </h3>
+
+                          <p className="mt-1.5 text-xs text-slate-400">
+                            {playerData?.nationality ||
+                              "Football Player"}
+                          </p>
+
+                        </div>
+                      </div>
+
+                      {/* =================================
+                          TEAM
+                      ================================= */}
+
+                      <div className="flex min-w-0 items-center justify-center gap-2.5">
+
+                        <TeamAvatar
+                          src={
+                            team?.logo
+                          }
+                          name={
+                            teamName
+                          }
+                        />
+
+                        <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-200">
+                          {teamName}
+                        </strong>
+
+                      </div>
+
+                      {/* =================================
+                          ASSISTS
+                      ================================= */}
+
+                      <StatBox
+                        value={assists}
+                        label="Assists"
+                        primary
                       />
 
-                      <strong className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-bold text-slate-200">
-                        {teamName}
-                      </strong>
-                    </div>
+                      {/* =================================
+                          GOALS
+                      ================================= */}
 
-                    {/* =================================
-                        ASSISTS
-                    ================================= */}
+                      <StatBox
+                        value={
+                          totalGoals
+                        }
+                        label="Goals"
+                      />
 
-                    <StatBox
-                      value={assists}
-                      label="Assists"
-                      primary
-                    />
+                      {/* =================================
+                          APPEARANCES
+                      ================================= */}
 
-                    {/* =================================
-                        GOALS
-                    ================================= */}
+                      <StatBox
+                        value={
+                          appearances
+                        }
+                        label="Matches"
+                      />
 
-                    <StatBox
-                      value={
-                        totalGoals
-                      }
-                      label="Goals"
-                    />
+                      {/* =================================
+                          MINUTES
+                      ================================= */}
 
-                    {/* =================================
-                        APPEARANCES
-                    ================================= */}
+                      <StatBox
+                        value={
+                          minutes || "-"
+                        }
+                        label="Minutes"
+                      />
 
-                    <StatBox
-                      value={
-                        appearances
-                      }
-                      label="Matches"
-                    />
+                    </article>
 
-                    {/* =================================
-                        MINUTES
-                    ================================= */}
+                  </Link>
+                );
+              }
+            )}
+          </div>
 
-                    <StatBox
-                      value={
-                        minutes || "-"
-                      }
-                      label="Minutes"
-                    />
-                  </article>
-                </Link>
-              );
-            }
-          )}
-        </div>
+        </section>
       )}
+
+      {/* =================================================
+          WHY ASSISTS MATTER
+      ================================================= */}
+
+      <section className="mt-10 rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-7">
+
+        <h2 className="text-2xl font-bold text-white">
+          Why Assists Matter in Football
+        </h2>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          Goals are one of the most visible measures of
+          attacking performance, but creating goals is also
+          an important part of football. Players who provide
+          assists can influence matches through passing,
+          chance creation and attacking movement.
+        </p>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          Looking at assists alongside goals, appearances
+          and minutes can provide a broader view of a
+          player's attacking contribution. A player with a
+          high assist total may play an important creative
+          role even when they are not among the league's
+          leading goal scorers.
+        </p>
+
+      </section>
+
+      {/* =================================================
+          RELATED FOOTBALL PAGES
+      ================================================= */}
+
+      <section className="mt-8 rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-7">
+
+        <h2 className="text-2xl font-bold text-white">
+          Explore More Premier League Information
+        </h2>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400 sm:text-base">
+          Use the related pages below to follow other
+          important parts of the Premier League season.
+        </p>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+
+          <Link
+            href="/top-scorers/epl"
+            className="rounded-xl border border-gray-800 bg-gray-950 p-4 text-sm font-bold text-white transition hover:border-green-500/40 hover:bg-gray-900"
+          >
+            ⚽ Top Scorers
+          </Link>
+
+          <Link
+            href="/standings/epl"
+            className="rounded-xl border border-gray-800 bg-gray-950 p-4 text-sm font-bold text-white transition hover:border-green-500/40 hover:bg-gray-900"
+          >
+            📊 Standings
+          </Link>
+
+          <Link
+            href="/fixtures/epl"
+            className="rounded-xl border border-gray-800 bg-gray-950 p-4 text-sm font-bold text-white transition hover:border-green-500/40 hover:bg-gray-900"
+          >
+            📅 Fixtures
+          </Link>
+
+          <Link
+            href="/results/epl"
+            className="rounded-xl border border-gray-800 bg-gray-950 p-4 text-sm font-bold text-white transition hover:border-green-500/40 hover:bg-gray-900"
+          >
+            ✅ Results
+          </Link>
+
+          <Link
+            href="/articles/how-football-points-work"
+            className="rounded-xl border border-gray-800 bg-gray-950 p-4 text-sm font-bold text-white transition hover:border-green-500/40 hover:bg-gray-900"
+          >
+            📚 Football Points Guide
+          </Link>
+
+        </div>
+
+      </section>
+
     </main>
+  );
+}
+
+/* =====================================================
+INFO CARD
+===================================================== */
+
+function InfoCard({
+  title,
+  text,
+}) {
+  return (
+    <div className="rounded-[16px] border border-gray-800 bg-gray-900 p-5">
+
+      <h3 className="text-base font-bold text-white">
+        {title}
+      </h3>
+
+      <p className="mt-2 text-sm leading-6 text-slate-400">
+        {text}
+      </p>
+
+    </div>
   );
 }
 
@@ -389,6 +597,7 @@ function PlayerAvatar({
 
   return (
     <div className="flex h-16 w-16 min-w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-600 bg-[linear-gradient(145deg,#1e293b,#334155)]">
+
       {src ? (
         <Image
           src={src}
@@ -403,6 +612,7 @@ function PlayerAvatar({
           {initials || "P"}
         </span>
       )}
+
     </div>
   );
 }
@@ -417,6 +627,7 @@ function TeamAvatar({
 }) {
   return (
     <div className="flex h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-[10px] bg-gray-900">
+
       {src ? (
         <Image
           src={src}
@@ -431,6 +642,7 @@ function TeamAvatar({
           FC
         </span>
       )}
+
     </div>
   );
 }
@@ -446,6 +658,7 @@ function StatBox({
 }) {
   return (
     <div className="text-center">
+
       <div
         className={`mb-1.5 font-extrabold leading-none ${
           primary
@@ -459,6 +672,7 @@ function StatBox({
       <small className="text-[11px] text-slate-400">
         {label}
       </small>
+
     </div>
   );
 }

@@ -10,25 +10,25 @@ const LEAGUE_CONFIG = {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2026,
+    season: 2025,
   },
   premierleague: {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2026,
+    season: 2025,
   },
   "premier-league": {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2026,
+    season: 2025,
   },
   pl: {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2026,
+    season: 2025,
   },
 };
 
@@ -261,10 +261,10 @@ export default async function FixturesPage({ params }) {
             The requested league is not supported.
           </p>
           <Link
-            href="/leagues"
+            href="/"
             className="inline-block mt-[20px] text-emerald-500 font-bold no-underline hover:underline"
           >
-            ← Back to Leagues
+            ← Back to Home
           </Link>
         </section>
       </main>

@@ -1,4 +1,3 @@
-
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,21 +10,21 @@ const LEAGUE_CONFIG = {
     name: "Premier League",
     country: "England",
     competition: "PL",
-    season: 2026,
+    season: 2025,
   },
 
   premierleague: {
     name: "Premier League",
     country: "England",
     competition: "PL",
-    season: 2026,
+    season: 2025,
   },
 
   "premier-league": {
     name: "Premier League",
     country: "England",
     competition: "PL",
-    season: 2026,
+    season: 2025,
   },
 
   laliga: {
@@ -109,7 +108,7 @@ function normalizeLeague(value) {
         name: "Premier League",
         country: "England",
         competition: "PL",
-        season: 2026,
+        season: 2025,
       },
     };
   }
@@ -276,7 +275,7 @@ export async function generateMetadata({
     title:
       `${config.name} Standings | Apex Sports`,
     description:
-      `${config.name} football standings`,
+      `${config.name} football standings, points, wins, draws, losses and goal difference.`,
   };
 }
 
@@ -322,10 +321,10 @@ export default async function StandingsPage({
           </p>
 
           <Link
-            href="/leagues"
+            href="/"
             className="mt-6 inline-block font-bold text-green-500 no-underline transition hover:text-green-400"
           >
-            ← Back to Leagues
+            ← Back to Home
           </Link>
         </section>
       </main>
@@ -395,6 +394,7 @@ export default async function StandingsPage({
 
   return (
     <main className="mx-auto max-w-[1200px] px-5 py-10 text-white sm:px-6 lg:px-8">
+
       {/* =============================================
           HEADER
       ============================================= */}
@@ -449,6 +449,125 @@ export default async function StandingsPage({
             />
           </div>
         </div>
+      </section>
+
+      {/* =============================================
+          STANDINGS GUIDE
+      ============================================= */}
+
+      <section className="mb-[25px] rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-[25px]">
+        <h2 className="m-0 text-xl font-bold text-white sm:text-[22px]">
+          How to Read the {config.name} Standings
+        </h2>
+
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-400 sm:text-[15px]">
+          The league table shows how each team is performing
+          during the {season} season. Teams are ranked by
+          points earned from their completed league matches.
+          The table also shows wins, draws, losses, goals
+          scored, goals conceded and goal difference.
+        </p>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <h3 className="text-sm font-extrabold text-white">
+              P — Played
+            </h3>
+
+            <p className="mt-1.5 text-xs leading-6 text-slate-400">
+              The number of league matches a team has
+              played.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <h3 className="text-sm font-extrabold text-white">
+              W / D / L
+            </h3>
+
+            <p className="mt-1.5 text-xs leading-6 text-slate-400">
+              Wins, draws and losses recorded by the team.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <h3 className="text-sm font-extrabold text-white">
+              GF / GA
+            </h3>
+
+            <p className="mt-1.5 text-xs leading-6 text-slate-400">
+              Goals scored and goals conceded in league
+              matches.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <h3 className="text-sm font-extrabold text-white">
+              GD / Pts
+            </h3>
+
+            <p className="mt-1.5 text-xs leading-6 text-slate-400">
+              Goal difference and the team's total league
+              points.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =============================================
+          POINTS SYSTEM
+      ============================================= */}
+
+      <section className="mb-[25px] rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-[25px]">
+        <h2 className="m-0 text-xl font-bold text-white sm:text-[22px]">
+          How Football League Points Work
+        </h2>
+
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-400 sm:text-[15px]">
+          In the standard football league scoring system,
+          a team receives three points for a win, one point
+          for a draw and no points for a loss. As matches
+          are completed, these points determine the team's
+          position in the standings.
+        </p>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <div className="text-lg font-extrabold text-green-500">
+              3 Points
+            </div>
+
+            <p className="mt-1 text-sm text-slate-400">
+              Awarded for a win.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <div className="text-lg font-extrabold text-yellow-400">
+              1 Point
+            </div>
+
+            <p className="mt-1 text-sm text-slate-400">
+              Awarded for a draw.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-slate-800 bg-slate-950 p-4">
+            <div className="text-lg font-extrabold text-red-500">
+              0 Points
+            </div>
+
+            <p className="mt-1 text-sm text-slate-400">
+              Awarded for a loss.
+            </p>
+          </div>
+        </div>
+
+        <p className="mt-5 max-w-4xl text-sm leading-7 text-slate-400 sm:text-[15px]">
+          Goal difference is calculated by subtracting goals
+          conceded from goals scored. It can become important
+          when teams have the same number of points.
+        </p>
       </section>
 
       {/* =============================================
@@ -561,10 +680,10 @@ export default async function StandingsPage({
                       className="border-b border-slate-800 transition hover:bg-slate-800/40"
                     >
                       <td
-  className={`px-3 py-3.5 text-center font-extrabold ${getRankClass(
-    rank
-  )}`}
->
+                        className={`px-3 py-3.5 text-center font-extrabold ${getRankClass(
+                          rank
+                        )}`}
+                      >
                         {rank}
                       </td>
 
@@ -621,14 +740,14 @@ export default async function StandingsPage({
                       <TableNumber value={goalsAgainst} />
 
                       <td
-                     className={`px-3 py-3.5 text-center font-bold ${
-                       goalDifference > 0
-                         ? "text-green-500"
-                         : goalDifference < 0
-                         ? "text-red-500"
-                         : "text-slate-400"
-                     }`}
-                   >
+                        className={`px-3 py-3.5 text-center font-bold ${
+                          goalDifference > 0
+                            ? "text-green-500"
+                            : goalDifference < 0
+                            ? "text-red-500"
+                            : "text-slate-400"
+                        }`}
+                      >
                         {goalDifference >
                         0
                           ? `+${goalDifference}`
@@ -644,6 +763,61 @@ export default async function StandingsPage({
               )}
             </tbody>
           </table>
+        </div>
+      </section>
+
+      {/* =============================================
+          STANDINGS EXPLANATION
+      ============================================= */}
+
+      <section className="mt-[25px] rounded-[20px] border border-gray-800 bg-gray-900 p-6 sm:p-[25px]">
+        <h2 className="m-0 text-xl font-bold text-white sm:text-[22px]">
+          Understanding Team Positions
+        </h2>
+
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-400 sm:text-[15px]">
+          A team's position in the table reflects its
+          results over the course of the season. Points are
+          the main measure of league performance, while
+          goal difference provides additional context when
+          teams have similar points totals.
+        </p>
+
+        <p className="mt-3 max-w-4xl text-sm leading-7 text-slate-400 sm:text-[15px]">
+          The standings can change after every completed
+          league match. A win can move a team higher in the
+          table, while a defeat may cause it to drop behind
+          another club.
+        </p>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href={`/fixtures/${slug}`}
+            className="rounded-lg border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm font-bold text-white transition hover:border-green-500 hover:text-green-500"
+          >
+            View Fixtures
+          </Link>
+
+          <Link
+            href={`/results/${slug}`}
+            className="rounded-lg border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm font-bold text-white transition hover:border-green-500 hover:text-green-500"
+          >
+            View Results
+          </Link>
+
+          <Link
+            href="/articles/how-football-points-work"
+            className="rounded-lg border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm font-bold text-white transition hover:border-green-500 hover:text-green-500"
+          >
+            How Football Points Work
+          </Link>
+
+          <Link
+            href="/top-scorers/epl"
+            className="rounded-lg border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm font-bold text-white transition hover:border-green-500 hover:text-green-500"
+          >
+            Top Scorers
+          </Link>
         </div>
       </section>
 
@@ -738,3 +912,4 @@ function getRankClass(rank) {
 
   return "text-slate-400";
 }
+

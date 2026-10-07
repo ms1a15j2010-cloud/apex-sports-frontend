@@ -168,10 +168,10 @@ export default async function TeamPage({ params }) {
           </p>
 
           <Link
-            href="/leagues"
+            href="/"
             className="font-extrabold text-green-500 no-underline transition hover:text-green-400"
           >
-            ← Back to Leagues
+            ← Back to Home
           </Link>
         </div>
       </main>

@@ -1,18 +1,8 @@
-
-
 import ResultsClient from "@/components/ResultsClient";
-
-/* =====================================================
-API
-===================================================== */
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "http://127.0.0.1:5000";
-
-/* =====================================================
-LEAGUE CONFIG
-===================================================== */
 
 const LEAGUE_CONFIG = {
   epl: {
@@ -40,38 +30,11 @@ const LEAGUE_CONFIG = {
   },
 };
 
-/* =====================================================
-AUTOMATIC CURRENT SEASON
-
-Football seasons run approximately:
-
-August → May
-
-Examples:
-
-August 2026 → 2026/27
-June 2026 → 2025/26
-===================================================== */
-
 function getCurrentSeason() {
-  const now = new Date();
-
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1;
-
-  return month >= 7
-    ? year
-    : year - 1;
+  return 2025;
 }
 
-/* =====================================================
-FETCH RESULTS FOR ONE SEASON
-===================================================== */
-
-async function fetchSeasonResults(
-  slug,
-  season
-) {
+async function fetchSeasonResults(slug, season) {
   const url =
     `${API}/api/league/${slug}/results` +
     `?season=${season}` +
@@ -83,20 +46,17 @@ async function fetchSeasonResults(
     url
   );
 
-  const controller =
-    new AbortController();
+  const controller = new AbortController();
 
-  const timeout =
-    setTimeout(() => {
-      controller.abort();
-    }, 60000);
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, 60000);
 
   try {
-    const response =
-      await fetch(url, {
-        cache: "no-store",
-        signal: controller.signal,
-      });
+    const response = await fetch(url, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
 
     console.log(
       "📊 Results API status:",
@@ -109,15 +69,11 @@ async function fetchSeasonResults(
       );
     }
 
-    const data =
-      await response.json();
+    const data = await response.json();
 
-    const results =
-      Array.isArray(
-        data?.results
-      )
-        ? data.results
-        : [];
+    const results = Array.isArray(data?.results)
+      ? data.results
+      : [];
 
     console.log(
       "📈 Season results:",
@@ -156,25 +112,13 @@ async function fetchSeasonResults(
   }
 }
 
-/* =====================================================
-LOAD RESULTS WITH AUTOMATIC FALLBACK
-
-1. Try current season
-2. If current season has completed matches → use them
-3. If current season has NO completed matches →
-   automatically load previous season
-===================================================== */
-
-async function getLeagueResults(
-  league
-) {
+async function getLeagueResults(league) {
   const slug =
     String(league || "")
       .trim()
       .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return {
@@ -186,38 +130,26 @@ async function getLeagueResults(
       matches: [],
       count: 0,
       total: 0,
-      message:
-        "Unsupported league",
+      message: "Unsupported league",
     };
   }
 
-  const currentSeason =
-    getCurrentSeason();
+  const currentSeason = getCurrentSeason();
 
   console.log(
     `📅 Current Premier League season: ${currentSeason}`
   );
 
-  /* ===================================================
-     TRY CURRENT SEASON
-  =================================================== */
+  const currentData = await fetchSeasonResults(
+    slug,
+    currentSeason
+  );
 
-  const currentData =
-    await fetchSeasonResults(
-      slug,
-      currentSeason
-    );
-
-  const currentResults =
-    Array.isArray(
-      currentData?.results
-    )
-      ? currentData.results
-      : [];
-
-  /* ===================================================
-     CURRENT SEASON HAS RESULTS
-  =================================================== */
+  const currentResults = Array.isArray(
+    currentData?.results
+  )
+    ? currentData.results
+    : [];
 
   if (
     currentData?.success === true &&
@@ -231,22 +163,13 @@ async function getLeagueResults(
       ...currentData,
       league: slug,
       season: currentSeason,
-      requestedSeason:
-        currentSeason,
+      requestedSeason: currentSeason,
       fallbackUsed: false,
-      matches:
-        currentResults,
+      matches: currentResults,
     };
   }
 
-  /* ===================================================
-     AUTOMATIC FALLBACK
-
-     Current season has no completed matches.
-  =================================================== */
-
-  const previousSeason =
-    currentSeason - 1;
+  const previousSeason = currentSeason - 1;
 
   console.log(
     `ℹ️ No completed matches in ${currentSeason}.`
@@ -256,22 +179,16 @@ async function getLeagueResults(
     `🔄 Automatically falling back to season ${previousSeason}`
   );
 
-  const previousData =
-    await fetchSeasonResults(
-      slug,
-      previousSeason
-    );
+  const previousData = await fetchSeasonResults(
+    slug,
+    previousSeason
+  );
 
-  const previousResults =
-    Array.isArray(
-      previousData?.results
-    )
-      ? previousData.results
-      : [];
-
-  /* ===================================================
-     PREVIOUS SEASON HAS RESULTS
-  =================================================== */
+  const previousResults = Array.isArray(
+    previousData?.results
+  )
+    ? previousData.results
+    : [];
 
   if (
     previousData?.success === true &&
@@ -284,13 +201,10 @@ async function getLeagueResults(
     return {
       ...previousData,
       league: slug,
-      season:
-        previousSeason,
-      requestedSeason:
-        currentSeason,
+      season: previousSeason,
+      requestedSeason: currentSeason,
       fallbackUsed: true,
-      matches:
-        previousResults,
+      matches: previousResults,
       message:
         `No completed matches in ${currentSeason}/${String(
           currentSeason + 1
@@ -298,16 +212,11 @@ async function getLeagueResults(
     };
   }
 
-  /* ===================================================
-     NOTHING FOUND
-  =================================================== */
-
   return {
     success: false,
     league: slug,
     season: currentSeason,
-    requestedSeason:
-      currentSeason,
+    requestedSeason: currentSeason,
     fallbackUsed: false,
     matches: [],
     count: 0,
@@ -317,30 +226,20 @@ async function getLeagueResults(
   };
 }
 
-/* =====================================================
-METADATA
-===================================================== */
-
-export async function generateMetadata({
-  params,
-}) {
-  const { league } =
-    await params;
+export async function generateMetadata({ params }) {
+  const { league } = await params;
 
   const slug =
     String(league || "")
       .trim()
       .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return {
-      title:
-        "Results | Apex Sports",
-      description:
-        "Latest football results",
+      title: "Results | Apex Sports",
+      description: "Latest football results",
     };
   }
 
@@ -352,27 +251,17 @@ export async function generateMetadata({
   };
 }
 
-/* =====================================================
-PAGE
-===================================================== */
-
 export default async function ResultsLeaguePage({
   params,
 }) {
-  const { league } =
-    await params;
+  const { league } = await params;
 
   const slug =
     String(league || "")
       .trim()
       .toLowerCase();
 
-  const config =
-    LEAGUE_CONFIG[slug];
-
-  /* ===================================================
-     INVALID LEAGUE
-  =================================================== */
+  const config = LEAGUE_CONFIG[slug];
 
   if (!config) {
     return (
@@ -390,37 +279,19 @@ export default async function ResultsLeaguePage({
     );
   }
 
-  /* ===================================================
-     LOAD RESULTS
-  =================================================== */
+  const data = await getLeagueResults(slug);
 
-  const data =
-    await getLeagueResults(
-      slug
-    );
-
-  const matches =
-    Array.isArray(
-      data?.matches
-    )
-      ? data.matches
-      : [];
+  const matches = Array.isArray(data?.matches)
+    ? data.matches
+    : [];
 
   const season =
     data?.season ||
     getCurrentSeason();
 
-  /* ===================================================
-     PAGE
-  =================================================== */
-
   return (
     <main className="min-h-screen bg-gray-950 px-5 pb-16 pt-[30px] text-white sm:px-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
-
-        {/* =================================================
-            PAGE HEADER
-        ================================================= */}
 
         <header className="mb-[30px]">
 
@@ -442,10 +313,6 @@ export default async function ResultsLeaguePage({
             {String(season + 1).slice(-2)}
           </div>
 
-          {/* =================================================
-              FALLBACK NOTICE
-          ================================================= */}
-
           {data?.fallbackUsed && (
             <div className="mt-3 rounded-lg border border-yellow-900/60 bg-yellow-950/30 px-3 py-2 text-sm text-yellow-400">
               No completed matches are available yet
@@ -455,10 +322,6 @@ export default async function ResultsLeaguePage({
           )}
 
         </header>
-
-        {/* =================================================
-            EMPTY / ERROR STATE
-        ================================================= */}
 
         {!data?.success &&
         matches.length === 0 ? (
@@ -480,13 +343,9 @@ export default async function ResultsLeaguePage({
           </section>
         ) : (
           <ResultsClient
-            initialMatches={
-              matches
-            }
+            initialMatches={matches}
             league={slug}
-            leagueName={
-              config.name
-            }
+            leagueName={config.name}
           />
         )}
 
@@ -494,4 +353,3 @@ export default async function ResultsLeaguePage({
     </main>
   );
 }
-

@@ -11,7 +11,7 @@ const LEAGUE_CONFIG = {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2026,
+    season: 2025,
   },
 
   laliga: {
@@ -384,10 +384,10 @@ export default async function TopScorersPage({
           </p>
 
           <Link
-            href="/leagues"
+            href="/"
             className="mt-5 inline-block font-bold text-green-500 no-underline transition hover:text-green-400"
           >
-            ← Back to Leagues
+            ← Back to Home
           </Link>
         </section>
       </main>

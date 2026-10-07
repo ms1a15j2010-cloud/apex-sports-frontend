@@ -37,6 +37,32 @@ export default function FootballPointsArticle() {
           </p>
         </header>
 
+        {/* =================================================
+            QUICK SUMMARY
+        ================================================== */}
+        <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-7">
+          <h2 className="text-2xl font-extrabold text-white">
+            Quick Summary
+          </h2>
+
+          <p className="mt-3 leading-7 text-slate-300">
+            In most football league competitions, teams earn three points for
+            a win, one point for a draw and zero points for a loss. The points
+            collected throughout the season are used to determine league
+            positions, with additional tiebreaking rules applied when teams
+            finish level on points.
+          </p>
+
+          <ul className="mt-5 grid gap-3 text-slate-300 sm:grid-cols-2">
+            <li>• Win = 3 points</li>
+            <li>• Draw = 1 point</li>
+            <li>• Loss = 0 points</li>
+            <li>• Goal difference can separate teams level on points</li>
+            <li>• Points per game helps compare performance</li>
+            <li>• Competition rules determine exact tiebreakers</li>
+          </ul>
+        </section>
+
         <div className="space-y-8 text-[16px] leading-8 text-slate-300">
           <section>
             <h2 className="mb-3 text-2xl font-extrabold text-white">
@@ -501,3 +527,4 @@ export default function FootballPointsArticle() {
     </main>
   );
 }
+
