@@ -40,7 +40,7 @@ export default function HomePage() {
           case "upcoming":
             data = await api.getFixtures(
               "epl",
-              2026,
+              2025,
               1,
               10
             );
@@ -138,9 +138,11 @@ export default function HomePage() {
 
   return (
     <main className="w-full">
+
       {/* =====================================================
           HERO
       ====================================================== */}
+
       <HomeHero
         onSearch={handleSearch}
       />
@@ -148,6 +150,7 @@ export default function HomePage() {
       {/* =====================================================
           MATCH TABS
       ====================================================== */}
+
       <HomeTabs
         activeTab={tab}
         setActiveTab={setTab}
@@ -156,6 +159,7 @@ export default function HomePage() {
       {/* =====================================================
           MATCH SECTION HEADER
       ====================================================== */}
+
       <SectionHeader
         title={
           tab === "live"
@@ -172,6 +176,7 @@ export default function HomePage() {
       {/* =====================================================
           LOADING STATE
       ====================================================== */}
+
       {loading && (
         <div className="py-[60px] text-center text-[20px] text-slate-300">
           Loading matches...
@@ -181,6 +186,7 @@ export default function HomePage() {
       {/* =====================================================
           ERROR STATE
       ====================================================== */}
+
       {!loading && error && (
         <div className="py-[40px] text-center text-[18px] text-red-500">
           {error}
@@ -190,6 +196,7 @@ export default function HomePage() {
       {/* =====================================================
           EMPTY MATCH STATE
       ====================================================== */}
+
       {!loading &&
         !error &&
         filtered.length === 0 && (
@@ -207,6 +214,7 @@ export default function HomePage() {
       {/* =====================================================
           MATCH LIST
       ====================================================== */}
+
       {!loading &&
         !error &&
         filtered.length > 0 && (
@@ -214,41 +222,41 @@ export default function HomePage() {
         )}
 
       {/* =====================================================
-          SEO / INFORMATION SECTION
-          Always rendered so the homepage contains useful
-          content even when the football API has no matches.
+          FOOTBALL INFORMATION
       ====================================================== */}
+
       <section className="mx-auto mt-12 max-w-6xl rounded-2xl border border-slate-800 bg-slate-900/60 p-6 md:p-8">
+
         <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">
           Live Football Scores, Fixtures & Results
         </h2>
 
         <p className="mb-4 leading-7 text-slate-300">
-          Apex Sports provides football fans with
-          live scores, upcoming fixtures, recent
-          results, league standings, match statistics,
-          team information, player information and
-          football updates from competitions around
-          the world.
+          Apex Sports helps football fans follow matches,
+          fixtures, results, league standings, player
+          statistics and competition information in one place.
+          The homepage brings together today&apos;s matches,
+          live games, completed results and upcoming fixtures.
         </p>
 
         <p className="mb-6 leading-7 text-slate-300">
-          Follow today's football matches, check live
-          scores and explore competitions including the
-          Premier League and other major football
-          leagues. Apex Sports makes it easy to follow
-          matches, teams and football competitions in
-          one place.
+          You can explore major football competitions such as
+          the Premier League, check team positions in league
+          tables, review completed matches and learn how common
+          football statistics are calculated.
         </p>
 
         {/* =================================================
             FEATURE CARDS
         ================================================== */}
+
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
           {/* Live Scores */}
+
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-5">
             <div className="mb-3 text-2xl">
-              🔴
+              Live
             </div>
 
             <h3 className="mb-2 font-semibold text-white">
@@ -256,16 +264,16 @@ export default function HomePage() {
             </h3>
 
             <p className="text-sm leading-6 text-slate-400">
-              Follow football matches and live score
-              updates from competitions around the
-              world.
+              Follow live football matches and score updates
+              from available competitions.
             </p>
           </div>
 
           {/* Fixtures */}
+
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-5">
             <div className="mb-3 text-2xl">
-              📅
+              Fixtures
             </div>
 
             <h3 className="mb-2 font-semibold text-white">
@@ -273,15 +281,16 @@ export default function HomePage() {
             </h3>
 
             <p className="text-sm leading-6 text-slate-400">
-              Find upcoming football fixtures and match
-              schedules for your favourite competitions.
+              Find scheduled football matches and upcoming
+              fixture information.
             </p>
           </div>
 
           {/* Results */}
+
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-5">
             <div className="mb-3 text-2xl">
-              ✅
+              Results
             </div>
 
             <h3 className="mb-2 font-semibold text-white">
@@ -289,15 +298,16 @@ export default function HomePage() {
             </h3>
 
             <p className="text-sm leading-6 text-slate-400">
-              Check recent football results and completed
-              matches from leagues and competitions.
+              Check completed football matches and their
+              recorded scores.
             </p>
           </div>
 
           {/* Standings */}
+
           <div className="rounded-xl border border-slate-800 bg-slate-950 p-5">
             <div className="mb-3 text-2xl">
-              📊
+              Table
             </div>
 
             <h3 className="mb-2 font-semibold text-white">
@@ -305,30 +315,215 @@ export default function HomePage() {
             </h3>
 
             <p className="text-sm leading-6 text-slate-400">
-              Explore league tables, rankings and
-              competition information.
+              Explore league tables, team positions, points and
+              goal statistics.
             </p>
           </div>
+
         </div>
 
         {/* =================================================
             MORE INFORMATION
         ================================================== */}
+
         <div className="mt-8 border-t border-slate-800 pt-6">
+
           <h2 className="mb-3 text-xl font-bold text-white">
             Follow Football Around the World
           </h2>
 
           <p className="leading-7 text-slate-300">
-            From domestic leagues to international
-            competitions, Apex Sports helps football
-            fans stay informed about match schedules,
-            results, standings and live football action.
-            Browse leagues, follow teams and check the
-            latest match information whenever you need
-            it.
+            From domestic leagues to international competitions,
+            Apex Sports provides football information covering
+            match schedules, results, standings and player
+            statistics.
           </p>
+
+          <div className="mt-5 flex flex-wrap gap-3">
+
+            <a
+              href="/fixtures/epl"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Premier League Fixtures
+            </a>
+
+            <a
+              href="/results/epl"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Premier League Results
+            </a>
+
+            <a
+              href="/standings/epl"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Premier League Standings
+            </a>
+
+            <a
+              href="/top-scorers/epl"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Premier League Top Scorers
+            </a>
+
+            <a
+              href="/articles"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Football Guides
+            </a>
+
+          </div>
+
         </div>
+
+        {/* =================================================
+            FOOTBALL GUIDES
+        ================================================== */}
+
+        <div className="mt-8 border-t border-slate-800 pt-6">
+
+          <h2 className="mb-3 text-xl font-bold text-white">
+            Football Guides & Explanations
+          </h2>
+
+          <p className="mb-5 max-w-3xl leading-7 text-slate-300">
+            Learn how football rules, scores, league tables and
+            match statistics work with our easy-to-follow football
+            guides. Explore the full collection of football
+            explanations on our Articles &amp; Guides page.
+          </p>
+
+          <div className="grid gap-4 md:grid-cols-2">
+
+            <a
+              href="/articles/how-football-points-work"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                How Football Points Work
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Understand how teams earn points from wins,
+                draws and losses.
+              </p>
+            </a>
+
+            <a
+              href="/articles/how-football-league-standings-work"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                How Football League Standings Work
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn how teams are ranked in football league
+                tables.
+              </p>
+            </a>
+
+            <a
+              href="/articles/how-football-goal-difference-works"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                How Football Goal Difference Works
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn how goals scored and conceded affect
+                league positions.
+              </p>
+            </a>
+
+            <a
+              href="/articles/how-to-read-football-fixtures-and-match-results"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                How to Read Football Fixtures &amp; Results
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Understand match dates, results, scores and
+                fixture information.
+              </p>
+            </a>
+
+            <a
+              href="/articles/what-is-offside-in-football"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                What Is Offside in Football?
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn the basic offside rule and how offside
+                decisions affect attacking plays.
+              </p>
+            </a>
+
+            <a
+              href="/articles/what-is-a-penalty-kick-in-football"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                What Is a Penalty Kick in Football?
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn when penalties are awarded and how
+                penalty kicks work.
+              </p>
+            </a>
+
+            <a
+              href="/articles/what-is-a-yellow-card-in-football"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                What Is a Yellow Card in Football?
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn why referees give yellow cards and how
+                cautions affect players.
+              </p>
+            </a>
+
+            <a
+              href="/articles/what-is-a-football-formation"
+              className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500"
+            >
+              <h3 className="mb-2 font-semibold text-white">
+                What Is a Football Formation?
+              </h3>
+
+              <p className="text-sm leading-6 text-slate-400">
+                Learn how formations such as 4-4-2 and 4-3-3
+                organize players on the pitch.
+              </p>
+            </a>
+
+          </div>
+
+          <div className="mt-5">
+            <a
+              href="/articles"
+              className="inline-block rounded-lg border border-green-600 px-5 py-2.5 font-bold text-green-500 transition hover:bg-green-600 hover:text-white"
+            >
+              View All 20 Football Guides →
+            </a>
+          </div>
+
+        </div>
+
       </section>
     </main>
   );
