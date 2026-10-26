@@ -131,7 +131,7 @@ export default function StandingsMini() {
                       <Image
                         src={
                           team?.team?.logo ||
-                          "/images/team-placeholder.png"
+                          "/images/team-placeholder.svg"
                         }
                         alt={
                           team?.team?.name ||
