@@ -8,9 +8,8 @@ export default function Footer() {
         <div className="max-w-[420px]">
           <h2 className="text-[28px] mb-[15px] font-bold">⚽ Apex Sports</h2>
           <p className="text-[#94a3b8] leading-[1.8]">
-            Real-time football scores, fixtures, standings,
-            match statistics and football news from leagues
-            around the world.
+            Football scores, fixtures, results, standings and player
+            statistics for the competitions currently covered by Apex Sports.
           </p>
         </div>
 
