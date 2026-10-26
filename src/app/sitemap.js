@@ -16,6 +16,9 @@ const staticRoutes = [
   "/privacy-policy",
   "/terms",
   "/articles",
+  "/today",
+  "/top-assists",
+  "/league/epl",
   "/articles/hull-city-brentford-match-analysis-october-25-2026",
   "/articles/sunderland-leeds-match-analysis-october-25-2026",
   "/articles/liverpool-brighton-match-analysis-october-25-2026",
@@ -86,6 +89,7 @@ function getChangeFrequency(route) {
       return "daily";
 
     case "/live":
+    case "/today":
     case "/fixtures/epl":
       return "hourly";
 
@@ -97,6 +101,8 @@ function getChangeFrequency(route) {
       return "daily";
 
     case "/top-scorers/epl":
+    case "/top-assists":
+    case "/league/epl":
       return "daily";
 
     case "/transfers":
@@ -129,6 +135,7 @@ function getPriority(route) {
       return 0.9;
 
     case "/live":
+    case "/today":
       return 0.9;
 
     case "/results":
@@ -139,6 +146,8 @@ function getPriority(route) {
       return 0.8;
 
     case "/top-scorers/epl":
+    case "/top-assists":
+    case "/league/epl":
       return 0.8;
 
     case "/articles":
