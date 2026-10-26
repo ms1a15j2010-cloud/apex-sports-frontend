@@ -19,7 +19,7 @@ const actions = [
   },
   {
     title: "Leagues",
-    href: "/league/epl",
+    href: "/leagues",
     icon: "🏆",
     color: "border-amber-500",
     textColor: "text-amber-500",
