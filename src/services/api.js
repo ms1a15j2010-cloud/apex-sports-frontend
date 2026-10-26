@@ -157,7 +157,7 @@ const dashboard = {
   ----------------------------------------- */
 
   getTopLeagues: (
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/dashboard/leagues?season=${encodeURIComponent(
@@ -171,7 +171,7 @@ const dashboard = {
   ----------------------------------------- */
 
   getTrendingTeams: (
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/dashboard/teams?season=${encodeURIComponent(
@@ -404,7 +404,7 @@ const league = {
 
   getFixtures: (
     id,
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/league/${id}/fixtures?season=${encodeURIComponent(
@@ -414,7 +414,7 @@ const league = {
 
   getStandings: (
     id,
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/league/${id}/standings?season=${encodeURIComponent(
@@ -424,7 +424,7 @@ const league = {
 
   getTopScorers: (
     id,
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/league/${id}/topscorers?season=${encodeURIComponent(
