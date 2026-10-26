@@ -42,13 +42,15 @@ export default function Header() {
           onClick={() => setOpen(!open)}
           className="block md:hidden bg-transparent text-white border-none text-[26px] cursor-pointer"
           aria-label="Toggle Navigation Menu"
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
         >
           ☰
         </button>
       </div>
 
       {open && (
-        <div className="md:hidden bg-[#111827] p-[20px] flex flex-col gap-[15px]">
+        <div id="mobile-navigation" className="md:hidden bg-[#111827] p-[20px] flex flex-col gap-[15px]">
           {navItems.map((item) => (
             <Link
               key={item.href}
