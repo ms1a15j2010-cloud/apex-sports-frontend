@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import SearchBar from "@/components/Search/SearchBar";
 import SearchTabs from "@/components/Search/SearchTabs";
@@ -13,11 +13,8 @@ const API =
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
-
   const [tab, setTab] = useState("All");
-
   const [loading, setLoading] = useState(false);
-
   const [results, setResults] = useState({
     teams: [],
     players: [],
@@ -25,7 +22,26 @@ export default function SearchPage() {
     matches: [],
   });
 
-  async function search(value) {
+  const saveRecent = useCallback((text) => {
+    try {
+      let history = JSON.parse(
+        localStorage.getItem("recent-searches") || "[]"
+      );
+
+      history = history.filter((item) => item !== text);
+      history.unshift(text);
+      history = history.slice(0, 10);
+
+      localStorage.setItem(
+        "recent-searches",
+        JSON.stringify(history)
+      );
+    } catch (err) {
+      console.error("Unable to save recent search:", err);
+    }
+  }, []);
+
+  const search = useCallback(async (value) => {
     if (!value.trim()) return;
 
     setLoading(true);
@@ -33,10 +49,12 @@ export default function SearchPage() {
     try {
       const res = await fetch(
         `${API}/api/search?q=${encodeURIComponent(value)}`,
-        {
-          cache: "no-store",
-        }
+        { cache: "no-store" }
       );
+
+      if (!res.ok) {
+        throw new Error(`Search failed with status ${res.status}`);
+      }
 
       const data = await res.json();
 
@@ -51,40 +69,35 @@ export default function SearchPage() {
         saveRecent(value);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Search request failed:", err);
+      setResults({
+        teams: [],
+        players: [],
+        leagues: [],
+        matches: [],
+      });
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
-  }
-
-  function saveRecent(text) {
-    let history =
-      JSON.parse(
-        localStorage.getItem("recent-searches") ||
-          "[]"
-      );
-
-    history = history.filter((x) => x !== text);
-
-    history.unshift(text);
-
-    history = history.slice(0, 10);
-
-    localStorage.setItem(
-      "recent-searches",
-      JSON.stringify(history)
-    );
-  }
+  }, [saveRecent]);
 
   useEffect(() => {
-    if (query.length < 2) return;
+    if (query.trim().length < 2) {
+      setResults({
+        teams: [],
+        players: [],
+        leagues: [],
+        matches: [],
+      });
+      return;
+    }
 
     const timer = setTimeout(() => {
       search(query);
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [query]);
+  }, [query, search]);
 
   return (
     <main className="mx-auto my-10 max-w-[1300px] p-5 text-white">
