@@ -40,6 +40,13 @@ export default function Footer() {
             </Link>
 
             <Link
+              href="/articles"
+              className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
+            >
+              Articles &amp; Guides
+            </Link>
+
+            <Link
               href="/contact"
               className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
             >

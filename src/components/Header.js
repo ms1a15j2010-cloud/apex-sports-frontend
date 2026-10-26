@@ -12,6 +12,7 @@ export default function Header() {
     { name: "Results", href: "/results/epl" },
     { name: "Standings", href: "/standings/epl" },
     { name: "Top Scorers", href: "/top-scorers/epl" },
+    { name: "Articles", href: "/articles" },
   ];
 
   return (
