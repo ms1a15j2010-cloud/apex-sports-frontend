@@ -13,6 +13,7 @@ const sections = [
       { name: "Results", href: "/results/epl", icon: "✅" },
       { name: "Standings", href: "/standings/epl", icon: "📊" },
       { name: "Top Scorers", href: "/top-scorers/epl", icon: "⚽" },
+      { name: "Leagues", href: "/leagues", icon: "🏆" },
       { name: "Articles & Guides", href: "/articles", icon: "📰" },
     ],
   },
