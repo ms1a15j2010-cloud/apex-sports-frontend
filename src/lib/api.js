@@ -889,11 +889,11 @@ const dashboard = {
 
   getDashboardHero:
     () =>
-      today.get(),
+      request(`/api/dashboard/hero?season=${CURRENT_SEASON}`),
 
   getDashboard:
     () =>
-      today.get(),
+      request(`/api/dashboard/hero?season=${CURRENT_SEASON}`),
 
     getFeaturedMatch:
     async () => {
