@@ -16,7 +16,9 @@ CONFIG
 ===================================================== */
 
 const LEAGUE = "epl";
-const SEASON = 2026;
+const SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
 
 /* =====================================================
 GET TOP ASSISTS
