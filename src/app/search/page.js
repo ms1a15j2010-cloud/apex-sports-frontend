@@ -17,6 +17,7 @@ export default function SearchPage() {
   const lastSubmittedQueryRef = useRef("");
   const [tab, setTab] = useState("All");
   const [loading, setLoading] = useState(false);
+  const [searchError, setSearchError] = useState("");
   const [results, setResults] = useState({
     teams: [],
     players: [],
@@ -48,6 +49,7 @@ export default function SearchPage() {
     const requestId = ++searchRequestRef.current;
 
     if (term.length < 2) {
+      setSearchError("");
       setLoading(false);
       setResults({
         teams: [],
@@ -58,6 +60,7 @@ export default function SearchPage() {
       return;
     }
 
+    setSearchError("");
     setLoading(true);
 
     try {
@@ -90,11 +93,13 @@ export default function SearchPage() {
           leagues: [],
           matches: [],
         });
+        setSearchError(data?.message || "Search is temporarily unavailable.");
       }
     } catch (err) {
       if (requestId !== searchRequestRef.current) return;
 
       console.error("Search request failed:", err);
+      setSearchError("Search is temporarily unavailable. Please try again.");
       setResults({
         teams: [],
         players: [],
@@ -176,7 +181,25 @@ export default function SearchPage() {
         </div>
       )}
 
-      {!loading && (
+      {!loading && searchError && (
+        <p role="alert" className="mt-6 rounded-xl border border-amber-900/60 bg-amber-950/30 p-4 text-amber-200">
+          {searchError}
+        </p>
+      )}
+
+      {!loading &&
+        !searchError &&
+        query.trim().length >= 2 &&
+        !results.teams.length &&
+        !results.players.length &&
+        !results.leagues.length &&
+        !results.matches.length && (
+          <p className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-4 text-slate-300">
+            No football results found for “{query.trim()}”. Try another team, player or league.
+          </p>
+        )}
+
+      {!loading && !searchError && (
         <SearchResults
           tab={tab}
           data={results}
