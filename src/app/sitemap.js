@@ -27,7 +27,6 @@ const staticRoutes = [
 
   "/live",
   "/fixtures/epl",
-  "/results",
   "/results/epl",
   "/standings/epl",
   "/top-scorers/epl",
