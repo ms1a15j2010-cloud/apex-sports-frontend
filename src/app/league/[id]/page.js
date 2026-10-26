@@ -1,5 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
+
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
 import { notFound } from "next/navigation";
 import { getLeagueId } from "../../../utils/leagueMap";
 
@@ -137,7 +141,7 @@ export default async function LeaguePage({
   const season =
     data.season ||
     league.season ||
-    2024;
+    CURRENT_SEASON;
 
   const isPremierLeague =
     id?.toLowerCase() === "epl";
