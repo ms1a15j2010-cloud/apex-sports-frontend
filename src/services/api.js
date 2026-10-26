@@ -6,6 +6,10 @@ const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "http://localhost:5000";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 /* =========================================================
    GENERIC REQUEST
    ========================================================= */
@@ -90,7 +94,7 @@ const dashboard = {
   ----------------------------------------- */
 
   getDashboardHero: (
-    season = 2026
+    season = CURRENT_SEASON
   ) =>
     request(
       `/api/dashboard/hero?season=${encodeURIComponent(
@@ -107,7 +111,7 @@ const dashboard = {
 
   getDashboard: () =>
     request(
-      "/api/dashboard/hero?season=2026"
+      "/api/dashboard/hero?season=${CURRENT_SEASON}"
     ),
 
   /* -----------------------------------------
