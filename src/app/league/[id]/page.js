@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getLeagueId } from "../../../utils/leagueMap";
 
 const CURRENT_SEASON = new Date().getMonth() >= 6
   ? new Date().getFullYear()
   : new Date().getFullYear() - 1;
-import { notFound } from "next/navigation";
-import { getLeagueId } from "../../../utils/leagueMap";
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
