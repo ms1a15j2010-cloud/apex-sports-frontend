@@ -3,7 +3,7 @@ import Link from "next/link";
 export const metadata = {
   title: "Football Articles & Guides | Apex Sports",
   description:
-    "Read football guides and explanations covering league standings, points, goal difference, fixtures, match rules, cards, formations and common football terms.",
+    "Read football match analyses alongside practical guides to league standings, fixtures, results, match statistics and football rules.",
   alternates: {
     canonical: "https://apex-sports-frontend.vercel.app/articles",
   },
@@ -145,12 +145,86 @@ export default function ArticlesPage() {
         </h1>
 
         <p className="mt-3 max-w-3xl text-[15px] leading-7 text-slate-400 sm:text-base">
-          Explore practical football guides covering league standings,
-          points, goal difference, fixtures, match results, match rules,
-          player actions and common football terms. These resources are
-          written to help new and regular football fans understand the game.
+          Read match-by-match analysis alongside practical guides to
+          football statistics, league standings, fixtures, results and rules.
+          Our aim is to explain what the numbers show, what happened on the
+          pitch, and where the evidence has limits.
         </p>
       </header>
+
+      <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-8">
+        <h2 className="text-2xl font-extrabold text-white">
+          Recent Match Analyses
+        </h2>
+        <p className="mt-3 max-w-3xl leading-7 text-slate-400">
+          These reports examine selected matches using published match events
+          and statistics. Statistical indicators such as expected goals and
+          possession provide context, but do not by themselves explain every
+          tactical decision or determine which team deserved to win.
+        </p>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/hull-city-brentford-match-analysis-october-25-2026" className="hover:text-green-400">
+                Hull City vs Brentford: Match Analysis
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Examine the 1-1 draw through the key goals, chance quality and
+              match statistics.
+            </p>
+            <Link href="/articles/hull-city-brentford-match-analysis-october-25-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">Read analysis →</Link>
+          </article>
+          <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/sunderland-leeds-match-analysis-october-25-2026" className="hover:text-green-400">
+                Sunderland vs Leeds United: Match Analysis
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Explore how chances, goalkeeper interventions and expected goals
+              shaped a scoreless draw.
+            </p>
+            <Link href="/articles/sunderland-leeds-match-analysis-october-25-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">Read analysis →</Link>
+          </article>
+          <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/liverpool-brighton-match-analysis-october-25-2026" className="hover:text-green-400">
+                Liverpool vs Brighton: Match Analysis
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Compare the match statistics with the events and chances that
+              influenced the contest.
+            </p>
+            <Link href="/articles/liverpool-brighton-match-analysis-october-25-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">Read analysis →</Link>
+          </article>
+          <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/manchester-united-bournemouth-match-analysis-october-25-2026" className="hover:text-green-400">
+                Manchester United vs Bournemouth: Match Analysis
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Review the match narrative alongside the available performance
+              indicators and key moments.
+            </p>
+            <Link href="/articles/manchester-united-bournemouth-match-analysis-october-25-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">Read analysis →</Link>
+          </article>
+          <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/crystal-palace-newcastle-match-analysis-october-25-2026" className="hover:text-green-400">
+                Crystal Palace vs Newcastle: Match Analysis
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              Read a focused review of the match's important moments and
+              statistical context.
+            </p>
+            <Link href="/articles/crystal-palace-newcastle-match-analysis-october-25-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">Read analysis →</Link>
+          </article>
+        </div>
+      </section>
 
       <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-8">
         <h2 className="text-2xl font-extrabold text-white">
