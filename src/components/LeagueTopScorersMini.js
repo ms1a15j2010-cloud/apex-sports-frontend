@@ -105,7 +105,7 @@ export default function LeagueTopScorersMini({
         <Image
           src={
             leader.player?.photo ||
-            "/player.png"
+            "/player.svg"
           }
           alt={leader.player?.name || "Player"}
           width={100}
@@ -291,7 +291,7 @@ export default function LeagueTopScorersMini({
                 <Image
                   src={
                     item.player.photo ||
-                    "/player.png"
+                    "/player.svg"
                   }
                   alt={item.player.name}
                   width={60}
