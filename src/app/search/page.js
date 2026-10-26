@@ -124,6 +124,7 @@ export default function SearchPage() {
     if (query.trim().length < 2) {
       searchRequestRef.current += 1;
       lastSubmittedQueryRef.current = "";
+      setSearchError("");
       setLoading(false);
       setResults({
         teams: [],
