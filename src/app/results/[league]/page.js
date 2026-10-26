@@ -1,5 +1,9 @@
 import ResultsClient from "@/components/ResultsClient";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
   "http://127.0.0.1:5000";
@@ -31,7 +35,7 @@ const LEAGUE_CONFIG = {
 };
 
 function getCurrentSeason() {
-  return 2025;
+  return CURRENT_SEASON;
 }
 
 async function fetchSeasonResults(slug, season) {
