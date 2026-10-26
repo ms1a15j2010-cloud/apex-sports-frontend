@@ -17,10 +17,10 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-[1000] bg-[#020617] border-b border-[#1e293b]">
-      <div className="max-w-[1400px] mx-auto h-[70px] flex items-center justify-between px-[20px]">
+      <div className="max-w-[1400px] mx-auto h-[70px] flex items-center justify-between px-[20px] md:justify-end">
         <Link
           href="/"
-          className="shrink-0 text-white text-xl sm:text-2xl font-extrabold tracking-tight no-underline"
+          className="shrink-0 text-white text-xl sm:text-2xl font-extrabold tracking-tight no-underline md:hidden"
           aria-label="Apex Sports home"
         >
           <span className="text-green-500">▲</span> Apex Sports
