@@ -111,7 +111,7 @@ const dashboard = {
 
   getDashboard: () =>
     request(
-      "/api/dashboard/hero?season=${CURRENT_SEASON}"
+      `/api/dashboard/hero?season=${CURRENT_SEASON}`
     ),
 
   /* -----------------------------------------
