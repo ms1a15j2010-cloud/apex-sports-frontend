@@ -35,7 +35,9 @@ const API = (
   "http://localhost:5000"
 ).replace(/\/$/, "");
 
-const SEASON = 2026;
+const SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
 
 /* =====================================================
 SAFE JSON FETCH
