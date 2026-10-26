@@ -17,9 +17,9 @@ export default function HomeHero({ onSearch }) { // Accept onSearch prop
         </h1>
 
         <p>
-          Follow live football scores, fixtures, standings,
-          match statistics, lineups, events and breaking
-          football news from leagues all around the world.
+          Follow live football scores, fixtures, results, league
+          tables, player rankings and match statistics for the
+          football competitions currently covered by Apex Sports.
         </p>
 
         {/* Add SearchBar here */}
@@ -27,34 +27,34 @@ export default function HomeHero({ onSearch }) { // Accept onSearch prop
 
         <div className="hero-buttons">
           <Link
-            href="/league/epl"
+            href="/leagues"
             className="hero-btn primary"
           >
             Browse Leagues
           </Link>
 
           <Link
-            href="#today"
+            href="/today"
             className="hero-btn secondary"
           >
-            Today's Fixtures
+            Today's Matches
           </Link>
         </div>
 
         <div className="hero-stats">
           <div className="hero-stat">
-            <h2>1000+</h2>
-            <span>Matches Daily</span>
+            <h2>Live</h2>
+            <span>Scores &amp; Match Status</span>
           </div>
 
           <div className="hero-stat">
-            <h2>300+</h2>
-            <span>Competitions</span>
+            <h2>Season</h2>
+            <span>Fixtures &amp; Standings</span>
           </div>
 
           <div className="hero-stat">
-            <h2>24/7</h2>
-            <span>Live Updates</span>
+            <h2>Stats</h2>
+            <span>Players &amp; Teams</span>
           </div>
         </div>
       </div>
