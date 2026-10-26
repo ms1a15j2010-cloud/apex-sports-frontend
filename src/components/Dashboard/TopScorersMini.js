@@ -81,7 +81,7 @@ export default function TopScorersMini() {
           const photo =
             player?.player?.photo ??
             player?.photo ??
-            "/player.png";
+            "/player.svg";
 
           const name =
             player?.player?.name ??
