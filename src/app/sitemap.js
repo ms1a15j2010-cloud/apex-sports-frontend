@@ -16,6 +16,7 @@ const staticRoutes = [
   "/privacy-policy",
   "/terms",
   "/articles",
+  "/leagues",
   "/today",
   "/top-assists",
   "/league/epl",
@@ -100,6 +101,7 @@ function getChangeFrequency(route) {
       return "daily";
 
     case "/top-scorers/epl":
+    case "/leagues":
     case "/top-assists":
     case "/league/epl":
       return "daily";
@@ -145,6 +147,7 @@ function getPriority(route) {
       return 0.8;
 
     case "/top-scorers/epl":
+    case "/leagues":
     case "/top-assists":
     case "/league/epl":
       return 0.8;
