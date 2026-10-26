@@ -118,13 +118,13 @@ export default function RootLayout({
       crossOrigin="anonymous"
     />
   </head>
-      <body className="m-0 h-screen w-full overflow-hidden bg-slate-950 p-0 font-[Arial,sans-serif] text-white">
+      <body className="m-0 min-h-screen w-full overflow-x-hidden bg-slate-950 p-0 font-[Arial,sans-serif] text-white">
         <LiveProvider>
           {/* =====================================================
               APP SHELL
           ====================================================== */}
 
-          <div className="flex h-screen w-full overflow-hidden">
+          <div className="flex min-h-screen w-full md:h-screen md:overflow-hidden">
             {/* =================================================
                 SIDEBAR
             ================================================== */}
@@ -135,7 +135,7 @@ export default function RootLayout({
                 RIGHT SIDE APPLICATION
             ================================================== */}
 
-            <div className="apex-main-shell ml-[280px] flex h-screen min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+            <div className="apex-main-shell ml-0 flex min-h-screen min-w-0 flex-1 flex-col md:ml-[280px] md:h-screen md:min-h-0 md:overflow-hidden">
               {/* ===============================================
                   HEADER
               ================================================ */}
@@ -148,7 +148,7 @@ export default function RootLayout({
                   MAIN SCROLLING AREA
               ================================================ */}
 
-              <main className="box-border min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-scroll bg-slate-950 p-[25px]">
+              <main className="box-border min-w-0 flex-1 overflow-x-hidden bg-slate-950 p-4 sm:p-[25px] md:min-h-0 md:overflow-y-auto">
                 <Breadcrumbs />
 
                 {children}
