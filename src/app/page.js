@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import HomeHero from "@/components/HomeHero";
 import HomeTabs from "@/components/HomeTabs";
@@ -12,6 +13,7 @@ const CURRENT_SEASON = new Date().getMonth() >= 6
   : new Date().getFullYear() - 1;
 
 export default function HomePage() {
+  const router = useRouter();
   const [matches, setMatches] = useState([]);
   const [filtered, setFiltered] = useState([]);
   const [tab, setTab] = useState("today");
@@ -108,36 +110,12 @@ export default function HomePage() {
   }, [tab]);
 
   function handleSearch(value) {
-    const text = value
-      .toLowerCase()
-      .trim();
-
-    if (!text) {
-      setFiltered(matches);
+    const query = String(value || "").trim();
+    if (!query) {
+      router.push("/search");
       return;
     }
-
-    const result = matches.filter((m) => {
-      return (
-        m.home?.name
-          ?.toLowerCase()
-          .includes(text) ||
-        m.away?.name
-          ?.toLowerCase()
-          .includes(text) ||
-        m.teams?.home?.name
-          ?.toLowerCase()
-          .includes(text) ||
-        m.teams?.away?.name
-          ?.toLowerCase()
-          .includes(text) ||
-        m.league?.name
-          ?.toLowerCase()
-          .includes(text)
-      );
-    });
-
-    setFiltered(result);
+    router.push(`/search?q=${encodeURIComponent(query)}`);
   }
 
   return (
