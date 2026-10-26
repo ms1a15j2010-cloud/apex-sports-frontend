@@ -9,7 +9,6 @@ export default function SearchBar({ onSearch }) {
     e.preventDefault();
     if (onSearch) {
       onSearch(query);
-      console.log("Searching for:", query); // Debug log
     }
   };
 
