@@ -74,7 +74,11 @@ export default function HomePage() {
 
         const list = Array.isArray(data.matches)
           ? data.matches
-          : [];
+          : Array.isArray(data.fixtures)
+            ? data.fixtures
+            : Array.isArray(data.results)
+              ? data.results
+              : [];
 
         setMatches(list);
         setFiltered(list);
