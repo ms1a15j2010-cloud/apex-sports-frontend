@@ -9,14 +9,18 @@ export default function RecentSearches({
     useState([]);
 
   useEffect(() => {
-    const data =
-      JSON.parse(
-        localStorage.getItem(
-          "recent-searches"
-        ) || "[]"
+    try {
+      const stored = JSON.parse(
+        localStorage.getItem("recent-searches") || "[]"
       );
-
-    setHistory(data);
+      setHistory(
+        Array.isArray(stored)
+          ? stored.filter((item) => typeof item === "string")
+          : []
+      );
+    } catch {
+      setHistory([]);
+    }
   }, []);
 
   if (!history.length) return null;
