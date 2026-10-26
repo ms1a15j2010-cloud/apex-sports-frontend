@@ -14,6 +14,7 @@ const API =
 export default function SearchPage() {
   const [query, setQuery] = useState("");
   const searchRequestRef = useRef(0);
+  const lastSubmittedQueryRef = useRef("");
   const [tab, setTab] = useState("All");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState({
@@ -110,6 +111,7 @@ export default function SearchPage() {
   useEffect(() => {
     if (query.trim().length < 2) {
       searchRequestRef.current += 1;
+      lastSubmittedQueryRef.current = "";
       setLoading(false);
       setResults({
         teams: [],
@@ -121,11 +123,22 @@ export default function SearchPage() {
     }
 
     const timer = setTimeout(() => {
+      const term = query.trim();
+      if (lastSubmittedQueryRef.current === term) {
+        lastSubmittedQueryRef.current = "";
+        return;
+      }
+      lastSubmittedQueryRef.current = "";
       search(query);
     }, 400);
 
     return () => clearTimeout(timer);
   }, [query, search]);
+
+  const handleSearchSubmit = useCallback((value) => {
+    lastSubmittedQueryRef.current = value.trim();
+    search(value);
+  }, [search]);
 
   return (
     <main className="mx-auto my-10 max-w-[1300px] p-5 text-white">
@@ -136,13 +149,12 @@ export default function SearchPage() {
       <SearchBar
         value={query}
         onChange={setQuery}
-        onSearch={search}
+        onSearch={handleSearchSubmit}
       />
 
       <RecentSearches
         onSelect={(text) => {
           setQuery(text);
-          search(text);
         }}
       />
 
