@@ -153,6 +153,16 @@ export default function SearchPage() {
     search(value);
   }, [search]);
 
+  const hasVisibleResults = tab === "All"
+    ? Boolean(results.teams.length || results.players.length || results.leagues.length || results.matches.length)
+    : tab === "Teams"
+      ? results.teams.length > 0
+      : tab === "Players"
+        ? results.players.length > 0
+        : tab === "Leagues"
+          ? results.leagues.length > 0
+          : results.matches.length > 0;
+
   return (
     <main className="mx-auto my-10 max-w-[1300px] p-5 text-white">
       <h1 className="mb-[30px] text-[40px]">
@@ -191,10 +201,7 @@ export default function SearchPage() {
       {!loading &&
         !searchError &&
         query.trim().length >= 2 &&
-        !results.teams.length &&
-        !results.players.length &&
-        !results.leagues.length &&
-        !results.matches.length && (
+        !hasVisibleResults && (
           <p className="mt-6 rounded-xl border border-slate-800 bg-slate-900 p-4 text-slate-300">
             No football results found for “{query.trim()}”. Try another team, player or league.
           </p>
