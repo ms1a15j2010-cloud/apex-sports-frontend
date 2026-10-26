@@ -82,7 +82,7 @@ export default function LeagueTopAssists({
                   <Image
                     src={
                       player.photo ||
-                      "/player.png"
+                      "/player.svg"
                     }
                     alt={player.name}
                     width={62}
