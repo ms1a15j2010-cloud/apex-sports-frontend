@@ -33,7 +33,7 @@ export default function Footer() {
             </Link>
 
             <Link
-              href="/league/epl"
+              href="/leagues"
               className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
             >
               Leagues
