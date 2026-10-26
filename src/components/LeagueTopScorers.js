@@ -141,7 +141,7 @@ export default function LeagueTopScorers({
                     className="league-top-scorer-photo"
                     src={
                       player.photo ||
-                      "/player.png"
+                      "/player.svg"
                     }
                     alt={player.name}
                     width={62}
