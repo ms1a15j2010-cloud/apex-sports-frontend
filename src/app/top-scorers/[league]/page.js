@@ -117,7 +117,7 @@ async function getTopScorers(league) {
   }
 
   const url =
-    `${API}/api/league/${slug}/topscorers` +
+    `${API}/api/top-scorers/${config.code}` +
     `?season=${config.season}` +
     `&page=1` +
     `&limit=20`;
