@@ -31,7 +31,6 @@ const staticRoutes = [
   "/results/epl",
   "/standings/epl",
   "/top-scorers/epl",
-  "/transfers",
 ];
 
 /* =====================================================
@@ -106,9 +105,6 @@ function getChangeFrequency(route) {
     case "/league/epl":
       return "daily";
 
-    case "/transfers":
-      return "daily";
-
     case "/articles":
       return "weekly";
 
@@ -154,9 +150,6 @@ function getPriority(route) {
 
     case "/articles":
       return 0.8;
-
-    case "/transfers":
-      return 0.7;
 
     case "/about":
     case "/contact":
