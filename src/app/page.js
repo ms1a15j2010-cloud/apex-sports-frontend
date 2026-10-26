@@ -7,6 +7,10 @@ import HomeTabs from "@/components/HomeTabs";
 import SectionHeader from "@/components/SectionHeader";
 import MatchList from "@/components/MatchList";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 export default function HomePage() {
   const [matches, setMatches] = useState([]);
   const [filtered, setFiltered] = useState([]);
@@ -40,7 +44,7 @@ export default function HomePage() {
           case "upcoming":
             data = await api.getFixtures(
               "epl",
-              2025,
+              CURRENT_SEASON,
               1,
               10
             );
