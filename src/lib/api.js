@@ -897,29 +897,29 @@ const dashboard = {
 
     getFeaturedMatch:
     async () => {
-      const data = await results.get(
-        "PL",
+      const data = await fixtures.get(
+        "epl",
         CURRENT_SEASON,
         1,
         1
       );
       const matches = Array.isArray(data?.matches)
         ? data.matches
-        : Array.isArray(data?.results)
-          ? data.results
+        : Array.isArray(data?.fixtures)
+          ? data.fixtures
           : [];
 
       if (data?.success && matches.length > 0) {
         return {
           success: true,
           match: matches[0],
-          message: "Featured match loaded",
+          message: "Featured upcoming match loaded",
         };
       }
 
       return {
         success: false,
-        message: data?.message || "No featured match available.",
+        message: data?.message || "No upcoming match available.",
       };
     },
 
