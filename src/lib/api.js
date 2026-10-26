@@ -897,31 +897,29 @@ const dashboard = {
 
     getFeaturedMatch:
     async () => {
-      const data =
-        await results.get(
-          "PL",
-          new Date().getFullYear(),
-          1,
-          1
-        );
+      const data = await results.get(
+        "PL",
+        CURRENT_SEASON,
+        1,
+        1
+      );
+      const matches = Array.isArray(data?.matches)
+        ? data.matches
+        : Array.isArray(data?.results)
+          ? data.results
+          : [];
 
-      if (
-        data?.success &&
-        Array.isArray(data.matches) &&
-        data.matches.length > 0
-      ) {
+      if (data?.success && matches.length > 0) {
         return {
           success: true,
-          match: data.matches[0],
+          match: matches[0],
           message: "Featured match loaded",
         };
       }
 
       return {
         success: false,
-        message:
-          data?.message ||
-          "No featured match available.",
+        message: data?.message || "No featured match available.",
       };
     },
 
@@ -942,13 +940,24 @@ const dashboard = {
       trendingTeams.get(),
 
   getLatestResults:
-  () =>
-    results.get(
-      "PL",
-      new Date().getFullYear(),
-      1,
-      10
-    ),
+    async () => {
+      const data = await results.get(
+        "PL",
+        CURRENT_SEASON,
+        1,
+        10
+      );
+      const matches = Array.isArray(data?.matches)
+        ? data.matches
+        : Array.isArray(data?.results)
+          ? data.results
+          : [];
+
+      return {
+        ...data,
+        matches,
+      };
+    },
 
   getTopScorersMini:
     () =>
