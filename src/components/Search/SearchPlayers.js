@@ -22,7 +22,7 @@ export default function SearchPlayers({
       >
         {players.map((player) => (
           <PlayerCard
-            key={player.id}
+            key={player.player?.id || player.id}
             player={player}
           />
         ))}
