@@ -311,14 +311,13 @@ export default function HomePage() {
         <div className="mt-8 border-t border-slate-800 pt-6">
 
           <h2 className="mb-3 text-xl font-bold text-white">
-            Follow Football Around the World
+            Explore Football Competitions
           </h2>
 
           <p className="leading-7 text-slate-300">
-            From domestic leagues to international competitions,
-            Apex Sports provides football information covering
-            match schedules, results, standings and player
-            statistics.
+            Use the competition directory to explore available league
+            tables and player rankings. Premier League pages also
+            include upcoming fixtures and completed results.
           </p>
 
           <div className="mt-5 flex flex-wrap gap-3">
