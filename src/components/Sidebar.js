@@ -32,7 +32,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className="apex-sidebar fixed left-0 top-0 z-50 h-screen w-[280px] overflow-y-auto border-r border-slate-800 bg-slate-950 pb-[50px] text-white"
+      className="apex-sidebar hidden fixed left-0 top-0 z-50 h-screen w-[280px] md:block overflow-y-auto border-r border-slate-800 bg-slate-950 pb-[50px] text-white"
     >
       <div className="sticky top-0 z-10 border-b border-slate-800 bg-slate-950 p-5 text-[26px] font-bold">
         ⚽ Apex Sports
