@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 /* =====================================================
 LEAGUE CONFIG
 ===================================================== */
@@ -10,25 +14,25 @@ const LEAGUE_CONFIG = {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
   premierleague: {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
   "premier-league": {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
   pl: {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 };
 
