@@ -2,6 +2,10 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 /* =====================================================
 LEAGUE CONFIG
 ===================================================== */
@@ -11,70 +15,70 @@ const LEAGUE_CONFIG = {
     name: "Premier League",
     country: "England",
     code: "PL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   laliga: {
     name: "La Liga",
     country: "Spain",
     code: "PD",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   "la-liga": {
     name: "La Liga",
     country: "Spain",
     code: "PD",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   bundesliga: {
     name: "Bundesliga",
     country: "Germany",
     code: "BL1",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   seriea: {
     name: "Serie A",
     country: "Italy",
     code: "SA",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   "serie-a": {
     name: "Serie A",
     country: "Italy",
     code: "SA",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   ligue1: {
     name: "Ligue 1",
     country: "France",
     code: "FL1",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   "ligue-1": {
     name: "Ligue 1",
     country: "France",
     code: "FL1",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   primeiraliga: {
     name: "Primeira Liga",
     country: "Portugal",
     code: "PPL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 
   "primeira-liga": {
     name: "Primeira Liga",
     country: "Portugal",
     code: "PPL",
-    season: 2025,
+    season: CURRENT_SEASON,
   },
 };
 
