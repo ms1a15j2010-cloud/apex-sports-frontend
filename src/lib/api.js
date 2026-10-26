@@ -1,6 +1,10 @@
 const API =
   process.env.NEXT_PUBLIC_API_URL || "";
 
+const CURRENT_SEASON = new Date().getMonth() >= 6
+  ? new Date().getFullYear()
+  : new Date().getFullYear() - 1;
+
 /* ===========================================
    GENERIC REQUEST
 =========================================== */
@@ -472,7 +476,7 @@ const topScorersMini = {
   get:
     (
       league = "epl",
-      season = 2025
+      season = CURRENT_SEASON
     ) => {
       const params =
         new URLSearchParams();
@@ -508,7 +512,7 @@ const standingsMini = {
   get:
     (
       league = "epl",
-      season = 2025
+      season = CURRENT_SEASON
     ) => {
       const params =
         new URLSearchParams();
