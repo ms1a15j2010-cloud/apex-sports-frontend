@@ -16,6 +16,11 @@ const staticRoutes = [
   "/privacy-policy",
   "/terms",
   "/articles",
+  "/articles/hull-city-brentford-match-analysis-october-25-2026",
+  "/articles/sunderland-leeds-match-analysis-october-25-2026",
+  "/articles/liverpool-brighton-match-analysis-october-25-2026",
+  "/articles/manchester-united-bournemouth-match-analysis-october-25-2026",
+  "/articles/crystal-palace-newcastle-match-analysis-october-25-2026",
 
   "/live",
   "/fixtures/epl",
