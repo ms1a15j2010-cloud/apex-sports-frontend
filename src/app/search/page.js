@@ -109,6 +109,13 @@ export default function SearchPage() {
   }, [saveRecent]);
 
   useEffect(() => {
+    const initialQuery = new URLSearchParams(window.location.search).get("q");
+    if (initialQuery?.trim()) {
+      setQuery(initialQuery.trim());
+    }
+  }, []);
+
+  useEffect(() => {
     if (query.trim().length < 2) {
       searchRequestRef.current += 1;
       lastSubmittedQueryRef.current = "";
