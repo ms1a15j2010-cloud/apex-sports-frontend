@@ -318,7 +318,7 @@ function PlayerRow({
       {/* Photo */}
 
       <Image
-        src={player?.photo || "/player.png"}
+        src={player?.photo || "/player.svg"}
         unoptimized
         width={52}
         height={52}
