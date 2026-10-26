@@ -53,7 +53,7 @@ function TeamRatings({ team }) {
         <Image
           src={
             team.team?.logo ||
-            "/team.png"
+            "/images/team-placeholder.svg"
           }
           alt={team.team?.name}
           width={42}
@@ -80,9 +80,13 @@ function TeamRatings({ team }) {
 /* ========================================= */
 
 function PlayerRow({ player = {} }) {
+  const rawRating = player.rating ?? player.statistics?.rating ?? null;
   const rating =
-    player.rating ||
-    randomRating();
+    rawRating !== null &&
+    rawRating !== "" &&
+    Number.isFinite(Number(rawRating))
+      ? Number(rawRating)
+      : null;
 
   return (
     <div className="grid grid-cols-[55px_1fr_auto] items-center gap-4 rounded-[14px] bg-gray-900 p-[14px]">
@@ -101,28 +105,23 @@ function PlayerRow({ player = {} }) {
       </div>
 
       <div
-        className="min-w-[56px] rounded-xl px-2.5 py-2 text-center font-bold text-white"
-        style={{
+        className={`min-w-[56px] rounded-xl px-2.5 py-2 text-center font-bold ${
+          rating === null
+            ? "bg-slate-700 text-slate-300"
+            : "text-white"
+        }`}
+        style={rating === null ? undefined : {
           background: ratingColor(rating),
         }}
+        aria-label={rating === null ? "Rating unavailable" : `Rating ${rating.toFixed(1)}`}
       >
-        {rating}
+        {rating === null ? "N/A" : rating.toFixed(1)}
       </div>
     </div>
   );
 }
 
 /* ========================================= */
-
-function randomRating() {
-  return (
-    (
-      Math.random() *
-        3 +
-      6
-    ).toFixed(1)
-  );
-}
 
 function ratingColor(rating) {
   const r = Number(rating);
