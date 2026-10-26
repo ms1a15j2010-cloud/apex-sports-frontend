@@ -56,6 +56,18 @@ export default function LeaguesPage() {
               {league.featured && (
                 <>
                   <Link
+                    href="/league/epl"
+                    className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-white transition hover:border-green-500 hover:text-green-400"
+                  >
+                    League overview
+                  </Link>
+                  <Link
+                    href="/top-assists"
+                    className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-white transition hover:border-green-500 hover:text-green-400"
+                  >
+                    Top assists
+                  </Link>
+                  <Link
                     href="/fixtures/epl"
                     className="rounded-lg border border-slate-700 px-3 py-2 text-sm font-semibold text-white transition hover:border-green-500 hover:text-green-400"
                   >
