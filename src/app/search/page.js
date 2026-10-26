@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import SearchBar from "@/components/Search/SearchBar";
 import SearchTabs from "@/components/Search/SearchTabs";
@@ -13,6 +13,7 @@ const API =
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
+  const searchRequestRef = useRef(0);
   const [tab, setTab] = useState("All");
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState({
@@ -42,13 +43,25 @@ export default function SearchPage() {
   }, []);
 
   const search = useCallback(async (value) => {
-    if (!value.trim()) return;
+    const term = value.trim();
+    const requestId = ++searchRequestRef.current;
+
+    if (term.length < 2) {
+      setLoading(false);
+      setResults({
+        teams: [],
+        players: [],
+        leagues: [],
+        matches: [],
+      });
+      return;
+    }
 
     setLoading(true);
 
     try {
       const res = await fetch(
-        `${API}/api/search?q=${encodeURIComponent(value)}`,
+        `${API}/api/search?q=${encodeURIComponent(term)}`,
         { cache: "no-store" }
       );
 
@@ -58,6 +71,8 @@ export default function SearchPage() {
 
       const data = await res.json();
 
+      if (requestId !== searchRequestRef.current) return;
+
       if (data.success) {
         setResults({
           teams: data.teams || [],
@@ -66,9 +81,18 @@ export default function SearchPage() {
           matches: data.matches || [],
         });
 
-        saveRecent(value);
+        saveRecent(term);
+      } else {
+        setResults({
+          teams: [],
+          players: [],
+          leagues: [],
+          matches: [],
+        });
       }
     } catch (err) {
+      if (requestId !== searchRequestRef.current) return;
+
       console.error("Search request failed:", err);
       setResults({
         teams: [],
@@ -77,12 +101,16 @@ export default function SearchPage() {
         matches: [],
       });
     } finally {
-      setLoading(false);
+      if (requestId === searchRequestRef.current) {
+        setLoading(false);
+      }
     }
   }, [saveRecent]);
 
   useEffect(() => {
     if (query.trim().length < 2) {
+      searchRequestRef.current += 1;
+      setLoading(false);
       setResults({
         teams: [],
         players: [],
