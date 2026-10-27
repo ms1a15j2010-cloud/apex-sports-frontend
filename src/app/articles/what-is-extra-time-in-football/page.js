@@ -29,6 +29,19 @@ export default function ExtraTimeArticlePage() {
           </p>
         </header>
 
+        <aside className="mb-8 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700" aria-label="Official rules source">
+          <p className="font-semibold text-slate-900">Official rules reference</p>
+          <p className="mt-1">
+            This guide is a plain-language explanation, not the official rulebook.
+            For authoritative wording and current changes, consult the{" "}
+            <a href="https://www.theifab.com/laws/latest/" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline underline-offset-2">
+              IFAB Laws of the Game
+            </a>
+            . Whether extra time is played depends on the competition regulations.
+          </p>
+        </aside>
+
+
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-white">How long is extra time?</h2>
           <p className="leading-7">
