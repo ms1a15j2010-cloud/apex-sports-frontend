@@ -21,7 +21,7 @@ export const metadata = {
   },
 
   description:
-    "Apex Sports provides live football scores, fixtures, results, standings, match statistics, player ratings, team information, and real-time football updates.",
+    "Apex Sports brings together football scores, fixtures, results, league standings, match details, team information and football guides for supported competitions.",
 
   keywords: [
     "Apex Sports",
@@ -37,7 +37,6 @@ export const metadata = {
     "football teams",
     "football players",
     "Premier League",
-    "Champions League",
   ],
 
   authors: [
@@ -73,7 +72,7 @@ export const metadata = {
   openGraph: {
     title: "Apex Sports | Live Football Scores",
     description:
-      "Live football scores, fixtures, results, standings, match statistics, and real-time football updates.",
+      "Football scores, fixtures, results, league standings, match details and guides for supported competitions.",
     url: "https://apex-sports-frontend.vercel.app/",
     siteName: "Apex Sports",
     locale: "en_US",
@@ -84,7 +83,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Apex Sports | Live Football Scores",
     description:
-      "Live football scores, fixtures, results, standings, and real-time match updates.",
+      "Follow football scores, fixtures, results, league standings and match details for supported competitions.",
   },
 
   robots: {
