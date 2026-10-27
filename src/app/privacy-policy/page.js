@@ -146,10 +146,10 @@ export default function PrivacyPolicy() {
           </p>
 
           <a
-            href="mailto:support@apexsports.com"
+            href="mailto:Impeccablesports@gmail.com"
             className="mt-3 inline-block font-semibold text-green-500 transition hover:text-green-400"
           >
-            support@apexsports.com
+            Impeccablesports@gmail.com
           </a>
         </article>
       </section>
