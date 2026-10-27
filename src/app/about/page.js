@@ -4,6 +4,9 @@ export const metadata = {
   title: "About Apex Sports | Football Scores, Fixtures & Guides",
   description:
     "Learn about Apex Sports, a football website providing scores, fixtures, results, league standings, statistics and helpful football guides.",
+  alternates: {
+    canonical: "https://apex-sports-frontend.vercel.app/about",
+  },
 };
 
 export default function AboutPage() {
