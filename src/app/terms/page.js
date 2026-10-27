@@ -4,6 +4,9 @@ export const metadata = {
   title: "Terms & Conditions | Apex Sports",
   description:
     "Read the Terms and Conditions for using Apex Sports, including football data, website availability, acceptable use and external links.",
+  alternates: {
+    canonical: "https://apex-sports-frontend.vercel.app/terms",
+  },
 };
 
 export default function Terms() {
