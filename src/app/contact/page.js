@@ -41,10 +41,10 @@ export default function ContactPage() {
             </p>
 
             <a
-              href="mailto:support@apexsports.com"
+              href="mailto:Impeccablesports@gmail.com"
               className="mt-1 inline-block font-semibold text-green-500 transition hover:text-green-400"
             >
-              support@apexsports.com
+              Impeccablesports@gmail.com
             </a>
           </div>
         </article>
