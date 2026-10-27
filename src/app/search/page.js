@@ -9,7 +9,7 @@ import RecentSearches from "@/components/Search/RecentSearches";
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  "";
 
 export default function SearchPage() {
   const [query, setQuery] = useState("");
