@@ -96,7 +96,7 @@ export default function ReadMatchStatisticsArticle() {
             <p className="mt-4">For competition rules and official definitions, consult the relevant competition organiser or the IFAB Laws of the Game.</p>
             <ul className="mt-3 list-disc space-y-2 pl-6">
               <li><a className="text-green-500 underline" href="https://www.theifab.com/laws/latest/" target="_blank" rel="noreferrer">IFAB Laws of the Game</a></li>
-              <li><a className="text-green-500 underline" href="https://www.premierleague.com/" target="_blank" rel="noreferrer">Premier League official website</a></li>
+              <li><a className="text-green-500 underline" href="https://www.premierleague.com/en/stats/clarification" target="_blank" rel="noreferrer">Premier League statistics definitions and data collection</a></li>
             </ul>
           </section>
         </div>
