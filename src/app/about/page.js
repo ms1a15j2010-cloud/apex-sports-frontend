@@ -77,6 +77,31 @@ export default function AboutPage() {
             work.
           </p>
         </article>
+
+        <article className="rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-6 sm:p-8">
+          <h2 className="text-2xl font-extrabold">
+            Data Sources and Editorial Standards
+          </h2>
+
+          <p className="mt-4 leading-7 text-slate-300">
+            Match information depends on the data feeds available for each competition.
+            Statistics such as expected goals may vary between providers, so they should
+            be read with their source and limitations in mind. Our guides aim to explain
+            the numbers rather than present estimates as certainty.
+          </p>
+
+          <p className="mt-4 leading-7 text-slate-300">
+            We welcome reports of inaccurate scores, statistics or explanations and
+            review correction requests against reliable sources.
+          </p>
+
+          <Link
+            href="/editorial-policy"
+            className="mt-5 inline-block font-bold text-green-500 transition hover:text-green-400"
+          >
+            Read our editorial policy and data standards →
+          </Link>
+        </article>
       </section>
 
       <div className="mt-10">
