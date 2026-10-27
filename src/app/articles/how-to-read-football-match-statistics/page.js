@@ -91,6 +91,13 @@ export default function ReadMatchStatisticsArticle() {
           </section>
 
           <section>
+            <h2 className="mb-3 text-2xl font-extrabold text-white">Real example: Liverpool 2-0 Brighton, 25 October 2026</h2>
+            <p>In this Premier League match, Liverpool won 2-0 even though TNT Sports recorded less possession for Liverpool (36% to Brighton's 64%) and more total shots for Brighton (17 to Liverpool's 13). The same provider recorded four Liverpool shots on target and one for Brighton.</p>
+            <p className="mt-4">This is why the numbers need to be read together. Brighton had more of the ball and attempted more shots, but Liverpool put more attempts on target and scored twice. Those figures describe the match; they do not, by themselves, prove which team played better in every phase.</p>
+            <p className="mt-4">Sources: <a className="text-green-500 underline" href="https://www.liverpoolfc.com/news/match-report-brighton-liverpool-premier-league" target="_blank" rel="noreferrer">Liverpool FC's official match report</a> and <a className="text-green-500 underline" href="https://www.tntsports.co.uk/football/premier-league/2026-2027/live-liverpool-brighton-hove-albion_mtc21883302/live-stats.shtml" target="_blank" rel="noreferrer">TNT Sports match statistics</a>. Statistics can differ between providers.</p>
+          </section>
+
+          <section>
             <h2 className="mb-3 text-2xl font-extrabold text-white">Sources and limitations</h2>
             <p>Match statistics are provider-reported data, and definitions or model outputs can vary. This guide explains how to interpret common measures; it does not claim to supply a proprietary xG model or independently verify every event in every match. For a specific fixture, compare the event timeline and statistics from a named provider and treat model-based metrics as estimates.</p>
             <p className="mt-4">For competition rules and official definitions, consult the relevant competition organiser or the IFAB Laws of the Game.</p>
