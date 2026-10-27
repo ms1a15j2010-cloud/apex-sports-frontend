@@ -32,7 +32,7 @@ CONFIG
 
 const API = (
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000"
+  ""
 ).replace(/\/$/, "");
 
 const SEASON = new Date().getMonth() >= 6
