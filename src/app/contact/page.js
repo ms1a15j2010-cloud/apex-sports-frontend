@@ -4,6 +4,9 @@ export const metadata = {
   title: "Contact Apex Sports | Football Website",
   description:
     "Contact Apex Sports for questions, feedback and suggestions about our football scores, fixtures, results, statistics and guides.",
+  alternates: {
+    canonical: "https://apex-sports-frontend.vercel.app/contact",
+  },
 };
 
 export default function ContactPage() {
