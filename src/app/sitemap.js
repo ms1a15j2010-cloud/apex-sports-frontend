@@ -68,14 +68,11 @@ const articleRoutes = [
 ===================================================== */
 
 export default function sitemap() {
-  const lastModified = new Date();
-
   return [
     ...staticRoutes,
     ...articleRoutes,
   ].map((route) => ({
     url: `${BASE_URL}${route}`,
-    lastModified,
     changeFrequency: getChangeFrequency(route),
     priority: getPriority(route),
   }));
