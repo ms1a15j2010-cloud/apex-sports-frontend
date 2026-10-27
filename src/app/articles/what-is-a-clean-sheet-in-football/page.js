@@ -24,6 +24,18 @@ export default function CleanSheetArticle() {
           </p>
         </header>
 
+        <aside className="mb-8 rounded-lg border border-gray-200 bg-gray-50 p-4 text-sm leading-6 text-gray-700" aria-label="Statistics source">
+          <p className="font-semibold text-gray-900">Statistics reference</p>
+          <p className="mt-1">
+            The Premier League publishes goalkeeper clean-sheet statistics and explains its data collection in its{" "}
+            <a href="https://www.premierleague.com/en/stats/clarification" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline underline-offset-2">
+              official statistics guide
+            </a>
+            . This article explains the general term; individual providers may define or display goalkeeper records differently.
+          </p>
+        </aside>
+
+
         <div className="space-y-8 text-gray-700 leading-8">
           <section>
             <h2 className="mb-3 text-2xl font-bold text-gray-900">
