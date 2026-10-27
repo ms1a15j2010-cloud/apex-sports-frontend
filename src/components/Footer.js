@@ -46,6 +46,13 @@ export default function Footer() {
             </Link>
 
             <Link
+              href="/tools/league-points-calculator"
+              className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
+            >
+              Points Calculator
+            </Link>
+
+            <Link
               href="/contact"
               className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
             >
