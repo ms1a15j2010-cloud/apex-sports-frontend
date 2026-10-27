@@ -31,6 +31,24 @@ export default function YellowCardArticle() {
           </p>
         </header>
 
+        <aside className="mb-8 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700" aria-label="Official rules source">
+          <p className="font-semibold text-slate-900">Official rules reference</p>
+          <p className="mt-1">
+            This guide is a plain-language explanation, not the official rulebook.
+            For the authoritative wording and current changes, consult the{" "}
+            <a
+              href="https://www.theifab.com/laws/latest/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-blue-700 underline underline-offset-2"
+            >
+              IFAB Laws of the Game
+            </a>
+            . Competition regulations and permitted modifications can affect how rules are applied.
+          </p>
+        </aside>
+
+
         <section className="mb-10">
           <h2 className="mb-4 text-2xl font-bold text-gray-900">
             What Is a Yellow Card?
