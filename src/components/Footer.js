@@ -51,6 +51,13 @@ export default function Footer() {
             >
               Contact
             </Link>
+
+            <Link
+              href="/editorial-policy"
+              className="block my-[10px] text-[#94a3b8] hover:text-[#3b82f6] transition-colors no-underline"
+            >
+              Editorial Policy
+            </Link>
           </div>
 
           <div>
