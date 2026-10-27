@@ -65,10 +65,6 @@ export const metadata = {
       "eMzm74d1mP9oknPY4pOLjBVGTiPhSvC3zomVjAL7J1k",
   },
 
-  alternates: {
-    canonical: "/",
-  },
-
   openGraph: {
     title: "Apex Sports | Live Football Scores",
     description:
