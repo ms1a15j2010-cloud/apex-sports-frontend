@@ -17,6 +17,7 @@ const staticRoutes = [
   "/terms",
   "/articles",
   "/editorial-policy",
+  "/tools/league-points-calculator",
   "/leagues",
   "/today",
   "/top-assists",
