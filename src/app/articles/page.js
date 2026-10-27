@@ -158,6 +158,21 @@ export default function ArticlesPage() {
         </p>
       </header>
 
+      <section className="mb-10 rounded-[20px] border border-green-900/70 bg-[#0b1220] p-6 sm:p-8">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-green-500">Free football tool</p>
+            <h2 className="text-2xl font-extrabold text-white">Calculate League Points &amp; Goal Difference</h2>
+            <p className="mt-2 max-w-2xl leading-7 text-slate-400">
+              Enter wins, draws, losses and goals to calculate a team's points, matches played and goal difference.
+            </p>
+          </div>
+          <Link href="/tools/league-points-calculator" className="shrink-0 rounded-lg bg-green-500 px-5 py-3 text-center font-bold text-slate-950 transition hover:bg-green-400">
+            Open calculator →
+          </Link>
+        </div>
+      </section>
+
       <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-8">
         <h2 className="text-2xl font-extrabold text-white">
           Recent Match Analyses
