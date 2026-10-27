@@ -15,6 +15,7 @@ const sections = [
       { name: "Top Scorers", href: "/top-scorers/epl", icon: "⚽" },
       { name: "Leagues", href: "/leagues", icon: "🏆" },
       { name: "Articles & Guides", href: "/articles", icon: "📰" },
+      { name: "Points Calculator", href: "/tools/league-points-calculator", icon: "🧮" },
     ],
   },
   {
