@@ -38,6 +38,7 @@ const staticRoutes = [
 ===================================================== */
 
 const articleRoutes = [
+  "/articles/how-to-read-football-match-statistics",
   "/articles/how-football-points-work",
   "/articles/how-football-league-standings-work",
   "/articles/how-to-read-football-fixtures-and-match-results",
