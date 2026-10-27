@@ -503,7 +503,7 @@ export default function HomePage() {
               href="/articles"
               className="inline-block rounded-lg border border-green-600 px-5 py-2.5 font-bold text-green-500 transition hover:bg-green-600 hover:text-white"
             >
-              View All 20 Football Guides →
+              View All Football Guides →
             </a>
           </div>
 
