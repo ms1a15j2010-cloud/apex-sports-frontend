@@ -68,7 +68,7 @@ export default function EditorialPolicyPage() {
             is supported by reliable evidence.
           </p>
           <p className="mt-4">
-            Contact: <a className="font-semibold text-green-500 underline hover:text-green-400" href="mailto:support@apexsports.com">support@apexsports.com</a>
+            Contact: <a className="font-semibold text-green-500 underline hover:text-green-400" href="mailto:Impeccablesports@gmail.com">Impeccablesports@gmail.com</a>
           </p>
         </section>
 
