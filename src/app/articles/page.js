@@ -11,6 +11,12 @@ export const metadata = {
 
 const articles = [
   {
+    title: "How to Read Football Match Statistics Without Misreading the Game",
+    href: "/articles/how-to-read-football-match-statistics",
+    description:
+      "Understand possession, shots, expected goals, passing and defensive statistics, with a practical example and the limitations of each measure.",
+  },
+  {
     title: "How Football League Standings Work",
     href: "/articles/how-football-league-standings-work",
     description:
