@@ -361,6 +361,13 @@ export default function HomePage() {
               Football Guides
             </a>
 
+            <a
+              href="/tools/league-points-calculator"
+              className="rounded-lg border border-slate-700 px-4 py-2 font-semibold text-green-500 transition hover:bg-slate-800 hover:text-green-400"
+            >
+              Points Calculator
+            </a>
+
           </div>
 
         </div>
