@@ -507,6 +507,68 @@ export default function HomePage() {
             </a>
           </div>
 
+        {/* =================================================
+            EDITORIAL MATCH ANALYSIS
+        ================================================== */}
+
+        <section className="mt-10 border-t border-slate-800 pt-8" aria-labelledby="match-analysis-heading">
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <p className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-green-500">
+                Analysis &amp; insight
+              </p>
+              <h2 id="match-analysis-heading" className="text-2xl font-bold text-white md:text-3xl">
+                Recent Match Analysis
+              </h2>
+              <p className="mt-2 max-w-3xl leading-7 text-slate-400">
+                Go beyond the final score. These reports explain what selected match events and
+                published statistics can show—and where those numbers have limits.
+              </p>
+            </div>
+            <a href="/articles" className="font-semibold text-green-500 hover:text-green-400">
+              All articles &amp; guides →
+            </a>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
+              <h3 className="text-lg font-bold text-white">
+                <a href="/articles/liverpool-brighton-match-analysis-october-25-2026" className="hover:text-green-400">
+                  Liverpool 2-0 Brighton: Goals Beat the Possession Count
+                </a>
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                Why Brighton's greater possession and shot volume did not change the result at Anfield.
+              </p>
+            </article>
+
+            <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
+              <h3 className="text-lg font-bold text-white">
+                <a href="/articles/manchester-united-bournemouth-match-analysis-october-25-2026" className="hover:text-green-400">
+                  Manchester United 0-3 Bournemouth: Possession Without a Goal
+                </a>
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                A look at how the timing of Bournemouth's goals shaped the match.
+              </p>
+            </article>
+
+            <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
+              <h3 className="text-lg font-bold text-white">
+                <a href="/articles/crystal-palace-newcastle-match-analysis-october-25-2026" className="hover:text-green-400">
+                  Crystal Palace 0-2 Newcastle: Reading the Statistical Contrast
+                </a>
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-slate-400">
+                What possession, shots and expected goals can—and cannot—explain about a 0-2 result.
+              </p>
+            </article>
+          </div>
+        </section>
+
         </div>
 
       </section>
