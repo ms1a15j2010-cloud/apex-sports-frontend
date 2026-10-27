@@ -4,7 +4,7 @@
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:5000";
+  "";
 
 const CURRENT_SEASON = new Date().getMonth() >= 6
   ? new Date().getFullYear()
