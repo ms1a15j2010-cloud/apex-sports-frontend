@@ -16,6 +16,7 @@ const staticRoutes = [
   "/privacy-policy",
   "/terms",
   "/articles",
+  "/editorial-policy",
   "/leagues",
   "/today",
   "/top-assists",
