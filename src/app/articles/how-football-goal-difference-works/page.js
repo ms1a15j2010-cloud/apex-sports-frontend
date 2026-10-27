@@ -552,6 +552,19 @@ export default function GoalDifferenceArticle() {
               points totals.
             </p>
           </section>
+
+          <section className="rounded-2xl border border-green-900/70 bg-slate-900/60 p-6">
+            <h2 className="text-xl font-extrabold text-white">Try the football calculator</h2>
+            <p className="mt-2 leading-7 text-slate-300">
+              Use your own match record to calculate league points, matches played and goal difference.
+            </p>
+            <Link
+              href="/tools/league-points-calculator"
+              className="mt-4 inline-block rounded-lg bg-green-500 px-4 py-2.5 font-bold text-slate-950 transition hover:bg-green-400"
+            >
+              Open points calculator →
+            </Link>
+          </section>
         </div>
       </article>
     </main>
