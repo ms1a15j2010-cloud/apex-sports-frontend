@@ -76,9 +76,8 @@ export default function PrivacyPolicy() {
             Google and other advertising providers may use cookies or similar
             technologies to deliver, measure and limit advertising, subject to
             the applicable settings and consent requirements. Visitors can
-            review Google's information about how it uses data on partner
-            sites at https://policies.google.com/technologies/partner-sites
-            and manage personal ad settings at https://adssettings.google.com/.
+            review <a className="text-green-500 underline" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">Google's explanation of data use on partner sites</a>
+            and manage personal ad settings through <a className="text-green-500 underline" href="https://adssettings.google.com/" target="_blank" rel="noreferrer">Google Ads Settings</a>.
             Some regions require additional consent choices before certain
             advertising technologies are used.
           </p>
