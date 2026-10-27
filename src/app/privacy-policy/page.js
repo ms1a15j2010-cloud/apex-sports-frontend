@@ -31,10 +31,14 @@ export default function PrivacyPolicy() {
           </h2>
 
           <p className="mt-4 leading-7 text-slate-300">
-            Apex Sports does not require visitors to create an account to
-            access football scores, fixtures, results, standings, statistics
-            or articles. We do not intentionally collect personal information
-            simply because someone visits the website.
+            Apex Sports does not require an account to browse football scores,
+            fixtures, results, standings, statistics or articles. Like most
+            websites, our hosting, analytics and advertising services may
+            process technical information such as an IP address, browser and
+            device details, page requests, approximate location derived from
+            an IP address, and cookie or advertising identifiers. The data
+            processed depends on which services are enabled and the visitor's
+            settings.
           </p>
         </article>
 
@@ -69,9 +73,14 @@ export default function PrivacyPolicy() {
           </p>
 
           <p className="mt-4 leading-7 text-slate-300">
-            Advertising preferences can be managed through the settings and
-            controls provided by the relevant advertising provider and
-            through browser privacy settings.
+            Google and other advertising providers may use cookies or similar
+            technologies to deliver, measure and limit advertising, subject to
+            the applicable settings and consent requirements. Visitors can
+            review Google's information about how it uses data on partner
+            sites at https://policies.google.com/technologies/partner-sites
+            and manage personal ad settings at https://adssettings.google.com/.
+            Some regions require additional consent choices before certain
+            advertising technologies are used.
           </p>
         </article>
 
@@ -141,7 +150,7 @@ export default function PrivacyPolicy() {
             href="mailto:support@apexsports.com"
             className="mt-3 inline-block font-semibold text-green-500 transition hover:text-green-400"
           >
-            admin@apexsports.com
+            support@apexsports.com
           </a>
         </article>
       </section>
