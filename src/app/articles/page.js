@@ -260,26 +260,29 @@ export default function ArticlesPage() {
         </p>
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
+          <Link href="/articles/how-football-league-standings-work" className="rounded-xl border border-gray-800 bg-gray-900/50 p-4 no-underline transition hover:border-green-500">
             <h3 className="font-bold text-white">League Tables</h3>
             <p className="mt-1 text-sm leading-6 text-slate-400">
               Points, standings and goal difference.
             </p>
-          </div>
+            <span className="mt-3 inline-block text-sm font-semibold text-green-500">Explore guides →</span>
+          </Link>
 
-          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
+          <Link href="/articles/what-is-offside-in-football" className="rounded-xl border border-gray-800 bg-gray-900/50 p-4 no-underline transition hover:border-green-500">
             <h3 className="font-bold text-white">Match Rules</h3>
             <p className="mt-1 text-sm leading-6 text-slate-400">
               Offside, handball, cards and restarts.
             </p>
-          </div>
+            <span className="mt-3 inline-block text-sm font-semibold text-green-500">Explore guides →</span>
+          </Link>
 
-          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
+          <Link href="/articles/what-is-a-clean-sheet-in-football" className="rounded-xl border border-gray-800 bg-gray-900/50 p-4 no-underline transition hover:border-green-500">
             <h3 className="font-bold text-white">Football Terms</h3>
             <p className="mt-1 text-sm leading-6 text-slate-400">
               Common terms used when following matches.
             </p>
-          </div>
+            <span className="mt-3 inline-block text-sm font-semibold text-green-500">Explore guides →</span>
+          </Link>
         </div>
       </section>
 
