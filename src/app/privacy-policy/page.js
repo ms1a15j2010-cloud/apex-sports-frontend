@@ -4,6 +4,9 @@ export const metadata = {
   title: "Privacy Policy | Apex Sports",
   description:
     "Read the Apex Sports Privacy Policy covering cookies, advertising, analytics, third-party services and visitor information.",
+  alternates: {
+    canonical: "https://apex-sports-frontend.vercel.app/privacy-policy",
+  },
 };
 
 export default function PrivacyPolicy() {
