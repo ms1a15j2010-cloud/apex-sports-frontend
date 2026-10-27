@@ -38,6 +38,19 @@ export default function GoalDifferenceArticle() {
           </p>
         </header>
 
+        <aside className="mb-8 rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm leading-6 text-slate-700" aria-label="Competition rules source">
+          <p className="font-semibold text-slate-900">Competition reference</p>
+          <p className="mt-1">
+            The examples in this guide use the Premier League's published format.
+            Other competitions can use different tie-breakers or regulations. See the{" "}
+            <a href="https://www.premierleague.com/en/news/58905" target="_blank" rel="noopener noreferrer" className="font-semibold text-blue-700 underline underline-offset-2">
+              Premier League's official explanation
+            </a>
+            {" "}for its points system and table rules.
+          </p>
+        </aside>
+
+
         <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-7">
           <h2 className="text-2xl font-extrabold text-white">
             Quick Summary
