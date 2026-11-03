@@ -661,7 +661,7 @@ export default async function TopScorersPage({
 
                   <StatBox
                     value={
-                      appearances || "-"
+                      appearances ?? "-"
                     }
                     label="Apps"
                   />
