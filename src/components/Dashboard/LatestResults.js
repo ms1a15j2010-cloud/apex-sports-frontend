@@ -160,6 +160,10 @@ export default function LatestResults() {
           Latest Results
         </h2>
 
+        <p className="mt-1.5 text-sm text-[#9ca3af]">
+          Recently completed Premier League matches available from the current data feed.
+        </p>
+
         <div className="mt-5 rounded-[14px] bg-[#0f172a] p-[25px] text-[#9ca3af]">
           Loading latest results...
         </div>
