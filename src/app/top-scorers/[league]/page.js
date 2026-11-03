@@ -221,20 +221,20 @@ async function getTopScorers(league) {
 SAFE NUMBER
 ===================================================== */
 
-function safeNumber(value) {
+function safeNumber(value, fallback = 0) {
   if (
     value === null ||
     value === undefined ||
     value === ""
   ) {
-    return 0;
+    return fallback;
   }
 
   const number = Number(value);
 
   return Number.isFinite(number)
     ? number
-    : 0;
+    : fallback;
 }
 
 /* =====================================================
@@ -571,7 +571,8 @@ export default async function TopScorersPage({
             const assists = safeNumber(
               statistics?.goals
                 ?.assists ??
-                scorer?.assists
+                scorer?.assists,
+              null
             );
 
             const appearances =
@@ -580,7 +581,8 @@ export default async function TopScorersPage({
                   ?.appearences ??
                   statistics?.games
                     ?.appearances ??
-                  scorer?.appearances
+                  scorer?.appearances,
+                null
               );
 
             const rankStyles =
@@ -651,7 +653,7 @@ export default async function TopScorersPage({
                   {/* ASSISTS */}
 
                   <StatBox
-                    value={assists}
+                    value={assists ?? "-"}
                     label="Assists"
                   />
 
