@@ -32,6 +32,10 @@ export default function LatestResults() {
           setMatches(data.matches);
         } else {
           setMatches([]);
+          setError(
+            data?.message ||
+              "Unable to load latest results"
+          );
         }
       } catch (err) {
         if (!mounted) {
@@ -155,6 +159,10 @@ export default function LatestResults() {
         <h2 className="m-0 text-2xl font-bold text-white">
           Latest Results
         </h2>
+
+        <p className="mt-1.5 text-sm text-[#9ca3af]">
+          Recently completed Premier League matches available from the current data feed.
+        </p>
 
         <div className="mt-5 rounded-[14px] bg-[#0f172a] p-[25px] text-[#9ca3af]">
           Loading latest results...
