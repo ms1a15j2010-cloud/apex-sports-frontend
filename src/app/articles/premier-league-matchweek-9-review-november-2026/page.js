@@ -79,8 +79,8 @@ export default function PremierLeagueMatchweek9Review() {
             <div><p className="text-2xl font-black text-white">3</p><p className="text-xs text-slate-400">Away wins</p></div>
           </div>
           <p className="mt-4 text-sm leading-6 text-slate-400">
-            Two matches ended level. The remaining result was a 0-1 away win,
-            with Arsenal, Brighton and Everton all winning on the road.
+            Two matches ended level. The other three results were away wins, with Arsenal, Brighton and Everton
+            all taking points on the road.
           </p>
         </section>
 
