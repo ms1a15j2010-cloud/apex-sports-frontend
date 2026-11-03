@@ -184,6 +184,22 @@ export default function ArticlesPage() {
           tactical decision or determine which team deserved to win.
         </p>
         <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <article className="rounded-xl border border-green-900/70 bg-gray-900/50 p-5 md:col-span-2">
+            <div className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-green-500">
+              Matchweek Review · 3 November 2026
+            </div>
+            <h3 className="text-lg font-bold text-white">
+              <Link href="/articles/premier-league-matchweek-9-review-november-2026" className="hover:text-green-400">
+                Arsenal Take Control as Brighton Beat City: Matchweek 9 Review
+              </Link>
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              All ten results, the key away wins, the top-five table after nine matches and links to the clubs' match reports.
+            </p>
+            <Link href="/articles/premier-league-matchweek-9-review-november-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">
+              Read the Matchweek 9 review →
+            </Link>
+          </article>
           <article className="rounded-xl border border-gray-800 bg-gray-900/50 p-5">
             <h3 className="text-lg font-bold text-white">
               <Link href="/articles/hull-city-brentford-match-analysis-october-25-2026" className="hover:text-green-400">
