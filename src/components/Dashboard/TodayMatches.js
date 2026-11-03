@@ -30,6 +30,10 @@ export default function TodayMatches() {
           setMatches(data.matches);
         } else {
           setMatches([]);
+          setError(
+            data?.message ||
+              "Unable to load today's matches"
+          );
         }
       } catch (err) {
         if (!mounted) {
