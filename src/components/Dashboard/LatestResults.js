@@ -32,6 +32,10 @@ export default function LatestResults() {
           setMatches(data.matches);
         } else {
           setMatches([]);
+          setError(
+            data?.message ||
+              "Unable to load latest results"
+          );
         }
       } catch (err) {
         if (!mounted) {
