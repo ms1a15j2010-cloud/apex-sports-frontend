@@ -6,6 +6,14 @@ const CURRENT_SEASON = new Date().getMonth() >= 6
   ? new Date().getFullYear()
   : new Date().getFullYear() - 1;
 
+function formatSeasonLabel(season) {
+  const year = Number(season);
+
+  return Number.isInteger(year)
+    ? `${year}/${String(year + 1).slice(-2)}`
+    : String(season || "");
+}
+
 /* =====================================================
 LEAGUE CONFIG
 ===================================================== */
@@ -328,10 +336,10 @@ export async function generateMetadata({
   }
 
   const title =
-    `${config.name} Top Scorers ${config.season} | Apex Sports`;
+    `${config.name} Top Scorers ${formatSeasonLabel(config.season)} | Apex Sports`;
 
   const description =
-    `View the latest ${config.name} top scorers for the ${config.season} season. Compare goals, assists, appearances and leading football players on Apex Sports.`;
+    `View the latest ${config.name} top scorers for the ${formatSeasonLabel(config.season)} season. Compare goals, assists, appearances and leading football players on Apex Sports.`;
 
   const url =
     `https://apex-sports-frontend.vercel.app/top-scorers/${slug}`;
@@ -429,8 +437,7 @@ export default async function TopScorersPage({
 
           <p className="mt-2.5 text-[15px] text-gray-400">
             Season{" "}
-            {data?.season ||
-              config.season}
+            {formatSeasonLabel(data?.season || config.season)}
           </p>
         </header>
 
@@ -474,8 +481,7 @@ export default async function TopScorersPage({
         <p className="mt-2.5 text-[15px] text-gray-400">
           Leading goalscorers for{" "}
           {config.name}{" "}
-          {data?.season ||
-            config.season}{" "}
+          {formatSeasonLabel(data?.season || config.season)}{" "}
           season.
         </p>
       </header>
@@ -492,10 +498,7 @@ export default async function TopScorersPage({
 
         <SummaryCard
           label="Season"
-          value={
-            data?.season ||
-            config.season
-          }
+          value={formatSeasonLabel(data?.season || config.season)}
         />
 
         <SummaryCard
