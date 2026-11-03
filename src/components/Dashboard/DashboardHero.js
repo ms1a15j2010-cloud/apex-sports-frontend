@@ -14,10 +14,10 @@ import { api } from "@/lib/api";
 
 export default function DashboardHero() {
   const [hero, setHero] = useState({
-    leagues: 0,
-    teams: 0,
-    players: 0,
-    fixtures: 0,
+    leagues: null,
+    teams: null,
+    players: null,
+    fixtures: null,
   });
 
   const [league, setLeague] = useState(null);
@@ -106,20 +106,6 @@ export default function DashboardHero() {
   }, []);
 
   /* ===================================================
-     LOADING
-  =================================================== */
-
-  if (loading) {
-    return (
-      <section className="mb-[30px] rounded-[20px] border border-[#1f2937] bg-gradient-to-br from-[#111827] to-[#0f172a] p-7 text-white">
-        <div className="text-sm text-[#94a3b8]">
-          Loading dashboard...
-        </div>
-      </section>
-    );
-  }
-
-  /* ===================================================
      RENDER
   =================================================== */
 
@@ -179,25 +165,25 @@ export default function DashboardHero() {
         <StatCard
           icon="🏆"
           label="Leagues"
-          value={hero.leagues}
+          value={loading ? null : hero.leagues}
         />
 
         <StatCard
           icon="⚽"
           label="Teams"
-          value={hero.teams}
+          value={loading ? null : hero.teams}
         />
 
         <StatCard
           icon="👤"
           label="Players"
-          value={hero.players}
+          value={loading ? null : hero.players}
         />
 
         <StatCard
           icon="📅"
           label="Fixtures"
-          value={hero.fixtures}
+          value={loading ? null : hero.fixtures}
         />
       </div>
     </section>
@@ -220,7 +206,9 @@ function StatCard({
       </div>
 
       <div className="text-[25px] font-black text-white">
-        {Number(value).toLocaleString()}
+        {value === null || value === undefined
+          ? "—"
+          : Number(value).toLocaleString()}
       </div>
 
       <div className="mt-1 text-[11px] font-extrabold uppercase tracking-[0.6px] text-[#64748b]">
