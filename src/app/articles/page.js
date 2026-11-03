@@ -175,7 +175,7 @@ export default function ArticlesPage() {
 
       <section className="mb-10 rounded-[20px] border border-gray-800 bg-[#0b1220] p-6 sm:p-8">
         <h2 className="text-2xl font-extrabold text-white">
-          Recent Match Analyses
+          Selected Match Analyses
         </h2>
         <p className="mt-3 max-w-3xl leading-7 text-slate-400">
           These reports examine selected matches using published match events
