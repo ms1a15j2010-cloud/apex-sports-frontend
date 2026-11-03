@@ -17,7 +17,7 @@ export const metadata = {
 
   title: {
     default: "Apex Sports | Live Football Scores",
-    template: "%s | Apex Sports",
+    template: "%s",
   },
 
   description:
