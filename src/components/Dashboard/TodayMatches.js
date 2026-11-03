@@ -125,6 +125,10 @@ export default function TodayMatches() {
           Today&apos;s Matches
         </h2>
 
+        <p className="mt-1.5 text-sm text-[#9ca3af]">
+          Premier League matches scheduled for today's Pakistan calendar date.
+        </p>
+
         <div className="mt-5 rounded-[14px] bg-[#0f172a] p-6 text-[#9ca3af]">
           Loading today&apos;s matches...
         </div>
