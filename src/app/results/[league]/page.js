@@ -5,8 +5,7 @@ const CURRENT_SEASON = new Date().getMonth() >= 6
   : new Date().getFullYear() - 1;
 
 const API =
-  process.env.NEXT_PUBLIC_API_URL ||
-  "";
+  process.env.NEXT_PUBLIC_API_URL || "https://apex-sports-backend.vercel.app";
 
 const LEAGUE_CONFIG = {
   epl: {
