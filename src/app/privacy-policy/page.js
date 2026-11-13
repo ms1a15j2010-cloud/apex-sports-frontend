@@ -76,13 +76,35 @@ export default function PrivacyPolicy() {
           </p>
 
           <p className="mt-4 leading-7 text-slate-300">
-            Google and other advertising providers may use cookies or similar
-            technologies to deliver, measure and limit advertising, subject to
-            the applicable settings and consent requirements. Visitors can
-            review <a className="text-green-500 underline" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">Google's explanation of data use on partner sites</a>
-            and manage personal ad settings through <a className="text-green-500 underline" href="https://adssettings.google.com/" target="_blank" rel="noreferrer">Google Ads Settings</a>.
-            Some regions require additional consent choices before certain
-            advertising technologies are used.
+            Google and other third-party advertising vendors may place and read
+            cookies on a visitor's browser, use web beacons, receive IP addresses
+            or use similar identifiers when ads are requested, delivered or
+            measured. Depending on the visitor's settings and applicable law,
+            these technologies may be used to show, limit and measure ads and
+            may use information about a visitor's previous visits to this site
+            or other websites.
+          </p>
+
+          <p className="mt-4 leading-7 text-slate-300">
+            Visitors can manage Google's personalised advertising choices in
+            <a className="ml-1 text-green-500 underline" href="https://adssettings.google.com/" target="_blank" rel="noreferrer">Google Ads Settings</a>.
+            Visitors can also review Google's
+            <a className="ml-1 text-green-500 underline" href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noreferrer">explanation of data use on partner sites</a>
+            and use
+            <a className="ml-1 text-green-500 underline" href="https://www.aboutads.info/choices/" target="_blank" rel="noreferrer">AboutAds.info choices</a>
+            to learn about opting out of some participating third-party vendors'
+            personalised advertising. These choices may change personalisation;
+            they do not necessarily remove all advertising from the website.
+          </p>
+
+          <p className="mt-4 leading-7 text-slate-300">
+            Advertising and consent settings can vary by country. Where consent
+            is required by applicable law or Google's publisher policies,
+            advertising technologies that require consent must not be used
+            before the required choice is obtained. Publishers serving
+            personalised ads to visitors in the EEA, the United Kingdom or
+            Switzerland must use a Google-certified consent management platform
+            that integrates with the IAB Transparency and Consent Framework.
           </p>
         </article>
 
