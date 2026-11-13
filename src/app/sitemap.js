@@ -40,6 +40,7 @@ const staticRoutes = [
 ===================================================== */
 
 const articleRoutes = [
+  "/articles/uefa-nations-league-matchday-5-review-november-2026",
   "/articles/premier-league-matchweek-9-review-november-2026",
   "/articles/how-to-read-football-match-statistics",
   "/articles/how-football-points-work",
