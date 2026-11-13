@@ -11,6 +11,12 @@ export const metadata = {
 
 const articles = [
   {
+    title: "England Reach the Last Eight as Italy Reopen Group A1",
+    href: "/articles/uefa-nations-league-matchday-5-review-november-2026",
+    description:
+      "An original review of England 2–1 Croatia and Italy 3–1 France, all eight Matchday 5 results, and the decisive Group A1 implications.",
+  },
+  {
     title: "How to Read Football Match Statistics Without Misreading the Game",
     href: "/articles/how-to-read-football-match-statistics",
     description:
@@ -157,6 +163,28 @@ export default function ArticlesPage() {
           pitch, and where the evidence has limits.
         </p>
       </header>
+
+      <section className="mb-10 rounded-[20px] border border-green-900/70 bg-[#0b1220] p-6 sm:p-8">
+        <p className="mb-2 text-xs font-extrabold uppercase tracking-[1.2px] text-green-500">
+          Latest international match analysis · 13 November 2026
+        </p>
+        <h2 className="text-2xl font-extrabold text-white">
+          England Reach the Last Eight as Italy Reopen Group A1
+        </h2>
+        <p className="mt-3 max-w-3xl leading-7 text-slate-300">
+          Read the eight Matchday 5 results, examine the turning points in England’s win over Croatia
+          and Italy’s comeback against France, and see why Group A1 remains open before the final round.
+        </p>
+        <p className="mt-3 text-sm text-slate-400">
+          Published 13 November 2026 · Match reports checked against UEFA’s official coverage.
+        </p>
+        <Link
+          href="/articles/uefa-nations-league-matchday-5-review-november-2026"
+          className="mt-5 inline-block rounded-lg bg-green-500 px-5 py-3 font-bold text-slate-950 transition hover:bg-green-400"
+        >
+          Read the matchday review →
+        </Link>
+      </section>
 
       <section className="mb-10 rounded-[20px] border border-green-900/70 bg-[#0b1220] p-6 sm:p-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
