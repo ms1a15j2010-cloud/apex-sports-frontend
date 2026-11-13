@@ -87,7 +87,8 @@ export default function MatchCard({ match }) {
     if (match.fixture?.date) {
       return new Date(
         match.fixture.date
-      ).toLocaleTimeString([], {
+      ).toLocaleTimeString("en-GB", {
+        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit",
       });
@@ -96,7 +97,8 @@ export default function MatchCard({ match }) {
     if (match.utcDate) {
       return new Date(
         match.utcDate
-      ).toLocaleTimeString([], {
+      ).toLocaleTimeString("en-GB", {
+        timeZone: "Europe/London",
         hour: "2-digit",
         minute: "2-digit",
       });
