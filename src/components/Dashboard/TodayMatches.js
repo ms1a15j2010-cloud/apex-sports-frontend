@@ -4,6 +4,17 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+function isNovemberInternationalBreak() {
+  const today = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+
+  return today >= "2026-11-09" && today <= "2026-11-17";
+}
+
 export default function TodayMatches() {
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -159,7 +170,26 @@ export default function TodayMatches() {
         </h2>
 
         <div className="mt-5 rounded-[14px] bg-[#0f172a] p-7 text-center text-[#9ca3af]">
-          No matches scheduled today.
+          {isNovemberInternationalBreak() ? (
+            <>
+              <p className="font-semibold text-white">
+                The Premier League is paused for the November international break.
+              </p>
+              <p className="mt-2 text-sm leading-6">
+                The international window runs from 9–17 November, with Premier League fixtures scheduled to return on Saturday 21 November 2026.
+              </p>
+            </>
+          ) : (
+            <p>No Premier League fixtures are scheduled for today's UK calendar date.</p>
+          )}
+          <div className="mt-4 flex flex-wrap justify-center gap-4">
+            <Link href="/fixtures/epl" className="font-semibold text-green-500 underline underline-offset-4">
+              Upcoming Premier League fixtures
+            </Link>
+            <Link href="/articles/uefa-nations-league-matchday-5-review-november-2026" className="font-semibold text-green-500 underline underline-offset-4">
+              Latest international match analysis
+            </Link>
+          </div>
         </div>
       </section>
     );
