@@ -29,7 +29,7 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
   const firstRender = useRef(true);
 
   useEffect(() => {
-    if (firstRender.current && tab === "today") {
+    if (firstRender.current && tab === "today" && initialData?.success === true) {
       firstRender.current = false;
       return;
     }
