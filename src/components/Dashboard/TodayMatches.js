@@ -110,9 +110,10 @@ export default function TodayMatches() {
     }
 
     return new Date(date).toLocaleTimeString(
-      "en-US",
+      "en-GB",
       {
-        hour: "numeric",
+        timeZone: "Europe/London",
+        hour: "2-digit",
         minute: "2-digit",
       }
     );
@@ -126,7 +127,7 @@ export default function TodayMatches() {
         </h2>
 
         <p className="mt-1.5 text-sm text-[#9ca3af]">
-          Premier League matches scheduled for today's Pakistan calendar date.
+          Premier League fixtures scheduled for today's UK calendar date.
         </p>
 
         <div className="mt-5 rounded-[14px] bg-[#0f172a] p-6 text-[#9ca3af]">
