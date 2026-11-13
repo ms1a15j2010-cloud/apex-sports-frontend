@@ -63,6 +63,7 @@ async function getUpcomingFixtures() {
     url.searchParams.set("season", String(CURRENT_SEASON));
     url.searchParams.set("page", "1");
     url.searchParams.set("limit", "6");
+    url.searchParams.set("upcoming", "true");
 
     const response = await fetch(url, {
       headers: { Accept: "application/json" },
