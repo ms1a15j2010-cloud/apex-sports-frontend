@@ -40,7 +40,7 @@ const LEAGUE_CONFIG = {
 API
 ===================================================== */
 
-const API = process.env.NEXT_PUBLIC_API_URL || "";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://apex-sports-backend.vercel.app";
 
 /* =====================================================
 GET FIXTURES
