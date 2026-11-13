@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import HomeHero from "@/components/HomeHero";
@@ -12,15 +12,29 @@ const CURRENT_SEASON = new Date().getMonth() >= 6
   ? new Date().getFullYear()
   : new Date().getFullYear() - 1;
 
-export default function HomePage() {
+export default function HomePage({ initialData, isInternationalBreak = false }) {
   const router = useRouter();
-  const [matches, setMatches] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+  const initialMatches = Array.isArray(initialData?.matches)
+    ? initialData.matches
+    : [];
+  const [matches, setMatches] = useState(initialMatches);
+  const [filtered, setFiltered] = useState(initialMatches);
   const [tab, setTab] = useState("today");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(!initialData);
+  const [error, setError] = useState(
+    initialData?.success
+      ? ""
+      : initialData?.message || "Premier League match data is temporarily unavailable."
+  );
+  const firstRender = useRef(true);
 
   useEffect(() => {
+    if (firstRender.current && tab === "today") {
+      firstRender.current = false;
+      return;
+    }
+    firstRender.current = false;
+
     let mounted = true;
 
     async function loadMatches() {
@@ -186,14 +200,43 @@ export default function HomePage() {
       {!loading &&
         !error &&
         filtered.length === 0 && (
-          <div className="py-[60px] text-center text-[18px] text-slate-400">
-            {tab === "live"
-              ? "No live matches."
-              : tab === "finished"
-                ? "No finished matches available."
-                : tab === "upcoming"
-                  ? "No upcoming matches available."
-                  : "No matches scheduled today."}
+          <div className="mx-auto max-w-3xl rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-8 text-center text-slate-300">
+            {tab === "today" && isInternationalBreak ? (
+              <>
+                <h2 className="text-xl font-bold text-white">
+                  Premier League paused for the international break
+                </h2>
+                <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-300">
+                  No Premier League fixtures are scheduled during the November international window (9–17 November).
+                  League action is due to return on Saturday 21 November 2026. International teams are playing
+                  Nations League and qualifying fixtures during the pause.
+                </p>
+                <div className="mt-5 flex flex-wrap justify-center gap-4">
+                  <a
+                    href="/articles/uefa-nations-league-matchday-5-review-november-2026"
+                    className="font-semibold text-green-500 underline underline-offset-4 hover:text-green-400"
+                  >
+                    Read our Nations League matchday review
+                  </a>
+                  <a
+                    href="/fixtures/epl"
+                    className="font-semibold text-green-500 underline underline-offset-4 hover:text-green-400"
+                  >
+                    View upcoming Premier League fixtures
+                  </a>
+                </div>
+              </>
+            ) : (
+              <p>
+                {tab === "live"
+                  ? "There are no live matches in the selected coverage right now."
+                  : tab === "finished"
+                    ? "No recent Premier League results are available from the current data feed."
+                    : tab === "upcoming"
+                      ? "No upcoming Premier League fixtures are available from the current data feed."
+                      : "No Premier League fixtures are scheduled for today (UK time)."}
+              </p>
+            )}
           </div>
         )}
 
@@ -538,43 +581,52 @@ export default function HomePage() {
           </div>
 
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <article className="rounded-xl border border-green-900/70 bg-slate-950 p-5 transition hover:border-green-500 md:col-span-2">
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-green-500">
+                UEFA Nations League · 12 Nov 2026 · Published 13 Nov 2026
+              </p>
+              <h3 className="text-xl font-bold text-white">
+                <a href="/articles/uefa-nations-league-matchday-5-review-november-2026" className="hover:text-green-400">
+                  England Reach the Last Eight as Italy Reopen Group A1
+                </a>
+              </h3>
+              <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">
+                An evidence-led review of England’s 2–1 win over Croatia, Italy’s 3–1 comeback against France,
+                and the results that set up the final group matchday.
+              </p>
+              <a href="/articles/uefa-nations-league-matchday-5-review-november-2026" className="mt-3 inline-block font-semibold text-green-500 hover:text-green-400">
+                Read the matchday analysis →
+              </a>
+            </article>
+
             <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">
+                Premier League · Published 3 Nov 2026
+              </p>
               <h3 className="text-lg font-bold text-white">
-                <a href="/articles/liverpool-brighton-match-analysis-october-25-2026" className="hover:text-green-400">
-                  Liverpool 2-0 Brighton: Goals Beat the Possession Count
+                <a href="/articles/premier-league-matchweek-9-review-november-2026" className="hover:text-green-400">
+                  Arsenal, Brighton and the Matchweek 9 Storylines
                 </a>
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                Why Brighton's greater possession and shot volume did not change the result at Anfield.
+                Ten results, key away performances and a dated top-five table snapshot with links to club reports.
               </p>
             </article>
 
             <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
-              <h3 className="text-lg font-bold text-white">
-                <a href="/articles/manchester-united-bournemouth-match-analysis-october-25-2026" className="hover:text-green-400">
-                  Manchester United 0-3 Bournemouth: Possession Without a Goal
-                </a>
-              </h3>
-              <p className="mt-3 text-sm leading-6 text-slate-400">
-                A look at how the timing of Bournemouth's goals shaped the match.
+              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">
+                Football data guide
               </p>
-            </article>
-
-            <article className="rounded-xl border border-slate-800 bg-slate-950 p-5 transition hover:border-green-500">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-slate-500">Premier League · 25 Oct 2026</p>
               <h3 className="text-lg font-bold text-white">
-                <a href="/articles/crystal-palace-newcastle-match-analysis-october-25-2026" className="hover:text-green-400">
-                  Crystal Palace 0-2 Newcastle: Reading the Statistical Contrast
+                <a href="/articles/how-to-read-football-match-statistics" className="hover:text-green-400">
+                  How to Read Match Statistics Without Misreading the Game
                 </a>
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-400">
-                What possession, shots and expected goals can—and cannot—explain about a 0-2 result.
+                A practical guide to possession, shots, xG and why statistics need match context.
               </p>
             </article>
           </div>
-        </section>
 
         </div>
 
