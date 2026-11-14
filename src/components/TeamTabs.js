@@ -3,86 +3,15 @@
 import { useEffect, useState } from "react";
 
 const tabs = [
-  {
-    id: "overview",
-    label: "Overview",
-    icon: "🏠",
-  },
-  {
-    id: "venue",
-    label: "Venue",
-    icon: "🏟️",
-  },
-  {
-    id: "coach",
-    label: "Coach",
-    icon: "👔",
-  },
-  {
-    id: "statistics",
-    label: "Statistics",
-    icon: "📊",
-  },
-  {
-    id: "analytics",
-    label: "Analytics",
-    icon: "📈",
-  },
-  {
-    id: "comparison",
-    label: "Comparison",
-    icon: "⚖️",
-  },
-  {
-    id: "form",
-    label: "Form",
-    icon: "🔥",
-  },
-  {
-    id: "fixtures",
-    label: "Fixtures",
-    icon: "📅",
-  },
-  {
-    id: "results",
-    label: "Results",
-    icon: "🏁",
-  },
-  {
-    id: "squad",
-    label: "Squad",
-    icon: "👥",
-  },
-  {
-    id: "history",
-    label: "History",
-    icon: "📜",
-  },
-  {
-    id: "achievements",
-    label: "Achievements",
-    icon: "🏆",
-  },
-  {
-    id: "transfers",
-    label: "Transfers",
-    icon: "🔄",
-  },
-  {
-    id: "injuries",
-    label: "Injuries",
-    icon: "🚑",
-  },
-  {
-    id: "trophies",
-    label: "Trophies",
-    icon: "🏆",
-  },
-  {
-    id: "social",
-    label: "Social",
-    icon: "🌐",
-  },
+  { id: "overview", label: "Overview", icon: "🏠" },
+  { id: "venue", label: "Venue", icon: "🏟️" },
+  { id: "coach", label: "Coach", icon: "👔" },
+  { id: "statistics", label: "Statistics", icon: "📊" },
+  { id: "form", label: "Form", icon: "🔥" },
+  { id: "fixtures", label: "Fixtures", icon: "📅" },
+  { id: "results", label: "Results", icon: "🏁" },
+  { id: "squad", label: "Squad", icon: "👥" },
+  { id: "social", label: "Club details", icon: "🌐" },
 ];
 
 export default function TeamTabs() {
