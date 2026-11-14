@@ -5,8 +5,21 @@ import Link from "next/link";
 
 export default function TeamSidebar({
   team,
+  sectionIds = ["overview", "fixtures", "results", "squad", "social"],
 }) {
   if (!team) return null;
+
+  const navigation = [
+    { id: "overview", text: "Overview" },
+    { id: "venue", text: "Venue" },
+    { id: "coach", text: "Coach" },
+    { id: "statistics", text: "Statistics" },
+    { id: "form", text: "Form" },
+    { id: "fixtures", text: "Fixtures" },
+    { id: "results", text: "Results" },
+    { id: "squad", text: "Squad" },
+    { id: "social", text: "Club details" },
+  ].filter((item) => sectionIds.includes(item.id));
 
   const teamLogo =
     team.logo ||
@@ -148,55 +161,13 @@ export default function TeamSidebar({
           Quick Navigation
         </h3>
 
-        <SidebarLink
-          href="#overview"
-          text="Overview"
-        />
-
-        <SidebarLink
-          href="#statistics"
-          text="Statistics"
-        />
-
-        <SidebarLink
-          href="#analytics"
-          text="Analytics"
-        />
-
-        <SidebarLink
-          href="#fixtures"
-          text="Fixtures"
-        />
-
-        <SidebarLink
-          href="#results"
-          text="Results"
-        />
-
-        <SidebarLink
-          href="#squad"
-          text="Squad"
-        />
-
-        <SidebarLink
-          href="#history"
-          text="History"
-        />
-
-        <SidebarLink
-          href="#transfers"
-          text="Transfers"
-        />
-
-        <SidebarLink
-          href="#injuries"
-          text="Injuries"
-        />
-
-        <SidebarLink
-          href="#trophies"
-          text="Trophies"
-        />
+        {navigation.map((item) => (
+          <SidebarLink
+            key={item.id}
+            href={`#${item.id}`}
+            text={item.text}
+          />
+        ))}
       </div>
 
       {/* =================================================

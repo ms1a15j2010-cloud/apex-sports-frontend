@@ -23,7 +23,7 @@ function getLondonDate() {
 
 async function getInitialMatches() {
   try {
-    const response = await fetch(`${API_BASE}/api/today?league=PL`, {
+    const response = await fetch(`${API_BASE}/api/today?date=${getLondonDate()}&league=PL&season=${CURRENT_SEASON}`, {
       headers: { Accept: "application/json" },
       next: { revalidate: 300 },
     });
@@ -99,21 +99,15 @@ async function getUpcomingFixtures() {
 }
 
 export default async function HomePage() {
-  const [initialData, upcomingFixtures, londonDate] = await Promise.all([
+  const [initialData, upcomingFixtures] = await Promise.all([
     getInitialMatches(),
     getUpcomingFixtures(),
-    Promise.resolve(getLondonDate()),
   ]);
-
-  const isInternationalBreak =
-    londonDate >= "2026-11-09" &&
-    londonDate <= "2026-11-17";
 
   return (
     <>
       <HomePageClient
         initialData={initialData}
-        isInternationalBreak={isInternationalBreak}
       />
       {initialData?.success && initialData.matches.length === 0 && (
         <UpcomingFixturesPreview fixtures={upcomingFixtures} />

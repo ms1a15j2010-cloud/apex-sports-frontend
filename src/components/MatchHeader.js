@@ -35,23 +35,26 @@ export default function MatchHeader({ match }) {
   const league = match.league || {};
   const home = match.teams?.home || {};
   const away = match.teams?.away || {};
-  const goals = match.goals || {};
+  const score = match.score || {};
+  const homeScore =
+    score.fulltime?.home ?? score.home ?? null;
+  const awayScore =
+    score.fulltime?.away ?? score.away ?? null;
 
+  const statusData = match.status || fixture.status || {};
   const status =
-    fixture.status?.short ||
-    fixture.status?.long ||
+    statusData.short ||
+    statusData.long ||
     "NS";
 
   const statusColor =
-    status === "FT"
+    ["FT", "FINISHED", "AWARDED"].includes(status)
       ? "#22c55e"
-      : status === "HT"
-      ? "#f59e0b"
-      : ["1H", "2H", "LIVE", "ET", "P"].includes(
-          status
-        )
-      ? "#ef4444"
-      : "#3b82f6";
+      : ["HT", "PAUSED"].includes(status)
+        ? "#f59e0b"
+        : ["1H", "2H", "LIVE", "IN_PLAY", "ET", "P", "PEN"].includes(status)
+          ? "#ef4444"
+          : "#3b82f6";
 
   const formattedDate = fixture.date
     ? new Date(
@@ -77,7 +80,7 @@ export default function MatchHeader({ match }) {
   );
 
   const leagueRound = getDisplayValue(
-    league.round,
+    league.round || (league.matchday ? `Matchday ${league.matchday}` : league.stage),
     ""
   );
 
@@ -108,7 +111,7 @@ export default function MatchHeader({ match }) {
   );
 
   const statusLong = getDisplayValue(
-    fixture.status?.long,
+    statusData.long || statusData.short,
     status
   );
 
@@ -195,13 +198,13 @@ export default function MatchHeader({ match }) {
           </div>
 
           <div className="whitespace-nowrap text-[clamp(42px,7vw,70px)] font-bold leading-none text-white">
-            {goals.home ?? "-"}
+            {homeScore ?? "-"}
 
             <span className="mx-3 sm:mx-5">
               :
             </span>
 
-            {goals.away ?? "-"}
+            {awayScore ?? "-"}
           </div>
 
           <div className="mt-[18px] text-sm text-slate-400">
