@@ -20,7 +20,7 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
   const [matches, setMatches] = useState(initialMatches);
   const [filtered, setFiltered] = useState(initialMatches);
   const [tab, setTab] = useState("today");
-  const [loading, setLoading] = useState(!initialData);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(
     initialData?.success
       ? ""
@@ -29,7 +29,7 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
   const firstRender = useRef(true);
 
   useEffect(() => {
-    if (firstRender.current && tab === "today" && initialData?.success === true) {
+    if (firstRender.current && tab === "today") {
       firstRender.current = false;
       return;
     }
@@ -188,8 +188,15 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
       ====================================================== */}
 
       {!loading && error && (
-        <div className="py-[40px] text-center text-[18px] text-red-500">
-          {error}
+        <div className="py-[40px] text-center">
+          <p className="text-[18px] text-red-400">{error}</p>
+          <button
+            type="button"
+            onClick={() => router.refresh()}
+            className="mt-4 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
+          >
+            Retry
+          </button>
         </div>
       )}
 
