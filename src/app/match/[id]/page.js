@@ -1,44 +1,52 @@
 import MatchClient from "./MatchClient";
 
-/* =====================================================
-   MATCH PAGE
-===================================================== */
-
-/*
-  The actual match data is loaded by MatchClient.
-
-  We intentionally keep metadata static here instead of
-  making another server-side API request during
-  generateMetadata().
-
-  This avoids:
-  - HeadersTimeoutError
-  - duplicate match API requests
-  - unnecessary backend/provider load
-*/
+const API =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://apex-sports-backend.vercel.app";
 
 export const metadata = {
-  title:
-    "Match Center | Apex Sports",
-
+  title: "Football Match Center | Apex Sports",
   description:
-    "Football match center with score, timeline, statistics, lineups and team information.",
+    "Match details, score, goals, teams and available match information from Apex Sports.",
 };
 
+async function getMatch(id) {
+  try {
+    const response = await fetch(
+      `${API}/api/match/${encodeURIComponent(id)}`,
+      { cache: "no-store" }
+    );
 
-/* =====================================================
-   MATCH PAGE
-===================================================== */
+    const data = await response.json().catch(() => null);
 
-export default async function MatchPage({
-  params,
-}) {
-  const { id } =
-    await params;
+    if (!response.ok || data?.success !== true || !data?.match) {
+      return {
+        success: false,
+        message:
+          data?.message ||
+          `Match information is currently unavailable (HTTP ${response.status}).`,
+      };
+    }
+
+    return data;
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error?.message ||
+        "Match information is temporarily unavailable.",
+    };
+  }
+}
+
+export default async function MatchPage({ params }) {
+  const { id } = await params;
+  const initialData = await getMatch(id);
 
   return (
     <MatchClient
       matchId={id}
+      initialData={initialData}
     />
   );
 }
