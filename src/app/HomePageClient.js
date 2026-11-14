@@ -28,6 +28,23 @@ export default function HomePage({ initialData }) {
   );
   const firstRender = useRef(true);
 
+  // A router.refresh() supplies new server props; synchronize them into
+  // client state so Retry can clear a previous server-side error.
+  useEffect(() => {
+    const refreshedMatches = Array.isArray(initialData?.matches)
+      ? initialData.matches
+      : [];
+
+    setMatches(refreshedMatches);
+    setFiltered(refreshedMatches);
+    setError(
+      initialData?.success
+        ? ""
+        : initialData?.message ||
+            "Premier League match data is temporarily unavailable."
+    );
+  }, [initialData]);
+
   useEffect(() => {
     if (firstRender.current && tab === "today") {
       firstRender.current = false;
