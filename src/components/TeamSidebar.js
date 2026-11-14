@@ -148,55 +148,15 @@ export default function TeamSidebar({
           Quick Navigation
         </h3>
 
-        <SidebarLink
-          href="#overview"
-          text="Overview"
-        />
-
-        <SidebarLink
-          href="#statistics"
-          text="Statistics"
-        />
-
-        <SidebarLink
-          href="#analytics"
-          text="Analytics"
-        />
-
-        <SidebarLink
-          href="#fixtures"
-          text="Fixtures"
-        />
-
-        <SidebarLink
-          href="#results"
-          text="Results"
-        />
-
-        <SidebarLink
-          href="#squad"
-          text="Squad"
-        />
-
-        <SidebarLink
-          href="#history"
-          text="History"
-        />
-
-        <SidebarLink
-          href="#transfers"
-          text="Transfers"
-        />
-
-        <SidebarLink
-          href="#injuries"
-          text="Injuries"
-        />
-
-        <SidebarLink
-          href="#trophies"
-          text="Trophies"
-        />
+        <SidebarLink href="#overview" text="Overview" />
+        <SidebarLink href="#venue" text="Venue" />
+        <SidebarLink href="#coach" text="Coach" />
+        <SidebarLink href="#statistics" text="Statistics" />
+        <SidebarLink href="#form" text="Form" />
+        <SidebarLink href="#fixtures" text="Fixtures" />
+        <SidebarLink href="#results" text="Results" />
+        <SidebarLink href="#squad" text="Squad" />
+        <SidebarLink href="#social" text="Club details" />
       </div>
 
       {/* =================================================
