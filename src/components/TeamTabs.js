@@ -14,7 +14,10 @@ const tabs = [
   { id: "social", label: "Club details", icon: "🌐" },
 ];
 
-export default function TeamTabs() {
+export default function TeamTabs({
+  sectionIds = tabs.map((tab) => tab.id),
+}) {
+  const visibleTabs = tabs.filter((tab) => sectionIds.includes(tab.id));
   const [active, setActive] =
     useState("overview");
 
@@ -24,7 +27,7 @@ export default function TeamTabs() {
 
       const offset = 180;
 
-      for (const tab of tabs) {
+      for (const tab of visibleTabs) {
         const section =
           document.getElementById(tab.id);
 
@@ -110,7 +113,7 @@ export default function TeamTabs() {
   return (
     <section className="sticky top-2.5 z-50 mb-[30px] rounded-2xl border border-[#293548] bg-gray-900/[0.96] p-3 shadow-[0_8px_25px_rgba(0,0,0,0.25)] backdrop-blur-[12px]">
       <div className="flex gap-2.5 overflow-x-auto [scrollbar-width:none] [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
-        {tabs.map((tab) => {
+        {visibleTabs.map((tab) => {
           const isActive =
             active === tab.id;
 
