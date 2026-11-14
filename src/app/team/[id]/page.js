@@ -98,6 +98,18 @@ export default async function TeamPage({ params }) {
     ? team.coach
     : null;
 
+  const hasCompletedFixtures = fixtures.some((match) =>
+    ["FINISHED", "AWARDED", "FT"].includes(match?.status)
+  );
+
+  const sectionIds = ["overview", "results", "social"];
+  if (venue) sectionIds.push("venue");
+  if (coach) sectionIds.push("coach");
+  if (statistics) sectionIds.push("statistics");
+  if (hasCompletedFixtures) sectionIds.push("form");
+  if (fixtures.length > 0) sectionIds.push("fixtures");
+  if (players.length > 0) sectionIds.push("squad");
+
   return (
     <main className="mx-auto max-w-[1450px] px-5 pb-[60px] pt-[30px] text-white">
       <nav aria-label="Breadcrumb" className="mb-5 text-sm text-slate-400">
@@ -108,11 +120,11 @@ export default async function TeamPage({ params }) {
         <span>{team.name}</span>
       </nav>
 
-      <TeamTabs />
+      <TeamTabs sectionIds={sectionIds} />
 
       <div className="grid grid-cols-1 items-start gap-[25px] lg:grid-cols-[320px_minmax(0,1fr)]">
         <aside className="min-w-0">
-          <TeamSidebar team={team} />
+          <TeamSidebar team={team} sectionIds={sectionIds} />
         </aside>
 
         <div className="flex min-w-0 flex-col">
@@ -123,9 +135,9 @@ export default async function TeamPage({ params }) {
           {coach && <TeamCoach coach={coach} />}
           {statistics && <TeamStats team={team} statistics={statistics} />}
 
-          {fixtures.length > 0 && <TeamForm fixtures={fixtures} teamId={team.id} />}
+          {hasCompletedFixtures && <TeamForm fixtures={fixtures} teamId={team.id} />}
           {fixtures.length > 0 && <TeamFixtures fixtures={fixtures} />}
-          {fixtures.length > 0 && <TeamResults results={fixtures} />}
+          <TeamResults results={fixtures} />
           {players.length > 0 && <TeamSquad players={players} />}
 
           <TeamSocial team={team} />
