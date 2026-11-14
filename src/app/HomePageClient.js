@@ -21,6 +21,7 @@ export default function HomePage({ initialData }) {
   const [filtered, setFiltered] = useState(initialMatches);
   const [tab, setTab] = useState("today");
   const [loading, setLoading] = useState(false);
+  const [retryKey, setRetryKey] = useState(0);
   const [error, setError] = useState(
     initialData?.success
       ? ""
@@ -149,7 +150,17 @@ export default function HomePage({ initialData }) {
     return () => {
       mounted = false;
     };
-  }, [tab]);
+  }, [tab, retryKey]);
+
+  function handleRetry() {
+    if (tab === "today") {
+      router.refresh();
+      return;
+    }
+
+    // Re-run the selected tab request without refreshing Today server props.
+    setRetryKey((current) => current + 1);
+  }
 
   function handleSearch(value) {
     const query = String(value || "").trim();
@@ -216,7 +227,7 @@ export default function HomePage({ initialData }) {
           <p className="text-[18px] text-red-400">{error}</p>
           <button
             type="button"
-            onClick={() => router.refresh()}
+            onClick={handleRetry}
             className="mt-4 rounded-lg border border-slate-700 bg-slate-800 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
           >
             Retry
