@@ -48,15 +48,13 @@ export default function MatchHeader({ match }) {
     "NS";
 
   const statusColor =
-    status === "FT"
+    ["FT", "FINISHED", "AWARDED"].includes(status)
       ? "#22c55e"
-      : status === "HT"
-      ? "#f59e0b"
-      : ["1H", "2H", "LIVE", "ET", "P"].includes(
-          status
-        )
-      ? "#ef4444"
-      : "#3b82f6";
+      : ["HT", "PAUSED"].includes(status)
+        ? "#f59e0b"
+        : ["1H", "2H", "LIVE", "IN_PLAY", "ET", "P"].includes(status)
+          ? "#ef4444"
+          : "#3b82f6";
 
   const formattedDate = fixture.date
     ? new Date(
