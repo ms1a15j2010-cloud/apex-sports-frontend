@@ -12,7 +12,7 @@ const CURRENT_SEASON = new Date().getMonth() >= 6
   ? new Date().getFullYear()
   : new Date().getFullYear() - 1;
 
-export default function HomePage({ initialData, isInternationalBreak = false }) {
+export default function HomePage({ initialData }) {
   const router = useRouter();
   const initialMatches = Array.isArray(initialData?.matches)
     ? initialData.matches
@@ -208,41 +208,22 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
         !error &&
         filtered.length === 0 && (
           <div className="mx-auto max-w-3xl rounded-2xl border border-slate-800 bg-slate-900/60 px-6 py-8 text-center text-slate-300">
-            {tab === "today" && isInternationalBreak ? (
-              <>
-                <h2 className="text-xl font-bold text-white">
-                  Premier League paused for the international break
-                </h2>
-                <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-300">
-                  No Premier League fixtures are scheduled during the November international window (9–17 November).
-                  League action is due to return on Saturday 21 November 2026. International teams are playing
-                  Nations League and qualifying fixtures during the pause.
-                </p>
-                <div className="mt-5 flex flex-wrap justify-center gap-4">
-                  <a
-                    href="/articles/uefa-nations-league-matchday-5-review-november-2026"
-                    className="font-semibold text-green-500 underline underline-offset-4 hover:text-green-400"
-                  >
-                    Read our Nations League matchday review
-                  </a>
-                  <a
-                    href="/fixtures/epl"
-                    className="font-semibold text-green-500 underline underline-offset-4 hover:text-green-400"
-                  >
-                    View upcoming Premier League fixtures
-                  </a>
-                </div>
-              </>
-            ) : (
-              <p>
-                {tab === "live"
-                  ? "There are no live matches in the selected coverage right now."
-                  : tab === "finished"
-                    ? "No recent Premier League results are available from the current data feed."
-                    : tab === "upcoming"
-                      ? "No upcoming Premier League fixtures are available from the current data feed."
-                      : "No Premier League fixtures are scheduled for today (UK time)."}
-              </p>
+            <p>
+              {tab === "live"
+                ? "There are no live matches in the selected coverage right now."
+                : tab === "finished"
+                  ? "No recent Premier League results are available from the current data feed."
+                  : tab === "upcoming"
+                    ? "No upcoming Premier League fixtures are available from the current data feed."
+                    : "No Premier League fixtures are scheduled for today (UK time)."}
+            </p>
+            {tab === "today" && (
+              <a
+                href="/fixtures/epl"
+                className="mt-4 inline-block font-semibold text-green-500 underline underline-offset-4 hover:text-green-400"
+              >
+                View upcoming Premier League fixtures
+              </a>
             )}
           </div>
         )}
