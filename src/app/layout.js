@@ -143,7 +143,7 @@ export default function RootLayout({
                   MAIN SCROLLING AREA
               ================================================ */}
 
-              <div className="box-border min-w-0 flex-1 overflow-x-hidden bg-slate-950 p-4 sm:p-[25px] md:min-h-0 md:overflow-y-auto">
+              <div className="apex-content-scroll box-border min-w-0 flex-1 overflow-x-hidden bg-slate-950 p-4 sm:p-[25px] md:min-h-0 md:overflow-y-auto">
                 <Breadcrumbs />
 
                 {children}
