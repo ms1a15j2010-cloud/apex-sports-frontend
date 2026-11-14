@@ -122,11 +122,10 @@ export default function PlayerHeader({ player }) {
           <strong>
             {player.nationality || "-"}
           </strong>
-          . Personal information, career statistics,
-          transfers, injuries and performance data are
-          automatically updated from the football data
-          provider whenever new information becomes
-          available.
+          . Profile details and available season information are
+          supplied by football-data.org. Some advanced
+          statistics and profile fields are not provided by
+          the current data source.
         </p>
       </div>
     </section>
