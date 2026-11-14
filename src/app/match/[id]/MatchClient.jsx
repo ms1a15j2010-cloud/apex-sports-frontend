@@ -37,7 +37,7 @@ async function fetchMatch(matchId) {
 function getPollingInterval(status) {
   const value = String(status || "").toUpperCase();
 
-  if (["LIVE", "IN_PLAY", "1H", "2H", "ET", "P"].includes(value)) return 15000;
+  if (["LIVE", "IN_PLAY", "1H", "2H", "ET", "P", "PEN"].includes(value)) return 15000;
   if (value === "HT" || value === "PAUSED") return 20000;
 
   return 0;
