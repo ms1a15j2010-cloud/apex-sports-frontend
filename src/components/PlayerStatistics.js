@@ -54,7 +54,7 @@ export default function PlayerStatistics({
       return "★☆☆☆☆";
     }
 
-    return "☆☆☆☆☆";
+    return "";
   };
 
   const getInitial = (name) => {
@@ -332,7 +332,7 @@ function Stat({
             : "text-white"
         }`}
       >
-        {value ?? 0}
+        {value ?? "—"}
       </strong>
     </div>
   );
