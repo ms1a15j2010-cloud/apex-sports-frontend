@@ -124,7 +124,13 @@ export default async function TodayPage() {
   const hero = heroData?.hero || {};
   const liveMatches = Array.isArray(liveData?.matches) ? liveData.matches : [];
   const todayMatches = Array.isArray(todayData?.matches) ? todayData.matches : [];
-  const latestResults = Array.isArray(resultsData?.matches) ? resultsData.matches : [];
+  // The existing API wrapper accepts either response shape; keep the same
+  // compatibility in the server-rendered page.
+  const latestResults = Array.isArray(resultsData?.matches)
+    ? resultsData.matches
+    : Array.isArray(resultsData?.results)
+      ? resultsData.results
+      : [];
 
   return (
     <main className="mx-auto my-10 flex w-full max-w-[1400px] flex-col gap-[30px] px-5">
