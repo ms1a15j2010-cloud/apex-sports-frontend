@@ -1,9 +1,9 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Contact Apex Sports | Football Website",
+  title: "Contact Apex Sports | Get in Touch",
   description:
-    "Contact Apex Sports for questions, feedback and suggestions about our football scores, fixtures, results, statistics and guides.",
+    "Contact Apex Sports with questions, feedback, corrections or suggestions about our football coverage, scores, fixtures, statistics and guides.",
   alternates: {
     canonical: "https://apex-sports-frontend.vercel.app/contact",
   },
@@ -29,19 +29,15 @@ export default function ContactPage() {
 
       <section className="space-y-6">
         <article className="rounded-[20px] border border-gray-800 bg-[linear-gradient(145deg,#111827,#0b1220)] p-6 sm:p-8">
-          <h2 className="text-2xl font-extrabold">
-            Get in Touch
-          </h2>
+          <h2 className="text-2xl font-extrabold">Get in Touch</h2>
 
           <p className="mt-4 leading-7 text-slate-300">
             For general questions, feedback, corrections or suggestions
-            regarding Apex Sports, you can contact us by email.
+            regarding Apex Sports, contact us by email.
           </p>
 
           <div className="mt-5 rounded-xl border border-gray-800 bg-[#0b1220] p-4">
-            <p className="text-sm text-slate-400">
-              Email
-            </p>
+            <p className="text-sm text-slate-400">Email</p>
 
             <a
               href="mailto:impeccablesports@gmail.com"
@@ -57,12 +53,18 @@ export default function ContactPage() {
             What You Can Contact Us About
           </h2>
 
-          <ul className="mt-4 space-y-3 leading-7 text-slate-300">
-            <li>• Questions about football scores and fixtures</li>
-            <li>• Feedback about our football guides and articles</li>
-            <li>• Suggestions for improving the website</li>
-            <li>• Reporting incorrect or outdated information</li>
+          <ul className="mt-4 list-disc space-y-3 pl-5 leading-7 text-slate-300">
+            <li>Questions about football scores, fixtures and results</li>
+            <li>Feedback about our football guides and articles</li>
+            <li>Suggestions for improving the website</li>
+            <li>Reports of incorrect, incomplete or outdated information</li>
           </ul>
+
+          <p className="mt-5 leading-7 text-slate-300">
+            If you are reporting a possible error in a match or statistic,
+            please include the competition, teams, match date and a link to
+            the relevant page so we can identify the information you mean.
+          </p>
         </article>
       </section>
 
