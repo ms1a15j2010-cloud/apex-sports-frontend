@@ -37,10 +37,28 @@ async function fetchMatch(matchId) {
 function getPollingInterval(status) {
   const value = String(status || "").toUpperCase();
 
-  if (["LIVE", "IN_PLAY", "1H", "2H", "ET", "P", "PEN"].includes(value)) return 15000;
-  if (value === "HT" || value === "PAUSED") return 20000;
+  if (["LIVE", "IN_PLAY", "1H", "2H", "ET", "P", "PEN"].includes(value)) {
+    return 15000;
+  }
 
-  return 0;
+  if (value === "HT" || value === "PAUSED") {
+    return 20000;
+  }
+
+  if (["FT", "FINISHED", "AET", "CANC", "CANCELLED", "AWD", "AWARDED"].includes(value)) {
+    return 0;
+  }
+
+  // Keep checking scheduled, postponed, suspended, and unknown non-final states.
+  return 60000;
+}
+
+function getMatchStatus(match) {
+  return (
+    match?.status?.short ||
+    match?.rawStatus ||
+    "NS"
+  );
 }
 
 function normalizeMatchData(data) {
@@ -93,31 +111,39 @@ export default function MatchClient({
     let cancelled = false;
     let timer = null;
 
+    function scheduleNextPoll(currentMatch) {
+      if (cancelled) return;
+
+      const interval = getPollingInterval(getMatchStatus(currentMatch));
+
+      if (interval === 0) return;
+
+      timer = setTimeout(async () => {
+        if (cancelled) return;
+
+        const updatedMatch = await loadMatch();
+
+        if (cancelled) return;
+
+        // Retry after a temporary request failure without creating overlapping polls.
+        scheduleNextPoll(updatedMatch || currentMatch);
+      }, interval);
+    }
+
     async function initialize() {
       const loadedMatch =
         initialData?.match || await loadMatch();
 
       if (cancelled || !loadedMatch) return;
 
-      const status =
-        loadedMatch?.status?.short ||
-        loadedMatch?.rawStatus ||
-        "NS";
-
-      const interval = getPollingInterval(status);
-
-      if (interval > 0) {
-        timer = setInterval(() => {
-          if (!cancelled) loadMatch();
-        }, interval);
-      }
+      scheduleNextPoll(loadedMatch);
     }
 
     initialize();
 
     return () => {
       cancelled = true;
-      if (timer) clearInterval(timer);
+      if (timer) clearTimeout(timer);
     };
   }, [matchId, loadMatch, initialData?.match]);
 
