@@ -29,7 +29,7 @@ import MatchSidebar from "@/components/MatchSidebar";
 
 const API =
   process.env.NEXT_PUBLIC_API_URL ||
-  "";
+  "https://apex-sports-backend.vercel.app";
 
 /* =====================================================
    FETCH MATCH
@@ -215,67 +215,74 @@ function normalizeMatchData(data) {
 
 export default function MatchClient({
   matchId,
+  initialData = null,
 }) {
+  const initial = normalizeMatchData(initialData);
+
   /* ==========================================
      STATE
   ========================================== */
 
-  const [match, setMatch] = useState(null);
+  const [match, setMatch] = useState(initial.match);
 
   const [
     timeline,
     setTimeline,
-  ] = useState([]);
+  ] = useState(initial.timeline);
 
   const [
     events,
     setEvents,
-  ] = useState([]);
+  ] = useState(initial.events);
 
   const [
     statistics,
     setStatistics,
-  ] = useState([]);
+  ] = useState(initial.statistics);
 
   const [
     lineups,
     setLineups,
-  ] = useState([]);
+  ] = useState(initial.lineups);
 
   const [
     playerRatings,
     setPlayerRatings,
-  ] = useState([]);
+  ] = useState(initial.playerRatings);
 
   const [
     facts,
     setFacts,
-  ] = useState({});
+  ] = useState(initial.facts);
 
   const [
     headToHead,
     setHeadToHead,
-  ] = useState([]);
+  ] = useState(initial.headToHead);
 
   const [
     standings,
     setStandings,
-  ] = useState([]);
+  ] = useState(initial.standings);
 
   const [
     prediction,
     setPrediction,
-  ] = useState(null);
+  ] = useState(initial.prediction);
 
   const [
     loading,
     setLoading,
-  ] = useState(true);
+  ] = useState(!initialData);
 
   const [
     error,
     setError,
-  ] = useState(null);
+  ] = useState(
+    initialData?.success === false
+      ? initialData.message || "Match data is unavailable."
+      : null
+  );
 
   /* ==========================================
      LOAD MATCH
@@ -373,7 +380,7 @@ export default function MatchClient({
 
     async function initialize() {
       const loadedMatch =
-        await loadMatch();
+        initialData?.match || await loadMatch();
 
       if (
         cancelled ||
@@ -415,7 +422,7 @@ export default function MatchClient({
         clearInterval(timer);
       }
     };
-  }, [matchId, loadMatch]);
+  }, [matchId, loadMatch, initialData?.match]);
 
   /* ==========================================
      LOADING
