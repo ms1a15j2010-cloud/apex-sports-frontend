@@ -165,8 +165,7 @@ async function getStandings(league) {
     }
 
     const API =
-      process.env.NEXT_PUBLIC_API_URL ||
-      "";
+      process.env.NEXT_PUBLIC_API_URL || "https://apex-sports-backend.vercel.app";
 
     const url =
       `${API}/api/standings/${slug}` +

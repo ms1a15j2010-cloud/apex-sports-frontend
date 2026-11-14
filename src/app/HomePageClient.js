@@ -557,6 +557,8 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
             </a>
           </div>
 
+        </div>
+
         {/* =================================================
             EDITORIAL MATCH ANALYSIS
         ================================================== */}
@@ -628,7 +630,7 @@ export default function HomePage({ initialData, isInternationalBreak = false }) 
             </article>
           </div>
 
-        </div>
+        </section>
 
       </section>
     </main>
