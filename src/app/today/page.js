@@ -1,9 +1,16 @@
-"use client";
-
 import DashboardHero from "@/components/Dashboard/DashboardHero";
 import LiveNow from "@/components/Dashboard/LiveNow";
 import TodayMatches from "@/components/Dashboard/TodayMatches";
 import LatestResults from "@/components/Dashboard/LatestResults";
+
+export const metadata = {
+  title: "Football Today: Live Scores, Fixtures & Results | Apex Sports",
+  description:
+    "Follow live football match status, today's Premier League fixtures and recent results on the Apex Sports matchday dashboard.",
+  alternates: {
+    canonical: "https://apex-sports-frontend.vercel.app/today",
+  },
+};
 
 export default function TodayPage() {
   return (
