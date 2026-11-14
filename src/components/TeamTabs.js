@@ -46,7 +46,7 @@ export default function TeamTabs() {
     updateActiveTab();
 
     const main =
-      document.querySelector("main");
+      document.querySelector(".apex-main-shell > div");
 
     window.addEventListener(
       "resize",
@@ -81,7 +81,7 @@ export default function TeamTabs() {
     }
 
     const main =
-      document.querySelector("main");
+      document.querySelector(".apex-main-shell > div");
 
     if (!main) {
       return;
