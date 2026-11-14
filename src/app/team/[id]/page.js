@@ -90,6 +90,9 @@ export default async function TeamPage({ params }) {
       ? statisticsData.statistics
       : null;
 
+  const hasStatistics = Boolean(
+    statistics && Number(statistics.played) > 0
+  );
   const venue = team.venue &&
     (team.venue.name || team.venue.city || team.venue.address)
       ? team.venue
@@ -105,7 +108,7 @@ export default async function TeamPage({ params }) {
   const sectionIds = ["overview", "results", "social"];
   if (venue) sectionIds.push("venue");
   if (coach) sectionIds.push("coach");
-  if (statistics) sectionIds.push("statistics");
+  if (hasStatistics) sectionIds.push("statistics");
   if (hasCompletedFixtures) sectionIds.push("form");
   if (fixtures.length > 0) sectionIds.push("fixtures");
   if (players.length > 0) sectionIds.push("squad");
@@ -133,7 +136,7 @@ export default async function TeamPage({ params }) {
 
           {venue && <TeamVenue venue={venue} />}
           {coach && <TeamCoach coach={coach} />}
-          {statistics && <TeamStats team={team} statistics={statistics} />}
+          {hasStatistics && <TeamStats team={team} statistics={statistics} />}
 
           {hasCompletedFixtures && <TeamForm fixtures={fixtures} teamId={team.id} />}
           {fixtures.length > 0 && <TeamFixtures fixtures={fixtures} />}
