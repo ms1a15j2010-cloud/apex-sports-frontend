@@ -45,7 +45,7 @@ function getPollingInterval(status) {
     return 20000;
   }
 
-  if (["FT", "FINISHED", "AET", "CANC", "CANCELLED", "AWD", "AWARDED"].includes(value)) {
+  if (["FT", "FINISHED", "AET", "CANC", "CANCELLED", "ABD", "AWD", "AWARDED"].includes(value)) {
     return 0;
   }
 
@@ -55,7 +55,7 @@ function getPollingInterval(status) {
 
 function getMatchStatus(match) {
   return (
-    match?.status?.short ||
+    (typeof match?.status === "string" ? match.status : match?.status?.short) ||
     match?.rawStatus ||
     "NS"
   );
