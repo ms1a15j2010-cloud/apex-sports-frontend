@@ -52,7 +52,7 @@ export default function MatchHeader({ match }) {
       ? "#22c55e"
       : ["HT", "PAUSED"].includes(status)
         ? "#f59e0b"
-        : ["1H", "2H", "LIVE", "IN_PLAY", "ET", "P"].includes(status)
+        : ["1H", "2H", "LIVE", "IN_PLAY", "ET", "P", "PEN"].includes(status)
           ? "#ef4444"
           : "#3b82f6";
 
