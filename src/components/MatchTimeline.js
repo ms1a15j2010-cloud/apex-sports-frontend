@@ -40,7 +40,7 @@ export default function MatchTimeline({
   return (
     <section className="mb-6 rounded-[18px] border border-gray-800 bg-gray-900 p-5 sm:p-7">
       <h2 className="mb-6 text-[22px] font-extrabold text-white">
-        Match Timeline
+        Goal Timeline
       </h2>
 
       <div className="grid gap-3">
