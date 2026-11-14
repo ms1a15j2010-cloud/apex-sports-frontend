@@ -35,11 +35,16 @@ export default function MatchHeader({ match }) {
   const league = match.league || {};
   const home = match.teams?.home || {};
   const away = match.teams?.away || {};
-  const goals = match.goals || {};
+  const score = match.score || {};
+  const homeScore =
+    score.fulltime?.home ?? score.home ?? null;
+  const awayScore =
+    score.fulltime?.away ?? score.away ?? null;
 
+  const statusData = match.status || fixture.status || {};
   const status =
-    fixture.status?.short ||
-    fixture.status?.long ||
+    statusData.short ||
+    statusData.long ||
     "NS";
 
   const statusColor =
@@ -77,7 +82,7 @@ export default function MatchHeader({ match }) {
   );
 
   const leagueRound = getDisplayValue(
-    league.round,
+    league.round || (league.matchday ? `Matchday ${league.matchday}` : league.stage),
     ""
   );
 
@@ -108,7 +113,7 @@ export default function MatchHeader({ match }) {
   );
 
   const statusLong = getDisplayValue(
-    fixture.status?.long,
+    statusData.long || statusData.short,
     status
   );
 
@@ -195,13 +200,13 @@ export default function MatchHeader({ match }) {
           </div>
 
           <div className="whitespace-nowrap text-[clamp(42px,7vw,70px)] font-bold leading-none text-white">
-            {goals.home ?? "-"}
+            {homeScore ?? "-"}
 
             <span className="mx-3 sm:mx-5">
               :
             </span>
 
-            {goals.away ?? "-"}
+            {awayScore ?? "-"}
           </div>
 
           <div className="mt-[18px] text-sm text-slate-400">
