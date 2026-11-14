@@ -8,12 +8,12 @@ export default function MatchTimeline({
       <section className="mb-6 rounded-[18px] border border-gray-800 bg-gray-900 p-5 sm:p-7">
         <div className="mb-[22px] flex flex-wrap items-center justify-between gap-3">
           <h2 className="m-0 text-[22px] font-extrabold text-white">
-            Match Timeline
+            Goal Timeline
           </h2>
         </div>
 
         <div className="rounded-[14px] bg-slate-950 px-5 py-[30px] text-center text-sm text-slate-500">
-          No timeline events available.
+          No goal events have been reported for this match.
         </div>
       </section>
     );
