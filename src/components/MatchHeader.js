@@ -36,16 +36,19 @@ export default function MatchHeader({ match }) {
   const home = match.teams?.home || {};
   const away = match.teams?.away || {};
   const score = match.score || {};
+  const fullTimeScore = score.fullTime || score.fulltime || {};
   const homeScore =
-    score.fulltime?.home ?? score.home ?? null;
+    fullTimeScore.home ?? score.home ?? null;
   const awayScore =
-    score.fulltime?.away ?? score.away ?? null;
+    fullTimeScore.away ?? score.away ?? null;
 
-  const statusData = match.status || fixture.status || {};
+  const rawStatus = match.status ?? fixture.status;
+  const statusData =
+    rawStatus && typeof rawStatus === "object" ? rawStatus : {};
   const status =
-    statusData.short ||
-    statusData.long ||
-    "NS";
+    typeof rawStatus === "string"
+      ? rawStatus
+      : statusData.short || statusData.long || "NS";
 
   const statusColor =
     ["FT", "FINISHED", "AWARDED"].includes(status)
@@ -111,7 +114,9 @@ export default function MatchHeader({ match }) {
   );
 
   const statusLong = getDisplayValue(
-    statusData.long || statusData.short,
+    typeof rawStatus === "string"
+      ? rawStatus
+      : statusData.long || statusData.short,
     status
   );
 
