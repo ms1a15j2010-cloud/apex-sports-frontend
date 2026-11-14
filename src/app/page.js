@@ -99,10 +99,9 @@ async function getUpcomingFixtures() {
 }
 
 export default async function HomePage() {
-  const [initialData, upcomingFixtures, londonDate] = await Promise.all([
+  const [initialData, upcomingFixtures] = await Promise.all([
     getInitialMatches(),
     getUpcomingFixtures(),
-    Promise.resolve(getLondonDate()),
   ]);
 
   return (
